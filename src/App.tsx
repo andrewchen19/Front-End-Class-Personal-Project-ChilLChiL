@@ -26,7 +26,7 @@ function App() {
           element: <LocalSpots />,
         },
         {
-          path: "local-spots/:spot/:id",
+          path: "local-spots/:name/:id",
           element: <LocalSpot />,
         },
       ],
