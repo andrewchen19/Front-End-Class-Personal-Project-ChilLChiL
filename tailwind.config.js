@@ -25,7 +25,7 @@ export default {
       colors: {
         black: "#000000",
         white: "#FFFFFF",
-        pink: "##F48080",
+        pink: "#F48080",
         blue: {
           light: "#8CBCFF",
           dark: "#3A4972",

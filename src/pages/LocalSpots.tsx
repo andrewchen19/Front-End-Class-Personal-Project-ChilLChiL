@@ -82,15 +82,19 @@ const LocalSpots: React.FC = () => {
 
       <section className="mt-4 max-w-[90%] mx-auto grid grid-cols-4 gap-y-4">
         {spots.map((spot) => {
-          const { id, name } = spot;
+          const { id, name, mapImage } = spot;
           return (
             <article
               key={id}
-              className="w-[150px] h-[100px] border border-black cursor-pointer"
+              className="w-[150px] border border-black cursor-pointer"
               onClick={() => clickHandler(id, name.eng)}
             >
-              <img src="" alt={name.chin} className="h-[20px] mb-4" />
-              <div className="h-[80px]">
+              <img
+                src={mapImage}
+                alt={name.chin}
+                className="w-full h-[100px] object-cover object-center mb-4"
+              />
+              <div className="">
                 <h3 className="font-notosans">{name.chin}</h3>
                 <h5 className="capitalize font-fashioncountry">{name.eng}</h5>
               </div>
@@ -99,12 +103,15 @@ const LocalSpots: React.FC = () => {
         })}
       </section>
 
-      <div className="mt-10 max-w-[90%] mx-auto overflow-hidden">
+      <div className="mt-10 max-w-[90%] mx-auto">
         <h3>海平面上的風</h3>
-        <iframe
-          className="w-full h-[600px] mx-0 my-0"
-          src="https://earth.nullschool.net/#current/wind/surface/level/orthographic=-239.11,24.00,5018"
-        ></iframe>
+
+        <div className="overflow-hidden">
+          <iframe
+            className="w-full h-[600px] mx-0 my-0"
+            src="https://earth.nullschool.net/#current/wind/surface/level/orthographic=-239.11,24.00,5018"
+          ></iframe>
+        </div>
       </div>
     </>
   );
