@@ -76,25 +76,59 @@ const LocalSpot: React.FC = () => {
   } = textData;
 
   return (
-    <div>
-      <h3>地點：{spotName.chin}</h3>
+    <div className="mx-auto w-[90%] max-w-5xl">
       <div>
-        地點描述：
-        {splitText(desc).map((item, index) => {
-          return (
-            <p key={index} className="mt-3">
-              {item}
-            </p>
-          );
-        })}
+        <h3 className="mt-10 font-notosans text-2xl font-bold text-pink">
+          {spotName.chin}
+        </h3>
       </div>
-      <p>面向：{toward}</p>
-      <p>類型：{breaks}</p>
-      <p>最佳潮汐：{bestTide}</p>
-      <p>方向：{direction}</p>
-      <p>最佳風向：{bestWind}</p>
-      <p>適合程度：{difficulty}</p>
-      <img src={infoImage} alt="info-image" />
+
+      <div className="grid grid-cols-[auto,1fr] gap-10">
+        <div className="w-[300px] px-5 py-10 shadow-xl">
+          <h4 className="text-center font-notosans text-turquoise">
+            浪點圖表資訊
+          </h4>
+          <img src={infoImage} alt="info-image" className="mt-4" />
+        </div>
+
+        <div className="px-5 py-10 font-notosans shadow-xl">
+          地點描述：
+          {splitText(desc).map((item, index) => {
+            return (
+              <p key={index} className="mt-3">
+                {item}
+              </p>
+            );
+          })}
+        </div>
+      </div>
+
+      <div className="mb-10 mt-8 flex border border-black font-notosans">
+        <div className="my-4 flex flex-grow flex-col gap-1 border-r border-r-turquoise">
+          <h4 className="px-5 text-center text-turquoise">面向</h4>
+          <p className="px-5 text-center">{toward}</p>
+        </div>
+        <div className="my-4 flex flex-grow flex-col gap-1 border-r border-r-turquoise">
+          <h4 className="px-5 text-center text-turquoise">類型</h4>
+          <p className="px-5 text-center">{breaks}</p>
+        </div>
+        <div className="my-4 flex flex-grow flex-col gap-1 border-r border-r-turquoise">
+          <h4 className="px-5 text-center text-turquoise">最佳潮汐</h4>
+          <p className="px-5 text-center">{bestTide}</p>
+        </div>
+        <div className="my-4 flex flex-grow flex-col gap-1 border-r border-r-turquoise">
+          <h4 className="px-5 text-center text-turquoise">方向</h4>
+          <p className="px-5 text-center">{direction}</p>
+        </div>
+        <div className="my-4 flex flex-grow flex-col gap-1 border-r border-r-turquoise">
+          <h4 className="px-5 text-center text-turquoise">最佳風向</h4>
+          <p className="px-5 text-center">{bestWind}</p>
+        </div>
+        <div className="my-4 flex flex-grow flex-col gap-1">
+          <h4 className="px-5 text-center text-turquoise">適合程度</h4>
+          <p className="px-5 text-center">{difficulty}</p>
+        </div>
+      </div>
     </div>
   );
 };

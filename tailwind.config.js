@@ -6,6 +6,8 @@ export default {
   content: ["./index.html", "./src/**/*.{js,ts,jsx,tsx}"],
   theme: {
     colors: {
+      transparent: "transparent",
+      current: "currentColor",
       gray: colors.neutral,
     },
     screens: {

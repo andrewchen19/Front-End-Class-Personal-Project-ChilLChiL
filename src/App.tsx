@@ -1,12 +1,23 @@
-import { createBrowserRouter, RouterProvider } from "react-router-dom";
+import {
+  createBrowserRouter,
+  Navigate,
+  RouterProvider,
+} from "react-router-dom";
+import { ToastContainer, Zoom } from "react-toastify";
 
 import {
+  Articles,
   Error,
+  ForeignSpots,
   Landing,
   Layout,
   LocalSpot,
   LocalSpots,
   Login,
+  MyArticles,
+  MyCollections,
+  PostArticle,
+  Profile,
   Signup,
 } from "./pages";
 
@@ -29,6 +40,38 @@ function App() {
           path: "local-spots/:name/:id",
           element: <LocalSpot />,
         },
+        {
+          path: "local-spots/:name/:id",
+          element: <LocalSpot />,
+        },
+        {
+          path: "articles",
+          element: <Articles />,
+        },
+        {
+          path: "foreign-spots",
+          element: <ForeignSpots />,
+        },
+        {
+          path: "profile",
+          element: <Navigate to="my-info" replace />,
+        },
+        {
+          path: "profile/my-info",
+          element: <Profile />,
+        },
+        {
+          path: "profile/my-collections",
+          element: <MyCollections />,
+        },
+        {
+          path: "profile/my-articles",
+          element: <MyArticles />,
+        },
+        {
+          path: "profile/post-article",
+          element: <PostArticle />,
+        },
       ],
     },
     {
@@ -44,6 +87,11 @@ function App() {
   return (
     <>
       <RouterProvider router={router} />
+      <ToastContainer
+        position="top-center"
+        autoClose={2000}
+        transition={Zoom}
+      />
     </>
   );
 }

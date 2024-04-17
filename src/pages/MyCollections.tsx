@@ -1,18 +1,7 @@
 import React from "react";
-import { useSelector } from "react-redux";
-import { IRootState } from "../store";
-import { NavLink, Navigate } from "react-router-dom";
-import { toast } from "react-toastify";
+import { NavLink } from "react-router-dom";
 
-const Profile: React.FC = () => {
-  const { user } = useSelector((state: IRootState) => state.user);
-
-  // restrict access
-  if (!user) {
-    toast.warning("Please Log In First 😠");
-    return <Navigate to="/" />;
-  }
-
+const MyCollections: React.FC = () => {
   return (
     <div className="mx-auto flex w-[90%] max-w-5xl gap-10">
       <nav className="mt-20 px-10">
@@ -62,28 +51,10 @@ const Profile: React.FC = () => {
       </nav>
 
       <div className="mt-20 px-10">
-        <h2 className="font-notosans text-2xl font-bold">我的個人資訊:</h2>
-
-        <div className="mt-10 flex items-center gap-10">
-          <img
-            src={user?.profile_picture}
-            alt="user-image"
-            className="h-32 w-32"
-          />
-
-          <div className="flex flex-col gap-5 font-notosans font-semibold">
-            <h4 className="capitalize">
-              姓名：<span className="pl-2 font-ppwoodland">{user?.name}</span>
-            </h4>
-            <p>
-              信箱：
-              <span className="pl-2 font-ppwoodland">{user?.email}</span>
-            </p>
-          </div>
-        </div>
+        <h2 className="font-notosans text-2xl font-bold">我的收藏:</h2>
       </div>
     </div>
   );
 };
 
-export default Profile;
+export default MyCollections;
