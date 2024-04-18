@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { NavLink, Navigate } from "react-router-dom";
+import { NavLink, Navigate, useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
 import { useSelector } from "react-redux";
 import { IRootState } from "../store";
@@ -15,11 +15,17 @@ const MyArticles: React.FC = () => {
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const [articlesList, setArticlesList] = useState<DocumentData[] | []>([]);
 
+  const navigate = useNavigate();
+
   // restrict access
   if (!user) {
     toast.warning("Please Log In First 😠");
     return <Navigate to="/" />;
   }
+
+  const clickHandler = (id: string) => {
+    navigate(`/articles/${id}`);
+  };
 
   const fetchArticlesFromFirebase = async (): Promise<void> => {
     setIsLoading(true);
@@ -124,6 +130,7 @@ const MyArticles: React.FC = () => {
                 <article
                   key={id}
                   className="w-[200px] cursor-pointer border border-black"
+                  onClick={() => clickHandler(id)}
                 >
                   <img
                     src={cover}

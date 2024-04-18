@@ -130,8 +130,8 @@ const PostArticle: React.FC = () => {
   };
 
   return (
-    <>
-      <div className="mx-auto mt-4 w-[70%] max-w-5xl">
+    <div className="mx-auto w-[70%] max-w-5xl">
+      <div className=" mt-4 ">
         <h3>封面</h3>
         <div
           className={`relative h-[300px] max-w-[1280px] border border-dashed border-black ${
@@ -169,7 +169,7 @@ const PostArticle: React.FC = () => {
         </div>
       </div>
 
-      <div className="mx-auto mt-9 w-[70%] max-w-5xl">
+      <div className="mt-9 ">
         <h3>標題</h3>
         <input
           type="text"
@@ -178,7 +178,7 @@ const PostArticle: React.FC = () => {
         />
       </div>
 
-      <div className="mx-auto mt-4 w-[70%] max-w-5xl">
+      <div className="mt-4">
         <h3>類型</h3>
 
         <div className="flex gap-2">
@@ -240,7 +240,7 @@ const PostArticle: React.FC = () => {
         </div>
       </div>
 
-      <div className="mx-auto mt-4 w-[70%] max-w-5xl">
+      <div className="mt-4">
         <h3>相關浪點</h3>
 
         <div>
@@ -261,7 +261,7 @@ const PostArticle: React.FC = () => {
         </div>
       </div>
 
-      <div className="mx-auto mt-4 w-[70%] max-w-5xl">
+      <div className="mt-4">
         <h3>內文</h3>
         <div>
           <ReactQuill
@@ -274,14 +274,14 @@ const PostArticle: React.FC = () => {
         </div>
       </div>
 
-      <div className="mx-auto mb-10 mt-4  w-[70%] max-w-5xl ">
+      <div className="mb-10 mt-4">
         <button type="button" className="bg-gray-400" onClick={publishHandler}>
           發布文章
         </button>
       </div>
 
       {isUnsplashOpen && <UnsplashContainer />}
-    </>
+    </div>
   );
 };
 
