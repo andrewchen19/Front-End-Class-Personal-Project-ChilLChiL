@@ -5,31 +5,36 @@ import { db } from "../main";
 import { doc, getDoc, DocumentData } from "firebase/firestore";
 
 import { splitText } from "../utils";
+import axios from "axios";
 
 const LocalSpot: React.FC = () => {
-  const { name, id } = useParams();
+  // const { name, id } = useParams();
+  const { name } = useParams();
 
   const [textData, setTextData] = useState<DocumentData | null>(null);
   const [isLoading, setIsLoading] = useState(false);
 
   useEffect(() => {
     const fetchSpotData = async () => {
-      const spotUrls = [
-        `https://services.surfline.com/kbyg/spots/forecasts/wave?spotId=${id}&days=2&intervalHours=6`,
-        `https://services.surfline.com/kbyg/spots/forecasts/wind?spotId=${id}&days=2&intervalHours=6`,
-        `https://services.surfline.com/kbyg/spots/forecasts/tides?spotId=${id}&days=2&intervalHours=6`,
-        `https://services.surfline.com/kbyg/spots/forecasts/weather?spotId=${id}&days=2&intervalHours=6`,
-      ];
+      // const spotUrls = [
+      //   `https://services.surfline.com/kbyg/spots/forecasts/wave?spotId=${id}&days=2&intervalHours=6`,
+      //   `https://services.surfline.com/kbyg/spots/forecasts/wind?spotId=${id}&days=2&intervalHours=6`,
+      //   `https://services.surfline.com/kbyg/spots/forecasts/tides?spotId=${id}&days=2&intervalHours=6`,
+      //   `https://services.surfline.com/kbyg/spots/forecasts/weather?spotId=${id}&days=2&intervalHours=6`,
+      // ];
 
       try {
-        const responses = await Promise.all(spotUrls.map((url) => fetch(url)));
-        const allData = await Promise.all(responses.map((res) => res.json()));
-        console.log(allData);
-        console.log(allData[0].data.wave);
-        console.log(allData[1].data.wind);
-        console.log(allData[2].data.tides);
-        console.log(allData[3].data.sunlightTimes);
-        console.log(allData[3].data.weather);
+        // const responses = await Promise.all(spotUrls.map((url) => fetch(url)));
+        // const allData = await Promise.all(responses.map((res) => res.json()));
+        // console.log(allData);
+        // console.log(allData[0].data.wave);
+        // console.log(allData[1].data.wind);
+        // console.log(allData[2].data.tides);
+        // console.log(allData[3].data.sunlightTimes);
+        // console.log(allData[3].data.weather);
+        const url = `https://chil-cojotttsn-andrews-projects-11c2a8f5.vercel.app`;
+        const data = await axios.get(url);
+        console.log(data);
       } catch (err) {
         console.log(err);
       }
