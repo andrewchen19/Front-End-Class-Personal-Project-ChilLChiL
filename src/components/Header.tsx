@@ -65,7 +65,7 @@ const Header: React.FC = () => {
                   };
                 }}
               >
-                所有文章
+                浪人隨筆
               </NavLink>
             </li>
             {user && (

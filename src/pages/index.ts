@@ -1,4 +1,6 @@
+import Article from "./Article";
 import Articles from "./Articles";
+
 import Error from "./Error";
 import ForeignSpots from "./ForeignSpots";
 import Landing from "./Landing";
@@ -13,6 +15,7 @@ import Profile from "./Profile";
 import Signup from "./Signup";
 
 export {
+  Article,
   Articles,
   Error,
   ForeignSpots,

@@ -11,10 +11,10 @@ import "@maptiler/sdk/dist/maptiler-sdk.css";
 maptilersdk.config.apiKey = "RB0duSZSInBQe79oKC0F";
 
 const LocalSpots: React.FC = () => {
-  const [isLoading, setIsLoading] = useState(false);
+  const [isLoading, setIsLoading] = useState<boolean>(false);
   const [allSpots, setAllSpots] = useState<DocumentData[] | null>(null);
   const [selectSpots, setSelectSpots] = useState<DocumentData[] | null>(null);
-  const [area, setArea] = useState("all");
+  const [area, setArea] = useState<string>("all");
 
   const navigate = useNavigate();
 
@@ -61,7 +61,7 @@ const LocalSpots: React.FC = () => {
     navigate(`/local-spots/${name}/${id}`);
   };
 
-  const fetchDataFromFirebase = async () => {
+  const fetchDataFromFirebase = async (): Promise<DocumentData[]> => {
     const querySnapshot = await getDocs(collection(db, "local-spots"));
     const spotsArray = querySnapshot.docs.map((doc) => doc.data());
 
@@ -147,23 +147,23 @@ const LocalSpots: React.FC = () => {
         {!isLoading &&
           selectSpots &&
           selectSpots.map((spot) => {
-            const { id, name, mapImage, likesAmount } = spot;
+            const { id, name, mapImage, likes_id } = spot;
             return (
               <article
                 key={id}
-                className="w-[180px] cursor-pointer border border-black"
+                className="w-[200px] cursor-pointer border border-black"
                 onClick={() => clickHandler(id, name.eng)}
               >
                 <img
                   src={mapImage}
                   alt={name.chin}
-                  className="mb-4 h-[100px] w-full object-cover object-center"
+                  className="h-[100px] w-full object-cover object-center"
                 />
-                <div className="pb-4 pl-4">
+                <div className="p-2">
                   <h3 className="font-notosans">{name.chin}</h3>
                   <h5 className="font-fashioncountry capitalize">{name.eng}</h5>
                   <p className="font-notosans text-sm">
-                    收藏次數:<span className="ml-2">{likesAmount}</span>
+                    收藏次數:<span className="ml-2">{likes_id.length}</span>
                   </p>
                 </div>
               </article>

@@ -6,6 +6,7 @@ import {
 import { ToastContainer, Zoom } from "react-toastify";
 
 import {
+  Article,
   Articles,
   Error,
   ForeignSpots,
@@ -47,6 +48,10 @@ function App() {
         {
           path: "articles",
           element: <Articles />,
+        },
+        {
+          path: "articles/:id",
+          element: <Article />,
         },
         {
           path: "foreign-spots",

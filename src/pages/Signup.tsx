@@ -14,9 +14,9 @@ const Signup: React.FC = () => {
 
   const navigate = useNavigate();
 
-  async function addDocToFirestore(userInfo: UserInfo): Promise<void> {
+  const addDocToFirestore = async (userInfo: UserInfo): Promise<void> => {
     await setDoc(doc(db, "users", userInfo.id), userInfo);
-  }
+  };
 
   const submitHandler = (e: FormEvent<HTMLFormElement>): void => {
     e.preventDefault();
