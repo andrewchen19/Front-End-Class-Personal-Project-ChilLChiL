@@ -32,7 +32,7 @@ const LocalSpot: React.FC = () => {
         // console.log(allData[2].data.tides);
         // console.log(allData[3].data.sunlightTimes);
         // console.log(allData[3].data.weather);
-        const url = `https://chil-cojotttsn-andrews-projects-11c2a8f5.vercel.app`;
+        const url = `https://chil-72jo3inif-andrews-projects-11c2a8f5.vercel.app`;
         const data = await axios.get(url);
         console.log(data);
       } catch (err) {
