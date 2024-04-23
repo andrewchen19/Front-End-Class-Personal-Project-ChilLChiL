@@ -19,9 +19,11 @@ export default {
     fontFamily: {
       notosans: ["Noto Sans TC", "sans-serif"],
       helvetica: ["Helvetica", "sans-serif"],
-      ppwoodland: ["PPWoodland", "sans-serif"],
       fashioncountry: ["FashionCountry", "sans-serif"],
       superglue: ["SuperGlue", "sans-serif"],
+      dripoctober: ["DripOctober", "sans-serif"],
+      palanquin: ["Palanquin", "sans-serif"],
+      sriracha: ["Sriracha", "sans-serif"],
     },
     extend: {
       colors: {

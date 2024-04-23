@@ -3,19 +3,24 @@ import { NavLink, Navigate, useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
 import { useSelector } from "react-redux";
 import { IRootState } from "../store";
-import { formatCoverTime } from "../utils";
+import { formatTime, changeSpotName, changeTagName } from "../utils";
 
 // firebase
 import { db } from "../main";
-import { collection, getDocs, DocumentData } from "firebase/firestore";
+import {
+  collection,
+  query,
+  where,
+  getDocs,
+  DocumentData,
+} from "firebase/firestore";
 
 const MyArticles: React.FC = () => {
   const { user } = useSelector((state: IRootState) => state.user);
+  const navigate = useNavigate();
 
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const [articlesList, setArticlesList] = useState<DocumentData[] | []>([]);
-
-  const navigate = useNavigate();
 
   // restrict access
   if (!user) {
@@ -30,9 +35,11 @@ const MyArticles: React.FC = () => {
   const fetchArticlesFromFirebase = async (): Promise<void> => {
     setIsLoading(true);
     try {
-      const querySnapshot = await getDocs(
-        collection(db, "users", user.id, "my-articles"),
+      const q = query(
+        collection(db, "articles"),
+        where("authorId", "==", user.id),
       );
+      const querySnapshot = await getDocs(q);
       const articlesArray = querySnapshot.docs.map((doc) => doc.data());
       setArticlesList(articlesArray);
     } catch (error) {
@@ -52,7 +59,7 @@ const MyArticles: React.FC = () => {
           <li>
             <NavLink
               to="/profile/my-info"
-              className="border-b-transparent border-b hover:border-b-purple-light hover:text-purple-light"
+              className="border-b border-b-transparent hover:border-b-purple-light hover:text-purple-light"
               style={({ isActive }) => {
                 return {
                   color: isActive ? "#968095" : "",
@@ -67,7 +74,7 @@ const MyArticles: React.FC = () => {
           <li>
             <NavLink
               to="/profile/my-collections"
-              className="border-b-transparent border-b hover:border-b-purple-light hover:text-purple-light"
+              className="border-b border-b-transparent hover:border-b-purple-light hover:text-purple-light"
               style={({ isActive }) => {
                 return {
                   color: isActive ? "#968095" : "",
@@ -82,7 +89,7 @@ const MyArticles: React.FC = () => {
           <li>
             <NavLink
               to="/profile/my-articles"
-              className="border-b-transparent border-b hover:border-b-purple-light hover:text-purple-light"
+              className="border-b border-b-transparent hover:border-b-purple-light hover:text-purple-light"
               style={({ isActive }) => {
                 return {
                   color: isActive ? "#968095" : "",
@@ -101,7 +108,7 @@ const MyArticles: React.FC = () => {
           <h2 className="font-notosans text-2xl font-bold">文章列表:</h2>
 
           <NavLink to="/profile/post-article">
-            <button className="items-center rounded-lg bg-purple-light px-2 py-1 font-notosans text-xs text-white">
+            <button className="rounded-lg bg-purple-light px-2 py-1 font-notosans text-xs text-white">
               新增文章
             </button>
           </NavLink>
@@ -113,7 +120,7 @@ const MyArticles: React.FC = () => {
           <h3 className="mt-5">尚未有文章~快來撰寫!!</h3>
         )}
 
-        <div className="mt-5 max-w-5xl grid-cols-4 gap-7">
+        <div className="mt-5 grid max-w-5xl grid-cols-[auto,auto,auto]">
           {!isLoading &&
             articlesList.length > 0 &&
             articlesList.map((article) => {
@@ -147,14 +154,14 @@ const MyArticles: React.FC = () => {
                     <div className="mt-2 flex justify-between">
                       <div className="flex gap-1">
                         <span className="rounded-lg bg-green-bright px-1 text-xs text-white">
-                          {tag}
+                          {changeTagName(tag)}
                         </span>
                         <span className="rounded-lg bg-orange-bright px-1  text-xs text-white">
-                          {surfingSpot}
+                          {changeSpotName(surfingSpot)}
                         </span>
                       </div>
                       <p className="text-xs text-gray-500">
-                        {formatCoverTime(created_at)}
+                        {formatTime(created_at)}
                       </p>
                     </div>
                   </div>

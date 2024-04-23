@@ -57,7 +57,7 @@ const LocalSpots: React.FC = () => {
     });
   };
 
-  const clickHandler = (id: string, name: string) => {
+  const spotHandler = (name: string, id: string) => {
     navigate(`/local-spots/${name}/${id}`);
   };
 
@@ -116,68 +116,68 @@ const LocalSpots: React.FC = () => {
     <>
       <div id="map" className="h-[450px] w-full"></div>
 
-      <form
-        method="get"
-        onSubmit={formHandler}
-        className="mx-auto mt-10 flex max-w-[90%] items-center font-notosans"
-      >
-        <label htmlFor="area">選擇區域：</label>
-        <select
-          id="area"
-          name="area"
-          value={area}
-          onChange={(e) => setArea(e.target.value)}
-        >
-          <option value="all">全部</option>
-          <option value="西部">西部</option>
-          <option value="北部">北部</option>
-          <option value="東北部">東北部</option>
-          <option value="東部">東部</option>
-          <option value="南部">南部</option>
-        </select>
-        <button
-          type="submit"
-          className="ml-4 rounded-lg bg-gray-300 px-2 py-1 text-center font-notosans text-white"
-        >
-          搜尋浪點
-        </button>
-      </form>
+      <div className="mx-auto flex w-[90%] max-w-5xl flex-col gap-16 py-14">
+        <form method="get" onSubmit={formHandler} className="self-center">
+          <label htmlFor="area">選擇區域：</label>
+          <select
+            id="area"
+            name="area"
+            value={area}
+            onChange={(e) => setArea(e.target.value)}
+          >
+            <option value="all">全部</option>
+            <option value="西部">西部</option>
+            <option value="北部">北部</option>
+            <option value="東北部">東北部</option>
+            <option value="東部">東部</option>
+            <option value="南部">南部</option>
+          </select>
+          <button
+            type="submit"
+            className="ml-4 rounded-lg bg-gray-300 px-2 py-1 text-center text-white"
+          >
+            搜尋浪點
+          </button>
+        </form>
 
-      <section className="mx-auto mt-10 grid w-[90%] max-w-5xl grid-cols-4 gap-7">
-        {!isLoading &&
-          selectSpots &&
-          selectSpots.map((spot) => {
-            const { id, name, mapImage, likes_id } = spot;
-            return (
-              <article
-                key={id}
-                className="w-[200px] cursor-pointer border border-black"
-                onClick={() => clickHandler(id, name.eng)}
-              >
-                <img
-                  src={mapImage}
-                  alt={name.chin}
-                  className="h-[100px] w-full object-cover object-center"
-                />
-                <div className="p-2">
-                  <h3 className="font-notosans">{name.chin}</h3>
-                  <h5 className="font-fashioncountry capitalize">{name.eng}</h5>
-                  <p className="font-notosans text-sm">
-                    收藏次數:<span className="ml-2">{likes_id.length}</span>
-                  </p>
-                </div>
-              </article>
-            );
-          })}
-      </section>
+        <section className="mx-auto grid grid-cols-4 gap-10">
+          {!isLoading &&
+            selectSpots &&
+            selectSpots.map((spot) => {
+              const { id, name, mapImage, likes_amount } = spot;
+              return (
+                <article
+                  key={id}
+                  className="w-[200px] cursor-pointer border border-black"
+                  onClick={() => spotHandler(name.eng, id)}
+                >
+                  <img
+                    src={mapImage}
+                    alt={name.chin}
+                    className="h-[100px] w-full object-cover object-center"
+                  />
+                  <div className="p-2">
+                    <h3>{name.chin}</h3>
+                    <h5 className="font-fashioncountry capitalize">
+                      {name.eng}
+                    </h5>
+                    <p className="text-sm">
+                      收藏次數:<span className="ml-2">{likes_amount}</span>
+                    </p>
+                  </div>
+                </article>
+              );
+            })}
+        </section>
 
-      <div className="mx-auto my-10 w-[90%] max-w-5xl">
-        <h3 className="font-notosans text-lg">海平面上的風 (即時資訊)</h3>
-        <div className="overflow-hidden">
-          <iframe
-            className="mx-0 my-0 h-[600px] w-full"
-            src="https://earth.nullschool.net/#current/wind/surface/level/orthographic=-239.11,24.00,5018"
-          ></iframe>
+        <div>
+          <h3 className="text-lg">海平面上的風 (即時資訊)</h3>
+          <div className="overflow-hidden">
+            <iframe
+              className="mx-0 my-0 h-[600px] w-full"
+              src="https://earth.nullschool.net/#current/wind/surface/level/orthographic=-239.11,24.00,5018"
+            ></iframe>
+          </div>
         </div>
       </div>
     </>

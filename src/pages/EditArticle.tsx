@@ -1,21 +1,26 @@
-import React, { useState } from "react";
-import { Navigate, useNavigate } from "react-router-dom";
+import React, { useEffect, useState } from "react";
+import { Navigate, useNavigate, useParams } from "react-router-dom";
 import { UnsplashContainer } from "../components";
 import { localSpotsList } from "../utils";
 import { toast } from "react-toastify";
 import { useDispatch, useSelector } from "react-redux";
-import { openUnsplash, resetCover } from "../features/article/articleSlice";
+import {
+  openUnsplash,
+  setCover,
+  resetCover,
+} from "../features/article/articleSlice";
 import { IRootState } from "../store";
 
 // firebase
 import { db } from "../main";
-import { collection, addDoc, updateDoc } from "firebase/firestore";
+import { doc, getDoc, updateDoc, DocumentData } from "firebase/firestore";
 
 // React Quill
 import ReactQuill from "react-quill";
 import "react-quill/dist/quill.snow.css";
 
-const PostArticle: React.FC = () => {
+const EditArticle: React.FC = () => {
+  const { id } = useParams();
   const { user } = useSelector((state: IRootState) => state.user);
   const { cover, isUnsplashOpen } = useSelector(
     (state: IRootState) => state.article,
@@ -23,9 +28,11 @@ const PostArticle: React.FC = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
+  const [isLoading, setIsLoading] = useState<boolean>(false);
+  const [article, setArticle] = useState<DocumentData | undefined>(undefined);
   const [title, setTitle] = useState<string>("");
-  const [tag, setTag] = useState<string>("travel");
-  const [surfingSpot, setSurfingSpot] = useState<string>("jialeshuei");
+  const [tag, setTag] = useState<string>("");
+  const [surfingSpot, setSurfingSpot] = useState<string>("");
   const [content, setContent] = useState<string>("");
 
   // restrict access
@@ -34,7 +41,7 @@ const PostArticle: React.FC = () => {
     return <Navigate to="/" />;
   }
 
-  const publishHandler = async (): Promise<void> => {
+  const editHandler = async (): Promise<void> => {
     if (!cover) {
       toast.warning("Please choose a cover image 😬");
       return;
@@ -56,24 +63,22 @@ const PostArticle: React.FC = () => {
       return;
     }
 
+    if (!id) return;
+
     try {
       const now = Date.now();
-      const articleRef = await addDoc(collection(db, "articles"), {
-        authorId: user.id,
+      const articleRef = doc(db, "articles", id);
+
+      await updateDoc(articleRef, {
         cover,
         title,
         tag,
         surfingSpot,
         content,
-        created_at: now,
         updated_at: now,
-        likes_amount: 0,
-      });
-      await updateDoc(articleRef, {
-        id: articleRef.id,
       });
 
-      toast.success("Publish successful 🎉");
+      toast.success("Updated successful 🎉");
       setTimeout(() => {
         navigate("/profile/my-articles");
         dispatch(resetCover());
@@ -82,6 +87,32 @@ const PostArticle: React.FC = () => {
       console.log(error);
     }
   };
+
+  const fetchArticleFromFirebase = async (): Promise<void> => {
+    if (!id) return;
+
+    setIsLoading(true);
+    try {
+      const docRef = doc(db, "articles", id);
+      const docSnap = await getDoc(docRef);
+
+      if (docSnap.exists()) {
+        setArticle(docSnap.data());
+        setTitle(docSnap.data().title);
+        setTag(docSnap.data().tag);
+        setSurfingSpot(docSnap.data().surfingSpot);
+        setContent(docSnap.data().content);
+        dispatch(setCover(docSnap.data().cover));
+      }
+    } catch (error) {
+      console.log(error);
+    }
+    setIsLoading(false);
+  };
+
+  useEffect(() => {
+    fetchArticleFromFirebase();
+  }, []);
 
   const modules = {
     toolbar: [
@@ -95,6 +126,10 @@ const PostArticle: React.FC = () => {
       [{ align: [] }],
     ],
   };
+
+  if (isLoading || !article) {
+    return <div>Loading...</div>;
+  }
 
   return (
     <div className="mx-auto w-[70%] max-w-5xl">
@@ -111,17 +146,6 @@ const PostArticle: React.FC = () => {
               src={cover}
               className="h-full w-full object-cover object-center"
             ></img>
-          )}
-          {!cover && (
-            <p>
-              Choose cover from&nbsp;
-              <span
-                onClick={() => dispatch(openUnsplash())}
-                className="text-purple-bright hover:cursor-pointer"
-              >
-                Unsplash
-              </span>
-            </p>
           )}
           {cover && (
             <h5 className="absolute -bottom-[30px] left-0">
@@ -158,8 +182,8 @@ const PostArticle: React.FC = () => {
               type="radio"
               name="tag"
               id="travel"
-              value="travel"
-              checked={tag === "travel"}
+              value="旅遊"
+              checked={tag === "旅遊"}
               onChange={(e) => setTag(e.target.value)}
             />
             <label htmlFor="travel">旅遊</label>
@@ -169,8 +193,8 @@ const PostArticle: React.FC = () => {
               type="radio"
               name="tag"
               id="knowledge"
-              value="knowledge"
-              checked={tag === "knowledge"}
+              value="知識"
+              checked={tag === "知識"}
               onChange={(e) => setTag(e.target.value)}
             />
             <label htmlFor="knowledge">知識</label>
@@ -180,8 +204,8 @@ const PostArticle: React.FC = () => {
               type="radio"
               name="tag"
               id="gear"
-              value="gear"
-              checked={tag === "gear"}
+              value="裝備"
+              checked={tag === "裝備"}
               onChange={(e) => setTag(e.target.value)}
             />
             <label htmlFor="gear">裝備</label>
@@ -191,11 +215,22 @@ const PostArticle: React.FC = () => {
               type="radio"
               name="tag"
               id="activity"
-              value="activity"
-              checked={tag === "activity"}
+              value="活動"
+              checked={tag === "活動"}
               onChange={(e) => setTag(e.target.value)}
             />
             <label htmlFor="activity">活動</label>
+          </div>
+          <div>
+            <input
+              type="radio"
+              name="tag"
+              id="others"
+              value="其他"
+              checked={tag === "其他"}
+              onChange={(e) => setTag(e.target.value)}
+            />
+            <label htmlFor="others">其他</label>
           </div>
         </div>
       </div>
@@ -213,7 +248,7 @@ const PostArticle: React.FC = () => {
           >
             {localSpotsList.map((item) => {
               return (
-                <option key={item.eng} value={item.eng}>
+                <option key={item.chin} value={item.chin}>
                   {item.chin}
                 </option>
               );
@@ -241,7 +276,7 @@ const PostArticle: React.FC = () => {
         <button
           type="button"
           className="rounded-lg bg-purple-light px-2 py-1 font-notosans text-xs text-white"
-          onClick={publishHandler}
+          onClick={editHandler}
         >
           發布文章
         </button>
@@ -252,4 +287,4 @@ const PostArticle: React.FC = () => {
   );
 };
 
-export default PostArticle;
+export default EditArticle;

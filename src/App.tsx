@@ -8,7 +8,9 @@ import { ToastContainer, Zoom } from "react-toastify";
 import {
   Article,
   Articles,
+  EditArticle,
   Error,
+  ForeignSpot,
   ForeignSpots,
   Landing,
   Layout,
@@ -42,10 +44,6 @@ function App() {
           element: <LocalSpot />,
         },
         {
-          path: "local-spots/:name/:id",
-          element: <LocalSpot />,
-        },
-        {
           path: "articles",
           element: <Articles />,
         },
@@ -56,6 +54,10 @@ function App() {
         {
           path: "foreign-spots",
           element: <ForeignSpots />,
+        },
+        {
+          path: "foreign-spots/:name/:id",
+          element: <ForeignSpot />,
         },
         {
           path: "profile",
@@ -76,6 +78,10 @@ function App() {
         {
           path: "profile/post-article",
           element: <PostArticle />,
+        },
+        {
+          path: "profile/edit-article/:id",
+          element: <EditArticle />,
         },
       ],
     },

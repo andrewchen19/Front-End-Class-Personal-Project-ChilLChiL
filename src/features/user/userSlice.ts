@@ -1,7 +1,6 @@
 import { createSlice } from "@reduxjs/toolkit";
 import { UserInfo } from "../../types";
 
-// Define a type for the slice state
 interface UserState {
   user: null | UserInfo;
   theme: string;
@@ -36,7 +35,6 @@ const getThemeFromLocalStorage = (): string => {
   return theme;
 };
 
-// Define the initial state using that type
 const initialState: UserState = {
   user: getUserFromLocalStorage(),
   theme: getThemeFromLocalStorage(),
@@ -57,7 +55,6 @@ const userSlice = createSlice({
       };
       state.theme = user.theme;
       localStorage.setItem("user", JSON.stringify(state.user));
-      // ! change theme
       localStorage.setItem("theme", JSON.stringify(state.theme));
     },
     removeUser: (state) => {
@@ -68,7 +65,7 @@ const userSlice = createSlice({
   },
 });
 
-// , updateUser, toggleTheme, toggleSidebar
+// updateUser, toggleTheme, toggleSidebar
 
 // export single reducer
 export const { setUser, removeUser } = userSlice.actions;

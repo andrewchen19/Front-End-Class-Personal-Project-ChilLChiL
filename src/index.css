@@ -1,5 +1,6 @@
 /* font */
 @import url("https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@100..900&family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=Palanquin:wght@100;200;300;400;500;600;700&display=swap");
 
 @tailwind base;
 @tailwind components;
@@ -12,13 +13,13 @@
   scroll-behavior: smooth;
 }
 
-@font-face {
-  font-family: "PPWoodland";
-  src: url(./assets/fonts/PPWoodland-Bold.otf);
+body {
+  font-family: "Noto Sans TC", sans-serif;
 }
+
 @font-face {
   font-family: "Helvetica";
-  src: url(./assets/fonts/Helvetica-Bold.ttf);
+  src: url(./assets/fonts/Helvetica.ttf);
 }
 @font-face {
   font-family: "FashionCountry";
@@ -27,6 +28,14 @@
 @font-face {
   font-family: "SuperGlue";
   src: url(./assets/fonts/SuperGlue-7BaBK.ttf);
+}
+@font-face {
+  font-family: "DripOctober";
+  src: url(./assets/fonts/DripOctober-vm0JA.ttf);
+}
+@font-face {
+  font-family: "Sriracha";
+  src: url(./assets/fonts/Sriracha-Regular.ttf);
 }
 
 @layer components {

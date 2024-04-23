@@ -37,11 +37,14 @@ const Signup: React.FC = () => {
           const id = user.uid;
           const userInfo = {
             id,
-            name: name.toLowerCase(),
+            name,
             email,
             profile_picture:
-              "https://avataaars.io/?avatarStyle=Circle&topType=LongHairDreads&accessoriesType=Round&hairColor=PastelPink&facialHairType=BeardMedium&facialHairColor=Red&clotheType=BlazerShirt&eyeType=Happy&eyebrowType=RaisedExcited&mouthType=Twinkle&skinColor=Brown",
+              "https://firebasestorage.googleapis.com/v0/b/chillchill-9a1e2.appspot.com/o/default_avatar%2Fmen1.png?alt=media&token=a991ddf6-2639-4617-97c7-0b9d3a2b6cba",
             theme: "light",
+            articlesCollection: [],
+            localSpotsCollection: [],
+            foreignSpotsCollection: [],
           };
           addDocToFirestore(userInfo);
         }
