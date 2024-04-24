@@ -13,7 +13,6 @@ import {
   where,
   getDocs,
   DocumentData,
-  orderBy,
 } from "firebase/firestore";
 
 const MyArticles: React.FC = () => {

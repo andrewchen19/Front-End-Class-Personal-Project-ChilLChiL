@@ -8,7 +8,6 @@ import {
   getDocs,
   collection,
   where,
-  orderBy,
   limit,
   query,
   DocumentData,
