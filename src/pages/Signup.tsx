@@ -14,7 +14,7 @@ const Signup: React.FC = () => {
 
   const navigate = useNavigate();
 
-  const addDocToFirestore = async (userInfo: UserInfo): Promise<void> => {
+  const addDocToFirebase = async (userInfo: UserInfo): Promise<void> => {
     await setDoc(doc(db, "users", userInfo.id), userInfo);
   };
 
@@ -40,13 +40,13 @@ const Signup: React.FC = () => {
             name,
             email,
             profile_picture:
-              "https://firebasestorage.googleapis.com/v0/b/chillchill-9a1e2.appspot.com/o/default_avatar%2Fwomen3.png?alt=media&token=0938a904-07e9-4f55-8bc0-f92ef2cc4393",
+              "https://firebasestorage.googleapis.com/v0/b/chillchill-9a1e2.appspot.com/o/default_avatar%2Fwomen3.png?alt=media&token=7ce1d6dd-c63c-48a9-a13a-5b0ffb4a66ca",
             theme: "light",
             articlesCollection: [],
             localSpotsCollection: [],
             foreignSpotsCollection: [],
           };
-          addDocToFirestore(userInfo);
+          addDocToFirebase(userInfo);
         }
 
         toast.success("Sign up successful 😎");

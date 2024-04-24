@@ -20,7 +20,7 @@ const Profile: React.FC = () => {
           <li>
             <NavLink
               to="/profile/my-info"
-              className="border-b-transparent border-b hover:border-b-purple-light hover:text-purple-light"
+              className="border-b border-b-transparent hover:border-b-purple-light hover:text-purple-light"
               style={({ isActive }) => {
                 return {
                   color: isActive ? "#968095" : "",
@@ -35,7 +35,7 @@ const Profile: React.FC = () => {
           <li>
             <NavLink
               to="/profile/my-collections"
-              className="border-b-transparent border-b hover:border-b-purple-light hover:text-purple-light"
+              className="border-b border-b-transparent hover:border-b-purple-light hover:text-purple-light"
               style={({ isActive }) => {
                 return {
                   color: isActive ? "#968095" : "",
@@ -50,7 +50,7 @@ const Profile: React.FC = () => {
           <li>
             <NavLink
               to="/profile/my-articles"
-              className="border-b-transparent border-b hover:border-b-purple-light hover:text-purple-light"
+              className="border-b border-b-transparent hover:border-b-purple-light hover:text-purple-light"
               style={({ isActive }) => {
                 return {
                   color: isActive ? "#968095" : "",
@@ -71,7 +71,7 @@ const Profile: React.FC = () => {
           <img
             src={user.profile_picture}
             alt="user-image"
-            className="h-32 w-32"
+            className="h-32 w-32 rounded-full border-4 border-turquoise"
           />
 
           <div className="flex flex-col gap-5 font-notosans font-semibold">

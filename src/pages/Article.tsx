@@ -120,25 +120,6 @@ const Article: React.FC = () => {
     }
   };
 
-  const checkStatus = (data: DocumentData): void => {
-    if (!user) return;
-
-    if (data.authorId === user.id) {
-      setIsLogin(true);
-      setIsUser(true);
-      return;
-    }
-    if (data.authorId !== user.id && data.likes_id.includes(user.id)) {
-      setIsLogin(true);
-      setIsLike(true);
-      return;
-    }
-    if (data.authorId !== user.id && !data.likes_id.includes(user.id)) {
-      setIsLogin(true);
-      return;
-    }
-  };
-
   const fetchAuthorFromFirebase = async (data: DocumentData): Promise<void> => {
     try {
       const docRef = doc(db, "users", data.authorId);
@@ -151,15 +132,58 @@ const Article: React.FC = () => {
     }
   };
 
+  const fetchUserFromFirebase = async (
+    userId: string,
+  ): Promise<DocumentData | undefined> => {
+    try {
+      const docRef = doc(db, "users", userId);
+      const docSnap = await getDoc(docRef);
+      if (docSnap.exists()) {
+        return docSnap.data();
+      }
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  const checkStatus = async (
+    articleData: DocumentData,
+    userData: DocumentData,
+  ): Promise<void> => {
+    if (articleData.authorId === userData.id) {
+      setIsLogin(true);
+      setIsUser(true);
+      return;
+    }
+    if (
+      articleData.authorId !== userData.id &&
+      userData.articlesCollection.includes(articleData.id)
+    ) {
+      setIsLogin(true);
+      setIsLike(true);
+      return;
+    }
+    if (
+      articleData.authorId !== userData.id &&
+      !userData.articlesCollection.includes(articleData.id)
+    ) {
+      setIsLogin(true);
+      return;
+    }
+  };
+
   useEffect(() => {
     const executeFunction = async () => {
       setIsLoading(true);
 
       try {
-        const data = await fetchArticleFromFirebase();
-        if (!data) return;
-        checkStatus(data);
-        await fetchAuthorFromFirebase(data);
+        const articleData = await fetchArticleFromFirebase();
+        if (!articleData) return;
+        await fetchAuthorFromFirebase(articleData);
+        if (!user) return;
+        const userData = await fetchUserFromFirebase(user.id);
+        if (!userData) return;
+        await checkStatus(articleData, userData);
       } catch (error) {
         console.log(error);
       }

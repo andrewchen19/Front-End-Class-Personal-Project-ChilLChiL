@@ -74,7 +74,7 @@ const ArticlesCollectionContainer: React.FC = () => {
 
   return (
     <div>
-      <h2 className="font-notosans text-2xl font-bold">收藏文章:</h2>
+      <h2 className="font-notosans text-2xl font-bold">收藏文章</h2>
 
       {isArticleLoading && <p className="mt-5">loading now...</p>}
 

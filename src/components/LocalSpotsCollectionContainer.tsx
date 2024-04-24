@@ -73,7 +73,7 @@ const LocalSpotsCollectionContainer: React.FC = () => {
 
   return (
     <div>
-      <h2 className="text-2xl font-bold">收藏浪點: (國內)</h2>
+      <h2 className="text-2xl font-bold">國內浪點</h2>
 
       {isLocalLoading && <p className="mt-5">loading now...</p>}
 

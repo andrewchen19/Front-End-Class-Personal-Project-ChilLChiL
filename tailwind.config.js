@@ -29,11 +29,16 @@ export default {
       colors: {
         black: "#000000",
         white: "#FFFFFF",
-        pink: "#F48080",
-        blue: {
-          light: "#8CBCFF",
-          dark: "#3A4972",
+        pink: {
+          light: "#F6CBD1",
+          DEFAULT: "#F48080",
+          dark: "#F0ADB6",
         },
+        blue: {
+          light: "#70ACC7",
+          dark: "#569DBD",
+        },
+        navy: "#3A4972",
         turquoise: "#3B8EA0",
         kiwi: "#ECF3AB",
         green: {
@@ -51,8 +56,10 @@ export default {
           red: "#A04848",
           yellow: "#D0A847",
         },
+        yellow: "#fbbf24",
       },
     },
   },
-  plugins: [],
+  plugins: [require("@tailwindcss/typography"), require("daisyui")],
+  darkMode: "selector",
 };

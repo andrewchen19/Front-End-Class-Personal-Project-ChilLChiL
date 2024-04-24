@@ -70,9 +70,9 @@ const MyCollections: React.FC = () => {
       </nav>
 
       <div className="my-20 flex w-full flex-col gap-10 px-10">
-        <ArticlesCollectionContainer />
         <LocalSpotsCollectionContainer />
         <ForeignSpotsCollectionContainer />
+        <ArticlesCollectionContainer />
       </div>
     </div>
   );

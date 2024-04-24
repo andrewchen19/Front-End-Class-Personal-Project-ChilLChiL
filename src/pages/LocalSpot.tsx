@@ -251,7 +251,7 @@ const LocalSpot: React.FC = () => {
   }
 
   const modules = {
-    toolbar: [[{ header: [false] }], ["bold", "italic", "underline", "strike"]],
+    toolbar: [["bold", "italic", "underline", "strike"]],
   };
 
   useEffect(() => {

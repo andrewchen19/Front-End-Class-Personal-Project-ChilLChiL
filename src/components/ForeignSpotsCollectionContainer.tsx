@@ -75,7 +75,7 @@ const ForeignSpotsCollectionContainer: React.FC = () => {
 
   return (
     <div>
-      <h2 className="font-notosans text-2xl font-bold">收藏浪點: (國外)</h2>
+      <h2 className="font-notosans text-2xl font-bold">國外浪點</h2>
 
       {isForeignLoading && <p className="mt-5">loading now...</p>}
 
