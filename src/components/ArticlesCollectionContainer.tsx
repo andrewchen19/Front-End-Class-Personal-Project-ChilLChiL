@@ -86,8 +86,15 @@ const ArticlesCollectionContainer: React.FC = () => {
         {!isArticleLoading &&
           articlesList.length > 0 &&
           articlesList.map((article) => {
-            const { id, cover, surfingSpot, title, likes_id, tag, created_at } =
-              article;
+            const {
+              id,
+              cover,
+              surfingSpot,
+              title,
+              likes_amount,
+              tag,
+              created_at,
+            } = article;
             return (
               <article
                 key={id}
@@ -103,7 +110,7 @@ const ArticlesCollectionContainer: React.FC = () => {
                   <h3 className="text-xl">{title}</h3>
 
                   <p className="mt-2">
-                    收藏人數:<span>{likes_id.length}</span>
+                    收藏人數:<span>{likes_amount}</span>
                   </p>
 
                   <div className="mt-2 flex justify-between">
