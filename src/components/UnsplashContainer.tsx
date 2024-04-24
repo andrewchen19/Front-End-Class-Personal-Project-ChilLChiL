@@ -1,6 +1,6 @@
 import React, { useEffect, useState, KeyboardEvent } from "react";
 import axios from "axios";
-import ImagesContainer from "./ImagesContainer";
+import UnsplashImagesContainer from "./UnsplashImagesContainer";
 import { useDispatch } from "react-redux";
 import {
   setUnsplashData,
@@ -66,7 +66,7 @@ const UnsplashContainer: React.FC = () => {
             isLoading ? "grid place-items-center" : "overflow-auto"
           }`}
         >
-          {isLoading ? <p>Loading...</p> : <ImagesContainer />}
+          {isLoading ? <p>Loading...</p> : <UnsplashImagesContainer />}
         </div>
 
         <div

@@ -11,6 +11,7 @@ import {
   where,
   getDocs,
   DocumentData,
+  limit,
 } from "firebase/firestore";
 
 const RelatedArticlesContainer: React.FC = () => {
@@ -29,6 +30,7 @@ const RelatedArticlesContainer: React.FC = () => {
     const q = query(
       collection(db, "articles"),
       where("surfingSpot", "==", name),
+      limit(6),
     );
     const querySnapshot = await getDocs(q);
     const articlesArray = querySnapshot.docs.map((doc) => doc.data());
@@ -55,7 +57,7 @@ const RelatedArticlesContainer: React.FC = () => {
   }, []);
 
   return (
-    <section className="mt-10">
+    <section className="mt-6">
       <h3 className="text-2xl font-bold">相關文章:</h3>
 
       {isArticleLoading && <p className="mt-5">loading now...</p>}
@@ -64,12 +66,19 @@ const RelatedArticlesContainer: React.FC = () => {
         <h3 className="mt-5">尚未有相關的文章...</h3>
       )}
 
-      <div className="mt-5 grid max-w-5xl grid-cols-[auto,auto,auto]">
+      <div className="mt-5 grid grid-cols-4">
         {!isArticleLoading &&
           articlesList.length > 0 &&
           articlesList.map((article) => {
-            const { id, cover, surfingSpot, title, likes_id, tag, created_at } =
-              article;
+            const {
+              id,
+              cover,
+              surfingSpot,
+              title,
+              likes_amount,
+              tag,
+              created_at,
+            } = article;
             return (
               <article
                 key={id}
@@ -82,10 +91,10 @@ const RelatedArticlesContainer: React.FC = () => {
                   className="h-[100px] w-full object-cover object-center"
                 />
                 <div className="p-2">
-                  <h3 className="font-notosans text-xl">{title}</h3>
+                  <h3 className="text-xl">{title}</h3>
 
                   <p className="mt-2">
-                    收藏人數:<span>{likes_id.length}</span>
+                    收藏人數:<span>{likes_amount}</span>
                   </p>
 
                   <div className="mt-2 flex justify-between">

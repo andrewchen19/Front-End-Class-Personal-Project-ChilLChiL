@@ -174,23 +174,51 @@ const Article: React.FC = () => {
     return <div>Loading...</div>;
   }
 
-  const { id: articleId, content, cover, updated_at, title } = article;
+  const {
+    id: articleId,
+    content,
+    cover,
+    updated_at,
+    title,
+    photographerLink,
+    photographerName,
+  } = article;
   const { name: authorName, profile_picture: authorImage } = author;
 
   return (
     <div>
       {/* cover */}
-      <div className="h-[300px]">
+      <div className="relative h-[450px] w-full">
         <img
           src={cover}
           alt="cover-image"
           className="h-full w-full object-cover object-center"
         />
+        <p className="absolute -bottom-[20px] right-[20px] text-xs text-gray-500">
+          Photoed by&nbsp;
+          <a
+            href={photographerLink}
+            target="_blank"
+            rel="noreferrer noopener"
+            className="hover:border-b hover:border-blue-dark hover:text-blue-dark"
+          >
+            {photographerName}
+          </a>
+          &nbsp;by&nbsp;
+          <a
+            href="https://unsplash.com/"
+            target="_blank"
+            rel="noreferrer noopener"
+            className="hover:border-b hover:border-blue-dark hover:text-blue-dark"
+          >
+            Unsplash
+          </a>
+        </p>
       </div>
 
       <div className="mx-auto w-[70%] max-w-5xl">
         {/* title */}
-        <div className=" mt-16 px-[15px] font-helvetica text-4xl capitalize">
+        <div className=" mt-16 px-[15px] text-4xl font-bold capitalize">
           {title}
         </div>
 

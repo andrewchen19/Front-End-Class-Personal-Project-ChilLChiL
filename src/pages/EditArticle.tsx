@@ -22,9 +22,8 @@ import "react-quill/dist/quill.snow.css";
 const EditArticle: React.FC = () => {
   const { id } = useParams();
   const { user } = useSelector((state: IRootState) => state.user);
-  const { cover, isUnsplashOpen } = useSelector(
-    (state: IRootState) => state.article,
-  );
+  const { cover, isUnsplashOpen, photographerLink, photographerName } =
+    useSelector((state: IRootState) => state.article);
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
@@ -76,6 +75,8 @@ const EditArticle: React.FC = () => {
         surfingSpot,
         content,
         updated_at: now,
+        photographerLink,
+        photographerName,
       });
 
       toast.success("Updated successful 🎉");
@@ -182,8 +183,8 @@ const EditArticle: React.FC = () => {
               type="radio"
               name="tag"
               id="travel"
-              value="旅遊"
-              checked={tag === "旅遊"}
+              value="travel"
+              checked={tag === "travel"}
               onChange={(e) => setTag(e.target.value)}
             />
             <label htmlFor="travel">旅遊</label>
@@ -193,8 +194,8 @@ const EditArticle: React.FC = () => {
               type="radio"
               name="tag"
               id="knowledge"
-              value="知識"
-              checked={tag === "知識"}
+              value="knowledge"
+              checked={tag === "knowledge"}
               onChange={(e) => setTag(e.target.value)}
             />
             <label htmlFor="knowledge">知識</label>
@@ -204,8 +205,8 @@ const EditArticle: React.FC = () => {
               type="radio"
               name="tag"
               id="gear"
-              value="裝備"
-              checked={tag === "裝備"}
+              value="gear"
+              checked={tag === "gear"}
               onChange={(e) => setTag(e.target.value)}
             />
             <label htmlFor="gear">裝備</label>
@@ -215,22 +216,11 @@ const EditArticle: React.FC = () => {
               type="radio"
               name="tag"
               id="activity"
-              value="活動"
-              checked={tag === "活動"}
+              value="activity"
+              checked={tag === "activity"}
               onChange={(e) => setTag(e.target.value)}
             />
             <label htmlFor="activity">活動</label>
-          </div>
-          <div>
-            <input
-              type="radio"
-              name="tag"
-              id="others"
-              value="其他"
-              checked={tag === "其他"}
-              onChange={(e) => setTag(e.target.value)}
-            />
-            <label htmlFor="others">其他</label>
           </div>
         </div>
       </div>
@@ -248,7 +238,7 @@ const EditArticle: React.FC = () => {
           >
             {localSpotsList.map((item) => {
               return (
-                <option key={item.chin} value={item.chin}>
+                <option key={item.eng} value={item.eng}>
                   {item.chin}
                 </option>
               );

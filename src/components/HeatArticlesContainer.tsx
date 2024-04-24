@@ -64,7 +64,7 @@ const HeatArticlesContainer: React.FC = () => {
         <h3 className="mt-5">尚未有任何文章...</h3>
       )}
 
-      <div className="mt-5 grid grid-cols-3">
+      <div className="mt-5 grid grid-cols-4">
         {!isArticleLoading &&
           articlesList.length > 0 &&
           articlesList.map((article) => {

@@ -50,7 +50,7 @@ const LocalSpots: React.FC = () => {
             closeButton: false,
             maxWidth: "none",
           }).setHTML(
-            `<h3 style="color:#FF9500; font-family:Noto Sans TC">${name.chin}</h3>`,
+            `<h3 style="color:#FF9500; font-family:Noto Sans TC; font-weight:bold;">${name.chin}</h3>`,
           ),
         )
         .addTo(map);
@@ -97,7 +97,7 @@ const LocalSpots: React.FC = () => {
                 closeButton: false,
                 maxWidth: "none",
               }).setHTML(
-                `<h3 style="color:#FF9500; font-family:Noto Sans TC">${name.chin}</h3>`,
+                `<h3 style="color:#FF9500; font-family:Noto Sans TC; font-weight: 600">${name.chin}</h3>`,
               ),
             )
             .addTo(map);
@@ -157,7 +157,7 @@ const LocalSpots: React.FC = () => {
                     className="h-[100px] w-full object-cover object-center"
                   />
                   <div className="p-2">
-                    <h3>{name.chin}</h3>
+                    <h3 className="font-semibold">{name.chin}</h3>
                     <h5 className="font-fashioncountry capitalize">
                       {name.eng}
                     </h5>
@@ -170,15 +170,15 @@ const LocalSpots: React.FC = () => {
             })}
         </section>
 
-        <div>
-          <h3 className="text-lg">海平面上的風 (即時資訊)</h3>
-          <div className="overflow-hidden">
+        <section>
+          <h3 className="text-2xl font-bold">海平面上的風(即時資訊)</h3>
+          <div className="mt-5 overflow-hidden">
             <iframe
               className="mx-0 my-0 h-[600px] w-full"
               src="https://earth.nullschool.net/#current/wind/surface/level/orthographic=-239.11,24.00,5018"
             ></iframe>
           </div>
-        </div>
+        </section>
       </div>
     </>
   );

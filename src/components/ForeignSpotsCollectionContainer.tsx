@@ -83,7 +83,7 @@ const ForeignSpotsCollectionContainer: React.FC = () => {
         <h3 className="mt-5">尚未收藏浪點...</h3>
       )}
 
-      <div className="mt-5 grid max-w-5xl grid-cols-[auto,auto,auto]">
+      <div className="mt-5 grid grid-cols-4">
         {!isForeignLoading &&
           foreignSpotsList.length > 0 &&
           foreignSpotsList.map((spot) => {

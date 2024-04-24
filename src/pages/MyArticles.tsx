@@ -13,6 +13,7 @@ import {
   where,
   getDocs,
   DocumentData,
+  orderBy,
 } from "firebase/firestore";
 
 const MyArticles: React.FC = () => {
@@ -120,7 +121,7 @@ const MyArticles: React.FC = () => {
           <h3 className="mt-5">尚未有文章~快來撰寫!!</h3>
         )}
 
-        <div className="mt-5 grid max-w-5xl grid-cols-[auto,auto,auto]">
+        <div className="mt-5 grid grid-cols-4">
           {!isLoading &&
             articlesList.length > 0 &&
             articlesList.map((article) => {
@@ -129,7 +130,7 @@ const MyArticles: React.FC = () => {
                 cover,
                 surfingSpot,
                 title,
-                likes_id,
+                likes_amount,
                 tag,
                 created_at,
               } = article;
@@ -148,7 +149,7 @@ const MyArticles: React.FC = () => {
                     <h3 className="font-notosans text-xl">{title}</h3>
 
                     <p className="mt-2">
-                      收藏人數:<span>{likes_id.length}</span>
+                      收藏人數:<span>{likes_amount}</span>
                     </p>
 
                     <div className="mt-2 flex justify-between">

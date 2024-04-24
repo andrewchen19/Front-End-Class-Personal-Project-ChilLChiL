@@ -73,7 +73,7 @@ const LocalSpotsCollectionContainer: React.FC = () => {
 
   return (
     <div>
-      <h2 className="font-notosans text-2xl font-bold">收藏浪點: (國內)</h2>
+      <h2 className="text-2xl font-bold">收藏浪點: (國內)</h2>
 
       {isLocalLoading && <p className="mt-5">loading now...</p>}
 
@@ -81,7 +81,7 @@ const LocalSpotsCollectionContainer: React.FC = () => {
         <h3 className="mt-5">尚未收藏浪點...</h3>
       )}
 
-      <div className="mt-5 grid max-w-5xl grid-cols-[auto,auto,auto]">
+      <div className="mt-5 grid grid-cols-4">
         {!isLocalLoading &&
           localSpotsList.length > 0 &&
           localSpotsList.map((spot) => {
@@ -98,9 +98,9 @@ const LocalSpotsCollectionContainer: React.FC = () => {
                   className="h-[100px] w-full object-cover object-center"
                 />
                 <div className="p-2">
-                  <h3 className="font-notosans">{name.chin}</h3>
+                  <h3 className="font-semibold">{name.chin}</h3>
                   <h5 className="font-fashioncountry capitalize">{name.eng}</h5>
-                  <p className="font-notosans text-sm">
+                  <p className="text-sm">
                     收藏次數:<span className="ml-2">{likes_amount}</span>
                   </p>
                 </div>

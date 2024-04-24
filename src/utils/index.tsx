@@ -9,11 +9,13 @@ import drizzle from "../assets/weather/drizzle.svg";
 import notAvailable from "../assets/weather/notAvailable.svg";
 import overcastNight from "../assets/weather/overcast-night.svg";
 import overcast from "../assets/weather/overcast.svg";
+import fog from "../assets/weather/fog.svg";
 import partlyCloudyDay from "../assets/weather/partlyCloudyDay.svg";
 import partlyCloudyDayRain from "../assets/weather/partlyCloudyDayRain.svg";
 import partlyCloudyNight from "../assets/weather/partlyCloudyNight.svg";
 import partlyCloudyNightDrizzle from "../assets/weather/partlyCloudyNightDrizzle.svg";
 import partlyCloudyNightRain from "../assets/weather/partlyCloudyNightRain.svg";
+import rain from "../assets/weather/rain.svg";
 import thunderstormsExtreme from "../assets/weather/thunderstorms-extreme.svg";
 import thunderstormsNightExtreme from "../assets/weather/thunderstorms-night-extreme.svg";
 import thunderstorms from "../assets/weather/thunderstorms.svg";
@@ -174,18 +176,25 @@ export const changeToWeatherIcon = (name: string): ReactElement => {
   if (name === "MOSTLY_CLOUDY") {
     return <img src={partlyCloudyDay} alt="weather-icon" className="h-6 w-6" />;
   }
-  if (name === "CLOUDY") {
+  if (name === "CLOUDY" || name === "NIGHT_CLOUDY") {
     return <img src={cloudy} alt="weather-icon" className="h-6 w-6" />;
   }
   if (name === "OVERCAST") {
     return <img src={overcast} alt="weather-icon" className="h-6 w-6" />;
   }
+  if (name === "RAIN_AND_FOG") {
+    return <img src={fog} alt="weather-icon" className="h-6 w-6" />;
+  }
   if (
     name === "LIGHT_RAIN" ||
     name === "LIGHT_SHOWERS" ||
-    name === "LIGHT_SHOWERS_POSSIBLE"
+    name === "LIGHT_SHOWERS_POSSIBLE" ||
+    name === "DRIZZLE"
   ) {
     return <img src={drizzle} alt="weather-icon" className="h-6 w-6" />;
+  }
+  if (name === "RAIN") {
+    return <img src={rain} alt="weather-icon" className="h-6 w-6" />;
   }
   if (name === "BRIEF_SHOWERS" || name === "BRIEF_SHOWERS_POSSIBLE") {
     return (
@@ -213,7 +222,12 @@ export const changeToWeatherIcon = (name: string): ReactElement => {
       <img src={partlyCloudyNight} alt="weather-icon" className="h-6 w-6" />
     );
   }
-  if (name === "NIGHT_LIGHT_SHOWERS_POSSIBLE" || name === "NIGHT_LIGHT_RAIN") {
+  if (
+    name === "NIGHT_LIGHT_SHOWERS_POSSIBLE" ||
+    name === "NIGHT_LIGHT_RAIN" ||
+    name === "NIGHT_LIGHT_SHOWERS" ||
+    name === "NIGHT_DRIZZLE"
+  ) {
     return (
       <img
         src={partlyCloudyNightDrizzle}

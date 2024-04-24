@@ -17,9 +17,8 @@ import "react-quill/dist/quill.snow.css";
 
 const PostArticle: React.FC = () => {
   const { user } = useSelector((state: IRootState) => state.user);
-  const { cover, isUnsplashOpen } = useSelector(
-    (state: IRootState) => state.article,
-  );
+  const { cover, isUnsplashOpen, photographerLink, photographerName } =
+    useSelector((state: IRootState) => state.article);
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
@@ -68,6 +67,8 @@ const PostArticle: React.FC = () => {
         created_at: now,
         updated_at: now,
         likes_amount: 0,
+        photographerLink,
+        photographerName,
       });
       await updateDoc(articleRef, {
         id: articleRef.id,

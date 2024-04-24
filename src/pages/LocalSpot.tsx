@@ -671,10 +671,11 @@ const LocalSpot: React.FC = () => {
 
       {/* textData */}
       <section className="mt-6">
-        <div className="grid grid-cols-[auto,1fr] gap-10">
+        <h3 className="text-2xl font-bold">浪點資訊:</h3>
+        <div className="mt-5 grid grid-cols-[auto,1fr] gap-10">
           <div className="w-[300px] px-5 py-10 shadow-xl">
             <h4 className="text-center font-notosans text-turquoise">
-              浪點圖表資訊
+              浪點圖表
             </h4>
             <img src={infoImage} alt="info-image" className="mt-4" />
           </div>

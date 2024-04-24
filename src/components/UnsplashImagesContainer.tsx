@@ -4,10 +4,11 @@ import {
   closeUnsplash,
   resetUnsplashData,
   setCover,
+  setPhotographer,
 } from "../features/article/articleSlice";
 import { IRootState } from "../store";
 
-const ImagesContainer: React.FC = () => {
+const UnsplashImagesContainer: React.FC = () => {
   const { unsplashArray } = useSelector((state: IRootState) => state.article);
   const dispatch = useDispatch();
 
@@ -22,8 +23,10 @@ const ImagesContainer: React.FC = () => {
     setIsMouserEnter(false);
     setHoverId(id);
   };
-  const clickHandler = (url: string) => {
-    dispatch(setCover(url));
+  const clickHandler = (url: string, link: string, name: string) => {
+    const editUrl = url + "&w=1500";
+    dispatch(setCover(editUrl));
+    dispatch(setPhotographer({ link, name }));
     dispatch(resetUnsplashData());
     dispatch(closeUnsplash());
   };
@@ -32,7 +35,6 @@ const ImagesContainer: React.FC = () => {
     <div className="grid grid-cols-3 gap-2">
       {unsplashArray.map((item) => {
         const { id, alt_description, urls, user } = item;
-
         return (
           <div
             key={id}
@@ -44,7 +46,7 @@ const ImagesContainer: React.FC = () => {
               src={urls.regular}
               alt={alt_description}
               className="h-full w-full object-cover object-center hover:cursor-pointer"
-              onClick={() => clickHandler(urls.regular)}
+              onClick={() => clickHandler(urls.raw, user.links.html, user.name)}
             />
             <span
               className={`absolute bottom-0 left-0 text-pink ${
@@ -60,4 +62,4 @@ const ImagesContainer: React.FC = () => {
   );
 };
 
-export default ImagesContainer;
+export default UnsplashImagesContainer;

@@ -40,7 +40,7 @@ const Signup: React.FC = () => {
             name,
             email,
             profile_picture:
-              "https://firebasestorage.googleapis.com/v0/b/chillchill-9a1e2.appspot.com/o/default_avatar%2Fmen1.png?alt=media&token=a991ddf6-2639-4617-97c7-0b9d3a2b6cba",
+              "https://firebasestorage.googleapis.com/v0/b/chillchill-9a1e2.appspot.com/o/default_avatar%2Fwomen3.png?alt=media&token=0938a904-07e9-4f55-8bc0-f92ef2cc4393",
             theme: "light",
             articlesCollection: [],
             localSpotsCollection: [],

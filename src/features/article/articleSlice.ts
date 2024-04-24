@@ -9,6 +9,8 @@ interface ArticleState {
   isUnsplashOpen: boolean;
   cover: string;
   unsplashArray: UnsplashObject[];
+  photographerLink: string;
+  photographerName: string;
 }
 
 // Define the initial state using that type
@@ -16,6 +18,8 @@ const initialState: ArticleState = {
   isUnsplashOpen: false,
   cover: "",
   unsplashArray: [],
+  photographerLink: "",
+  photographerName: "",
 };
 
 const articleSlice = createSlice({
@@ -42,6 +46,11 @@ const articleSlice = createSlice({
     resetCover: (state) => {
       state.cover = "";
     },
+    setPhotographer: (state, action) => {
+      const { link, name } = action.payload;
+      state.photographerLink = link;
+      state.photographerName = name;
+    },
   },
 });
 
@@ -52,6 +61,7 @@ export const {
   setUnsplashData,
   resetUnsplashData,
   setCover,
+  setPhotographer,
   resetCover,
 } = articleSlice.actions;
 
