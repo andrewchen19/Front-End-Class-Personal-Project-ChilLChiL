@@ -26,9 +26,6 @@ const AllArticlesContainer: React.FC = () => {
 
   const [isArticleLoading, setIsArticleLoading] = useState<boolean>(false);
   const [articlesList, setArticlesList] = useState<DocumentData[] | []>([]);
-  const [updateArticlesList, setUpdateArticlesList] = useState<
-    DocumentData[] | []
-  >([]);
   const [showPagination, setShowPagination] = useState<boolean>(false);
   const [allPage, setAllPage] = useState<number>(1);
   const [nowPage, setNowPage] = useState<number>(1);
@@ -109,6 +106,7 @@ const AllArticlesContainer: React.FC = () => {
   const resetHandler = async (): Promise<void> => {
     setTag("all");
     setSurfingSpot("all");
+    setNowPage(1);
     getArticlesFromFirebase();
   };
 
@@ -374,7 +372,7 @@ const AllArticlesContainer: React.FC = () => {
 
         {isArticleLoading && <p className="mt-8">loading now...</p>}
         {!isArticleLoading && articlesList.length < 1 && (
-          <h3 className="mt-8">尚未有任何文章...</h3>
+          <h3 className="mt-8">目前尚未有相關的文章... 請重新查詢</h3>
         )}
 
         {/* grid layout */}
