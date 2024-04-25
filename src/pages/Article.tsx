@@ -274,7 +274,7 @@ const Article: React.FC = () => {
             {/* button */}
             {isLogin && isUser && (
               <button
-                className="rounded-lg bg-purple-light px-2 py-1 font-notosans text-sm tracking-wide text-white"
+                className="btn-purple"
                 onClick={() => editHandler(articleId)}
               >
                 編輯文章

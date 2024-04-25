@@ -48,4 +48,5 @@ export interface CommentInfo {
   userImage: string;
   comment: string;
   created_at: number;
+  isEdited: boolean;
 }

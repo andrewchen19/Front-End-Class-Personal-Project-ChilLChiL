@@ -65,6 +65,8 @@ const LocalSpot: React.FC = () => {
   const [isLike, setIsLike] = useState<boolean>(false);
   const [comment, setComment] = useState<string>("");
   const [commentList, setCommentList] = useState<DocumentData | []>([]);
+  const [isEditStatus, setIsEditStatus] = useState<boolean>(false);
+  const [editInfo, setEditInfo] = useState<DocumentData | null>(null);
 
   const removeUserLikesFromFirebase = async (id: string): Promise<void> => {
     if (!name) return;
@@ -136,7 +138,36 @@ const LocalSpot: React.FC = () => {
       return;
     }
   };
-  const addCommentHandler = async (): Promise<void> => {
+  const deleteCommentHandler = async (id: string): Promise<void> => {
+    if (!name) return;
+    try {
+      const spotRef = doc(db, "local-spots", name);
+      const subCollectionRef = collection(spotRef, "comments");
+      await deleteDoc(doc(subCollectionRef, id));
+      setComment("");
+      setIsEditStatus(false);
+      toast.success("Delete comment successful 🎉");
+    } catch (error) {
+      console.log(error);
+    }
+  };
+  const getCommentHandler = async (id: string): Promise<void> => {
+    if (!name) return;
+    try {
+      const commentRef = doc(db, "local-spots", name, "comments", id);
+
+      const docSnap = await getDoc(commentRef);
+
+      if (docSnap.exists()) {
+        setIsEditStatus(true);
+        setEditInfo(docSnap.data());
+        setComment(docSnap.data().comment);
+      }
+    } catch (error) {
+      console.log(error);
+    }
+  };
+  const commentHandler = async (): Promise<void> => {
     if (!name) return;
     if (!user) {
       toast.warning("Please Log In First 😵");
@@ -146,36 +177,10 @@ const LocalSpot: React.FC = () => {
       toast.warning("Comment can't be empty 😬");
       return;
     }
-
-    const commentId = nanoid();
-
-    const commentObj = {
-      id: commentId,
-      userId: user.id,
-      comment,
-      created_at: Date.now(),
-      updated_at: Date.now(),
-    };
-
-    try {
-      const spotRef = doc(db, "local-spots", name);
-      const subCollectionRef = collection(spotRef, "comments");
-      await setDoc(doc(subCollectionRef, commentId), commentObj);
-      toast.success("Add comment successful 🎉");
-      setComment("");
-    } catch (error) {
-      console.log(error);
-    }
-  };
-  const deleteCommentHandler = async (id: string): Promise<void> => {
-    if (!name) return;
-    try {
-      const spotRef = doc(db, "local-spots", name);
-      const subCollectionRef = collection(spotRef, "comments");
-      await deleteDoc(doc(subCollectionRef, id));
-      toast.success("Delete comment successful 🎉");
-    } catch (error) {
-      console.log(error);
+    if (isEditStatus) {
+      setEditedCommentToFirebase();
+    } else {
+      addNewCommentToFirebase();
     }
   };
 
@@ -228,7 +233,7 @@ const LocalSpot: React.FC = () => {
 
     setCommentList(newArray);
   }
-  async function getCommentFromFirebase(name: string): Promise<void> {
+  async function getCommentsFromFirebase(name: string): Promise<void> {
     const commentsCollectionRef = collection(
       db,
       "local-spots",
@@ -246,6 +251,54 @@ const LocalSpot: React.FC = () => {
     const querySnapshot = await getDocs(q);
     const commentArray = querySnapshot.docs.map((doc) => doc.data());
     await getUserInfoFromFirebase(commentArray);
+  }
+  async function addNewCommentToFirebase(): Promise<void> {
+    if (!name) return;
+    if (!user) return;
+
+    const commentId = nanoid();
+
+    const commentObj = {
+      id: commentId,
+      userId: user.id,
+      comment,
+      created_at: Date.now(),
+      updated_at: Date.now(),
+      isEdited: false,
+    };
+
+    try {
+      const spotRef = doc(db, "local-spots", name);
+      const subCollectionRef = collection(spotRef, "comments");
+      await setDoc(doc(subCollectionRef, commentId), commentObj);
+      toast.success("Add comment successful 🎉");
+      setComment("");
+    } catch (error) {
+      console.log(error);
+    }
+  }
+  async function setEditedCommentToFirebase(): Promise<void> {
+    if (!name) return;
+    if (!user) return;
+    if (!editInfo) return;
+
+    const commentObj = {
+      ...editInfo,
+      comment,
+      updated_at: Date.now(),
+      isEdited: true,
+    };
+
+    try {
+      const spotRef = doc(db, "local-spots", name);
+      const subCollectionRef = collection(spotRef, "comments");
+      await setDoc(doc(subCollectionRef, editInfo.id), commentObj);
+      toast.success("Edit comment successful 🎉");
+      setComment("");
+      setIsEditStatus(false);
+    } catch (error) {
+      console.log(error);
+    }
   }
 
   const modules = {
@@ -288,7 +341,7 @@ const LocalSpot: React.FC = () => {
             const { type } = snapshot.docChanges()[0];
             if (type === "added" || type === "modified" || type === "removed") {
               console.log("execute");
-              await getCommentFromFirebase(name);
+              await getCommentsFromFirebase(name);
             }
           }
         },
@@ -601,6 +654,7 @@ const LocalSpot: React.FC = () => {
                     userImage,
                     comment,
                     created_at,
+                    isEdited,
                   } = item;
                   return (
                     <div key={id} className="flex flex-col gap-1">
@@ -612,17 +666,26 @@ const LocalSpot: React.FC = () => {
                         />
                         <h4 className="ml-1 w-[72px]">{userName}</h4>
 
-                        <p className="text-xs">
-                          {formatMessageTime(created_at)}
+                        <p className="w-[125px] text-xs">
+                          {formatMessageTime(created_at)}&nbsp;
+                          {isEdited && <span>(edited)</span>}
                         </p>
 
                         {name && user && userId === user.id && (
-                          <span
-                            className="ml-4 cursor-pointer text-xs text-gray-500 underline hover:text-gray-600"
-                            onClick={() => deleteCommentHandler(id)}
-                          >
-                            Delete
-                          </span>
+                          <>
+                            <span
+                              className="cursor-pointer text-xs text-gray-500 underline hover:text-gray-600"
+                              onClick={() => getCommentHandler(id)}
+                            >
+                              Edit
+                            </span>
+                            <span
+                              className="ml-2 cursor-pointer text-xs text-gray-500 underline hover:text-gray-600"
+                              onClick={() => deleteCommentHandler(id)}
+                            >
+                              Delete
+                            </span>
+                          </>
                         )}
                       </div>
 
@@ -658,9 +721,9 @@ const LocalSpot: React.FC = () => {
               <button
                 type="button"
                 className="rounded-lg bg-purple-light px-2 py-1 text-xs text-white"
-                onClick={() => addCommentHandler()}
+                onClick={() => commentHandler()}
               >
-                新增留言
+                {isEditStatus ? "更新留言" : "新增留言"}
               </button>
             </div>
           </div>
