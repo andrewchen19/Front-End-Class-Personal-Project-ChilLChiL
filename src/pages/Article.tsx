@@ -58,7 +58,6 @@ const Article: React.FC = () => {
       });
     }
   };
-
   const addUserLikesToFirebase = async (id: string): Promise<void> => {
     if (!user) return;
     const userRef = doc(db, "users", user.id);
@@ -90,7 +89,7 @@ const Article: React.FC = () => {
       await removeUserLikesFromFirebase(id);
       await removeArticleLikesFromFirebase(id);
       setIsLike(false);
-      toast.info("Removed from favorites successfully 👻");
+      toast.info("Removed from favorites 👻");
       return;
     }
 
@@ -99,7 +98,7 @@ const Article: React.FC = () => {
       await addUserLikesToFirebase(id);
       await addArticleLikesToFirebase(id);
       setIsLike(true);
-      toast.info("Added to favorites successfully ❤️");
+      toast.info("Added to favorites ❤️");
       return;
     }
   };
@@ -283,7 +282,7 @@ const Article: React.FC = () => {
             )}
             {isLogin && !isUser && id && (
               <button
-                className="rounded-lg bg-purple-light px-2 py-1 font-notosans text-sm tracking-wide text-white"
+                className="btn-purple"
                 onClick={() => collectionHandler(id)}
               >
                 {isLike ? "已收藏" : "加入收藏"}

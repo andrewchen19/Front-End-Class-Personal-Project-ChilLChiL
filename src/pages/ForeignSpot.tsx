@@ -1,8 +1,8 @@
 import React, { useEffect, useState } from "react";
 import { useParams, useNavigate } from "react-router-dom";
-// import { toast } from "react-toastify";
-// import { useSelector } from "react-redux";
-// import { IRootState } from "../store";
+import { toast } from "react-toastify";
+import { useSelector } from "react-redux";
+import { IRootState } from "../store";
 import { WhenToScore } from "../types";
 import { ReadMore } from "../components";
 
@@ -18,24 +18,113 @@ import { MdPayment } from "react-icons/md";
 
 // firebase
 import { db } from "../main";
-import { doc, getDoc, DocumentData } from "firebase/firestore";
+import { doc, getDoc, updateDoc, DocumentData } from "firebase/firestore";
 
 const ForeignSpot: React.FC = () => {
   const { name } = useParams();
-  const navigate = useNavigate();
+  const { user } = useSelector((state: IRootState) => state.user);
 
-  const [isSpotLoading, setIsSpotLoading] = useState<boolean>(false);
+  const [isLoading, setIsLoading] = useState<boolean>(false);
   const [infoData, setInfoData] = useState<DocumentData | null>(null);
   const [relatedSpotData, setRelatedSpotData] = useState<DocumentData[] | []>(
     [],
   );
+  const [isLike, setIsLike] = useState<boolean>(false);
 
+  const navigate = useNavigate();
+
+  const removeUserLikesFromFirebase = async (id: string): Promise<void> => {
+    if (!name) return;
+    const userRef = doc(db, "users", id);
+    const docSnap = await getDoc(userRef);
+    if (docSnap.exists()) {
+      const { foreignSpotsCollection } = docSnap.data();
+      const newForeignSpotsCollection = [...foreignSpotsCollection].filter(
+        (item) => item !== name,
+      );
+      await updateDoc(userRef, {
+        foreignSpotsCollection: newForeignSpotsCollection,
+      });
+    }
+  };
+  const removeSpotLikesFromFirebase = async (): Promise<void> => {
+    if (!name) return;
+    const foreignSpotRef = doc(db, "foreign-spots", name);
+    const docSnap = await getDoc(foreignSpotRef);
+    if (docSnap.exists()) {
+      const { likes_amount } = docSnap.data();
+      const newLikes_amount = likes_amount - 1;
+      await updateDoc(foreignSpotRef, {
+        likes_amount: newLikes_amount,
+      });
+    }
+  };
+  const addUserLikesToFirebase = async (id: string): Promise<void> => {
+    if (!name) return;
+    const userRef = doc(db, "users", id);
+    const docSnap = await getDoc(userRef);
+    if (docSnap.exists()) {
+      const { foreignSpotsCollection } = docSnap.data();
+      const newForeignSpotsCollection = [...foreignSpotsCollection, name];
+      await updateDoc(userRef, {
+        foreignSpotsCollection: newForeignSpotsCollection,
+      });
+    }
+  };
+  const addSpotLikesToFirebase = async (): Promise<void> => {
+    if (!name) return;
+    const foreignSpotRef = doc(db, "foreign-spots", name);
+    const docSnap = await getDoc(foreignSpotRef);
+    if (docSnap.exists()) {
+      const { likes_amount } = docSnap.data();
+      const newLikes_amount = likes_amount + 1;
+      await updateDoc(foreignSpotRef, {
+        likes_amount: newLikes_amount,
+      });
+    }
+  };
+
+  const collectionHandler = async (userId: string): Promise<void> => {
+    // turn like into disLike
+    if (isLike) {
+      await removeUserLikesFromFirebase(userId);
+      await removeSpotLikesFromFirebase();
+      setIsLike(false);
+      toast.info("Removed from favorites 👻");
+      return;
+    }
+
+    // turn dislike into like
+    if (!isLike) {
+      await addUserLikesToFirebase(userId);
+      await addSpotLikesToFirebase();
+      setIsLike(true);
+      toast.info("Added to favorites ❤️");
+      return;
+    }
+  };
   const spotHandler = (name: string, id: string) => {
     console.log(name);
     console.log(id);
     navigate(`/foreign-spots/${name}/${id}`);
     window.location.reload();
   };
+
+  async function checkStatus(name: string): Promise<void> {
+    if (!user) return;
+    try {
+      const docRef = doc(db, "users", user.id);
+      const docSnap = await getDoc(docRef);
+
+      if (!docSnap.exists()) return;
+      const { foreignSpotsCollection } = docSnap.data();
+      if (foreignSpotsCollection.includes(name)) {
+        setIsLike(true);
+      }
+    } catch (error) {
+      console.log(error);
+    }
+  }
 
   async function getForeignSpotInfoFromFirebase(
     name: string,
@@ -67,12 +156,15 @@ const ForeignSpot: React.FC = () => {
   }
 
   useEffect(() => {
-    const fetchDataFromFirebase = async (): Promise<void> => {
+    const executeFunction = async (): Promise<void> => {
       if (!name) return;
 
-      setIsSpotLoading(true);
+      setIsLoading(true);
 
       try {
+        if (user) {
+          await checkStatus(name);
+        }
         const data = await getForeignSpotInfoFromFirebase(name);
         if (data) {
           await fetchRelatedSpotsFromFirebase(data);
@@ -81,13 +173,13 @@ const ForeignSpot: React.FC = () => {
         console.log(error);
       }
 
-      setIsSpotLoading(false);
+      setIsLoading(false);
     };
 
-    fetchDataFromFirebase();
+    executeFunction();
   }, []);
 
-  if (isSpotLoading || !infoData || !relatedSpotData) {
+  if (isLoading || !infoData || !relatedSpotData) {
     return <div>Loading...</div>;
   }
 
@@ -128,9 +220,21 @@ const ForeignSpot: React.FC = () => {
       <main className="mx-auto flex w-[90%] max-w-5xl flex-col gap-16 py-14">
         {/* when to score */}
         <section>
-          <h3 className="font-sriracha mb-6 text-3xl font-bold">
-            When To Surf
-          </h3>
+          <div className="flex items-center justify-between">
+            <h3 className="mb-6 font-sriracha text-3xl font-bold">
+              When To Surf
+            </h3>
+
+            {user && (
+              <button
+                type="button"
+                className="btn-purple"
+                onClick={() => collectionHandler(user.id)}
+              >
+                {isLike ? "Remove Favorites" : "Add Favorites"}
+              </button>
+            )}
+          </div>
 
           <div className="flex flex-col gap-5">
             {whenToScore.map((item: WhenToScore, index: number) => {
@@ -219,7 +323,7 @@ const ForeignSpot: React.FC = () => {
 
         {/* essential */}
         <section>
-          <h3 className="font-sriracha mb-6 text-3xl font-bold">
+          <h3 className="mb-6 font-sriracha text-3xl font-bold">
             Travel Essentials
           </h3>
 
@@ -288,7 +392,7 @@ const ForeignSpot: React.FC = () => {
             className="rounded-xl p-10"
             style={{ backgroundColor: primaryColor }}
           >
-            <h3 className="font-palanquin mb-10 text-center text-2xl font-bold text-white">
+            <h3 className="mb-10 text-center font-palanquin text-2xl font-bold text-white">
               Quick Tips
             </h3>
 
@@ -437,14 +541,14 @@ const ForeignSpot: React.FC = () => {
 
         {/* other zone */}
         <section>
-          <h3 className="font-sriracha mb-6 text-3xl font-bold">
+          <h3 className="mb-6 font-sriracha text-3xl font-bold">
             Explore Other Zones
           </h3>
 
-          {isSpotLoading && <p>loading now...</p>}
+          {isLoading && <p>loading now...</p>}
 
           <div className="mx-auto grid grid-cols-2 gap-10">
-            {!isSpotLoading &&
+            {!isLoading &&
               relatedSpotData.length > 1 &&
               relatedSpotData.map((spot) => {
                 const { id, country, coverImage } = spot;

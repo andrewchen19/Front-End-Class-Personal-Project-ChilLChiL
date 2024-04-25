@@ -16,7 +16,7 @@ const ForeignSpotsCollectionContainer: React.FC = () => {
     [],
   );
 
-  const clickHandler = (id: string, name: string) => {
+  const spotHandler = (name: string, id: string) => {
     navigate(`/foreign-spots/${name}/${id}`);
   };
 
@@ -83,27 +83,30 @@ const ForeignSpotsCollectionContainer: React.FC = () => {
         <h3 className="mt-5">尚未收藏浪點...</h3>
       )}
 
-      <div className="mt-5 grid grid-cols-4">
+      <div className="mt-5 grid grid-cols-3">
         {!isForeignLoading &&
           foreignSpotsList.length > 0 &&
           foreignSpotsList.map((spot) => {
-            const { id, name, mapImage, likes_amount } = spot;
+            console.log(spot);
+            const { id, country, coverImage } = spot;
             return (
               <article
                 key={id}
-                className="w-[200px] cursor-pointer border border-black"
-                onClick={() => clickHandler(id, name.eng)}
+                className="relative h-[320px] overflow-hidden rounded-lg hover:cursor-pointer"
+                onClick={() => spotHandler(country.eng, id)}
               >
                 <img
-                  src={mapImage}
-                  alt={name.chin}
-                  className="h-[100px] w-full object-cover object-center"
+                  src={coverImage}
+                  alt={country.location}
+                  className="h-full w-full transform rounded-lg object-cover object-center transition-transform duration-500 hover:scale-110"
                 />
-                <div className="p-2">
-                  <h3 className="font-notosans">{name.chin}</h3>
-                  <h5 className="font-fashioncountry capitalize">{name.eng}</h5>
-                  <p className="font-notosans text-sm">
-                    收藏次數:<span className="ml-2">{likes_amount}</span>
+
+                <div className="absolute left-[50%] top-[50%] z-20 -translate-x-1/2 -translate-y-1/2 text-center">
+                  <h3 className="text-xl font-bold capitalize text-pink">
+                    {country.location}
+                  </h3>
+                  <p className="text-lg font-semibold text-pink">
+                    {country.chin}
                   </p>
                 </div>
               </article>

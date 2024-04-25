@@ -301,7 +301,7 @@ const LocalSpots: React.FC = () => {
                     className="h-32 w-full rounded-t-2xl object-cover object-center"
                   />
 
-                  <div className="flex flex-col gap-3 p-3">
+                  <div className="flex flex-col gap-5 p-3">
                     <h3 className="font-semibold">{name.chin}</h3>
 
                     <div className="flex justify-between">
@@ -321,7 +321,7 @@ const LocalSpots: React.FC = () => {
         )}
 
         <section>
-          <h3 className="text-2xl font-bold">海平面上的風(即時資訊)</h3>
+          <h3 className="text-2xl font-bold">海平面上的風</h3>
           <div className="mt-5 overflow-hidden">
             <iframe
               className="mx-0 my-0 h-[600px] w-full"

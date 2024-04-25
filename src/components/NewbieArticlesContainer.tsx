@@ -80,7 +80,7 @@ const NewbieArticlesContainer: React.FC = () => {
             return (
               <article
                 key={id}
-                className="w-[200px] cursor-pointer border border-black"
+                className="cursor-pointer border border-black"
                 onClick={() => articleHandler(id)}
               >
                 <img

@@ -92,7 +92,6 @@ const LocalSpot: React.FC = () => {
       });
     }
   };
-
   const addUserLikesToFirebase = async (id: string): Promise<void> => {
     if (!name) return;
     const userRef = doc(db, "users", id);
@@ -124,7 +123,7 @@ const LocalSpot: React.FC = () => {
       await removeUserLikesFromFirebase(userId);
       await removeSpotLikesFromFirebase();
       setIsLike(false);
-      toast.info("Removed from favorites successfully 👻");
+      toast.info("Removed from favorites 👻");
       return;
     }
 
@@ -133,11 +132,10 @@ const LocalSpot: React.FC = () => {
       await addUserLikesToFirebase(userId);
       await addSpotLikesToFirebase();
       setIsLike(true);
-      toast.info("Added to favorites successfully ❤️");
+      toast.info("Added to favorites ❤️");
       return;
     }
   };
-
   const addCommentHandler = async (): Promise<void> => {
     if (!name) return;
     if (!user) {
@@ -337,7 +335,7 @@ const LocalSpot: React.FC = () => {
           {user && (
             <button
               type="button"
-              className="rounded-lg bg-purple-light px-2 py-1 text-sm text-white"
+              className="btn-purple"
               onClick={() => collectionHandler(user.id)}
             >
               {isLike ? "已收藏" : "加入收藏"}

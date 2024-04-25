@@ -74,6 +74,10 @@ body {
     @apply pb-12 sm:pb-24;
   }
 
+  .btn-purple {
+    @apply btn btn-xs sm:btn-sm border-transparent bg-purple-light text-white duration-500  hover:border-purple-light hover:bg-white hover:text-purple-light;
+  }
+
   /* .info-text {
     @apply font-montserrat text-slate-gray text-lg leading-7;
   } */
