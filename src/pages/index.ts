@@ -1,3 +1,4 @@
+import AllArticlesContainer from "../components/AllArticlesContainer";
 import Article from "./Article";
 import Articles from "./Articles";
 import EditArticle from "./EditArticle";
@@ -16,6 +17,7 @@ import Profile from "./Profile";
 import Signup from "./Signup";
 
 export {
+  AllArticlesContainer,
   Article,
   Articles,
   EditArticle,

@@ -153,8 +153,8 @@ const PostArticle: React.FC = () => {
       <div className="mt-4">
         <h3>類型</h3>
 
-        <div className="flex gap-2">
-          <div>
+        <div className="grid grid-cols-[auto,auto,auto] gap-2">
+          <div className="flex gap-1">
             <input
               type="radio"
               name="tag"
@@ -163,20 +163,10 @@ const PostArticle: React.FC = () => {
               checked={tag === "travel"}
               onChange={(e) => setTag(e.target.value)}
             />
-            <label htmlFor="travel">旅遊</label>
+            <label htmlFor="travel">旅遊雜記</label>
           </div>
-          <div>
-            <input
-              type="radio"
-              name="tag"
-              id="knowledge"
-              value="knowledge"
-              checked={tag === "knowledge"}
-              onChange={(e) => setTag(e.target.value)}
-            />
-            <label htmlFor="knowledge">知識</label>
-          </div>
-          <div>
+
+          <div className="flex gap-1">
             <input
               type="radio"
               name="tag"
@@ -185,9 +175,34 @@ const PostArticle: React.FC = () => {
               checked={tag === "gear"}
               onChange={(e) => setTag(e.target.value)}
             />
-            <label htmlFor="gear">裝備</label>
+            <label htmlFor="gear">裝備介紹</label>
           </div>
-          <div>
+
+          <div className="flex gap-1">
+            <input
+              type="radio"
+              name="tag"
+              id="knowledge"
+              value="knowledge"
+              checked={tag === "knowledge"}
+              onChange={(e) => setTag(e.target.value)}
+            />
+            <label htmlFor="knowledge">知識技巧</label>
+          </div>
+
+          <div className="flex gap-1">
+            <input
+              type="radio"
+              name="tag"
+              id="life"
+              value="life"
+              checked={tag === "life"}
+              onChange={(e) => setTag(e.target.value)}
+            />
+            <label htmlFor="life">生活分享</label>
+          </div>
+
+          <div className="flex gap-1">
             <input
               type="radio"
               name="tag"
@@ -196,7 +211,19 @@ const PostArticle: React.FC = () => {
               checked={tag === "activity"}
               onChange={(e) => setTag(e.target.value)}
             />
-            <label htmlFor="activity">活動</label>
+            <label htmlFor="activity">活動競賽</label>
+          </div>
+
+          <div className="flex gap-1">
+            <input
+              type="radio"
+              name="tag"
+              id="secondhand"
+              value="secondhand"
+              checked={tag === "secondhand"}
+              onChange={(e) => setTag(e.target.value)}
+            />
+            <label htmlFor="secondhand">二手拍賣</label>
           </div>
         </div>
       </div>

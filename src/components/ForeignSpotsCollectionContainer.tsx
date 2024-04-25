@@ -83,7 +83,7 @@ const ForeignSpotsCollectionContainer: React.FC = () => {
         <h3 className="mt-5">尚未收藏浪點...</h3>
       )}
 
-      <div className="mt-5 grid grid-cols-3">
+      <div className="mt-5 grid grid-cols-4">
         {!isForeignLoading &&
           foreignSpotsList.length > 0 &&
           foreignSpotsList.map((spot) => {
@@ -92,7 +92,7 @@ const ForeignSpotsCollectionContainer: React.FC = () => {
             return (
               <article
                 key={id}
-                className="relative h-[320px] overflow-hidden rounded-lg hover:cursor-pointer"
+                className="relative h-[220px] overflow-hidden rounded-lg hover:cursor-pointer"
                 onClick={() => spotHandler(country.eng, id)}
               >
                 <img

@@ -121,16 +121,22 @@ export const changeSpotName = (name: string): string => {
 export const changeTagName = (name: string): string => {
   let newName = "";
   if (name === "travel") {
-    newName = "旅遊";
+    newName = "旅遊雜記";
   }
   if (name === "knowledge") {
-    newName = "知識";
+    newName = "知識技巧";
+  }
+  if (name === "life") {
+    newName = "生活分享";
   }
   if (name === "gear") {
-    newName = "裝備";
+    newName = "裝備介紹";
   }
   if (name === "activity") {
-    newName = "活動";
+    newName = "活動競賽";
+  }
+  if (name === "secondhand") {
+    newName = "二手拍賣";
   }
   return newName;
 };

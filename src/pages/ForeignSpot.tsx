@@ -231,7 +231,7 @@ const ForeignSpot: React.FC = () => {
                 className="btn-purple"
                 onClick={() => collectionHandler(user.id)}
               >
-                {isLike ? "Remove Favorites" : "Add Favorites"}
+                {isLike ? "Already Favorited" : "Add Favorite"}
               </button>
             )}
           </div>

@@ -52,7 +52,7 @@ const Header: React.FC = () => {
                   };
                 }}
               >
-                國外浪點
+                衝浪聖地
               </NavLink>
             </li>
             <li>

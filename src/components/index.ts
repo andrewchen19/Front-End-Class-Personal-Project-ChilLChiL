@@ -1,3 +1,4 @@
+import AllArticlesContainer from "./AllArticlesContainer";
 import ArticlesCollectionContainer from "./ArticlesCollectionContainer";
 import Footer from "./Footer";
 import ForeignSpotsCollectionContainer from "./ForeignSpotsCollectionContainer";
@@ -6,8 +7,10 @@ import HeatArticlesContainer from "./HeatArticlesContainer";
 import LatestArticlesContainer from "./LatestArticlesContainer";
 import LocalSpotsCollectionContainer from "./LocalSpotsCollectionContainer";
 import MonthForeignSpotsContainer from "./MonthForeignSpotsContainer";
+import MyArticlesCollectionContainer from "./MyArticlesCollectionContainer";
 import NewbieArticlesContainer from "./NewbieArticlesContainer";
 import NewbieForeignSpotsContainer from "./NewbieForeignSpotsContainer";
+import ProfileNavbar from "./ProfileNavbar";
 import ReadMore from "./ReadMore";
 import RelatedArticlesContainer from "./RelatedArticlesContainer";
 import TubeForeignSpotsContainer from "./TubeForeignSpotsContainer";
@@ -15,6 +18,7 @@ import UnsplashContainer from "./UnsplashContainer";
 import UnsplashImagesContainer from "./UnsplashImagesContainer";
 
 export {
+  AllArticlesContainer,
   ArticlesCollectionContainer,
   Footer,
   ForeignSpotsCollectionContainer,
@@ -23,8 +27,10 @@ export {
   LatestArticlesContainer,
   LocalSpotsCollectionContainer,
   MonthForeignSpotsContainer,
+  MyArticlesCollectionContainer,
   NewbieArticlesContainer,
   NewbieForeignSpotsContainer,
+  ProfileNavbar,
   ReadMore,
   RelatedArticlesContainer,
   TubeForeignSpotsContainer,
