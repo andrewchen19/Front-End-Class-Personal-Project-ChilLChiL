@@ -1,9 +1,14 @@
 import React, { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
+import { ArticleCommentsContainer } from "../components";
 import { toast } from "react-toastify";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
+import { openComment } from "../features/article/articleSlice";
 import { IRootState } from "../store";
 import { formatTime } from "../utils";
+
+// react-icons
+import { TbMessageCircle } from "react-icons/tb";
 
 // ReactQuill
 import "react-quill/dist/quill.snow.css";
@@ -14,11 +19,23 @@ import { Markup } from "interweave";
 
 // firebase
 import { db } from "../main";
-import { doc, getDoc, DocumentData, updateDoc } from "firebase/firestore";
+import {
+  doc,
+  getDoc,
+  getDocs,
+  DocumentData,
+  updateDoc,
+  collection,
+  onSnapshot,
+  query,
+  orderBy,
+} from "firebase/firestore";
 
 const Article: React.FC = () => {
   const { id } = useParams();
   const { user } = useSelector((state: IRootState) => state.user);
+  const { isCommentOpen } = useSelector((state: IRootState) => state.article);
+  const dispatch = useDispatch();
   const navigate = useNavigate();
 
   const [isLoading, setIsLoading] = useState<boolean>(false);
@@ -27,6 +44,7 @@ const Article: React.FC = () => {
   const [isLogin, setIsLogin] = useState<boolean>(false);
   const [isLike, setIsLike] = useState<boolean>(false);
   const [isUser, setIsUser] = useState<boolean>(false);
+  const [commentLength, setCommentLength] = useState<number>(0);
 
   const editHandler = (id: string) => {
     navigate(`/profile/edit-article/${id}`);
@@ -82,7 +100,6 @@ const Article: React.FC = () => {
       });
     }
   };
-
   const collectionHandler = async (id: string): Promise<void> => {
     // turn like into disLike
     if (isLike) {
@@ -118,7 +135,6 @@ const Article: React.FC = () => {
       console.log(error);
     }
   };
-
   const fetchAuthorFromFirebase = async (data: DocumentData): Promise<void> => {
     try {
       const docRef = doc(db, "users", data.authorId);
@@ -130,7 +146,6 @@ const Article: React.FC = () => {
       console.log(error);
     }
   };
-
   const fetchUserFromFirebase = async (
     userId: string,
   ): Promise<DocumentData | undefined> => {
@@ -144,7 +159,6 @@ const Article: React.FC = () => {
       console.log(error);
     }
   };
-
   const checkStatus = async (
     articleData: DocumentData,
     userData: DocumentData,
@@ -171,10 +185,27 @@ const Article: React.FC = () => {
     }
   };
 
-  useEffect(() => {
-    const executeFunction = async () => {
-      setIsLoading(true);
+  async function getCommentsFromFirebase(articleId: string): Promise<void> {
+    const commentsCollectionRef = collection(
+      db,
+      "articles",
+      articleId,
+      "comments",
+    );
 
+    // order and limit
+    const q = query(commentsCollectionRef, orderBy("created_at", "desc"));
+
+    const querySnapshot = await getDocs(q);
+    const commentArray = querySnapshot.docs.map((doc) => doc.data());
+
+    setCommentLength(commentArray.length);
+  }
+
+  useEffect(() => {
+    setIsLoading(true);
+
+    const executeFunction = async () => {
       try {
         const articleData = await fetchArticleFromFirebase();
         if (!articleData) return;
@@ -186,11 +217,40 @@ const Article: React.FC = () => {
       } catch (error) {
         console.log(error);
       }
-
-      setIsLoading(false);
     };
 
+    setIsLoading(false);
+
     executeFunction();
+  }, []);
+
+  useEffect(() => {
+    if (!id) return;
+
+    const fetchData = async () => {
+      setIsLoading(true);
+
+      const unsubscribe = onSnapshot(
+        collection(db, "articles", id, "comments"),
+        async (snapshot) => {
+          // console.log(snapshot.docChanges());
+
+          if (snapshot.docChanges().length > 0) {
+            const { type } = snapshot.docChanges()[0];
+            if (type === "added" || type === "modified" || type === "removed") {
+              //   console.log("execute");
+              await getCommentsFromFirebase(id);
+            }
+          }
+
+          setIsLoading(false);
+        },
+      );
+
+      return () => unsubscribe();
+    };
+
+    fetchData();
   }, []);
 
   if (isLoading || !article || !author) {
@@ -209,7 +269,7 @@ const Article: React.FC = () => {
   const { name: authorName, profile_picture: authorImage } = author;
 
   return (
-    <div>
+    <>
       {/* cover */}
       <div className="relative h-[450px] w-full">
         <img
@@ -239,6 +299,7 @@ const Article: React.FC = () => {
         </p>
       </div>
 
+      {/* context */}
       <div className="mx-auto w-[70%] max-w-5xl">
         {/* title */}
         <div className=" mt-16 px-[15px] text-4xl font-bold capitalize">
@@ -263,18 +324,29 @@ const Article: React.FC = () => {
                 </p>
               </div>
 
-              <div>
+              <div className="flex items-center gap-5">
                 <p className="flex items-center gap-1 text-sm text-gray-500">
                   更新時間:
                   <span className="ml-2">{formatTime(updated_at)}</span>
                 </p>
+
+                {/* comment button */}
+                <button
+                  className="group flex items-center gap-2 bg-transparent"
+                  onClick={() => dispatch(openComment())}
+                >
+                  <TbMessageCircle className="text-pink-dark text-lg group-hover:text-pink" />
+                  <span className="text-pink-dark text-base  group-hover:text-pink">
+                    {commentLength}
+                  </span>
+                </button>
               </div>
             </div>
 
-            {/* button */}
+            {/* edit/collection  button */}
             {isLogin && isUser && (
               <button
-                className="btn-purple"
+                className="btn-purple mt-2"
                 onClick={() => editHandler(articleId)}
               >
                 編輯文章
@@ -282,7 +354,7 @@ const Article: React.FC = () => {
             )}
             {isLogin && !isUser && id && (
               <button
-                className="btn-purple"
+                className="btn-purple mt-2"
                 onClick={() => collectionHandler(id)}
               >
                 {isLike ? "已收藏" : "加入收藏"}
@@ -300,7 +372,10 @@ const Article: React.FC = () => {
           </div>
         </div>
       </div>
-    </div>
+
+      {/* comments container */}
+      {isCommentOpen && <ArticleCommentsContainer />}
+    </>
   );
 };
 

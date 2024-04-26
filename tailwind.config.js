@@ -25,6 +25,13 @@ export default {
       palanquin: ["Palanquin", "sans-serif"],
       sriracha: ["Sriracha", "sans-serif"],
     },
+    boxShadow: {
+      sm: "rgba(0, 0, 0, 0.12) 0px 1px 3px, rgba(0, 0, 0, 0.24) 0px 1px 2px;",
+      lg: "rgba(0, 0, 0, 0.16) 0px 3px 6px, rgba(0, 0, 0, 0.23) 0px 3px 6px;",
+      xl: "rgba(0, 0, 0, 0.19) 0px 10px 20px, rgba(0, 0, 0, 0.23) 0px 6px 6px;",
+      "2xl":
+        "rgba(0, 0, 0, 0.25) 0px 14px 28px, rgba(0, 0, 0, 0.22) 0px 10px 10px;",
+    },
     extend: {
       colors: {
         black: "#000000",

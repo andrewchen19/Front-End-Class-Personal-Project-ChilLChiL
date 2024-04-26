@@ -2,7 +2,12 @@ import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { useSelector } from "react-redux";
 import { IRootState } from "../store";
-import { formatTime, changeSpotName, changeTagName } from "../utils";
+import {
+  formatTime,
+  changeSpotName,
+  changeTagName,
+  htmlToPlainText,
+} from "../utils";
 
 // react icons
 import { FaStar } from "react-icons/fa";
@@ -99,6 +104,7 @@ const ArticlesCollectionContainer: React.FC = () => {
               likes_amount,
               tag,
               created_at,
+              content,
             } = article;
             return (
               <article
@@ -111,25 +117,34 @@ const ArticlesCollectionContainer: React.FC = () => {
                   alt={surfingSpot}
                   className="h-[150px] w-full rounded-t-2xl object-cover object-center"
                 />
-                <div className="p-3">
-                  <h3 className="text-xl font-semibold">{title}</h3>
 
-                  <p className="mt-5 text-xs text-gray-500">
-                    {formatTime(created_at)}
+                <div className="flex flex-1 flex-col p-3">
+                  <h3 className="text-xl font-semibold capitalize">{title}</h3>
+
+                  <p className="mb-5 mt-3 line-clamp-3 text-base text-gray-600">
+                    {htmlToPlainText(content)}
                   </p>
 
-                  <div className="mt-1 flex items-center justify-between">
+                  <div className="mt-auto">
                     <div className="flex gap-1">
                       <span className="rounded-lg bg-green-bright px-1 text-xs text-white">
                         {changeTagName(tag)}
                       </span>
+
                       <span className="rounded-lg bg-orange-bright px-1 text-xs text-white">
                         {changeSpotName(surfingSpot)}
                       </span>
                     </div>
-                    <div className="flex items-center gap-1">
-                      <FaStar className=" text-yellow" />
-                      <span>{likes_amount}</span>
+
+                    <div className="mt-1 flex items-center justify-between">
+                      <p className="text-xs text-gray-500">
+                        {formatTime(created_at)}
+                      </p>
+
+                      <div className="flex items-center gap-1">
+                        <FaStar className=" text-yellow" />
+                        <span>{likes_amount}</span>
+                      </div>
                     </div>
                   </div>
                 </div>

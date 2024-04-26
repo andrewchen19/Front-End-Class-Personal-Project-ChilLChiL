@@ -1,4 +1,5 @@
 import AllArticlesContainer from "./AllArticlesContainer";
+import ArticleCommentsContainer from "./ArticleCommentsContainer";
 import ArticlesCollectionContainer from "./ArticlesCollectionContainer";
 import Footer from "./Footer";
 import ForeignSpotsCollectionContainer from "./ForeignSpotsCollectionContainer";
@@ -19,6 +20,7 @@ import UnsplashImagesContainer from "./UnsplashImagesContainer";
 
 export {
   AllArticlesContainer,
+  ArticleCommentsContainer,
   ArticlesCollectionContainer,
   Footer,
   ForeignSpotsCollectionContainer,

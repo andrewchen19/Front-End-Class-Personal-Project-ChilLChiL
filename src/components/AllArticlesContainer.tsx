@@ -1,6 +1,11 @@
 import React, { useEffect, useState, FormEvent } from "react";
 import { useNavigate } from "react-router-dom";
-import { formatTime, changeSpotName, changeTagName } from "../utils";
+import {
+  formatTime,
+  changeSpotName,
+  changeTagName,
+  htmlToPlainText,
+} from "../utils";
 
 // react icons
 import { FaStar } from "react-icons/fa";
@@ -389,6 +394,7 @@ const AllArticlesContainer: React.FC = () => {
                   likes_amount,
                   tag,
                   created_at,
+                  content,
                 } = article;
                 return (
                   <article
@@ -401,14 +407,17 @@ const AllArticlesContainer: React.FC = () => {
                       alt={surfingSpot}
                       className="h-[150px] w-full rounded-t-2xl object-cover object-center"
                     />
-                    <div className="p-3">
-                      <h3 className="text-xl font-semibold">{title}</h3>
 
-                      <p className="mt-5 text-xs text-gray-500">
-                        {formatTime(created_at)}
+                    <div className="flex flex-1 flex-col p-3">
+                      <h3 className="text-xl font-semibold capitalize">
+                        {title}
+                      </h3>
+
+                      <p className="mb-5 mt-3 line-clamp-3 text-base text-gray-600">
+                        {htmlToPlainText(content)}
                       </p>
 
-                      <div className="mt-1 flex items-center justify-between">
+                      <div className="mt-auto">
                         <div className="flex gap-1">
                           <span className="rounded-lg bg-green-bright px-1 text-xs text-white">
                             {changeTagName(tag)}
@@ -418,9 +427,16 @@ const AllArticlesContainer: React.FC = () => {
                             {changeSpotName(surfingSpot)}
                           </span>
                         </div>
-                        <div className="flex items-center gap-1">
-                          <FaStar className=" text-yellow" />
-                          <span>{likes_amount}</span>
+
+                        <div className="mt-1 flex items-center justify-between">
+                          <p className="text-xs text-gray-500">
+                            {formatTime(created_at)}
+                          </p>
+
+                          <div className="flex items-center gap-1">
+                            <FaStar className=" text-yellow" />
+                            <span>{likes_amount}</span>
+                          </div>
                         </div>
                       </div>
                     </div>
@@ -444,6 +460,7 @@ const AllArticlesContainer: React.FC = () => {
                   likes_amount,
                   tag,
                   created_at,
+                  content,
                 } = article;
                 return (
                   <article
@@ -454,17 +471,17 @@ const AllArticlesContainer: React.FC = () => {
                     <img
                       src={cover}
                       alt={surfingSpot}
-                      className="h-[100px] w-[100px] rounded-2xl object-cover object-center duration-500 group-hover:scale-105"
+                      className="h-[120px] w-[120px] rounded-2xl object-cover object-center duration-500 group-hover:scale-105"
                     />
 
                     <div className="ml-6">
                       <h3 className="text-xl font-semibold">{title}</h3>
 
-                      <p className="mt-5 text-xs text-gray-500">
-                        {formatTime(created_at)}
+                      <p className="mt-3 text-base text-gray-600">
+                        {plainTextRenderer(content)}
                       </p>
 
-                      <div className="mt-1 flex items-center">
+                      <div className="mt-5 flex items-center">
                         <div className="flex w-[120px] gap-1">
                           <span className="rounded-lg bg-green-bright px-1 text-xs text-white">
                             {changeTagName(tag)}
@@ -474,8 +491,13 @@ const AllArticlesContainer: React.FC = () => {
                             {changeSpotName(surfingSpot)}
                           </span>
                         </div>
+                      </div>
 
-                        <div className="ml-3 flex items-center gap-1">
+                      <div className="mt-1 flex items-center">
+                        <p className="text-xs text-gray-500">
+                          {formatTime(created_at)}
+                        </p>
+                        <div className="ml-16 flex items-center gap-1">
                           <FaStar className=" text-yellow" />
                           <span>{likes_amount}</span>
                         </div>

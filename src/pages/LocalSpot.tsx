@@ -173,7 +173,7 @@ const LocalSpot: React.FC = () => {
       toast.warning("Please Log In First 😵");
       return;
     }
-    if (!comment) {
+    if (!comment || comment === "<p><br></p>") {
       toast.warning("Comment can't be empty 😬");
       return;
     }
@@ -182,6 +182,11 @@ const LocalSpot: React.FC = () => {
     } else {
       addNewCommentToFirebase();
     }
+  };
+  const cancelEditHandler = (): void => {
+    setComment("");
+    setEditInfo(null);
+    setIsEditStatus(false);
   };
 
   async function checkStatus(name: string): Promise<void> {
@@ -296,6 +301,7 @@ const LocalSpot: React.FC = () => {
       toast.success("Edit comment successful 🎉");
       setComment("");
       setIsEditStatus(false);
+      setEditInfo(null);
     } catch (error) {
       console.log(error);
     }
@@ -340,14 +346,14 @@ const LocalSpot: React.FC = () => {
           if (snapshot.docChanges().length > 0) {
             const { type } = snapshot.docChanges()[0];
             if (type === "added" || type === "modified" || type === "removed") {
-              console.log("execute");
+              // console.log("execute");
               await getCommentsFromFirebase(name);
             }
           }
         },
       );
 
-      return unsubscribe;
+      return () => unsubscribe();
     };
 
     fetchData();
@@ -375,7 +381,7 @@ const LocalSpot: React.FC = () => {
     infoData;
 
   return (
-    <div className="mx-auto w-[90%] max-w-5xl py-10">
+    <div className="mx-auto flex w-[90%] max-w-5xl flex-col gap-16 py-14">
       {/* tittle & button */}
       <div className="flex flex-col gap-5">
         {/* title */}
@@ -398,24 +404,20 @@ const LocalSpot: React.FC = () => {
 
         {/* desc */}
         <div>
-          <h3 className="text-xl font-bold">
-            <span className="mr-1">{today}</span>
-            衝浪預報:
+          <h3 className="mt-8 text-2xl font-bold">
+            {/* <span className="mr-1">{today}</span> */}
+            衝浪預報
           </h3>
         </div>
       </div>
 
       {/* forecast days & hours */}
-      <div className="mx-auto mt-5 flex w-[800px] flex-col pl-[125px]">
+      <div className="mx-auto -mt-10 flex w-full max-w-[800px] flex-col pl-[125px]">
         {/* days */}
         <div className="flex">
-          <p className="w-[192px] text-center font-notosans text-lg font-bold">
-            {today}
-          </p>
-          <p className="w-[192px] text-center font-notosans text-lg font-bold">
-            {tomorrow}
-          </p>
-          <p className="w-[192px] text-center font-notosans text-lg font-bold">
+          <p className="w-[192px] text-center text-lg font-bold">{today}</p>
+          <p className="w-[192px] text-center text-lg font-bold">{tomorrow}</p>
+          <p className="w-[192px] text-center text-lg font-bold">
             {afterTomorrow}
           </p>
         </div>
@@ -438,7 +440,7 @@ const LocalSpot: React.FC = () => {
       </div>
 
       {/* InfoData */}
-      <section className="mx-auto mt-5 flex w-[800px] flex-col gap-5">
+      <section className="mx-auto -mt-5 flex w-full max-w-[800px] flex-col gap-5">
         <div>
           <h3 className="mb-2 flex items-center gap-1 text-lg font-bold">
             <img src={compass} alt="weather-icon" className="h-7 w-7" />
@@ -628,7 +630,7 @@ const LocalSpot: React.FC = () => {
       </section>
 
       {/* Comments */}
-      <section className="mt-6 grid grid-cols-[auto,1fr] gap-10">
+      <section className="grid grid-cols-[auto,1fr] gap-10">
         {/* illustration */}
         <div className="aspect-[9/16] max-w-[300px]">
           <img src={surfImg} alt="surf-image" className="h-full w-full" />
@@ -636,9 +638,9 @@ const LocalSpot: React.FC = () => {
 
         <div className="flex flex-col">
           {/* title */}
-          <h3 className="text-xl font-bold leading-6 text-pink">最新留言:</h3>
+          <h3 className="text-xl font-bold leading-6 text-pink">最新留言</h3>
 
-          {/* realtime comments */}
+          {/* real time comments */}
           <div className="mt-4 max-h-[335.31px] w-full overflow-auto">
             {/* container */}
             {commentList.length < 1 && <p>目前尚未有留言.....</p>}
@@ -717,22 +719,32 @@ const LocalSpot: React.FC = () => {
             </div>
 
             {/* button */}
-            <div className="mt-3">
+            <div className="mt-3 flex gap-3">
               <button
                 type="button"
-                className="rounded-lg bg-purple-light px-2 py-1 text-xs text-white"
+                className="btn-purple sm:btn-xs"
                 onClick={() => commentHandler()}
               >
                 {isEditStatus ? "更新留言" : "新增留言"}
               </button>
+
+              {isEditStatus && (
+                <button
+                  type="button"
+                  className="btn-purple sm:btn-xs"
+                  onClick={() => cancelEditHandler()}
+                >
+                  取消
+                </button>
+              )}
             </div>
           </div>
         </div>
       </section>
 
       {/* textData */}
-      <section className="mt-6">
-        <h3 className="text-2xl font-bold">浪點資訊:</h3>
+      <section>
+        <h3 className="text-2xl font-bold">浪點資訊</h3>
         <div className="mt-5 grid grid-cols-[auto,1fr] gap-10">
           <div className="w-[300px] px-5 py-10 shadow-xl">
             <h4 className="text-center font-notosans text-turquoise">

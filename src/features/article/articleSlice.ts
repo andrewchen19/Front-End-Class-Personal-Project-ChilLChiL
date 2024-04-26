@@ -11,6 +11,7 @@ interface ArticleState {
   unsplashArray: UnsplashObject[];
   photographerLink: string;
   photographerName: string;
+  isCommentOpen: boolean;
 }
 
 // Define the initial state using that type
@@ -20,6 +21,7 @@ const initialState: ArticleState = {
   unsplashArray: [],
   photographerLink: "",
   photographerName: "",
+  isCommentOpen: false,
 };
 
 const articleSlice = createSlice({
@@ -51,6 +53,12 @@ const articleSlice = createSlice({
       state.photographerLink = link;
       state.photographerName = name;
     },
+    openComment: (state) => {
+      state.isCommentOpen = true;
+    },
+    closeComment: (state) => {
+      state.isCommentOpen = false;
+    },
   },
 });
 
@@ -63,6 +71,8 @@ export const {
   setCover,
   setPhotographer,
   resetCover,
+  openComment,
+  closeComment,
 } = articleSlice.actions;
 
 // export slice.reducer

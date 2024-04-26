@@ -29,6 +29,34 @@ export const splitText = (text: string): string[] => {
   return textArray;
 };
 
+// turn html content into plain text without html tags
+export function htmlToPlainText(htmlContent: string) {
+  const parser = new DOMParser();
+  const doc = parser.parseFromString(htmlContent, "text/html");
+  const plainTextArray: string[] = [];
+
+  function traverse(node: ChildNode) {
+    if (node.nodeType === Node.TEXT_NODE && node.textContent) {
+      plainTextArray.push(node.textContent.trim());
+    } else if (node.nodeType === Node.ELEMENT_NODE) {
+      for (const childNode of node.childNodes) {
+        traverse(childNode);
+      }
+    }
+  }
+
+  for (const node of doc.body.childNodes) {
+    traverse(node);
+  }
+
+  // console.log(plainTextArray.filter(Boolean));
+
+  const textArr = plainTextArray.filter(Boolean);
+  const plainText = textArr.join(" ");
+
+  return plainText;
+}
+
 interface LocalSpots {
   chin: string;
   eng: string;
