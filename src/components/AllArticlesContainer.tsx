@@ -30,7 +30,7 @@ const AllArticlesContainer: React.FC = () => {
   const navigate = useNavigate();
 
   const [isArticleLoading, setIsArticleLoading] = useState<boolean>(false);
-  const [articlesList, setArticlesList] = useState<DocumentData[] | []>([]);
+  const [articlesList, setArticlesList] = useState<DocumentData[] | null>(null);
   const [showPagination, setShowPagination] = useState<boolean>(false);
   const [allPage, setAllPage] = useState<number>(1);
   const [nowPage, setNowPage] = useState<number>(1);
@@ -375,8 +375,10 @@ const AllArticlesContainer: React.FC = () => {
           </div>
         </form>
 
-        {isArticleLoading && <p className="mt-8">loading now...</p>}
-        {!isArticleLoading && articlesList.length < 1 && (
+        {(isArticleLoading || !articlesList) && (
+          <p className="mt-8">loading now...</p>
+        )}
+        {!isArticleLoading && articlesList && articlesList.length < 1 && (
           <h3 className="mt-8">目前尚未有相關的文章... 請重新查詢</h3>
         )}
 
@@ -384,6 +386,7 @@ const AllArticlesContainer: React.FC = () => {
         {layout === "grid" && (
           <div className="mt-8 grid grid-cols-3 gap-x-12 gap-y-8">
             {!isArticleLoading &&
+              articlesList &&
               articlesList.length > 0 &&
               articlesList.map((article) => {
                 const {
@@ -450,6 +453,7 @@ const AllArticlesContainer: React.FC = () => {
         {layout === "list" && (
           <div className="mt-8 flex flex-col gap-y-8">
             {!isArticleLoading &&
+              articlesList &&
               articlesList.length > 0 &&
               articlesList.map((article) => {
                 const {
@@ -477,8 +481,8 @@ const AllArticlesContainer: React.FC = () => {
                     <div className="ml-6">
                       <h3 className="text-xl font-semibold">{title}</h3>
 
-                      <p className="mt-3 text-base text-gray-600">
-                        {plainTextRenderer(content)}
+                      <p className="mt-3 line-clamp-1 text-base text-gray-600">
+                        {htmlToPlainText(content)}
                       </p>
 
                       <div className="mt-5 flex items-center">

@@ -37,6 +37,10 @@ body {
   font-family: "Sriracha";
   src: url(./assets/fonts/Sriracha-Regular.ttf);
 }
+@font-face {
+  font-family: "Veneer";
+  src: url(./assets/fonts/Fontspring-DEMO-VeneerLowResThree.otf);
+}
 
 @layer components {
   .max-container {
@@ -75,7 +79,10 @@ body {
   }
 
   .btn-purple {
-    @apply btn btn-xs sm:btn-sm border-transparent bg-purple-light text-white duration-500  hover:border-purple-light hover:bg-white hover:text-purple-light;
+    @apply btn btn-xs sm:btn-sm border-transparent bg-purple-light text-white duration-500 hover:border-purple-light hover:bg-white hover:text-purple-light;
+  }
+  .btn-turquoise {
+    @apply btn btn-xs sm:btn-sm lg:btn-md rounded-3xl border-transparent bg-turquoise font-bold tracking-wide text-white duration-500 hover:border-transparent  hover:bg-blue-dark;
   }
 
   /* .info-text {

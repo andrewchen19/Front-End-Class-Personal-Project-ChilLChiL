@@ -1,8 +1,4 @@
-import {
-  createBrowserRouter,
-  Navigate,
-  RouterProvider,
-} from "react-router-dom";
+import { createBrowserRouter, RouterProvider } from "react-router-dom";
 import { ToastContainer, Zoom } from "react-toastify";
 
 import {
@@ -58,10 +54,6 @@ function App() {
         {
           path: "foreign-spots/:name/:id",
           element: <ForeignSpot />,
-        },
-        {
-          path: "profile",
-          element: <Navigate to="my-info" replace />,
         },
         {
           path: "profile/my-info",

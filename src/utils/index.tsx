@@ -1,6 +1,9 @@
 import { ReactElement } from "react";
 import dayjs from "dayjs";
 
+import user1 from "../assets/images/user1.jpg";
+import user2 from "../assets/images/user2.jpg";
+
 // weather icons
 import clearDay from "../assets/weather/clearDay.svg";
 import clearNight from "../assets/weather/clearNight.svg";
@@ -307,3 +310,70 @@ export const changeToWeatherIcon = (name: string): ReactElement => {
 
   return <img src={notAvailable} alt="weather-icon" className="h-6 w-6" />;
 };
+
+export const calculateTimeAgo = (commentTime: number): string => {
+  const currentTime = new Date();
+  const commentDate = new Date(commentTime);
+
+  // Calculate the difference in milliseconds
+  const timeDifference = currentTime.getTime() - commentDate.getTime();
+
+  // Convert milliseconds to appropriate time units
+  const seconds = Math.floor(timeDifference / 1000);
+  const minutes = Math.floor(seconds / 60);
+  const hours = Math.floor(minutes / 60);
+  const days = Math.floor(hours / 24);
+  const months = Math.floor(days / 30);
+  const years = Math.floor(months / 12);
+
+  // Return the appropriate time ago string based on the time difference
+  if (years > 0) {
+    return `about ${years} ${years === 1 ? "year" : "years"} ago`;
+  } else if (months > 0) {
+    return `about ${months} ${months === 1 ? "month" : "months"} ago`;
+  } else if (days > 0) {
+    return `${days} ${days === 1 ? "day" : "days"} ago`;
+  } else if (hours > 0) {
+    return `about ${hours} ${hours === 1 ? "hour" : "hours"} ago`;
+  } else if (minutes > 0) {
+    return `about ${minutes} ${minutes === 1 ? "minute" : "minutes"} ago`;
+  } else {
+    return "less than a minute ago";
+  }
+};
+
+export const splitStringUsingRegex = (inputString: string): string[] => {
+  const characters: string[] = [];
+  const regex = /[\s\S]/gu;
+
+  let match;
+
+  while ((match = regex.exec(inputString)) !== null) {
+    characters.push(match[0]);
+  }
+
+  return characters;
+};
+
+interface Review {
+  imgURL: string;
+  userName: string;
+  rating: number;
+  feedback: string;
+}
+export const reviews: Review[] = [
+  {
+    imgURL: user1,
+    userName: "Anderson Brown",
+    rating: 4.7,
+    feedback:
+      "As a surfing enthusiast, having a website that provides real-time updates on local surf spots is fantastic. Highly recommended!",
+  },
+  {
+    imgURL: user2,
+    userName: "Lota Monica",
+    rating: 4.5,
+    feedback:
+      "As a beginner surfer, this website offers a wealth of useful information, benefiting from here greatly!",
+  },
+];

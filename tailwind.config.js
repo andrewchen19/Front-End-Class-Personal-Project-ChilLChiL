@@ -24,6 +24,7 @@ export default {
       dripoctober: ["DripOctober", "sans-serif"],
       palanquin: ["Palanquin", "sans-serif"],
       sriracha: ["Sriracha", "sans-serif"],
+      veneer: ["Veneer", "sans-serif"],
     },
     boxShadow: {
       sm: "rgba(0, 0, 0, 0.12) 0px 1px 3px, rgba(0, 0, 0, 0.24) 0px 1px 2px;",
@@ -48,6 +49,7 @@ export default {
         navy: "#3A4972",
         turquoise: "#3B8EA0",
         kiwi: "#ECF3AB",
+        olive: "#888D54",
         green: {
           fluorescent: "#76E694",
           bright: "#0BD674",
@@ -63,7 +65,20 @@ export default {
           red: "#A04848",
           yellow: "#D0A847",
         },
-        yellow: "#fbbf24",
+        yellow: {
+          light: "#F8CA86",
+          DEFAULT: "#fbbf24",
+        },
+        beige: "#F9F5EC",
+      },
+      animation: {
+        marquee: "marquee 13s linear infinite",
+      },
+      keyframes: {
+        marquee: {
+          "0%": { transform: "translateX(0%)" },
+          "100%": { transform: "translateX(100%)" },
+        },
       },
     },
   },

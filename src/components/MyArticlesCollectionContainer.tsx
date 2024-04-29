@@ -27,7 +27,7 @@ const MyArticlesCollectionContainer: React.FC = () => {
   const { user } = useSelector((state: IRootState) => state.user);
 
   const [isLoading, setIsLoading] = useState<boolean>(false);
-  const [articlesList, setArticlesList] = useState<DocumentData[] | []>([]);
+  const [articlesList, setArticlesList] = useState<DocumentData[] | null>(null);
 
   const navigate = useNavigate();
 
@@ -70,14 +70,15 @@ const MyArticlesCollectionContainer: React.FC = () => {
         </NavLink>
       </div>
 
-      {isLoading && <p className="mt-8">loading now...</p>}
+      {(isLoading || !articlesList) && <p className="mt-8">loading now...</p>}
 
-      {!isLoading && articlesList.length < 1 && (
+      {!isLoading && articlesList && articlesList.length < 1 && (
         <h3 className="mt-8">尚未有文章，快來撰寫吧~</h3>
       )}
 
       <div className="mt-8 grid grid-cols-3 gap-x-12 gap-y-8">
         {!isLoading &&
+          articlesList &&
           articlesList.length > 0 &&
           articlesList.map((article) => {
             const {

@@ -69,6 +69,7 @@ const PostArticle: React.FC = () => {
         likes_amount: 0,
         photographerLink,
         photographerName,
+        isDeleted: false,
       });
       await updateDoc(articleRef, {
         id: articleRef.id,

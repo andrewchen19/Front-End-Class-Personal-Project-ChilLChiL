@@ -1,105 +1,332 @@
 import React from "react";
+import { Link } from "react-router-dom";
+import { splitStringUsingRegex, reviews } from "../utils";
+import { Velocity } from "../components";
 
-// import React, { useEffect } from "react";
-// import { db } from "../main";
-// import { doc, setDoc } from "firebase/firestore";
-// import { nanoid } from "nanoid";
+import coverImage from "../assets/images/landing-cover.jpg";
+import grid1Image from "../assets/images/landing-grid1.jpg";
+import grid2Image from "../assets/images/landing-grid2.jpg";
+
+// react icons
+import { FaChevronDown, FaStar } from "react-icons/fa";
+
+// framer motion
+import { motion, useScroll, useSpring, Variants } from "framer-motion";
+
+const headingText = "Why choose us?";
+const contentText =
+  "Explore surf spots around the world with our surfing website. We not only provide information about surf spots but also aim to cultivate a lifestyle attitude – chill and confident. Here, you can relax,enjoy the environment, music, and broaden your horizons by experiencing different cultures and meeting new friends. Join us and embark on an exciting surfing journey!";
+
+const leftVariant: Variants = {
+  hidden: { x: "-20vw" },
+  visible: { x: 0, transition: { duration: 3 } },
+};
+const rightVariant: Variants = {
+  hidden: { x: "20vw" },
+  visible: { x: 0, transition: { duration: 3 } },
+};
+const centerVariant: Variants = {
+  hidden: { opacity: 0 },
+  visible: { opacity: 1, transition: { duration: 3 } },
+};
+const charVariants: Variants = {
+  hidden: { opacity: 0 },
+  visible: { opacity: 1 },
+};
+const popVariant: Variants = {
+  hidden: { opacity: 0, scale: 0.3 },
+  visible: {
+    opacity: 1,
+    scale: 1,
+    transition: { type: "spring", bounce: 0.2, duration: 2 },
+  },
+};
+const bottomVariant: Variants = {
+  hidden: { y: "10vh" },
+  visible: { y: 0, transition: { duration: 1.5 } },
+};
+const left2Variant: Variants = {
+  hidden: { x: "-7vw" },
+  visible: { x: 0, transition: { duration: 2 } },
+};
+const right2Variant: Variants = {
+  hidden: { x: "7vw" },
+  visible: { x: 0, transition: { duration: 2 } },
+};
+const topVariant: Variants = {
+  hidden: { y: "-10vh" },
+  visible: { y: 0, transition: { duration: 1.5 } },
+};
 
 const Landing: React.FC = () => {
-  // async function writeData(): Promise<void> {
-  //   const id = nanoid();
-  //   await setDoc(doc(db, "foreign-spots", "fiji"), {
-  //     id,
-  //     country: { eng: "fiji", location: "fiji", chin: "斐濟" },
-  //     coverImage:
-  //       "https://firebasestorage.googleapis.com/v0/b/chillchill-9a1e2.appspot.com/o/foreign-spots%2Ffiji%2Fcover.jpg?alt=media&token=90953fe0-375b-4630-9ce2-7e994826b339",
-  //     likes_amount: 0,
-  //     category: ["may", "tube"],
-  //     primaryColor: "#F48080",
-  //     secondaryColor: "#3A4972",
-  //     spotImage:
-  //       "https://firebasestorage.googleapis.com/v0/b/chillchill-9a1e2.appspot.com/o/foreign-spots%2Ffiji%2Fspot.jpg?alt=media&token=707ea24e-3255-4b63-99c5-1f3910d4252d",
-  //     spotDesc:
-  //       "An idyllic vacation spot for anyone who values tropical beauty, the pristine barrier reefs of Fiji are primo surfing real estate. Sitting quite close to Fiji’s biggest island and hub for everything, Viti Levu, Cloudbreak and Restaurants are two of the best waves on the planet. These legendary lefts aren’t the only game in town, though -- there are breaks stretching along Viti Levu’s Coral Coast all the way to Suva, Fiji’s vibrant capital city. Bottom line: Fiji is paradise, and one of the most coveted surfing destinations in the South Pacific. You can’t lose.",
-  //     whenToScore: [
-  //       {
-  //         title: "prime",
-  //         season: "May - September",
-  //         bestFor: "Intermediate - Advanced",
-  //         crowdFactor: "Medium",
-  //         desc: "If you’re a charger looking to score the largest waves Fiji has to offer, your best odds are from May through September. This is when the Southern Ocean – Fiji’s primary swell source – is in overdrive, and it’s rare to go more than a few days without at least one overhead or larger swell. Cloudbreak gets the majority of the hype in Fiji, and for good reason. It only sporadically drops below head-high during the peak south swell season and can hold as big as any surfer could ever want. It gets especially good on SW to SSW swells with long periods of 17 seconds or more. That’s when the lines seemingly stretch from the famous ‘ledge’ (the primary takeoff zone once the surf gets into the double-overhead range) all the way to Tavarua, about a mile and a half away.",
-  //       },
-  //       {
-  //         title: "shoulder",
-  //         season: "October - November & March - April",
-  //         bestFor: "Intermediate - Advanced",
-  //         crowdFactor: "Medium",
-  //         desc: "While the average surf size dips marginally from the high season, it is still possible to get pumping, mid to long-period SW swells during the shoulder seasons in Fiji. Generally speaking, though, this is when the surf starts to slow down and the wind starts to shift around. Beyond slightly smaller and less-frequent swells, the wind tends to be lighter during these months. SE to ESE trades remain dominant but are often light with many days of light/variable wind and glassy conditions. The lighter winds mean all spots will have clean conditions, so as long as a mid to long-period, 3-4’ swell is running, the surfers are able to spread out.",
-  //       },
-  //       {
-  //         title: "low",
-  //         season: "December - February",
-  //         bestFor: "Beginner - Advanced",
-  //         crowdFactor: "Light",
-  //         desc: "If you like hot, glassy and fun surf, then the low season in Fiji is your jam. It’s still very possible to get a decent-size swell during these months, as the Southern Ocean never completely stops. December tends to be an especially sneaky, good month with a handful of fun to medium-size swells on average and light wind. But your odds of getting something solid are reduced significantly and you may need to wait out multi-day flat spells to get rideable surf. The good news is you’ll be in paradise where there’s no shortage of fun things to do.",
-  //       },
-  //     ],
-  //     quote: {
-  //       image:
-  //         "https://firebasestorage.googleapis.com/v0/b/chillchill-9a1e2.appspot.com/o/foreign-spots%2Ffiji%2Fquote.jpg?alt=media&token=2cce21ef-9dcc-41ed-98a0-573c9bf1d776",
-  //       name: "Inia Nakalevu",
-  //       desc: "We have such beautiful reefbreaks, and sharing waves with a smiling Fijian and feeling welcome, I think that’s something that makes Fiji unique. It’s a special place.",
-  //     },
-  //     travelEssentials: {
-  //       image:
-  //         "https://firebasestorage.googleapis.com/v0/b/chillchill-9a1e2.appspot.com/o/foreign-spots%2Ffiji%2Ftravel.jpg?alt=media&token=a7de0c51-3782-435e-8180-781bbbcded6a",
-  //       culture:
-  //         "The Fijian people are known worldwide for their warmth, openheartedness and cheerfulness. You’ll hear a lot of Bula!, which is like the Fijian version of Aloha and reflects the welcoming spirit of the people. (The longer version of the greeting — ni sa bula vinaka —translates to “wishing you happiness and good health.”)",
-  //       getThere:
-  //         "Once you arrive at Nadi International Airport on the main island of Fiji, you’ll need to drive or take a shuttle to your hotel, surf camp or resort. For those staying on Tavarua or Namotu, you’ll take a 45-minute shuttle to the boat launch. From there, it’s a 30-minute boat ride to either island.",
-  //       bring:
-  //         "There are waves for every type of surfer in Fiji, but the marquee spots -- Cloudbreak, Restaurants, The Right — cater to the high-performance shortboard crowd. So, if that’s your vibe and skill level, be sure to pack the fastest, most agile boards you’ve got, as well as a step-up for when it gets heavy. Bring all your tropical surf trip essentials, naturally, as well as t-shirts, hats and other swag to stoke out the locals and return their kindness and generosity.",
-  //       downTime:
-  //         "Fiji’s a tropical paradise. When you’re not surfing you can fish, dive, stroll along the beach, climb coconut trees, lounge by a pool with umbrella drink in hand or crack open a good book. Chances are, though, the world-class waves will be enough for you. If not, there's always the world-famous Cloud 9 floating bar & restaurant. It’s anchored in the ocean and serves perhaps the most Instagramable cocktails on Earth.",
-  //       localScene:
-  //         "Before the reefs at Cloudbreak, Restaurants and The Right were opened to the public, these legendary waves were some of the most exclusive in the world, reserved for paying guests of Tavarua. The Fijian government has since issued a decree to open them to all surfers, but there’s a catch: you still need to figure out the 30-minute boat ride from the main island. Most traveling surfers fly to Fiji during peak season (May-September). That’s when the main breaks will see an abundance of local and visiting surfers, but with the right wind conditions, other spots can be good and relatively uncrowded.",
-  //     },
-  //     quickTips: {
-  //       traveTime: {
-  //         TPE: "9.5",
-  //         LAX: "11.5",
-  //         Heathrow: "21",
-  //       },
-  //       connectivity:
-  //         "Expect WiFi connection at your resort. Other than that, you’re on your own.",
-  //       currency: "Fijian Dollar. At the time of writing, $1 USD = 2.16 FJD",
-  //       avgCost: {
-  //         lunch: "$10.00",
-  //         beer: "$4.00",
-  //         hotel: "$250.00",
-  //       },
-  //       visa: "No visa necessary for US visitors, unless you plan to stay longer than four months.",
-  //       waterQuality:
-  //         "Tap water is safe to drink where filtration is in place, like in cities and resorts. However, bottled water is never a bad call.",
-  //       hazard:
-  //         "Sunburns, surfing yourself into a coma or, conversely, having a few too many umbrella drinks and missing out on a session or two.",
-  //       cashCard:
-  //         "You probably won’t have much need for spending cash as you’ll likely be spending most of your time at a resort. But having some hard dollars on you for tipping is always recommended.",
-  //     },
-  //     otherZones: [
-  //       "north-costa-rica",
-  //       "sydney",
-  //       "the-mentawais",
-  //       "west-portugal",
-  //     ],
-  //   });
-  // }
+  const headingChars = splitStringUsingRegex(headingText);
+  const contentChars = splitStringUsingRegex(contentText);
 
-  // useEffect(() => {
-  //   writeData();
-  // }, []);
+  const { scrollYProgress } = useScroll();
+  const scaleX = useSpring(scrollYProgress, {
+    stiffness: 100,
+    damping: 30,
+    restDelta: 0.001,
+  });
 
-  return <div>Landing</div>;
+  return (
+    <>
+      {/* scroll bar */}
+      <motion.div
+        className="fixed left-0 right-0 top-0 z-50 h-[10px] origin-left bg-clay-red"
+        style={{ scaleX }}
+      />
+
+      {/* banner */}
+      <section
+        className="relative bg-turquoise"
+        style={{ minHeight: "calc(100vh - 56px)" }}
+      >
+        <div className="flex h-full w-full items-center justify-center">
+          <div className="-mt-20 text-center">
+            <motion.h1
+              initial="hidden"
+              whileInView="visible"
+              variants={leftVariant}
+              viewport={{ once: true }}
+              className="font-veneer text-8xl text-white"
+            >
+              We <span className="text-clay-yellow">eat</span>
+            </motion.h1>
+            <motion.h1
+              initial="hidden"
+              whileInView="visible"
+              variants={rightVariant}
+              viewport={{ once: true }}
+              className="font-veneer text-8xl text-white"
+            >
+              We <span className="text-green-fluorescent">life</span>
+            </motion.h1>
+            <motion.h1
+              initial="hidden"
+              whileInView="visible"
+              variants={centerVariant}
+              viewport={{ once: true }}
+              className="font-veneer ml-4 text-8xl text-white"
+            >
+              We <span className="text-pink">surf</span>
+            </motion.h1>
+          </div>
+        </div>
+
+        {/* scroll down */}
+        <div className="absolute bottom-[30px] left-1/2 flex -translate-x-1/2 flex-col items-center overflow-visible font-helvetica text-lg font-semibold uppercase tracking-wide text-white">
+          Scroll down <FaChevronDown className="text mt-1 animate-bounce" />
+        </div>
+      </section>
+
+      {/* picture */}
+      <section className="relative min-h-[100vh] max-w-full overflow-hidden">
+        <div className="relative flex h-screen max-w-full flex-col items-center justify-center">
+          <img
+            loading="lazy"
+            src={coverImage}
+            alt="cover-image"
+            className="absolute inset-0 -z-10 h-full w-full object-cover object-center"
+          />
+
+          <Velocity baseVelocity={2}>
+            Expertly curate your next adventure.
+          </Velocity>
+        </div>
+
+        <div className="absolute bottom-7 left-1/2 -translate-x-1/2">
+          <Link to="/foreign-spots">
+            <button className="btn-turquoise text-3xl">Get Inspired</button>
+          </Link>
+        </div>
+      </section>
+
+      {/* intro */}
+      <section className="bg-white">
+        <div className="mx-auto flex w-[90%] max-w-5xl flex-col py-40">
+          <motion.h2
+            initial="hidden"
+            whileInView="visible"
+            transition={{ staggerChildren: 0.1 }}
+            viewport={{ once: true, amount: 0.1 }}
+            className="font-veneer text-center text-6xl font-bold tracking-wide"
+          >
+            {headingChars.map((char, index) => {
+              return (
+                <motion.span
+                  key={index}
+                  variants={charVariants}
+                  className={`${index >= 4 && index <= 9 ? "text-pink" : ""}`}
+                >
+                  {char}
+                </motion.span>
+              );
+            })}
+          </motion.h2>
+
+          <motion.p
+            initial="hidden"
+            whileInView="visible"
+            transition={{ staggerChildren: 0.01 }}
+            viewport={{ once: true, amount: 0.1 }}
+            className="mx-auto mt-8 max-w-[580px] text-center tracking-wide text-gray-500"
+          >
+            {contentChars.map((char, index) => {
+              return (
+                <motion.span
+                  key={index}
+                  variants={charVariants}
+                  className={`${index >= 160 && index <= 178 ? "text-navy font-bold" : ""}`}
+                >
+                  {char}
+                </motion.span>
+              );
+            })}
+          </motion.p>
+        </div>
+      </section>
+
+      {/* grid */}
+      <section className="grid h-auto grid-cols-2 grid-rows-2">
+        <div>
+          <motion.img
+            loading="lazy"
+            src={grid1Image}
+            alt="grid-image"
+            initial="hidden"
+            whileInView="visible"
+            variants={popVariant}
+            viewport={{ once: true }}
+          />
+        </div>
+        <div className="bg-beige flex items-center justify-center">
+          <motion.div
+            initial="hidden"
+            whileInView="visible"
+            variants={bottomVariant}
+            viewport={{ once: true, amount: 0.1 }}
+            className="text-center"
+          >
+            <h3 className="font-palanquin text-3xl font-semibold">
+              Latest Info
+            </h3>
+            <p className="mt-6 max-w-[330px]  text-gray-600">
+              Collecting over 18 surfing spots across Taiwan, accurately
+              grasping the current local wave conditions and weather.
+            </p>
+          </motion.div>
+        </div>
+        <div className="bg-beige flex items-center justify-center">
+          <motion.div
+            initial="hidden"
+            whileInView="visible"
+            variants={bottomVariant}
+            viewport={{ once: true, amount: 0.1 }}
+            className="text-center"
+          >
+            <h3 className="font-palanquin text-3xl font-semibold">
+              Blog sharing
+            </h3>
+            <p className="mt-6 max-w-[330px] text-gray-600">
+              Increasing your knowledge of surfing, marine conservation,
+              environmental issues, and related topics is our top priority.
+            </p>
+          </motion.div>
+        </div>
+        <div>
+          <motion.img
+            loading="lazy"
+            src={grid2Image}
+            alt="grid-image"
+            initial="hidden"
+            whileInView="visible"
+            variants={popVariant}
+            viewport={{ once: true }}
+          />
+        </div>
+      </section>
+
+      {/* user reviews */}
+      <section>
+        <div className="mx-auto flex w-[90%] max-w-5xl flex-col py-40">
+          <h3 className="font-veneer text-center text-6xl font-bold capitalize">
+            What Our <span className="text-clay-yellow">Users</span> Say?
+          </h3>
+          <p className="mx-auto mt-6 max-w-lg text-center text-xl text-gray-700">
+            Hear genuine stories from our satisfied users about their
+            exceptional experiences with us.
+          </p>
+
+          <div className="mt-24 flex items-center justify-evenly gap-14 max-lg:flex-col">
+            {reviews.map((review, index) => {
+              const { imgURL, userName, rating, feedback } = review;
+
+              return (
+                <motion.article
+                  initial="hidden"
+                  whileInView="visible"
+                  variants={index === 0 ? left2Variant : right2Variant}
+                  viewport={{ once: true, amount: 0.1 }}
+                  key={userName}
+                  className={`flex flex-col items-center justify-center px-6 py-10 ${index === 0 ? "bg-olive" : "bg-pink"}`}
+                >
+                  <img
+                    src={imgURL}
+                    alt="user-image"
+                    className="h-[120px] w-[120px] rounded-full object-center"
+                  />
+                  <p className="mt-6 max-w-sm text-center font-sriracha text-lg text-white">
+                    {feedback}
+                  </p>
+                  <div className="mt-4 flex justify-start gap-2">
+                    <FaStar className="text-yellow h-[24px] w-[24px]" />
+                    <p className="font-semibold">({rating})</p>
+                  </div>
+                  <h3 className="mt-1 text-center font-palanquin text-xl font-bold">
+                    {userName}
+                  </h3>
+                </motion.article>
+              );
+            })}
+          </div>
+        </div>
+      </section>
+
+      {/* newsletter */}
+      <section className="bg-beige">
+        <div className="mx-auto flex w-[90%] max-w-5xl items-center justify-between gap-10 py-40 max-lg:flex-col">
+          <motion.h3
+            initial="hidden"
+            whileInView="visible"
+            variants={topVariant}
+            viewport={{ once: true, amount: 0.3 }}
+            className="text-center font-palanquin text-3xl font-bold lg:max-w-md lg:text-4xl"
+          >
+            Sign Up for <span className="text-turquoise">Updates</span> &
+            Newsletter
+          </motion.h3>
+
+          <motion.div
+            initial="hidden"
+            whileInView="visible"
+            variants={topVariant}
+            viewport={{ once: true, amount: 0.3 }}
+            className="flex w-full items-center justify-between rounded-full border border-gray-500 p-2.5 lg:max-w-[40%]"
+          >
+            <input
+              type="text"
+              placeholder="subscribe@chilLchilL.com"
+              className="bg-beige ml-2 outline-none"
+            />
+            <button className="btn btn-sm rounded-full border-none bg-turquoise capitalize text-white hover:border-transparent hover:bg-blue-dark">
+              sign up
+            </button>
+          </motion.div>
+        </div>
+      </section>
+    </>
+  );
 };
 
 export default Landing;

@@ -28,7 +28,7 @@ const RelatedArticlesContainer: React.FC = () => {
   const navigate = useNavigate();
 
   const [isArticleLoading, setIsArticleLoading] = useState<boolean>(false);
-  const [articlesList, setArticlesList] = useState<DocumentData[] | []>([]);
+  const [articlesList, setArticlesList] = useState<DocumentData[] | null>(null);
 
   const articleHandler = (id: string) => {
     navigate(`/articles/${id}`);
@@ -68,14 +68,17 @@ const RelatedArticlesContainer: React.FC = () => {
     <section>
       <h3 className="text-2xl font-bold">相關文章</h3>
 
-      {isArticleLoading && <p className="mt-8">loading now...</p>}
+      {(isArticleLoading || !articlesList) && (
+        <p className="mt-8">loading now...</p>
+      )}
 
-      {!isArticleLoading && articlesList.length < 1 && (
+      {!isArticleLoading && articlesList && articlesList.length < 1 && (
         <h3 className="mt-8">尚未有相關的文章...</h3>
       )}
 
       <div className="mt-8 grid grid-cols-4 gap-x-12 gap-y-8">
         {!isArticleLoading &&
+          articlesList &&
           articlesList.length > 0 &&
           articlesList.map((article) => {
             const {

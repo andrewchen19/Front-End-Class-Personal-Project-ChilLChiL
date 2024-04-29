@@ -9,12 +9,16 @@ const Layout: React.FC = () => {
   const navigation = useNavigation();
   const isLoading = navigation.state === "loading";
 
+  // grid-rows-[auto,1fr,auto] grid
+
   return (
-    <div className="grid min-h-screen grid-rows-[auto,1fr,auto]">
-      <Header />
-      {isLoading ? <Loading /> : <Outlet />}
-      <Footer />
-    </div>
+    <>
+      <div className="grid min-h-screen grid-rows-[auto,1fr,auto]">
+        <Header />
+        {isLoading ? <Loading /> : <Outlet />}
+        <Footer />
+      </div>
+    </>
   );
 };
 

@@ -17,6 +17,7 @@ import RelatedArticlesContainer from "./RelatedArticlesContainer";
 import TubeForeignSpotsContainer from "./TubeForeignSpotsContainer";
 import UnsplashContainer from "./UnsplashContainer";
 import UnsplashImagesContainer from "./UnsplashImagesContainer";
+import Velocity from "./Velocity";
 
 export {
   AllArticlesContainer,
@@ -38,4 +39,5 @@ export {
   TubeForeignSpotsContainer,
   UnsplashContainer,
   UnsplashImagesContainer,
+  Velocity,
 };

@@ -71,7 +71,7 @@ const Header: React.FC = () => {
             {user && (
               <li>
                 <NavLink
-                  to="/profile"
+                  to="/profile/my-info"
                   className="hover:text-pink"
                   style={({ isActive }) => {
                     return {
@@ -95,7 +95,7 @@ const Header: React.FC = () => {
           </button>
         ) : (
           <NavLink to="/log-in">
-            <button className="rounded-lg bg-turquoise px-2 py-1 font-notosans text-sm text-white">
+            <button className="btn btn-sm rounded-3xl border-transparent bg-turquoise font-bold tracking-wide text-white duration-500 hover:border-transparent  hover:bg-blue-dark">
               登入 / 註冊
             </button>
           </NavLink>

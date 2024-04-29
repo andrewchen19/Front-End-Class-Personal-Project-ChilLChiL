@@ -4,7 +4,7 @@ import { toast } from "react-toastify";
 import { useDispatch, useSelector } from "react-redux";
 import { closeComment } from "../features/article/articleSlice";
 import { IRootState } from "../store";
-import { formatMessageTime } from "../utils";
+import { formatMessageTime, calculateTimeAgo } from "../utils";
 import { CommentInfo } from "../types";
 
 // nano id
@@ -194,6 +194,8 @@ const ArticleCommentsContainer: React.FC = () => {
     const fetchData = async () => {
       setIsLoading(true);
 
+      console.log("execute");
+
       const unsubscribe = onSnapshot(
         collection(db, "articles", id, "comments"),
         async (snapshot) => {
@@ -243,7 +245,10 @@ const ArticleCommentsContainer: React.FC = () => {
         </div>
 
         {/* comments */}
-        <div className="mt-5 px-5">
+        <div
+          className="overflow-hidden px-5 py-5"
+          style={{ height: "calc(100% - 68.91px)" }}
+        >
           {/* text editor */}
           <ReactQuill
             theme="snow"
@@ -277,68 +282,74 @@ const ArticleCommentsContainer: React.FC = () => {
           {isLoading && <div className="mt-5">is loading...</div>}
 
           {/* real time comments */}
-          {!isLoading && (
-            <div className="mt-6">
-              {commentList.length < 1 && <p>目前尚未有留言.....</p>}
+          {!isLoading && commentList.length < 1 && (
+            <p className="mt-5">目前尚未有留言.....</p>
+          )}
 
-              {/* latest 10 comments */}
-              {commentList.length > 0 && (
-                <div className="my-auto flex h-[443.16px] flex-col gap-3 overflow-auto">
-                  {commentList.map((item: CommentInfo) => {
-                    const {
-                      id: commentId,
-                      userId,
-                      userName,
-                      userImage,
-                      comment,
-                      created_at,
-                      isEdited,
-                    } = item;
-                    return (
-                      <div key={id} className="flex flex-col gap-1">
-                        <div className="flex items-center">
-                          <img
-                            src={userImage}
-                            alt="user-image"
-                            className="h-5 w-5 rounded-full"
-                          />
-                          <h4 className="ml-1 w-[72px]">{userName}</h4>
+          {/* latest 10 comments */}
+          {!isLoading && commentList.length > 0 && (
+            <div
+              className="mt-5 flex flex-col gap-3 overflow-auto"
+              style={{
+                height: "calc(100% - 68.91px - 86.2px - 23.99px + 40px)",
+              }}
+            >
+              {commentList.map((item: CommentInfo) => {
+                const {
+                  id: commentId,
+                  userId,
+                  userName,
+                  userImage,
+                  comment,
+                  created_at,
+                  isEdited,
+                } = item;
+                return (
+                  <div key={id} className="flex flex-col gap-1">
+                    <div className="flex items-center">
+                      <img
+                        src={userImage}
+                        alt="user-image"
+                        className="h-8 w-8 rounded-full"
+                      />
 
-                          <p className="w-[125px] text-xs">
-                            {formatMessageTime(created_at)}&nbsp;
-                            {isEdited && <span>(edited)</span>}
-                          </p>
+                      <div>
+                        <h4 className="ml-1">{userName}</h4>
 
-                          {user && userId === user.id && (
-                            <>
-                              <span
-                                className="cursor-pointer text-xs text-gray-500 underline hover:text-gray-600"
-                                onClick={() => getCommentHandler(commentId)}
-                              >
-                                Edit
-                              </span>
-                              <span
-                                className="ml-2 cursor-pointer text-xs text-gray-500 underline hover:text-gray-600"
-                                onClick={() => deleteCommentHandler(commentId)}
-                              >
-                                Delete
-                              </span>
-                            </>
-                          )}
+                        <p className="ml-1 text-xs">
+                          {calculateTimeAgo(created_at)}&nbsp;
+                          {isEdited && <span>(edited)</span>}
+                        </p>
+                      </div>
+
+                      {user && userId === user.id && (
+                        <div className="ml-auto pr-2">
+                          <span
+                            className="cursor-pointer text-xs text-gray-500 underline hover:text-gray-600"
+                            onClick={() => getCommentHandler(commentId)}
+                          >
+                            Edit
+                          </span>
+                          <span
+                            className="ml-2 cursor-pointer text-xs text-gray-500 underline hover:text-gray-600"
+                            onClick={() => deleteCommentHandler(commentId)}
+                          >
+                            Delete
+                          </span>
                         </div>
+                      )}
+                    </div>
 
-                        <div className="rounded-lg bg-black text-sm text-turquoise">
-                          <div className="ql-snow">
-                            <div className="ql-editor py-2" data-gramm="false">
-                              <Markup content={comment} />
-                            </div>
-                          </div>
+                    <div className="rounded-lg bg-black text-sm text-turquoise">
+                      <div className="ql-snow">
+                        <div className="ql-editor py-2" data-gramm="false">
+                          <Markup content={comment} />
                         </div>
                       </div>
-                    );
-                  })}
-                </div>
-              )}
+                    </div>
+                  </div>
+                );
+              })}
             </div>
           )}
         </div>

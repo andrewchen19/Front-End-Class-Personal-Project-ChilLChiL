@@ -19,7 +19,7 @@ const Profile: React.FC = () => {
       <ProfileNavbar />
 
       <div className="mt-20 w-full px-10">
-        <h2 className="font-notosans text-2xl font-bold">我的個人資訊:</h2>
+        <h2 className="text-2xl font-bold">我的個人資訊:</h2>
 
         <div className="mt-10 flex items-center gap-10">
           <img
@@ -28,7 +28,7 @@ const Profile: React.FC = () => {
             className="h-32 w-32 rounded-full border-4 border-turquoise"
           />
 
-          <div className="flex flex-col gap-5 font-notosans font-semibold">
+          <div className="flex flex-col gap-5 font-semibold">
             <h4 className="capitalize">
               姓名：<span className="font-ppwoodland pl-2">{user.name}</span>
             </h4>
