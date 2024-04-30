@@ -13,8 +13,9 @@ import { Provider } from "react-redux";
 // firebase
 import { initializeApp } from "firebase/app";
 import { getFirestore } from "firebase/firestore";
+
 const firebaseConfig = {
-  apiKey: "AIzaSyA-FD8i2uceYO-0DjdWL59LhPNg3axBaBI",
+  apiKey: import.meta.env.VITE_FIREBASE_API_KEY,
   authDomain: "chillchill-9a1e2.firebaseapp.com",
   projectId: "chillchill-9a1e2",
   storageBucket: "chillchill-9a1e2.appspot.com",

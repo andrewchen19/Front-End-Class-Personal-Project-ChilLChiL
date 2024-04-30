@@ -11,8 +11,10 @@ import MonthForeignSpotsContainer from "./MonthForeignSpotsContainer";
 import MyArticlesCollectionContainer from "./MyArticlesCollectionContainer";
 import NewbieArticlesContainer from "./NewbieArticlesContainer";
 import NewbieForeignSpotsContainer from "./NewbieForeignSpotsContainer";
+import ProfileEditContainer from "./ProfileEditContainer";
 import ProfileNavbar from "./ProfileNavbar";
 import ReadMore from "./ReadMore";
+import RealtimeContainer from "./RealtimeContainer";
 import RelatedArticlesContainer from "./RelatedArticlesContainer";
 import TubeForeignSpotsContainer from "./TubeForeignSpotsContainer";
 import UnsplashContainer from "./UnsplashContainer";
@@ -33,8 +35,10 @@ export {
   MyArticlesCollectionContainer,
   NewbieArticlesContainer,
   NewbieForeignSpotsContainer,
+  ProfileEditContainer,
   ProfileNavbar,
   ReadMore,
+  RealtimeContainer,
   RelatedArticlesContainer,
   TubeForeignSpotsContainer,
   UnsplashContainer,

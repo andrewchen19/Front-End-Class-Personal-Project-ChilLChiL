@@ -1,7 +1,4 @@
 import React from "react";
-import { Link } from "react-router-dom";
-
-// overflow-x-hidden
 
 const Footer: React.FC = () => {
   return (
@@ -9,13 +6,13 @@ const Footer: React.FC = () => {
       {/* animation */}
       <div className="animate-marquee absolute -top-[30px] left-0 right-0 z-10">
         <div className="h-7 w-5">
-          <Link to="/">
+          <a href="/">
             <img
               src="https://akstatic.streetvoice.com/asset/images/sv-cat.gif"
               alt="cat-icon"
               className="h-full w-full"
             />
-          </Link>
+          </a>
         </div>
       </div>
 

@@ -137,7 +137,7 @@ const Landing: React.FC = () => {
 
         <div className="absolute bottom-7 left-1/2 -translate-x-1/2">
           <Link to="/foreign-spots">
-            <button className="btn-turquoise text-3xl">Get Inspired</button>
+            <button className="button-74">Get Inspired</button>
           </Link>
         </div>
       </section>
@@ -177,7 +177,7 @@ const Landing: React.FC = () => {
                 <motion.span
                   key={index}
                   variants={charVariants}
-                  className={`${index >= 160 && index <= 178 ? "text-navy font-bold" : ""}`}
+                  className={`${index >= 160 && index <= 178 ? "font-bold text-pink" : ""}`}
                 >
                   {char}
                 </motion.span>

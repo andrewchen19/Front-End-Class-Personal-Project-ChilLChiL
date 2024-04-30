@@ -20,10 +20,10 @@ const MyCollections: React.FC = () => {
   }
 
   return (
-    <div className="mx-auto flex w-[90%] max-w-6xl gap-10">
+    <div className="mx-auto mt-20 grid w-[90%] max-w-6xl grid-cols-[auto,1fr] gap-10">
       <ProfileNavbar />
 
-      <div className="my-20 flex w-full flex-col gap-10 px-10">
+      <div className="mb-20 flex w-full flex-col gap-10 px-10">
         <LocalSpotsCollectionContainer />
         <ForeignSpotsCollectionContainer />
       </div>

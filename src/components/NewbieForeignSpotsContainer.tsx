@@ -26,8 +26,6 @@ const NewbieForeignSpotsContainer: React.FC = () => {
       }
     });
 
-    console.log(spotsArray);
-
     setSpotsList(spotsArray);
   };
 

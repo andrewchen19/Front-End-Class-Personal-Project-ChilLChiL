@@ -76,7 +76,7 @@ const RelatedArticlesContainer: React.FC = () => {
         <h3 className="mt-8">尚未有相關的文章...</h3>
       )}
 
-      <div className="mt-8 grid grid-cols-4 gap-x-12 gap-y-8">
+      <div className="mt-8 grid grid-cols-3 gap-x-12 gap-y-8">
         {!isArticleLoading &&
           articlesList &&
           articlesList.length > 0 &&

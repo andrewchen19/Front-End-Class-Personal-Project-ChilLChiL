@@ -12,9 +12,9 @@ const ForeignSpotsCollectionContainer: React.FC = () => {
   const navigate = useNavigate();
 
   const [isForeignLoading, setIsForeignLoading] = useState<boolean>(false);
-  const [foreignSpotsList, setForeignSpotsList] = useState<DocumentData[] | []>(
-    [],
-  );
+  const [foreignSpotsList, setForeignSpotsList] = useState<
+    DocumentData[] | null
+  >(null);
 
   const spotHandler = (name: string, id: string) => {
     navigate(`/foreign-spots/${name}/${id}`);
@@ -74,17 +74,20 @@ const ForeignSpotsCollectionContainer: React.FC = () => {
   }, []);
 
   return (
-    <div>
-      <h2 className="font-notosans text-2xl font-bold">國外浪點</h2>
+    <section>
+      <h2 className="text-2xl font-bold">國外浪點</h2>
 
-      {isForeignLoading && <p className="mt-5">loading now...</p>}
-
-      {!isForeignLoading && foreignSpotsList.length < 1 && (
-        <h3 className="mt-5">尚未收藏浪點...</h3>
+      {(isForeignLoading || !foreignSpotsList) && (
+        <p className="mt-8">loading now...</p>
       )}
 
-      <div className="mt-5 grid grid-cols-4">
+      {!isForeignLoading && foreignSpotsList && foreignSpotsList.length < 1 && (
+        <h3 className="mt-8">尚未收藏浪點...</h3>
+      )}
+
+      <div className="mt-8 grid grid-cols-3 gap-x-12 gap-y-8">
         {!isForeignLoading &&
+          foreignSpotsList &&
           foreignSpotsList.length > 0 &&
           foreignSpotsList.map((spot) => {
             console.log(spot);
@@ -113,7 +116,7 @@ const ForeignSpotsCollectionContainer: React.FC = () => {
             );
           })}
       </div>
-    </div>
+    </section>
   );
 };
 

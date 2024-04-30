@@ -24,6 +24,7 @@ import {
   getDocs,
   DocumentData,
   where,
+  Query,
 } from "firebase/firestore";
 
 const AllArticlesContainer: React.FC = () => {
@@ -39,6 +40,7 @@ const AllArticlesContainer: React.FC = () => {
   const [layout, setLayout] = useState("grid");
   const [tag, setTag] = useState<string>("all");
   const [surfingSpot, setSurfingSpot] = useState<string>("all");
+  const [order, setOrder] = useState<string>("desc");
 
   const articleHandler = (id: string) => {
     navigate(`/articles/${id}`);
@@ -48,12 +50,22 @@ const AllArticlesContainer: React.FC = () => {
     const articlesCollectionRef = collection(db, "articles");
 
     // get the prev 10 documents
-    const prev = query(
-      articlesCollectionRef,
-      orderBy("created_at"),
-      endBefore(firstDocument),
-      limitToLast(9),
-    );
+    let prev: Query<DocumentData, DocumentData>;
+    if (order === "asc") {
+      prev = query(
+        articlesCollectionRef,
+        orderBy("created_at"),
+        endBefore(firstDocument),
+        limitToLast(9),
+      );
+    } else {
+      prev = query(
+        articlesCollectionRef,
+        orderBy("created_at", "desc"),
+        endBefore(firstDocument),
+        limitToLast(9),
+      );
+    }
 
     const documentSnapshots = await getDocs(prev);
     const articlesArray = documentSnapshots.docs.map((doc) => doc.data());
@@ -71,12 +83,22 @@ const AllArticlesContainer: React.FC = () => {
     const articlesCollectionRef = collection(db, "articles");
 
     // get the next 10 documents
-    const next = query(
-      articlesCollectionRef,
-      orderBy("created_at"),
-      startAfter(lastDocument),
-      limit(9),
-    );
+    let next: Query<DocumentData, DocumentData>;
+    if (order === "asc") {
+      next = query(
+        articlesCollectionRef,
+        orderBy("created_at"),
+        startAfter(lastDocument),
+        limit(9),
+      );
+    } else {
+      next = query(
+        articlesCollectionRef,
+        orderBy("created_at", "desc"),
+        startAfter(lastDocument),
+        limit(9),
+      );
+    }
 
     const documentSnapshots = await getDocs(next);
     const articlesArray = documentSnapshots.docs.map((doc) => doc.data());
@@ -106,6 +128,8 @@ const AllArticlesContainer: React.FC = () => {
     if (tag !== "all" && surfingSpot !== "all") {
       getTagAndSurfingSpotArticlesFromFirebase(tag, surfingSpot);
     }
+
+    setNowPage(1);
   };
 
   const resetHandler = async (): Promise<void> => {
@@ -130,7 +154,16 @@ const AllArticlesContainer: React.FC = () => {
     }
 
     // Query the first page of docs
-    const first = query(articlesCollectionRef, orderBy("created_at"), limit(9));
+    let first: Query<DocumentData, DocumentData>;
+    if (order === "asc") {
+      first = query(articlesCollectionRef, orderBy("created_at"), limit(9));
+    } else {
+      first = query(
+        articlesCollectionRef,
+        orderBy("created_at", "desc"),
+        limit(9),
+      );
+    }
     const documentSnapshots = await getDocs(first);
     const articlesArray = documentSnapshots.docs.map((doc) => doc.data());
     setArticlesList(articlesArray);
@@ -157,12 +190,22 @@ const AllArticlesContainer: React.FC = () => {
     }
 
     // Query the first page of docs
-    const first = query(
-      articlesCollectionRef,
-      where("tag", "==", tag),
-      orderBy("created_at"),
-      limit(9),
-    );
+    let first: Query<DocumentData, DocumentData>;
+    if (order === "asc") {
+      first = query(
+        articlesCollectionRef,
+        where("tag", "==", tag),
+        orderBy("created_at"),
+        limit(9),
+      );
+    } else {
+      first = query(
+        articlesCollectionRef,
+        where("tag", "==", tag),
+        orderBy("created_at", "desc"),
+        limit(9),
+      );
+    }
     const documentSnapshots = await getDocs(first);
     const articlesArray = documentSnapshots.docs.map((doc) => doc.data());
     setArticlesList(articlesArray);
@@ -194,12 +237,22 @@ const AllArticlesContainer: React.FC = () => {
     }
 
     // Query the first page of docs
-    const first = query(
-      articlesCollectionRef,
-      where("surfingSpot", "==", surfingSpot),
-      orderBy("created_at"),
-      limit(9),
-    );
+    let first: Query<DocumentData, DocumentData>;
+    if (order === "asc") {
+      first = query(
+        articlesCollectionRef,
+        where("surfingSpot", "==", surfingSpot),
+        orderBy("created_at"),
+        limit(9),
+      );
+    } else {
+      first = query(
+        articlesCollectionRef,
+        where("surfingSpot", "==", surfingSpot),
+        orderBy("created_at", "desc"),
+        limit(9),
+      );
+    }
     const documentSnapshots = await getDocs(first);
     const articlesArray = documentSnapshots.docs.map((doc) => doc.data());
     setArticlesList(articlesArray);
@@ -233,13 +286,24 @@ const AllArticlesContainer: React.FC = () => {
     }
 
     // Query the first page of docs
-    const first = query(
-      articlesCollectionRef,
-      where("tag", "==", tag),
-      where("surfingSpot", "==", surfingSpot),
-      orderBy("created_at"),
-      limit(9),
-    );
+    let first: Query<DocumentData, DocumentData>;
+    if (order === "asc") {
+      first = query(
+        articlesCollectionRef,
+        where("tag", "==", tag),
+        where("surfingSpot", "==", surfingSpot),
+        orderBy("created_at"),
+        limit(9),
+      );
+    } else {
+      first = query(
+        articlesCollectionRef,
+        where("tag", "==", tag),
+        where("surfingSpot", "==", surfingSpot),
+        orderBy("created_at", "desc"),
+        limit(9),
+      );
+    }
     const documentSnapshots = await getDocs(first);
     const articlesArray = documentSnapshots.docs.map((doc) => doc.data());
     setArticlesList(articlesArray);
@@ -355,6 +419,23 @@ const AllArticlesContainer: React.FC = () => {
               <option value="donghe">東河</option>
               <option value="jinzun">金樽</option>
               <option value="others">其他</option>
+            </select>
+          </div>
+
+          {/* select time */}
+          <div className="form-control">
+            <label className="label" htmlFor="order">
+              <span className="label-text">時間排序</span>
+            </label>
+            <select
+              id="order"
+              name="order"
+              value={order}
+              className="select select-sm focus:outline-none"
+              onChange={(e) => setOrder(e.target.value)}
+            >
+              <option value="desc">由新到舊</option>
+              <option value="asc">由舊到新</option>
             </select>
           </div>
 

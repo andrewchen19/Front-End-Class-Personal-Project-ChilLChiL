@@ -7,8 +7,6 @@ import {
   closeUnsplash,
 } from "../features/article/articleSlice";
 
-const accessKey = "yVRtYxFbbUtMJexIoTL2iPEArjBKOymgX7267PYXGDo";
-
 const UnsplashContainer: React.FC = () => {
   const [searchText, setSearchText] = useState("");
   const [isLoading, setIsLoading] = useState(false);
@@ -19,7 +17,8 @@ const UnsplashContainer: React.FC = () => {
     if (e.key === "Enter") {
       const trimSearchText = searchText.trim();
 
-      const searchUrl = `https://api.unsplash.com/search/photos/?client_id=${accessKey}&query=${trimSearchText}&orientation=landscape&per_page=15`;
+      const searchUrl = `https://api.unsplash.com/search/photos/?client_id=${import.meta.env.VITE_UNSPLASH_ACCESS_KEY}&query=${trimSearchText}&orientation=landscape&per_page=15`;
+      console.log(searchUrl);
       setIsLoading(true);
       try {
         const response = await axios.get(searchUrl);
@@ -33,7 +32,7 @@ const UnsplashContainer: React.FC = () => {
 
   useEffect(() => {
     const fetchRandomImage = async () => {
-      const randomUrl = `https://api.unsplash.com/photos/random/?client_id=${accessKey}&query=surf&orientation=landscape&count=15`;
+      const randomUrl = `https://api.unsplash.com/photos/random/?client_id=${import.meta.env.VITE_UNSPLASH_ACCESS_KEY}&query=surf&orientation=landscape&count=15`;
       setIsLoading(true);
       try {
         const response = await axios.get(randomUrl);

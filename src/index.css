@@ -17,6 +17,38 @@ body {
   font-family: "Noto Sans TC", sans-serif;
 }
 
+.button-74 {
+  background-color: #fbeee0;
+  border: 2px solid #422800;
+  border-radius: 30px;
+  box-shadow: #422800 4px 4px 0 0;
+  color: #422800;
+  cursor: pointer;
+  display: inline-block;
+  font-weight: 600;
+  font-size: 18px;
+  padding: 0 18px;
+  line-height: 38px;
+  text-align: center;
+  text-decoration: none;
+  user-select: none;
+  -webkit-user-select: none;
+  touch-action: manipulation;
+}
+.button-74:hover {
+  background-color: #fff;
+}
+.button-74:active {
+  box-shadow: #422800 2px 2px 0 0;
+  transform: translate(2px, 2px);
+}
+@media (min-width: 768px) {
+  .button-74 {
+    min-width: 120px;
+    padding: 0 20px;
+  }
+}
+
 @font-face {
   font-family: "Helvetica";
   src: url(./assets/fonts/Helvetica.ttf);
@@ -53,27 +85,21 @@ body {
   .padding {
     @apply px-8 py-12 sm:px-16 sm:py-24;
   }
-
   .padding-x {
     @apply px-8 sm:px-16;
   }
-
   .padding-y {
     @apply py-12 sm:py-24;
   }
-
   .padding-l {
     @apply pl-8 sm:pl-16;
   }
-
   .padding-r {
     @apply pr-8 sm:pr-16;
   }
-
   .padding-t {
     @apply pt-12 sm:pt-24;
   }
-
   .padding-b {
     @apply pb-12 sm:pb-24;
   }
@@ -83,6 +109,9 @@ body {
   }
   .btn-turquoise {
     @apply btn btn-xs sm:btn-sm lg:btn-md rounded-3xl border-transparent bg-turquoise font-bold tracking-wide text-white duration-500 hover:border-transparent  hover:bg-blue-dark;
+  }
+  .btn-turquoise-gradient {
+    @apply btn btn-xs sm:btn-sm lg:btn-md rounded-3xl bg-gradient-to-l from-blue-light to-turquoise font-bold tracking-wide text-white duration-500  hover:border-transparent hover:from-turquoise hover:to-turquoise;
   }
 
   /* .info-text {

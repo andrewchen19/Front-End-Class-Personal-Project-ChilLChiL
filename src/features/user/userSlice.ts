@@ -4,7 +4,7 @@ import { UserInfo } from "../../types";
 interface UserState {
   user: null | UserInfo;
   theme: string;
-  isSidebarOpen: boolean;
+  isEditContainerOpen: boolean;
 }
 
 interface Themes {
@@ -38,7 +38,7 @@ const getThemeFromLocalStorage = (): string => {
 const initialState: UserState = {
   user: getUserFromLocalStorage(),
   theme: getThemeFromLocalStorage(),
-  isSidebarOpen: false,
+  isEditContainerOpen: false,
 };
 
 const userSlice = createSlice({
@@ -59,16 +59,32 @@ const userSlice = createSlice({
     },
     removeUser: (state) => {
       state.user = null;
-      state.isSidebarOpen = false;
+      state.isEditContainerOpen = false;
       localStorage.removeItem("user");
+    },
+    updateUser: (state, action) => {
+      state.user = action.payload;
+      localStorage.setItem("user", JSON.stringify(state.user));
+    },
+    openEditContainer: (state) => {
+      state.isEditContainerOpen = true;
+    },
+    closeEditContainer: (state) => {
+      state.isEditContainerOpen = false;
     },
   },
 });
 
-// updateUser, toggleTheme, toggleSidebar
+// toggleTheme, toggleSidebar
 
 // export single reducer
-export const { setUser, removeUser } = userSlice.actions;
+export const {
+  setUser,
+  removeUser,
+  openEditContainer,
+  closeEditContainer,
+  updateUser,
+} = userSlice.actions;
 
 // export slice.reducer
 export default userSlice.reducer;

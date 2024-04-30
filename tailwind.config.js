@@ -32,11 +32,13 @@ export default {
       xl: "rgba(0, 0, 0, 0.19) 0px 10px 20px, rgba(0, 0, 0, 0.23) 0px 6px 6px;",
       "2xl":
         "rgba(0, 0, 0, 0.25) 0px 14px 28px, rgba(0, 0, 0, 0.22) 0px 10px 10px;",
+      button: "rgba(66, 40, 0) 4px 4px 0px 0px",
     },
     extend: {
       colors: {
         black: "#000000",
         white: "#FFFFFF",
+        beige: "#F9F5EC",
         pink: {
           light: "#F6CBD1",
           DEFAULT: "#F48080",
@@ -57,6 +59,7 @@ export default {
         orange: {
           bright: "#FF9500",
         },
+        carrot: "#FF4742",
         purple: {
           light: "#968095",
           bright: "#6851F4",
@@ -69,7 +72,6 @@ export default {
           light: "#F8CA86",
           DEFAULT: "#fbbf24",
         },
-        beige: "#F9F5EC",
       },
       animation: {
         marquee: "marquee 13s linear infinite",

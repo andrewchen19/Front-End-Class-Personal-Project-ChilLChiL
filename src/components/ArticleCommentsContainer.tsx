@@ -4,7 +4,7 @@ import { toast } from "react-toastify";
 import { useDispatch, useSelector } from "react-redux";
 import { closeComment } from "../features/article/articleSlice";
 import { IRootState } from "../store";
-import { formatMessageTime, calculateTimeAgo } from "../utils";
+import { calculateTimeAgo } from "../utils";
 import { CommentInfo } from "../types";
 
 // nano id
@@ -194,7 +194,7 @@ const ArticleCommentsContainer: React.FC = () => {
     const fetchData = async () => {
       setIsLoading(true);
 
-      console.log("execute");
+      // console.log("execute");
 
       const unsubscribe = onSnapshot(
         collection(db, "articles", id, "comments"),

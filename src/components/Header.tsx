@@ -18,16 +18,19 @@ const Header: React.FC = () => {
 
   return (
     <header className="flex h-14 items-center bg-black text-white">
-      <div className="mx-auto flex w-[95%] items-center justify-between">
+      <div className="relative mx-auto flex w-[95%] items-center justify-center">
         {/* logo */}
-        <NavLink to="/">
-          <h1 className="font-superglue text-2xl tracking-widest text-turquoise">
-            ChilLChilL
-          </h1>
-        </NavLink>
+        <div className="absolute left-0">
+          <NavLink to="/">
+            <h1 className="font-superglue text-3xl tracking-widest text-turquoise">
+              ChilLChilL
+            </h1>
+          </NavLink>
+        </div>
 
-        <nav className="-ml-20">
-          <ul className="flex gap-5 font-notosans text-base">
+        {/* links */}
+        <nav>
+          <ul className="flex gap-8">
             <li>
               <NavLink
                 to="/local-spots"
@@ -38,7 +41,7 @@ const Header: React.FC = () => {
                   };
                 }}
               >
-                浪點指南
+                台灣浪點
               </NavLink>
             </li>
 
@@ -71,7 +74,7 @@ const Header: React.FC = () => {
             {user && (
               <li>
                 <NavLink
-                  to="/profile/my-info"
+                  to="/profile"
                   className="hover:text-pink"
                   style={({ isActive }) => {
                     return {
@@ -86,19 +89,24 @@ const Header: React.FC = () => {
           </ul>
         </nav>
 
+        {/* buttons */}
         {user ? (
-          <button
-            className="rounded-lg bg-turquoise px-2 py-1 font-notosans text-sm text-white"
-            onClick={logoutHandler}
-          >
-            登出
-          </button>
-        ) : (
-          <NavLink to="/log-in">
-            <button className="btn btn-sm rounded-3xl border-transparent bg-turquoise font-bold tracking-wide text-white duration-500 hover:border-transparent  hover:bg-blue-dark">
-              登入 / 註冊
+          <div className="absolute right-0">
+            <button
+              className="btn btn-sm rounded-3xl border-transparent bg-turquoise font-bold tracking-wide text-white duration-500 hover:border-transparent  hover:bg-blue-dark"
+              onClick={logoutHandler}
+            >
+              登出
             </button>
-          </NavLink>
+          </div>
+        ) : (
+          <div className="absolute right-0">
+            <NavLink to="/log-in">
+              <button className="btn btn-sm rounded-3xl border-transparent bg-turquoise font-bold tracking-wide text-white duration-500 hover:border-transparent  hover:bg-blue-dark">
+                登入 / 註冊
+              </button>
+            </NavLink>
+          </div>
         )}
       </div>
     </header>

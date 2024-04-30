@@ -15,7 +15,9 @@ const LocalSpotsCollectionContainer: React.FC = () => {
   const navigate = useNavigate();
 
   const [isLocalLoading, setIsLocalLoading] = useState<boolean>(false);
-  const [localSpotsList, setLocalSpotsList] = useState<DocumentData[] | []>([]);
+  const [localSpotsList, setLocalSpotsList] = useState<DocumentData[] | null>(
+    null,
+  );
 
   const spotHandler = (name: string, id: string) => {
     navigate(`/local-spots/${name}/${id}`);
@@ -75,17 +77,20 @@ const LocalSpotsCollectionContainer: React.FC = () => {
   }, []);
 
   return (
-    <div>
+    <section>
       <h2 className="text-2xl font-bold">國內浪點</h2>
 
-      {isLocalLoading && <p className="mt-5">loading now...</p>}
-
-      {!isLocalLoading && localSpotsList.length < 1 && (
-        <h3 className="mt-5">尚未收藏浪點...</h3>
+      {(isLocalLoading || !localSpotsList) && (
+        <p className="mt-8">loading now...</p>
       )}
 
-      <div className="mt-5 grid grid-cols-4">
+      {!isLocalLoading && localSpotsList && localSpotsList.length < 1 && (
+        <h3 className="mt-8">尚未收藏浪點...</h3>
+      )}
+
+      <div className="mt-8 grid grid-cols-3 gap-x-12 gap-y-8">
         {!isLocalLoading &&
+          localSpotsList &&
           localSpotsList.length > 0 &&
           localSpotsList.map((spot) => {
             const { id, name, mapImage, likes_amount } = spot;
@@ -118,7 +123,7 @@ const LocalSpotsCollectionContainer: React.FC = () => {
             );
           })}
       </div>
-    </div>
+    </section>
   );
 };
 

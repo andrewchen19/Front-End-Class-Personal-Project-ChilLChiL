@@ -1,6 +1,12 @@
 import { ReactElement } from "react";
+
+// day.js
 import dayjs from "dayjs";
 
+// react echart
+import { ReactEChartsProps } from "../components/ReactEchart";
+
+// image
 import user1 from "../assets/images/user1.jpg";
 import user2 from "../assets/images/user2.jpg";
 
@@ -376,4 +382,150 @@ export const reviews: Review[] = [
     feedback:
       "As a beginner surfer, this website offers a wealth of useful information, benefiting from here greatly!",
   },
+];
+
+interface WeatherProps {
+  waveData: number[];
+  gustData: number[];
+  tempData: number[];
+}
+export const executeOption = ({
+  waveData,
+  gustData,
+  tempData,
+}: WeatherProps) => {
+  const colors = ["#F48080", "#70ACC7", "#888D54"];
+
+  const option: ReactEChartsProps["option"] = {
+    color: colors,
+
+    tooltip: {
+      trigger: "axis",
+      axisPointer: {
+        type: "cross",
+      },
+    },
+    grid: {
+      right: "18%",
+    },
+    toolbox: {
+      feature: {
+        restore: { show: true },
+        magicType: { show: true, type: ["line", "bar"] },
+      },
+      left: "15%",
+    },
+    legend: {
+      data: ["Temperature", "Wave Height", "Gust Speed"],
+      left: "center",
+    },
+    xAxis: [
+      {
+        type: "category",
+        axisTick: {
+          alignWithLabel: true,
+        },
+        data: ["00", "08", "16", "00", "08", "16", "00", "08", "16"],
+      },
+    ],
+    yAxis: [
+      {
+        type: "value",
+        name: "最大浪高",
+        position: "right",
+        alignTicks: true,
+        axisLine: {
+          show: true,
+          lineStyle: {
+            color: colors[1],
+          },
+        },
+        min: 0,
+        max: 2.4,
+        interval: 0.4,
+        axisLabel: {
+          formatter: "{value} m",
+        },
+      },
+      {
+        type: "value",
+        name: "陣風",
+        position: "right",
+        alignTicks: true,
+        offset: 80,
+        axisLine: {
+          show: true,
+          lineStyle: {
+            color: colors[2],
+          },
+        },
+        min: 0,
+        max: 60,
+        interval: 10,
+        axisLabel: {
+          formatter: "{value} km/h",
+        },
+      },
+      {
+        type: "value",
+        name: "溫度",
+        position: "left",
+        alignTicks: true,
+        axisLine: {
+          show: true,
+          lineStyle: {
+            color: colors[0],
+          },
+        },
+        min: 5,
+        max: 35,
+        interval: 5,
+        axisLabel: {
+          formatter: "{value} °C",
+        },
+      },
+    ],
+    series: [
+      {
+        name: "Temperature",
+        type: "line",
+        yAxisIndex: 2,
+        data: tempData,
+      },
+      {
+        name: "Wave Height",
+        type: "bar",
+        data: waveData,
+      },
+      {
+        name: "Gust Speed",
+        type: "bar",
+        yAxisIndex: 1,
+        data: gustData,
+      },
+    ],
+  };
+
+  return option;
+};
+
+export const profileImageList: string[] = [
+  "https://firebasestorage.googleapis.com/v0/b/chillchill-9a1e2.appspot.com/o/default_avatar%2Fmen1.png?alt=media&token=a991ddf6-2639-4617-97c7-0b9d3a2b6cba",
+  "https://firebasestorage.googleapis.com/v0/b/chillchill-9a1e2.appspot.com/o/default_avatar%2Fmen2.png?alt=media&token=e28f476a-6c8c-41f2-9107-3dbd8d5a82be",
+  "https://firebasestorage.googleapis.com/v0/b/chillchill-9a1e2.appspot.com/o/default_avatar%2Fmen3.png?alt=media&token=b58da67c-7e32-431a-99a5-21fde685041c",
+  "https://firebasestorage.googleapis.com/v0/b/chillchill-9a1e2.appspot.com/o/default_avatar%2Fmen4.png?alt=media&token=ae094e5c-1c01-440c-af3d-76c5ac81d606",
+  "https://firebasestorage.googleapis.com/v0/b/chillchill-9a1e2.appspot.com/o/default_avatar%2Fmen5.png?alt=media&token=ee3fb869-d2fd-45f1-81a2-c9025175a5e0",
+  "https://firebasestorage.googleapis.com/v0/b/chillchill-9a1e2.appspot.com/o/default_avatar%2Fmen6.png?alt=media&token=388069c0-2135-4985-863d-a1dfa7fee618",
+  "https://firebasestorage.googleapis.com/v0/b/chillchill-9a1e2.appspot.com/o/default_avatar%2Fmen7.png?alt=media&token=dbd075d1-8d8d-43e1-888a-8ccf3418abf8",
+  "https://firebasestorage.googleapis.com/v0/b/chillchill-9a1e2.appspot.com/o/default_avatar%2Fmen8.png?alt=media&token=7903b118-36b2-49c9-b00c-514086d981c6",
+  "https://firebasestorage.googleapis.com/v0/b/chillchill-9a1e2.appspot.com/o/default_avatar%2Fmen9.png?alt=media&token=3054f59a-80c6-432e-be1a-a194e014ac34",
+  "https://firebasestorage.googleapis.com/v0/b/chillchill-9a1e2.appspot.com/o/default_avatar%2Fwomen1.png?alt=media&token=2f561d70-dadf-4701-90da-c95f8d9758b7",
+  "https://firebasestorage.googleapis.com/v0/b/chillchill-9a1e2.appspot.com/o/default_avatar%2Fwomen2.png?alt=media&token=fcb60c3e-dba0-4387-ac65-5c95393c92db",
+  "https://firebasestorage.googleapis.com/v0/b/chillchill-9a1e2.appspot.com/o/default_avatar%2Fwomen3.png?alt=media&token=7ce1d6dd-c63c-48a9-a13a-5b0ffb4a66ca",
+  "https://firebasestorage.googleapis.com/v0/b/chillchill-9a1e2.appspot.com/o/default_avatar%2Fwomen4.png?alt=media&token=c35325bf-86f6-40f6-b4df-9cae26aa895e",
+  "https://firebasestorage.googleapis.com/v0/b/chillchill-9a1e2.appspot.com/o/default_avatar%2Fwomen5.png?alt=media&token=cda2bb62-5ddd-4026-b944-c435df5d3991",
+  "https://firebasestorage.googleapis.com/v0/b/chillchill-9a1e2.appspot.com/o/default_avatar%2Fwomen6.png?alt=media&token=1f73568f-d7bf-4ae5-a745-2f748391213c",
+  "https://firebasestorage.googleapis.com/v0/b/chillchill-9a1e2.appspot.com/o/default_avatar%2Fwomen7.png?alt=media&token=880295c4-f27c-46e0-8661-42d4f43a425e",
+  "https://firebasestorage.googleapis.com/v0/b/chillchill-9a1e2.appspot.com/o/default_avatar%2Fwomen8.png?alt=media&token=98a3d09d-551a-49c7-bd45-4ab1cb321626",
+  "https://firebasestorage.googleapis.com/v0/b/chillchill-9a1e2.appspot.com/o/default_avatar%2Fwomen9.png?alt=media&token=0b3963bf-434f-4d08-a15f-90b7281d1b20",
 ];

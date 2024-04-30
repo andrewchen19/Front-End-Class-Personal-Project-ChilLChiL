@@ -26,8 +26,6 @@ const MonthForeignSpotsContainer: React.FC = () => {
       }
     });
 
-    console.log(spotsArray);
-
     setSpotsList(spotsArray);
   };
 

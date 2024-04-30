@@ -9,7 +9,7 @@ const TubeForeignSpotsContainer: React.FC = () => {
   const navigate = useNavigate();
 
   const [isSpotLoading, setIsSpotLoading] = useState<boolean>(false);
-  const [spotsList, setSpotsList] = useState<DocumentData[] | []>([]);
+  const [spotsList, setSpotsList] = useState<DocumentData[] | null>(null);
 
   const spotHandler = (name: string, id: string) => {
     navigate(`/foreign-spots/${name}/${id}`);
@@ -25,9 +25,6 @@ const TubeForeignSpotsContainer: React.FC = () => {
         spotsArray.push(data);
       }
     });
-
-    console.log(spotsArray);
-
     setSpotsList(spotsArray);
   };
 
@@ -51,10 +48,11 @@ const TubeForeignSpotsContainer: React.FC = () => {
     <section>
       <h2 className="text-2xl font-bold">管浪愛好者? 來這邊</h2>
 
-      {isSpotLoading && <p className="mt-5">loading now...</p>}
+      {isSpotLoading && !spotsList && <p className="mt-5">loading now...</p>}
 
       <div className="mx-auto mt-5 grid grid-cols-2 gap-10">
         {!isSpotLoading &&
+          spotsList &&
           spotsList.length > 1 &&
           spotsList.map((spot) => {
             const { id, country, coverImage } = spot;
