@@ -12,8 +12,8 @@ const UnsplashImagesContainer: React.FC = () => {
   const { unsplashArray } = useSelector((state: IRootState) => state.article);
   const dispatch = useDispatch();
 
-  const [isMouserEnter, setIsMouserEnter] = useState(false);
-  const [hoverId, setHoverId] = useState("");
+  const [isMouserEnter, setIsMouserEnter] = useState<boolean>(false);
+  const [hoverId, setHoverId] = useState<string>("");
 
   const enterHandler = (id: string) => {
     setIsMouserEnter(true);
@@ -32,7 +32,7 @@ const UnsplashImagesContainer: React.FC = () => {
   };
 
   return (
-    <div className="grid grid-cols-3 gap-2">
+    <div className="grid grid-cols-2 gap-4">
       {unsplashArray.map((item) => {
         const { id, alt_description, urls, user } = item;
         return (
@@ -45,12 +45,14 @@ const UnsplashImagesContainer: React.FC = () => {
             <img
               src={urls.regular}
               alt={alt_description}
-              className="h-full w-full object-cover object-center hover:cursor-pointer"
+              className="h-[130px] w-full object-cover object-center hover:cursor-pointer"
               onClick={() => clickHandler(urls.raw, user.links.html, user.name)}
             />
             <span
-              className={`absolute bottom-0 left-0 text-pink ${
-                isMouserEnter && hoverId === id ? "block" : "hidden"
+              className={`${
+                isMouserEnter && hoverId === id
+                  ? "absolute bottom-1 left-1/2 -translate-x-1/2 text-nowrap text-sm capitalize tracking-wide text-pink"
+                  : "hidden"
               }`}
             >
               {user.name}

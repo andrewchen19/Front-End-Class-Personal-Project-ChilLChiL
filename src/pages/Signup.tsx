@@ -52,7 +52,7 @@ const Signup: React.FC = () => {
         toast.success("Sign up successful 😎");
         setTimeout(() => {
           navigate("/log-in");
-        }, 1000);
+        }, 800);
       })
       .catch((error) => {
         const errorCode = error.code;

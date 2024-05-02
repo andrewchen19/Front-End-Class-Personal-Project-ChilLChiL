@@ -6,6 +6,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { openComment } from "../features/article/articleSlice";
 import { IRootState } from "../store";
 import { formatTime } from "../utils";
+import { motion, Variants, AnimatePresence } from "framer-motion";
 
 // react-icons
 import { TbMessageCircle } from "react-icons/tb";
@@ -31,6 +32,19 @@ import {
   orderBy,
 } from "firebase/firestore";
 
+const centerRotationVariant: Variants = {
+  hidden: { opacity: 0, rotate: -10 },
+  visible: {
+    opacity: 1,
+    rotate: 0,
+    transition: {
+      type: "spring",
+      bounce: 0.4,
+      duration: 1.5,
+    },
+  },
+};
+
 const Article: React.FC = () => {
   const { id } = useParams();
   const { user } = useSelector((state: IRootState) => state.user);
@@ -45,9 +59,27 @@ const Article: React.FC = () => {
   const [isLike, setIsLike] = useState<boolean>(false);
   const [isUser, setIsUser] = useState<boolean>(false);
   const [commentLength, setCommentLength] = useState<number>(0);
+  const [showModal, setShowModal] = useState<boolean>(false);
 
   const editHandler = (id: string) => {
     navigate(`/profile/edit-article/${id}`);
+  };
+
+  const deleteButtonHandler = () => {
+    setShowModal(true);
+  };
+  const softDeleteHandler = async (id: string): Promise<void> => {
+    const articleRef = doc(db, "articles", id);
+    const docSnap = await getDoc(articleRef);
+    if (docSnap.exists()) {
+      await updateDoc(articleRef, {
+        isDeleted: true,
+      });
+      toast.info("Deleted Successfully 😢");
+      setTimeout(() => {
+        navigate("/profile/my-articles");
+      }, 800);
+    }
   };
 
   const removeUserLikesFromFirebase = async (id: string): Promise<void> => {
@@ -277,8 +309,8 @@ const Article: React.FC = () => {
           alt="cover-image"
           className="h-full w-full object-cover object-center"
         />
-        <p className="absolute -bottom-[20px] right-[20px] text-xs text-gray-500">
-          Photoed by&nbsp;
+        <p className="absolute -bottom-[20px] right-[20px] font-palanquin text-[12px] font-medium text-gray-500">
+          Photo by&nbsp;
           <a
             href={photographerLink}
             target="_blank"
@@ -287,7 +319,7 @@ const Article: React.FC = () => {
           >
             {photographerName}
           </a>
-          &nbsp;by&nbsp;
+          &nbsp;on&nbsp;
           <a
             href="https://unsplash.com/"
             target="_blank"
@@ -302,7 +334,7 @@ const Article: React.FC = () => {
       {/* context */}
       <div className="mx-auto w-[70%] max-w-5xl">
         {/* title */}
-        <div className=" mt-16 px-[15px] text-4xl font-bold capitalize">
+        <div className="mt-16 px-[15px] text-4xl font-bold capitalize">
           {title}
         </div>
 
@@ -318,7 +350,7 @@ const Article: React.FC = () => {
                   className="h-10 w-10 rounded-full"
                 />
                 <p className="text-2xl">
-                  <span className="ml-2 font-fashioncountry text-turquoise ">
+                  <span className="ml-2 font-fashioncountry text-turquoise">
                     {authorName}
                   </span>
                 </p>
@@ -335,8 +367,8 @@ const Article: React.FC = () => {
                   className="group flex items-center gap-2 bg-transparent"
                   onClick={() => dispatch(openComment())}
                 >
-                  <TbMessageCircle className="text-pink-dark text-lg group-hover:text-pink" />
-                  <span className="text-pink-dark text-base  group-hover:text-pink">
+                  <TbMessageCircle className="text-lg text-pink-dark group-hover:text-pink" />
+                  <span className="text-base text-pink-dark  group-hover:text-pink">
                     {commentLength}
                   </span>
                 </button>
@@ -345,12 +377,20 @@ const Article: React.FC = () => {
 
             {/* edit/collection  button */}
             {isLogin && isUser && (
-              <button
-                className="btn-purple mt-2"
-                onClick={() => editHandler(articleId)}
-              >
-                編輯文章
-              </button>
+              <div className="mt-2 flex gap-4">
+                <button
+                  className="btn-olive"
+                  onClick={() => editHandler(articleId)}
+                >
+                  編輯文章
+                </button>
+                <button
+                  className="btn-clay-red"
+                  onClick={() => deleteButtonHandler()}
+                >
+                  刪除文章
+                </button>
+              </div>
             )}
             {isLogin && !isUser && id && (
               <button
@@ -374,7 +414,54 @@ const Article: React.FC = () => {
       </div>
 
       {/* comments container */}
-      {isCommentOpen && <ArticleCommentsContainer />}
+      <AnimatePresence>
+        {isCommentOpen && <ArticleCommentsContainer />}
+      </AnimatePresence>
+
+      {/* Modal */}
+      {showModal && (
+        <div
+          className="fixed inset-0 flex h-full w-full items-center justify-center"
+          style={{ backgroundColor: "rgba(0, 0, 0, 0.2)" }}
+        >
+          <motion.div
+            initial="hidden"
+            whileInView="visible"
+            variants={centerRotationVariant}
+            viewport={{ once: true }}
+            className="flex h-[195px] w-[420px] flex-col rounded-xl bg-white p-5"
+            style={{ boxShadow: "rgba(6, 2, 2, 0.15) 0px 2px 10px" }}
+          >
+            <div className="flex flex-col text-center font-helvetica">
+              <h3 className="text-xl font-bold">Delete Article</h3>
+              <p className="mx-auto mt-2 w-[80%] text-sm text-gray-500">
+                Deletion is not reversible, and the article will be completely
+                removed from public view.
+              </p>
+              <p className="mt-2 text-sm text-gray-700">
+                Still want to proceed?
+              </p>
+            </div>
+
+            <div className="mx-auto mt-auto flex gap-4">
+              <button
+                type="button"
+                className="btn-turquoise"
+                onClick={() => setShowModal(false)}
+              >
+                Cancel
+              </button>
+              <button
+                type="button"
+                className="btn-pink"
+                onClick={() => softDeleteHandler(articleId)}
+              >
+                Delete
+              </button>
+            </div>
+          </motion.div>
+        </div>
+      )}
     </>
   );
 };

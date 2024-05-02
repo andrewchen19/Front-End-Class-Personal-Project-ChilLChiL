@@ -16,6 +16,7 @@ import {
   getDocs,
   collection,
   where,
+  orderBy,
   limit,
   query,
   DocumentData,
@@ -38,6 +39,8 @@ const NewbieArticlesContainer: React.FC = () => {
     const q = query(
       articlesCollectionRef,
       where("tag", "==", "knowledge"),
+      where("isDeleted", "!=", true),
+      orderBy("likes_amount", "desc"),
       limit(6),
     );
 
@@ -64,7 +67,7 @@ const NewbieArticlesContainer: React.FC = () => {
 
   return (
     <section>
-      <h2 className="flex justify-between border-b border-gray-300 pb-4 text-2xl font-bold">
+      <h2 className="border-b border-gray-300 pb-4 text-2xl font-bold">
         新手必看
       </h2>
 

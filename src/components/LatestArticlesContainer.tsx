@@ -15,6 +15,7 @@ import { db } from "../main";
 import {
   getDocs,
   collection,
+  where,
   orderBy,
   limit,
   query,
@@ -37,6 +38,7 @@ const LatestArticlesContainer: React.FC = () => {
     // order and limit
     const q = query(
       articlesCollectionRef,
+      where("isDeleted", "!=", true),
       orderBy("created_at", "desc"),
       limit(6),
     );
@@ -64,7 +66,7 @@ const LatestArticlesContainer: React.FC = () => {
 
   return (
     <section>
-      <h2 className="flex justify-between border-b border-gray-300 pb-4 text-2xl font-bold">
+      <h2 className="border-b border-gray-300 pb-4 text-2xl font-bold">
         最新發布
       </h2>
 

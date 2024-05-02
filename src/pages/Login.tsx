@@ -26,7 +26,7 @@ const Login: React.FC = () => {
       toast.success("Login Successful 😎");
       setTimeout(() => {
         navigate("/profile");
-      }, 1000);
+      }, 800);
     }
   }
 

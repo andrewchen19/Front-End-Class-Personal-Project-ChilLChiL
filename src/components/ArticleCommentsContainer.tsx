@@ -6,6 +6,7 @@ import { closeComment } from "../features/article/articleSlice";
 import { IRootState } from "../store";
 import { calculateTimeAgo } from "../utils";
 import { CommentInfo } from "../types";
+import { motion, Variants } from "framer-motion";
 
 // nano id
 import { nanoid } from "nanoid";
@@ -36,6 +37,16 @@ import "react-quill/dist/quill.snow.css";
 // covert HTML sting to JSX, safely render HTML to prevent xss attack
 import { Markup } from "interweave";
 
+const rightVariant: Variants = {
+  hidden: { x: "100%", opacity: 0.5 },
+  visible: { x: 0, opacity: 1, transition: { duration: 1.1 } },
+  exit: { x: "100%", opacity: 0.5 },
+};
+const topVariant: Variants = {
+  hidden: { y: "-30px" },
+  visible: { y: 0, transition: { duration: 1.2 } },
+};
+
 const ArticleCommentsContainer: React.FC = () => {
   const { id } = useParams();
   const { user } = useSelector((state: IRootState) => state.user);
@@ -48,15 +59,24 @@ const ArticleCommentsContainer: React.FC = () => {
   const [commentList, setCommentList] = useState<DocumentData | []>([]);
   const [isEditStatus, setIsEditStatus] = useState<boolean>(false);
   const [editInfo, setEditInfo] = useState<DocumentData | null>(null);
+  const [showAlert, setShowAlert] = useState<boolean>(false);
+  const [shouldDeleteId, setShouldDeleteId] = useState<string>("");
 
-  const deleteCommentHandler = async (commentId: string): Promise<void> => {
+  const deleteButtonHandler = (commentId: string) => {
+    setShowAlert(true);
+    setShouldDeleteId(commentId);
+  };
+  const deleteCommentHandler = async (): Promise<void> => {
     if (!id) return;
+    if (!shouldDeleteId) return;
     try {
       const spotRef = doc(db, "articles", id);
       const subCollectionRef = collection(spotRef, "comments");
-      await deleteDoc(doc(subCollectionRef, commentId));
+      await deleteDoc(doc(subCollectionRef, shouldDeleteId));
       setComment("");
       setIsEditStatus(false);
+      setShouldDeleteId("");
+      setShowAlert(false);
       toast.success("Delete comment successful 🎉");
     } catch (error) {
       console.log(error);
@@ -228,7 +248,12 @@ const ArticleCommentsContainer: React.FC = () => {
         onClick={() => dispatch(closeComment())}
       ></div>
 
-      <div
+      <motion.aside
+        initial="hidden"
+        whileInView="visible"
+        exit="exit"
+        variants={rightVariant}
+        viewport={{ once: true }}
         className={`fixed right-0 top-0 z-30 h-full w-[350px] transform bg-white shadow-xl transition-transform duration-300 ${
           isCommentOpen ? "translate-x-0" : "translate-x-full"
         }`}
@@ -236,7 +261,7 @@ const ArticleCommentsContainer: React.FC = () => {
         {/* title */}
         <div className="flex items-center justify-between border-b border-gray-300 px-8 py-5">
           <h3 className="text-xl font-bold text-black">
-            Response&nbsp;(<span>{commentLength}</span>)
+            Comment&nbsp;(<span>{commentLength}</span>)
           </h3>
 
           <button className="mt-2" onClick={() => dispatch(closeComment())}>
@@ -305,7 +330,7 @@ const ArticleCommentsContainer: React.FC = () => {
                   isEdited,
                 } = item;
                 return (
-                  <div key={id} className="flex flex-col gap-1">
+                  <div key={commentId} className="flex flex-col gap-1">
                     <div className="flex items-center">
                       <img
                         src={userImage}
@@ -332,7 +357,7 @@ const ArticleCommentsContainer: React.FC = () => {
                           </span>
                           <span
                             className="ml-2 cursor-pointer text-xs text-gray-500 underline hover:text-gray-600"
-                            onClick={() => deleteCommentHandler(commentId)}
+                            onClick={() => deleteButtonHandler(commentId)}
                           >
                             Delete
                           </span>
@@ -353,7 +378,50 @@ const ArticleCommentsContainer: React.FC = () => {
             </div>
           )}
         </div>
-      </div>
+      </motion.aside>
+
+      {/* alert */}
+      {showAlert && (
+        <div
+          className="fixed right-0 top-0 z-50 flex h-full w-[350px] items-center justify-center"
+          style={{ backgroundColor: "rgba(255, 255, 255, 0.96)" }}
+        >
+          <motion.div
+            initial="hidden"
+            whileInView="visible"
+            variants={topVariant}
+            viewport={{ once: true }}
+            className="flex flex-col text-center font-helvetica"
+          >
+            <h3 className="text-xl font-bold">Delete Comment</h3>
+            <p className="mx-auto mt-2 w-[80%] text-sm text-gray-500">
+              Deletion is not reversible, and the comment will be completely
+              removed from public view.
+            </p>
+            <p className="mt-2 text-sm text-gray-700">Still want to proceed?</p>
+
+            <div className="mt-4 flex justify-center gap-4">
+              <button
+                type="button"
+                className="btn-turquoise"
+                onClick={() => {
+                  setShowAlert(false);
+                  setShouldDeleteId("");
+                }}
+              >
+                Cancel
+              </button>
+              <button
+                type="button"
+                className="btn-pink"
+                onClick={() => deleteCommentHandler()}
+              >
+                Delete
+              </button>
+            </div>
+          </motion.div>
+        </div>
+      )}
     </>
   );
 };

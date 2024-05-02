@@ -90,7 +90,7 @@ const ProfileEditContainer: React.FC = () => {
         </div>
 
         {/* imagesContainer */}
-        <div className="mt-8 flex h-[272px] flex-wrap justify-around gap-y-4 overflow-y-scroll rounded-lg border border-gray-300 p-4">
+        <div className="mt-8 flex h-[272px] flex-wrap justify-around gap-y-4 overflow-y-scroll border border-gray-300 p-4">
           {profileImageList.map((url, index) => {
             return (
               <div

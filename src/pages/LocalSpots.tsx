@@ -199,133 +199,146 @@ const LocalSpots: React.FC = () => {
       <div id="map" className="h-[450px] w-full"></div>
 
       <div className="mx-auto flex w-[90%] max-w-5xl flex-col gap-16 py-14">
-        <form
-          method="get"
-          onSubmit={formHandler}
-          className="grid w-full grid-cols-2 items-end gap-4 rounded-md bg-purple-light px-8 pb-7 pt-4"
-        >
-          {/* select area */}
-          <div className="form-control">
-            <label className="label" htmlFor="area">
-              <span className="label-text">選擇區域</span>
-            </label>
-            <select
-              id="area"
-              name="area"
-              value={area}
-              className="select select-sm focus:outline-none"
-              onChange={(e) => dispatch(setArea(e.target.value))}
-            >
-              <option value="all">全部</option>
-              <option value="西部">西部</option>
-              <option value="北部">北部</option>
-              <option value="東北部">東北部</option>
-              <option value="東部">東部</option>
-              <option value="南部">南部</option>
-            </select>
+        <section>
+          <div className="border-b border-gray-300 pb-4">
+            <h2 className="text-2xl font-bold">浪點查詢</h2>
           </div>
 
-          {/* select break */}
-          <div className="form-control">
-            <label className="label" htmlFor="breaks">
-              <span className="label-text">選擇浪型</span>
-            </label>
-            <select
-              id="breaks"
-              name="breaks"
-              value={breaks}
-              className="select select-sm focus:outline-none"
-              onChange={(e) => dispatch(setBreaks(e.target.value))}
-            >
-              <option value="all">全部</option>
-              <option value="沙灘">沙灘</option>
-              <option value="定點">定點</option>
-              <option value="河口">河口</option>
-              <option value="礁石">礁石</option>
-            </select>
-          </div>
+          <form
+            method="get"
+            onSubmit={formHandler}
+            className="mt-8 grid w-full grid-cols-2 items-end gap-4 rounded-md bg-purple-light px-8 pb-7 pt-4"
+          >
+            {/* select area */}
+            <div className="form-control">
+              <label className="label" htmlFor="area">
+                <span className="label-text">選擇區域</span>
+              </label>
+              <select
+                id="area"
+                name="area"
+                value={area}
+                className="select select-sm focus:outline-none"
+                onChange={(e) => dispatch(setArea(e.target.value))}
+              >
+                <option value="all">全部</option>
+                <option value="西部">西部</option>
+                <option value="北部">北部</option>
+                <option value="東北部">東北部</option>
+                <option value="東部">東部</option>
+                <option value="南部">南部</option>
+              </select>
+            </div>
 
-          {/* select break */}
-          <div className="form-control">
-            <label className="label" htmlFor="difficulty">
-              <span className="label-text">適合程度</span>
-            </label>
-            <select
-              id="difficulty"
-              name="difficulty"
-              value={difficulty}
-              className="select select-sm focus:outline-none"
-              onChange={(e) => dispatch(setDifficulty(e.target.value))}
-            >
-              <option value="all">全部</option>
-              <option value="新手">新手</option>
-              <option value="進階">進階</option>
-              <option value="高手">高手</option>
-            </select>
-          </div>
+            {/* select break */}
+            <div className="form-control">
+              <label className="label" htmlFor="breaks">
+                <span className="label-text">選擇浪型</span>
+              </label>
+              <select
+                id="breaks"
+                name="breaks"
+                value={breaks}
+                className="select select-sm focus:outline-none"
+                onChange={(e) => dispatch(setBreaks(e.target.value))}
+              >
+                <option value="all">全部</option>
+                <option value="沙灘">沙灘</option>
+                <option value="定點">定點</option>
+                <option value="河口">河口</option>
+                <option value="礁石">礁石</option>
+              </select>
+            </div>
 
-          <div className="grid grid-cols-2 gap-8">
-            <button
-              type="submit"
-              className="btn btn-sm bg-pink-light hover:bg-pink-dark w-full border-transparent hover:border-transparent"
-            >
-              Search
-            </button>
-            <button
-              type="button"
-              className="btn btn-sm border-transparent bg-blue-light hover:border-transparent hover:bg-blue-dark"
-              onClick={resetHandler}
-            >
-              Reset
-            </button>
-          </div>
-        </form>
+            {/* select break */}
+            <div className="form-control">
+              <label className="label" htmlFor="difficulty">
+                <span className="label-text">適合程度</span>
+              </label>
+              <select
+                id="difficulty"
+                name="difficulty"
+                value={difficulty}
+                className="select select-sm focus:outline-none"
+                onChange={(e) => dispatch(setDifficulty(e.target.value))}
+              >
+                <option value="all">全部</option>
+                <option value="新手">新手</option>
+                <option value="進階">進階</option>
+                <option value="高手">高手</option>
+              </select>
+            </div>
 
-        {!isLoading && selectSpots && selectSpots.length < 1 && (
-          <p className="text-xl font-bold">沒有符合的浪點，請重新查詢。</p>
-        )}
+            <div className="grid grid-cols-2 gap-8">
+              <button
+                type="submit"
+                className="btn btn-sm w-full border-transparent bg-pink-light hover:border-transparent hover:bg-pink-dark"
+              >
+                Search
+              </button>
+              <button
+                type="button"
+                className="btn btn-sm border-transparent bg-blue-light hover:border-transparent hover:bg-blue-dark"
+                onClick={resetHandler}
+              >
+                Reset
+              </button>
+            </div>
+          </form>
 
-        {!isLoading && selectSpots && selectSpots.length > 0 && (
-          <section className="grid grid-cols-4 gap-10">
-            {selectSpots.map((spot) => {
-              const { id, name, mapImage, likes_amount } = spot;
-              return (
-                <article
-                  key={id}
-                  className="card w-full shadow-xl transition-all duration-300 hover:cursor-pointer hover:shadow-2xl"
-                  onClick={() => spotHandler(name.eng, id)}
-                >
-                  <img
-                    src={mapImage}
-                    alt={name.chin}
-                    className="h-32 w-full rounded-t-2xl object-cover object-center"
-                  />
+          {(isLoading || !selectSpots) && (
+            <p className="mt-8">loading now...</p>
+          )}
 
-                  <div className="flex flex-col gap-5 p-3">
-                    <h3 className="font-semibold">{name.chin}</h3>
+          {!isLoading && selectSpots && selectSpots.length < 1 && (
+            <h3 className="mt-8">沒有符合的浪點，請重新查詢。</h3>
+          )}
 
-                    <div className="flex justify-between">
-                      <h5 className="font-fashioncountry capitalize text-turquoise">
-                        {name.eng}
-                      </h5>
-                      <div className="flex items-center gap-1">
-                        <FaStar className=" text-yellow" />
-                        <span>{likes_amount}</span>
+          {!isLoading && selectSpots && selectSpots.length > 0 && (
+            <div className="mt-8 grid grid-cols-4 gap-10">
+              {selectSpots.map((spot) => {
+                const { id, name, mapImage, likes_amount } = spot;
+                return (
+                  <article
+                    key={id}
+                    className="card w-full shadow-xl transition-all duration-300 hover:cursor-pointer hover:shadow-2xl"
+                    onClick={() => spotHandler(name.eng, id)}
+                  >
+                    <img
+                      src={mapImage}
+                      alt={name.chin}
+                      className="h-32 w-full rounded-t-2xl object-cover object-center"
+                    />
+
+                    <div className="flex flex-col gap-5 p-3">
+                      <h3 className="font-semibold">{name.chin}</h3>
+
+                      <div className="flex justify-between">
+                        <h5 className="font-fashioncountry capitalize text-turquoise">
+                          {name.eng}
+                        </h5>
+                        <div className="flex items-center gap-1">
+                          <FaStar className=" text-yellow" />
+                          <span>{likes_amount}</span>
+                        </div>
                       </div>
                     </div>
-                  </div>
-                </article>
-              );
-            })}
-          </section>
-        )}
+                  </article>
+                );
+              })}
+            </div>
+          )}
+        </section>
 
         <section>
-          <h3 className="text-2xl font-bold">海平面上的風</h3>
-          <div className="mt-5 overflow-hidden">
+          <div className="border-b border-gray-300 pb-4">
+            <h2 className="text-2xl font-bold">即時浪向</h2>
+          </div>
+
+          <div className="mt-8 overflow-hidden">
             <iframe
               className="mx-0 my-0 h-[600px] w-full"
-              src="https://earth.nullschool.net/#current/wind/surface/level/orthographic=-239.11,24.00,5018"
+              src="https://earth.nullschool.net/#current/wind/primary/waves/overlay=wind/orthographic=-239.11,24.00,5018"
             ></iframe>
           </div>
         </section>

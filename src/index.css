@@ -105,13 +105,19 @@ body {
   }
 
   .btn-purple {
-    @apply btn btn-xs sm:btn-sm border-transparent bg-purple-light text-white duration-500 hover:border-purple-light hover:bg-white hover:text-purple-light;
+    @apply btn btn-xs border-transparent bg-purple-light text-white duration-500 sm:btn-sm hover:border-purple-light hover:bg-white hover:text-purple-light;
+  }
+  .btn-clay-red {
+    @apply btn btn-xs border-transparent bg-clay-red text-white duration-500 sm:btn-sm hover:border-clay-red hover:bg-white hover:text-clay-red;
   }
   .btn-turquoise {
-    @apply btn btn-xs sm:btn-sm lg:btn-md rounded-3xl border-transparent bg-turquoise font-bold tracking-wide text-white duration-500 hover:border-transparent  hover:bg-blue-dark;
+    @apply btn btn-xs border-transparent bg-turquoise text-white duration-500 sm:btn-sm hover:border-turquoise hover:bg-white hover:text-turquoise;
   }
-  .btn-turquoise-gradient {
-    @apply btn btn-xs sm:btn-sm lg:btn-md rounded-3xl bg-gradient-to-l from-blue-light to-turquoise font-bold tracking-wide text-white duration-500  hover:border-transparent hover:from-turquoise hover:to-turquoise;
+  .btn-olive {
+    @apply btn btn-xs border-transparent bg-olive text-white duration-500 sm:btn-sm hover:border-olive hover:bg-white hover:text-olive;
+  }
+  .btn-pink {
+    @apply btn btn-xs border-transparent bg-pink text-white duration-500 sm:btn-sm hover:border-pink hover:bg-white hover:text-pink;
   }
 
   /* .info-text {

@@ -54,6 +54,7 @@ const AllArticlesContainer: React.FC = () => {
     if (order === "asc") {
       prev = query(
         articlesCollectionRef,
+        where("isDeleted", "!=", true),
         orderBy("created_at"),
         endBefore(firstDocument),
         limitToLast(9),
@@ -61,6 +62,7 @@ const AllArticlesContainer: React.FC = () => {
     } else {
       prev = query(
         articlesCollectionRef,
+        where("isDeleted", "!=", true),
         orderBy("created_at", "desc"),
         endBefore(firstDocument),
         limitToLast(9),
@@ -87,6 +89,7 @@ const AllArticlesContainer: React.FC = () => {
     if (order === "asc") {
       next = query(
         articlesCollectionRef,
+        where("isDeleted", "!=", true),
         orderBy("created_at"),
         startAfter(lastDocument),
         limit(9),
@@ -94,6 +97,7 @@ const AllArticlesContainer: React.FC = () => {
     } else {
       next = query(
         articlesCollectionRef,
+        where("isDeleted", "!=", true),
         orderBy("created_at", "desc"),
         startAfter(lastDocument),
         limit(9),
@@ -143,7 +147,7 @@ const AllArticlesContainer: React.FC = () => {
     const articlesCollectionRef = collection(db, "articles");
 
     // check numbers of articles
-    const q = query(articlesCollectionRef);
+    const q = query(articlesCollectionRef, where("isDeleted", "!=", true));
     const querySnapshot = await getDocs(q);
     if (querySnapshot.size > 9) {
       setShowPagination(true);
@@ -156,10 +160,16 @@ const AllArticlesContainer: React.FC = () => {
     // Query the first page of docs
     let first: Query<DocumentData, DocumentData>;
     if (order === "asc") {
-      first = query(articlesCollectionRef, orderBy("created_at"), limit(9));
+      first = query(
+        articlesCollectionRef,
+        where("isDeleted", "!=", true),
+        orderBy("created_at"),
+        limit(9),
+      );
     } else {
       first = query(
         articlesCollectionRef,
+        where("isDeleted", "!=", true),
         orderBy("created_at", "desc"),
         limit(9),
       );
@@ -175,11 +185,16 @@ const AllArticlesContainer: React.FC = () => {
       documentSnapshots.docs[documentSnapshots.docs.length - 1];
     setLastDocument(lastVisible);
   }
+
   async function getTagArticlesFromFirebase(tag: string): Promise<void> {
     const articlesCollectionRef = collection(db, "articles");
 
     // check numbers of articles
-    const q = query(articlesCollectionRef, where("tag", "==", tag));
+    const q = query(
+      articlesCollectionRef,
+      where("tag", "==", tag),
+      where("isDeleted", "!=", true),
+    );
     const querySnapshot = await getDocs(q);
     if (querySnapshot.size > 9) {
       setShowPagination(true);
@@ -195,6 +210,7 @@ const AllArticlesContainer: React.FC = () => {
       first = query(
         articlesCollectionRef,
         where("tag", "==", tag),
+        where("isDeleted", "!=", true),
         orderBy("created_at"),
         limit(9),
       );
@@ -202,6 +218,7 @@ const AllArticlesContainer: React.FC = () => {
       first = query(
         articlesCollectionRef,
         where("tag", "==", tag),
+        where("isDeleted", "!=", true),
         orderBy("created_at", "desc"),
         limit(9),
       );
@@ -217,6 +234,7 @@ const AllArticlesContainer: React.FC = () => {
       documentSnapshots.docs[documentSnapshots.docs.length - 1];
     setLastDocument(lastVisible);
   }
+
   async function getSurfingSpotArticlesFromFirebase(
     surfingSpot: string,
   ): Promise<void> {
@@ -226,6 +244,7 @@ const AllArticlesContainer: React.FC = () => {
     const q = query(
       articlesCollectionRef,
       where("surfingSpot", "==", surfingSpot),
+      where("isDeleted", "!=", true),
     );
     const querySnapshot = await getDocs(q);
     if (querySnapshot.size > 9) {
@@ -242,6 +261,7 @@ const AllArticlesContainer: React.FC = () => {
       first = query(
         articlesCollectionRef,
         where("surfingSpot", "==", surfingSpot),
+        where("isDeleted", "!=", true),
         orderBy("created_at"),
         limit(9),
       );
@@ -249,6 +269,7 @@ const AllArticlesContainer: React.FC = () => {
       first = query(
         articlesCollectionRef,
         where("surfingSpot", "==", surfingSpot),
+        where("isDeleted", "!=", true),
         orderBy("created_at", "desc"),
         limit(9),
       );
@@ -264,6 +285,7 @@ const AllArticlesContainer: React.FC = () => {
       documentSnapshots.docs[documentSnapshots.docs.length - 1];
     setLastDocument(lastVisible);
   }
+
   async function getTagAndSurfingSpotArticlesFromFirebase(
     tag: string,
     surfingSpot: string,
@@ -275,6 +297,7 @@ const AllArticlesContainer: React.FC = () => {
       articlesCollectionRef,
       where("tag", "==", tag),
       where("surfingSpot", "==", surfingSpot),
+      where("isDeleted", "!=", true),
     );
     const querySnapshot = await getDocs(q);
     if (querySnapshot.size > 9) {
@@ -292,6 +315,7 @@ const AllArticlesContainer: React.FC = () => {
         articlesCollectionRef,
         where("tag", "==", tag),
         where("surfingSpot", "==", surfingSpot),
+        where("isDeleted", "!=", true),
         orderBy("created_at"),
         limit(9),
       );
@@ -300,6 +324,7 @@ const AllArticlesContainer: React.FC = () => {
         articlesCollectionRef,
         where("tag", "==", tag),
         where("surfingSpot", "==", surfingSpot),
+        where("isDeleted", "!=", true),
         orderBy("created_at", "desc"),
         limit(9),
       );
@@ -345,14 +370,14 @@ const AllArticlesContainer: React.FC = () => {
           <div className="flex gap-1">
             <button
               type="button"
-              className={`btn btn-sm btn-circle hover:border-none ${layout === "grid" && "bg-purple-light hover:bg-purple-light"}`}
+              className={`btn btn-circle btn-sm hover:border-none ${layout === "grid" && "bg-purple-light hover:bg-purple-light"}`}
               onClick={() => setLayout("grid")}
             >
               <BsFillGridFill />
             </button>
             <button
               type="button"
-              className={`btn btn-sm btn-circle hover:border-none ${layout === "list" && "bg-purple-light hover:bg-purple-light"}`}
+              className={`btn btn-circle btn-sm hover:border-none ${layout === "list" && "bg-purple-light hover:bg-purple-light"}`}
               onClick={() => setLayout("list")}
             >
               <BsList />
@@ -442,7 +467,7 @@ const AllArticlesContainer: React.FC = () => {
           <div className="grid grid-cols-2 gap-8">
             <button
               type="submit"
-              className="btn btn-sm bg-pink-light hover:bg-pink-dark w-full border-transparent hover:border-transparent"
+              className="btn btn-sm w-full border-transparent bg-pink-light hover:border-transparent hover:bg-pink-dark"
             >
               Search
             </button>
@@ -550,7 +575,7 @@ const AllArticlesContainer: React.FC = () => {
                 return (
                   <article
                     key={id}
-                    className="card group flex-row items-center px-10 py-6 shadow-xl transition-all duration-300 hover:cursor-pointer hover:shadow-2xl"
+                    className="group card flex-row items-center px-10 py-6 shadow-xl transition-all duration-300 hover:cursor-pointer hover:shadow-2xl"
                     onClick={() => articleHandler(id)}
                   >
                     <img
@@ -600,7 +625,7 @@ const AllArticlesContainer: React.FC = () => {
             <div className="join">
               {/* prev button */}
               <button
-                className="btn btn-sm sm:btn-md join-item"
+                className="btn join-item btn-sm sm:btn-md"
                 disabled={nowPage === 1}
                 onClick={prevHandler}
               >
@@ -623,7 +648,7 @@ const AllArticlesContainer: React.FC = () => {
 
               {/* next button */}
               <button
-                className="btn btn-sm sm:btn-md join-item"
+                className="btn join-item btn-sm sm:btn-md"
                 disabled={nowPage === allPage}
                 onClick={nextHandler}
               >

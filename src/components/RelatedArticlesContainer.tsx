@@ -20,6 +20,7 @@ import {
   getDocs,
   DocumentData,
   limit,
+  orderBy,
 } from "firebase/firestore";
 
 const RelatedArticlesContainer: React.FC = () => {
@@ -38,11 +39,13 @@ const RelatedArticlesContainer: React.FC = () => {
     const q = query(
       collection(db, "articles"),
       where("surfingSpot", "==", name),
+      where("isDeleted", "!=", true),
+      orderBy("created_at", "desc"),
       limit(4),
     );
     const querySnapshot = await getDocs(q);
     const articlesArray = querySnapshot.docs.map((doc) => doc.data());
-
+    console.log(articlesArray);
     setArticlesList(articlesArray);
   };
 

@@ -375,7 +375,7 @@ const LocalSpot: React.FC = () => {
     infoImage,
   } = textData;
 
-  console.log(infoData);
+  // console.log(infoData);
 
   const { today, tomorrow, afterTomorrow, wave, wind, tides, weather } =
     infoData;
@@ -765,7 +765,7 @@ const LocalSpot: React.FC = () => {
           </div>
         </div>
 
-        <div className="mt-8 flex border border-black font-notosans">
+        <div className="mt-8 flex border border-black">
           <div className="my-4 flex flex-grow flex-col gap-1 border-r border-r-turquoise">
             <h4 className="px-5 text-center text-turquoise">面向</h4>
             <p className="px-5 text-center">{toward}</p>

@@ -90,7 +90,6 @@ const ForeignSpotsCollectionContainer: React.FC = () => {
           foreignSpotsList &&
           foreignSpotsList.length > 0 &&
           foreignSpotsList.map((spot) => {
-            console.log(spot);
             const { id, country, coverImage } = spot;
             return (
               <article

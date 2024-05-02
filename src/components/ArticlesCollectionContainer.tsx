@@ -51,7 +51,7 @@ const ArticlesCollectionContainer: React.FC = () => {
       try {
         const docRef = doc(db, "articles", id);
         const docSnap = await getDoc(docRef);
-        if (docSnap.exists()) {
+        if (docSnap.exists() && !docSnap.data().isDeleted) {
           articlesData.push(docSnap.data());
         }
       } catch (error) {

@@ -1,6 +1,8 @@
 import React, { useEffect, useState } from "react";
 import { NavLink, useNavigate } from "react-router-dom";
 import { useSelector } from "react-redux";
+import { resetCover } from "../features/article/articleSlice";
+import { useDispatch } from "react-redux";
 import { IRootState } from "../store";
 import {
   formatTime,
@@ -25,6 +27,7 @@ import {
 
 const MyArticlesCollectionContainer: React.FC = () => {
   const { user } = useSelector((state: IRootState) => state.user);
+  const dispatch = useDispatch();
 
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const [articlesList, setArticlesList] = useState<DocumentData[] | null>(null);
@@ -44,6 +47,7 @@ const MyArticlesCollectionContainer: React.FC = () => {
       const q = query(
         collection(db, "articles"),
         where("authorId", "==", user.id),
+        where("isDeleted", "!=", true),
         orderBy("created_at", "desc"),
       );
       const querySnapshot = await getDocs(q);
@@ -62,11 +66,16 @@ const MyArticlesCollectionContainer: React.FC = () => {
 
   return (
     <section>
-      <div className="flex items-center gap-10 border-b border-gray-300 pb-4">
+      <div className="flex items-center gap-6 border-b border-gray-300 pb-4">
         <h2 className="text-2xl font-bold">我的文章</h2>
 
         <NavLink to="/profile/post-article">
-          <button className="btn-purple sm:btn-xs mt-1">新增文章</button>
+          <button
+            className="btn-purple mt-[6px] sm:btn-xs"
+            onClick={() => dispatch(resetCover())}
+          >
+            新增文章
+          </button>
         </NavLink>
       </div>
 

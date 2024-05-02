@@ -1,6 +1,7 @@
 import AllArticlesContainer from "./AllArticlesContainer";
 import ArticleCommentsContainer from "./ArticleCommentsContainer";
 import ArticlesCollectionContainer from "./ArticlesCollectionContainer";
+import Blocker from "./Blocker";
 import Footer from "./Footer";
 import ForeignSpotsCollectionContainer from "./ForeignSpotsCollectionContainer";
 import Header from "./Header";
@@ -25,6 +26,7 @@ export {
   AllArticlesContainer,
   ArticleCommentsContainer,
   ArticlesCollectionContainer,
+  Blocker,
   Footer,
   ForeignSpotsCollectionContainer,
   Header,

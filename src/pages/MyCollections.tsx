@@ -5,7 +5,6 @@ import { useSelector } from "react-redux";
 import { IRootState } from "../store";
 import {
   ProfileNavbar,
-  ArticlesCollectionContainer,
   LocalSpotsCollectionContainer,
   ForeignSpotsCollectionContainer,
 } from "../components";

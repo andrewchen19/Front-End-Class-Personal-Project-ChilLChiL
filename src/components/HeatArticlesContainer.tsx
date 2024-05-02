@@ -15,6 +15,7 @@ import { db } from "../main";
 import {
   getDocs,
   collection,
+  where,
   orderBy,
   limit,
   query,
@@ -37,6 +38,7 @@ const HeatArticlesContainer: React.FC = () => {
     // order and limit
     const q = query(
       articlesCollectionRef,
+      where("isDeleted", "!=", true),
       orderBy("likes_amount", "desc"),
       limit(6),
     );
@@ -64,7 +66,7 @@ const HeatArticlesContainer: React.FC = () => {
 
   return (
     <section>
-      <h2 className="flex justify-between border-b border-gray-300 pb-4 text-2xl font-bold">
+      <h2 className="border-b border-gray-300 pb-4 text-2xl font-bold">
         熱門文章
       </h2>
 
