@@ -63,7 +63,7 @@ const ProfileEditContainer: React.FC = () => {
       ></div>
 
       <div
-        className="fixed inset-0 z-20 mx-auto my-[10vh] w-[500px] rounded-xl bg-white p-8"
+        className="fixed inset-0 z-20 mx-auto my-auto h-[500px] w-[500px] rounded-xl bg-white p-8"
         style={{ boxShadow: "rgba(6, 2, 2, 0.15) 0px 2px 10px" }}
       >
         {/* close button */}
@@ -74,7 +74,7 @@ const ProfileEditContainer: React.FC = () => {
         </div>
 
         {/* name */}
-        <div className="mt-8">
+        <div className="mt-4">
           <label htmlFor="name" className="text-sm">
             Name
           </label>
@@ -90,7 +90,7 @@ const ProfileEditContainer: React.FC = () => {
         </div>
 
         {/* imagesContainer */}
-        <div className="mt-8 flex h-[272px] flex-wrap justify-around gap-y-4 overflow-y-scroll border border-gray-300 p-4">
+        <div className="mt-6 flex h-[272px] flex-wrap justify-around gap-y-4 overflow-y-scroll border border-gray-300 p-4">
           {profileImageList.map((url, index) => {
             return (
               <div
