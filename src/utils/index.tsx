@@ -394,7 +394,7 @@ export const executeOption = ({
   gustData,
   tempData,
 }: WeatherProps) => {
-  const colors = ["#F48080", "#70ACC7", "#888D54"];
+  const colors = ["#F48080", "#70ACC7", "#968095"];
 
   const option: ReactEChartsProps["option"] = {
     color: colors,

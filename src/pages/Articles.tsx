@@ -7,9 +7,16 @@ import {
 } from "../components";
 import bannerImg from "../assets/images/articles-banner.jpg";
 
+// framer motion
+import { motion } from "framer-motion";
+
 const Articles: React.FC = () => {
   return (
-    <>
+    <motion.main
+      initial={{ opacity: 0 }}
+      animate={{ opacity: 1, transition: { duration: 1.5 } }}
+      exit={{ opacity: 0, transition: { duration: 1.5 } }}
+    >
       {/* banner */}
       <div className="relative h-[450px] w-full">
         <img
@@ -38,7 +45,7 @@ const Articles: React.FC = () => {
         <NewbieArticlesContainer />
         <AllArticlesContainer />
       </div>
-    </>
+    </motion.main>
   );
 };
 

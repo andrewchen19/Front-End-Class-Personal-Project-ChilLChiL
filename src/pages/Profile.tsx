@@ -10,6 +10,17 @@ import {
   ProfileEditContainer,
 } from "../components";
 
+// framer motion
+import { motion, Variants } from "framer-motion";
+const allVariant: Variants = {
+  hidden: { opacity: 0 },
+  visible: {
+    opacity: 1,
+    y: 0,
+    transition: { duration: 1.5 },
+  },
+};
+
 const Profile: React.FC = () => {
   const { user, isEditContainerOpen } = useSelector(
     (state: IRootState) => state.user,
@@ -23,7 +34,13 @@ const Profile: React.FC = () => {
   }
 
   return (
-    <div className="mx-auto mt-20 grid w-[90%] max-w-6xl grid-cols-[auto,1fr] gap-10">
+    <motion.main
+      initial="hidden"
+      whileInView="visible"
+      exit={{ opacity: 0, transition: { duration: 1.5 } }}
+      variants={allVariant}
+      className="mx-auto mt-20 grid w-[90%] max-w-6xl grid-cols-[auto,1fr] gap-10"
+    >
       <ProfileNavbar />
 
       <div className="mb-20 flex w-full flex-col gap-10 px-10">
@@ -63,7 +80,7 @@ const Profile: React.FC = () => {
       </div>
 
       {isEditContainerOpen && <ProfileEditContainer />}
-    </div>
+    </motion.main>
   );
 };
 

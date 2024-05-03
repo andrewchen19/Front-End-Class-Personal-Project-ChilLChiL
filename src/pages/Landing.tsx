@@ -7,8 +7,11 @@ import coverImage from "../assets/images/landing-cover.jpg";
 import grid1Image from "../assets/images/landing-grid1.jpg";
 import grid2Image from "../assets/images/landing-grid2.jpg";
 
+// shadcn
+import { Button } from "@/components/ui/button";
+
 // react icons
-import { FaChevronDown, FaStar } from "react-icons/fa";
+import { FaChevronDown, FaChevronUp, FaStar } from "react-icons/fa";
 
 // framer motion
 import { motion, useScroll, useSpring, Variants } from "framer-motion";
@@ -73,7 +76,7 @@ const Landing: React.FC = () => {
     <>
       {/* scroll bar */}
       <motion.div
-        className="fixed left-0 right-0 top-0 z-50 h-[10px] origin-left bg-clay-red"
+        className="fixed left-0 right-0 top-0 z-20 h-[10px] origin-left bg-clay-red"
         style={{ scaleX }}
       />
 
@@ -100,14 +103,14 @@ const Landing: React.FC = () => {
               viewport={{ once: true }}
               className="font-veneer text-8xl text-white"
             >
-              We <span className="text-green-fluorescent">life</span>
+              We <span className="text-green-fluorescent">live</span>
             </motion.h1>
             <motion.h1
               initial="hidden"
               whileInView="visible"
               variants={centerVariant}
               viewport={{ once: true }}
-              className="font-veneer ml-4 text-8xl text-white"
+              className="ml-4 font-veneer text-8xl text-white"
             >
               We <span className="text-pink">surf</span>
             </motion.h1>
@@ -115,8 +118,9 @@ const Landing: React.FC = () => {
         </div>
 
         {/* scroll down */}
-        <div className="absolute bottom-[30px] left-1/2 flex -translate-x-1/2 flex-col items-center overflow-visible font-helvetica text-lg font-semibold uppercase tracking-wide text-white">
-          Scroll down <FaChevronDown className="text mt-1 animate-bounce" />
+        <div className="absolute bottom-[30px] left-[100px] flex flex-col items-center overflow-visible text-center font-helvetica text-lg font-semibold uppercase tracking-wide">
+          Scroll down
+          <FaChevronDown className="mt-1 animate-bounce" />
         </div>
       </section>
 
@@ -127,7 +131,7 @@ const Landing: React.FC = () => {
             loading="lazy"
             src={coverImage}
             alt="cover-image"
-            className="absolute inset-0 -z-10 h-full w-full object-cover object-center"
+            className="absolute inset-0 z-[0] h-full w-full object-cover object-center"
           />
 
           <Velocity baseVelocity={2}>
@@ -150,7 +154,7 @@ const Landing: React.FC = () => {
             whileInView="visible"
             transition={{ staggerChildren: 0.1 }}
             viewport={{ once: true, amount: 0.1 }}
-            className="font-veneer text-center text-6xl font-bold tracking-wide"
+            className="text-center font-veneer text-6xl font-bold tracking-wide"
           >
             {headingChars.map((char, index) => {
               return (
@@ -200,7 +204,7 @@ const Landing: React.FC = () => {
             viewport={{ once: true }}
           />
         </div>
-        <div className="bg-beige flex items-center justify-center">
+        <div className="flex items-center justify-center bg-beige">
           <motion.div
             initial="hidden"
             whileInView="visible"
@@ -217,7 +221,7 @@ const Landing: React.FC = () => {
             </p>
           </motion.div>
         </div>
-        <div className="bg-beige flex items-center justify-center">
+        <div className="flex items-center justify-center bg-beige">
           <motion.div
             initial="hidden"
             whileInView="visible"
@@ -250,7 +254,7 @@ const Landing: React.FC = () => {
       {/* user reviews */}
       <section>
         <div className="mx-auto flex w-[90%] max-w-5xl flex-col py-40">
-          <h3 className="font-veneer text-center text-6xl font-bold capitalize">
+          <h3 className="text-center font-veneer text-6xl font-bold capitalize">
             What Our <span className="text-clay-yellow">Users</span> Say?
           </h3>
           <p className="mx-auto mt-6 max-w-lg text-center text-xl text-gray-700">
@@ -280,7 +284,7 @@ const Landing: React.FC = () => {
                     {feedback}
                   </p>
                   <div className="mt-4 flex justify-start gap-2">
-                    <FaStar className="text-yellow h-[24px] w-[24px]" />
+                    <FaStar className="h-[24px] w-[24px] text-yellow" />
                     <p className="font-semibold">({rating})</p>
                   </div>
                   <h3 className="mt-1 text-center font-palanquin text-xl font-bold">
@@ -294,7 +298,7 @@ const Landing: React.FC = () => {
       </section>
 
       {/* newsletter */}
-      <section className="bg-beige">
+      <section className="relative bg-beige">
         <div className="mx-auto flex w-[90%] max-w-5xl items-center justify-between gap-10 py-40 max-lg:flex-col">
           <motion.h3
             initial="hidden"
@@ -317,12 +321,21 @@ const Landing: React.FC = () => {
             <input
               type="text"
               placeholder="subscribe@chilLchilL.com"
-              className="bg-beige ml-2 outline-none"
+              className="ml-2 bg-beige outline-none"
             />
-            <button className="btn btn-sm rounded-full border-none bg-turquoise capitalize text-white hover:border-transparent hover:bg-blue-dark">
-              sign up
-            </button>
+            <Button size={"full"}>sign up</Button>
           </motion.div>
+        </div>
+
+        {/* scroll to top */}
+        <div className="absolute bottom-[40px] left-[100px] overflow-visible text-center font-helvetica text-lg font-semibold uppercase tracking-wide">
+          <a
+            href="#top"
+            className="group flex flex-col items-center duration-300 hover:text-turquoise"
+          >
+            <FaChevronUp className="mb-1 animate-bounce text-center" />
+            Scroll To Top
+          </a>
         </div>
       </section>
     </>

@@ -6,9 +6,25 @@ import {
   TubeForeignSpotsContainer,
 } from "../components";
 
+// framer motion
+import { motion, Variants } from "framer-motion";
+const allVariant: Variants = {
+  hidden: { opacity: 0 },
+  visible: {
+    opacity: 1,
+    y: 0,
+    transition: { duration: 1.5 },
+  },
+};
+
 const ForeignSpots: React.FC = () => {
   return (
-    <>
+    <motion.main
+      initial="hidden"
+      whileInView="visible"
+      exit={{ opacity: 0, transition: { duration: 1.5 } }}
+      variants={allVariant}
+    >
       {/* banner */}
       <div className="relative h-[450px] w-full">
         <img
@@ -36,7 +52,7 @@ const ForeignSpots: React.FC = () => {
         <NewbieForeignSpotsContainer />
         <TubeForeignSpotsContainer />
       </main>
-    </>
+    </motion.main>
   );
 };
 

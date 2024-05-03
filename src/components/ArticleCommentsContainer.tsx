@@ -6,7 +6,6 @@ import { closeComment } from "../features/article/articleSlice";
 import { IRootState } from "../store";
 import { calculateTimeAgo } from "../utils";
 import { CommentInfo } from "../types";
-import { motion, Variants } from "framer-motion";
 
 // nano id
 import { nanoid } from "nanoid";
@@ -37,6 +36,8 @@ import "react-quill/dist/quill.snow.css";
 // covert HTML sting to JSX, safely render HTML to prevent xss attack
 import { Markup } from "interweave";
 
+// framer motion
+import { motion, Variants } from "framer-motion";
 const rightVariant: Variants = {
   hidden: { x: "100%", opacity: 0.5 },
   visible: { x: 0, opacity: 1, transition: { duration: 1.1 } },
@@ -46,6 +47,9 @@ const topVariant: Variants = {
   hidden: { y: "-30px" },
   visible: { y: 0, transition: { duration: 1.2 } },
 };
+
+// shadcn
+import { Button } from "@/components/ui/button";
 
 const ArticleCommentsContainer: React.FC = () => {
   const { id } = useParams();
@@ -146,10 +150,7 @@ const ArticleCommentsContainer: React.FC = () => {
       articleId,
       "comments",
     );
-
-    // order and limit
     const q = query(commentsCollectionRef, orderBy("created_at", "desc"));
-
     const querySnapshot = await getDocs(q);
     const commentArray = querySnapshot.docs.map((doc) => doc.data());
     await getUserInfoFromFirebase(commentArray);
@@ -285,22 +286,24 @@ const ArticleCommentsContainer: React.FC = () => {
 
           {/* button */}
           <div className="mt-3 flex gap-3">
-            <button
+            <Button
               type="button"
-              className="btn-purple sm:btn-xs"
+              variant={"purple"}
+              size={"sm"}
               onClick={() => commentHandler()}
             >
               {isEditStatus ? "更新留言" : "新增留言"}
-            </button>
+            </Button>
 
             {isEditStatus && (
-              <button
+              <Button
                 type="button"
-                className="btn-purple sm:btn-xs"
+                variant={"ghost"}
+                size={"sm"}
                 onClick={() => cancelEditHandler()}
               >
                 取消
-              </button>
+              </Button>
             )}
           </div>
 
@@ -382,45 +385,56 @@ const ArticleCommentsContainer: React.FC = () => {
 
       {/* alert */}
       {showAlert && (
-        <div
-          className="fixed right-0 top-0 z-50 flex h-full w-[350px] items-center justify-center"
-          style={{ backgroundColor: "rgba(255, 255, 255, 0.96)" }}
-        >
-          <motion.div
-            initial="hidden"
-            whileInView="visible"
-            variants={topVariant}
-            viewport={{ once: true }}
-            className="flex flex-col text-center font-helvetica"
-          >
-            <h3 className="text-xl font-bold">Delete Comment</h3>
-            <p className="mx-auto mt-2 w-[80%] text-sm text-gray-500">
-              Deletion is not reversible, and the comment will be completely
-              removed from public view.
-            </p>
-            <p className="mt-2 text-sm text-gray-700">Still want to proceed?</p>
+        <>
+          <div
+            className="fixed left-0 top-0 z-50 h-full bg-transparent"
+            style={{ width: "calc(100% - 350px)" }}
+          ></div>
 
-            <div className="mt-4 flex justify-center gap-4">
-              <button
-                type="button"
-                className="btn-turquoise"
-                onClick={() => {
-                  setShowAlert(false);
-                  setShouldDeleteId("");
-                }}
-              >
-                Cancel
-              </button>
-              <button
-                type="button"
-                className="btn-pink"
-                onClick={() => deleteCommentHandler()}
-              >
-                Delete
-              </button>
-            </div>
-          </motion.div>
-        </div>
+          <div
+            className="fixed right-0 top-0 z-50 flex h-full w-[350px] items-center justify-center"
+            style={{ backgroundColor: "rgba(255, 255, 255, 0.96)" }}
+          >
+            <motion.div
+              initial="hidden"
+              whileInView="visible"
+              variants={topVariant}
+              viewport={{ once: true }}
+              className="flex flex-col text-center font-helvetica"
+            >
+              <h3 className="text-xl font-bold">Delete Comment</h3>
+              <p className="mx-auto mt-3 w-[80%] text-sm text-gray-500">
+                Deletion is not reversible, and the comment will be completely
+                removed from public view.
+              </p>
+              <p className="mt-2 text-sm text-gray-700">
+                Still want to proceed?
+              </p>
+
+              <div className="mt-4 flex justify-center gap-4">
+                <Button
+                  type="button"
+                  variant={"turquoise-hipster"}
+                  size={"sm"}
+                  onClick={() => {
+                    setShowAlert(false);
+                    setShouldDeleteId("");
+                  }}
+                >
+                  Cancel
+                </Button>
+                <Button
+                  type="button"
+                  variant={"pink-hipster"}
+                  size={"sm"}
+                  onClick={() => deleteCommentHandler()}
+                >
+                  Delete
+                </Button>
+              </div>
+            </motion.div>
+          </div>
+        </>
       )}
     </>
   );

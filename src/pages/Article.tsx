@@ -6,7 +6,6 @@ import { useDispatch, useSelector } from "react-redux";
 import { openComment } from "../features/article/articleSlice";
 import { IRootState } from "../store";
 import { formatTime } from "../utils";
-import { motion, Variants, AnimatePresence } from "framer-motion";
 
 // react-icons
 import { TbMessageCircle } from "react-icons/tb";
@@ -32,6 +31,8 @@ import {
   orderBy,
 } from "firebase/firestore";
 
+// framer motion
+import { motion, Variants, AnimatePresence } from "framer-motion";
 const centerRotationVariant: Variants = {
   hidden: { opacity: 0, rotate: -10 },
   visible: {
@@ -44,6 +45,9 @@ const centerRotationVariant: Variants = {
     },
   },
 };
+
+// shadcn
+import { Button } from "@/components/ui/button";
 
 const Article: React.FC = () => {
   const { id } = useParams();
@@ -309,13 +313,13 @@ const Article: React.FC = () => {
           alt="cover-image"
           className="h-full w-full object-cover object-center"
         />
-        <p className="absolute -bottom-[20px] right-[20px] font-palanquin text-[12px] font-medium text-gray-500">
+        <p className="absolute -bottom-[22px] right-[20px] font-helvetica text-[12px] font-medium text-gray-500">
           Photo by&nbsp;
           <a
             href={photographerLink}
             target="_blank"
             rel="noreferrer noopener"
-            className="hover:border-b hover:border-blue-dark hover:text-blue-dark"
+            className="pb-[2px] hover:border-b hover:border-blue-dark hover:text-blue-dark"
           >
             {photographerName}
           </a>
@@ -324,7 +328,7 @@ const Article: React.FC = () => {
             href="https://unsplash.com/"
             target="_blank"
             rel="noreferrer noopener"
-            className="hover:border-b hover:border-blue-dark hover:text-blue-dark"
+            className="pb-[2px] hover:border-b hover:border-blue-dark hover:text-blue-dark"
           >
             Unsplash
           </a>
@@ -378,27 +382,30 @@ const Article: React.FC = () => {
             {/* edit/collection  button */}
             {isLogin && isUser && (
               <div className="mt-2 flex gap-4">
-                <button
-                  className="btn-olive"
+                <Button
+                  type="button"
+                  variant={"olive-hipster"}
                   onClick={() => editHandler(articleId)}
                 >
                   編輯文章
-                </button>
-                <button
-                  className="btn-clay-red"
+                </Button>
+                <Button
+                  type="button"
+                  variant={"clay-red-hipster"}
                   onClick={() => deleteButtonHandler()}
                 >
                   刪除文章
-                </button>
+                </Button>
               </div>
             )}
             {isLogin && !isUser && id && (
-              <button
-                className="btn-purple mt-2"
+              <Button
+                type="button"
+                variant={"purple-hipster"}
                 onClick={() => collectionHandler(id)}
               >
                 {isLike ? "已收藏" : "加入收藏"}
-              </button>
+              </Button>
             )}
           </div>
         </div>
@@ -434,7 +441,7 @@ const Article: React.FC = () => {
           >
             <div className="flex flex-col text-center font-helvetica">
               <h3 className="text-xl font-bold">Delete Article</h3>
-              <p className="mx-auto mt-2 w-[80%] text-sm text-gray-500">
+              <p className="mx-auto mt-3 w-[80%] text-sm text-gray-500">
                 Deletion is not reversible, and the article will be completely
                 removed from public view.
               </p>
@@ -444,20 +451,22 @@ const Article: React.FC = () => {
             </div>
 
             <div className="mx-auto mt-auto flex gap-4">
-              <button
+              <Button
                 type="button"
-                className="btn-turquoise"
+                variant={"turquoise-hipster"}
+                size={"sm"}
                 onClick={() => setShowModal(false)}
               >
                 Cancel
-              </button>
-              <button
+              </Button>
+              <Button
                 type="button"
-                className="btn-pink"
+                variant={"pink-hipster"}
+                size={"sm"}
                 onClick={() => softDeleteHandler(articleId)}
               >
                 Delete
-              </button>
+              </Button>
             </div>
           </motion.div>
         </div>

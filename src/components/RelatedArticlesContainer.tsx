@@ -45,7 +45,7 @@ const RelatedArticlesContainer: React.FC = () => {
     );
     const querySnapshot = await getDocs(q);
     const articlesArray = querySnapshot.docs.map((doc) => doc.data());
-    console.log(articlesArray);
+    // console.log(articlesArray);
     setArticlesList(articlesArray);
   };
 

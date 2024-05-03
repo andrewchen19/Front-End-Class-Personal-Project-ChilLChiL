@@ -4,6 +4,10 @@ import { useDispatch, useSelector } from "react-redux";
 import { IRootState } from "../store";
 import { removeUser } from "../features/user/userSlice";
 import { toast } from "react-toastify";
+import { MenuNavbar } from "../components";
+
+// shadcn
+import { Button } from "@/components/ui/button";
 
 const Header: React.FC = () => {
   const { user } = useSelector((state: IRootState) => state.user);
@@ -92,22 +96,21 @@ const Header: React.FC = () => {
         {/* buttons */}
         {user ? (
           <div className="absolute right-0">
-            <button
-              className="btn btn-sm rounded-3xl border-transparent bg-turquoise font-bold tracking-wide text-white duration-500 hover:border-transparent  hover:bg-blue-dark"
-              onClick={logoutHandler}
-            >
+            <Button size={"sm"} onClick={logoutHandler}>
               登出
-            </button>
+            </Button>
           </div>
         ) : (
           <div className="absolute right-0">
             <NavLink to="/log-in">
-              <button className="btn btn-sm rounded-3xl border-transparent bg-turquoise font-bold tracking-wide text-white duration-500 hover:border-transparent  hover:bg-blue-dark">
-                登入 / 註冊
-              </button>
+              <Button size={"sm"}>登入 / 註冊</Button>
             </NavLink>
           </div>
         )}
+      </div>
+
+      <div className="absolute z-50">
+        <MenuNavbar />
       </div>
     </header>
   );

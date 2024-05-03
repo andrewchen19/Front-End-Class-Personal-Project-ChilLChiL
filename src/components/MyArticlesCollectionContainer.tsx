@@ -25,6 +25,9 @@ import {
   DocumentData,
 } from "firebase/firestore";
 
+// shadcn
+import { Button } from "@/components/ui/button";
+
 const MyArticlesCollectionContainer: React.FC = () => {
   const { user } = useSelector((state: IRootState) => state.user);
   const dispatch = useDispatch();
@@ -70,12 +73,15 @@ const MyArticlesCollectionContainer: React.FC = () => {
         <h2 className="text-2xl font-bold">我的文章</h2>
 
         <NavLink to="/profile/post-article">
-          <button
-            className="btn-purple mt-[6px] sm:btn-xs"
+          <Button
+            type="button"
+            variant={"purple"}
+            size={"sm"}
+            className="mt-[4px]"
             onClick={() => dispatch(resetCover())}
           >
             新增文章
-          </button>
+          </Button>
         </NavLink>
       </div>
 

@@ -27,6 +27,9 @@ import { doc, getDoc, updateDoc, DocumentData } from "firebase/firestore";
 import ReactQuill from "react-quill";
 import "react-quill/dist/quill.snow.css";
 
+// shadcn
+import { Button } from "@/components/ui/button";
+
 const EditArticle: React.FC = () => {
   const { id } = useParams();
   const { user } = useSelector((state: IRootState) => state.user);
@@ -334,9 +337,9 @@ const EditArticle: React.FC = () => {
 
         {/* button */}
         <div className="mb-10 mt-6">
-          <button type="button" className="btn-purple" onClick={editHandler}>
+          <Button type="button" variant={"purple"} onClick={editHandler}>
             發布文章
-          </button>
+          </Button>
         </div>
 
         {isUnsplashOpen && <UnsplashContainer />}

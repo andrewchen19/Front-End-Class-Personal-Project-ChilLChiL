@@ -8,15 +8,17 @@ import { AiOutlineWarning } from "react-icons/ai";
 
 // framer motion
 import { motion, Variants } from "framer-motion";
+const centerVariant: Variants = {
+  hidden: { opacity: 0 },
+  visible: { opacity: 1, transition: { duration: 1 } },
+};
+
+// shadcn
+import { Button } from "@/components/ui/button";
 
 interface BlockerProps {
   isEdited: boolean;
 }
-
-const centerVariant: Variants = {
-  hidden: { opacity: 0 },
-  visible: { opacity: 1, transition: { duration: 1.5 } },
-};
 
 const Blocker: React.FC<BlockerProps> = ({ isEdited }) => {
   const dispatch = useDispatch();
@@ -42,8 +44,8 @@ const Blocker: React.FC<BlockerProps> = ({ isEdited }) => {
             style={{ boxShadow: "rgba(6, 2, 2, 0.15) 0px 2px 10px" }}
           >
             <div className="flex justify-center">
-              <div className="grid h-7 w-7 place-items-center rounded-full bg-pink-light">
-                <AiOutlineWarning className="-mt-[2px] text-lg text-carrot" />
+              <div className="grid h-8 w-8 place-items-center rounded-full bg-pink-light">
+                <AiOutlineWarning className="-mt-[2px] text-xl text-carrot" />
               </div>
             </div>
 
@@ -53,23 +55,25 @@ const Blocker: React.FC<BlockerProps> = ({ isEdited }) => {
             </div>
 
             <div className="mx-auto mt-auto flex gap-4">
-              <button
+              <Button
                 type="button"
-                className="btn-turquoise"
+                variant={"turquoise-hipster"}
+                size={"sm"}
                 onClick={() => blocker.reset()}
               >
                 Cancel
-              </button>
-              <button
+              </Button>
+              <Button
                 type="button"
-                className="btn-pink"
+                variant={"pink-hipster"}
+                size={"sm"}
                 onClick={() => {
                   dispatch(resetCover());
                   blocker.proceed();
                 }}
               >
                 Leave
-              </button>
+              </Button>
             </div>
           </motion.div>
         </div>

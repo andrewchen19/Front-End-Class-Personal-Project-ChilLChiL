@@ -27,6 +27,9 @@ import {
   Query,
 } from "firebase/firestore";
 
+// shadcn
+import { Button } from "@/components/ui/button";
+
 const AllArticlesContainer: React.FC = () => {
   const navigate = useNavigate();
 
@@ -368,20 +371,22 @@ const AllArticlesContainer: React.FC = () => {
           <h2 className="text-2xl font-bold">所有文章</h2>
 
           <div className="flex gap-1">
-            <button
+            <Button
               type="button"
-              className={`btn btn-circle btn-sm hover:border-none ${layout === "grid" && "bg-purple-light hover:bg-purple-light"}`}
+              variant={`${layout === "grid" ? "olive" : "ghost"}`}
+              size={"real-full"}
               onClick={() => setLayout("grid")}
             >
               <BsFillGridFill />
-            </button>
-            <button
+            </Button>
+            <Button
               type="button"
-              className={`btn btn-circle btn-sm hover:border-none ${layout === "list" && "bg-purple-light hover:bg-purple-light"}`}
+              variant={`${layout === "list" ? "olive" : "ghost"}`}
+              size={"real-full"}
               onClick={() => setLayout("list")}
             >
               <BsList />
-            </button>
+            </Button>
           </div>
         </div>
 
@@ -465,19 +470,12 @@ const AllArticlesContainer: React.FC = () => {
           </div>
 
           <div className="grid grid-cols-2 gap-8">
-            <button
-              type="submit"
-              className="btn btn-sm w-full border-transparent bg-pink-light hover:border-transparent hover:bg-pink-dark"
-            >
+            <Button type="submit" variant={"pink"}>
               Search
-            </button>
-            <button
-              type="button"
-              className="btn btn-sm border-transparent bg-blue-light hover:border-transparent hover:bg-blue-dark"
-              onClick={resetHandler}
-            >
+            </Button>
+            <Button type="button" variant={"blue"} onClick={resetHandler}>
               Reset
-            </button>
+            </Button>
           </div>
         </form>
 
@@ -575,7 +573,7 @@ const AllArticlesContainer: React.FC = () => {
                 return (
                   <article
                     key={id}
-                    className="group card flex-row items-center px-10 py-6 shadow-xl transition-all duration-300 hover:cursor-pointer hover:shadow-2xl"
+                    className="card group flex-row items-center px-10 py-6 shadow-xl transition-all duration-300 hover:cursor-pointer hover:shadow-2xl"
                     onClick={() => articleHandler(id)}
                   >
                     <img
@@ -622,15 +620,17 @@ const AllArticlesContainer: React.FC = () => {
         {/* pagination */}
         {showPagination && (
           <div className="mt-16 flex justify-center">
-            <div className="join">
+            <div className="flex">
               {/* prev button */}
-              <button
-                className="btn join-item btn-sm sm:btn-md"
+              <Button
+                type="button"
+                variant={"purple"}
+                size={"prev"}
                 disabled={nowPage === 1}
                 onClick={prevHandler}
               >
                 prev
-              </button>
+              </Button>
 
               {/* dynamic generation */}
               {pages.map((pageNumber) => {
@@ -638,7 +638,7 @@ const AllArticlesContainer: React.FC = () => {
                   <div
                     key={pageNumber}
                     className={`join-item flex h-8 w-8 items-center justify-center bg-gray-100 px-3 text-xs font-bold sm:h-12 sm:w-12 sm:px-4 sm:text-sm ${
-                      pageNumber === nowPage && "bg-gray-500"
+                      pageNumber === nowPage && "bg-gray-300"
                     }`}
                   >
                     {pageNumber}
@@ -647,13 +647,15 @@ const AllArticlesContainer: React.FC = () => {
               })}
 
               {/* next button */}
-              <button
-                className="btn join-item btn-sm sm:btn-md"
+              <Button
+                type="button"
+                variant={"purple"}
+                size={"next"}
                 disabled={nowPage === allPage}
                 onClick={nextHandler}
               >
                 next
-              </button>
+              </Button>
             </div>
           </div>
         )}

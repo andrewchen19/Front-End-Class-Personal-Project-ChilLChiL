@@ -24,6 +24,9 @@ import {
   Signup,
 } from "./pages";
 
+// framer motion
+import { AnimatePresence } from "framer-motion";
+
 function App() {
   const router = createBrowserRouter([
     {
@@ -98,7 +101,9 @@ function App() {
 
   return (
     <>
-      <RouterProvider router={router} />
+      <AnimatePresence mode="wait">
+        <RouterProvider router={router} />
+      </AnimatePresence>
       <ToastContainer
         position="top-center"
         autoClose={2000}

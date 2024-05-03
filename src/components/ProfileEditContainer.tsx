@@ -14,6 +14,9 @@ import { MdClose } from "react-icons/md";
 import { db } from "../main";
 import { doc, updateDoc } from "firebase/firestore";
 
+// shadcn
+import { Button } from "@/components/ui/button";
+
 const ProfileEditContainer: React.FC = () => {
   const { user } = useSelector((state: IRootState) => state.user);
   const dispatch = useDispatch();
@@ -105,19 +108,19 @@ const ProfileEditContainer: React.FC = () => {
         </div>
 
         {/* buttons */}
-        <div className="absolute bottom-8 right-8 flex gap-5">
+        <div className="absolute bottom-8 right-8 flex items-center gap-5">
           {!isLoading && (
-            <button
+            <Button
               type="button"
-              className="btn btn-sm rounded-lg border border-gray-400 bg-transparent px-4 py-2 text-gray-400 hover:border-gray-500 hover:bg-transparent hover:text-gray-500"
+              variant={"ghost"}
               onClick={() => dispatch(closeEditContainer())}
             >
               Cancel
-            </button>
+            </Button>
           )}
-          <button
+          <Button
             type="button"
-            className="btn btn-sm rounded-lg px-4 py-2"
+            variant={"purple-hipster"}
             disabled={
               (user.name === name && user.profile_picture === profileImage) ||
               isLoading
@@ -125,7 +128,7 @@ const ProfileEditContainer: React.FC = () => {
             onClick={updateHandler}
           >
             {isLoading ? "Saving" : "Save"}
-          </button>
+          </Button>
         </div>
       </div>
     </>

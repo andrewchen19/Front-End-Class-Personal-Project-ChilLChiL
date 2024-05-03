@@ -23,6 +23,9 @@ import { collection, addDoc, updateDoc } from "firebase/firestore";
 import ReactQuill from "react-quill";
 import "react-quill/dist/quill.snow.css";
 
+// shadcn
+import { Button } from "@/components/ui/button";
+
 const PostArticle: React.FC = () => {
   const { user } = useSelector((state: IRootState) => state.user);
   const { cover, isUnsplashOpen, photographerLink, photographerName } =
@@ -296,9 +299,9 @@ const PostArticle: React.FC = () => {
 
         {/* button */}
         <div className="mb-10 mt-6">
-          <button type="button" className="btn-purple" onClick={publishHandler}>
+          <Button type="button" variant={"purple"} onClick={publishHandler}>
             發布文章
-          </button>
+          </Button>
         </div>
 
         {isUnsplashOpen && <UnsplashContainer />}

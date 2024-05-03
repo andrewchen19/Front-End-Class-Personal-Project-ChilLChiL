@@ -98,38 +98,35 @@ const RealtimeContainer: React.FC = () => {
     );
   }
 
-  // console.log(localSpotNameList);
-  // console.log(localSpotsList);
-
   let waveData: number[] = [];
   localSpotsList[localSpotNameIndex].wave.map((item: DocumentData) => {
     const info = item.surf.max;
     waveData.push(info);
   });
-  // console.log(waveData);
+
   let gustData: number[] = [];
   localSpotsList[localSpotNameIndex].wind.map((item: DocumentData) => {
     const info = item.gust.toFixed(1);
     gustData.push(info);
   });
-  // console.log(gustData);
+
   let tempData: number[] = [];
   localSpotsList[localSpotNameIndex].weather.map((item: DocumentData) => {
     const info = item.temperature.toFixed(1);
     tempData.push(info);
   });
-  // console.log(tempData);
 
   return (
     <section>
       <h2 className="text-2xl font-bold">浪點即時資訊</h2>
 
-      <div className="mt-5 flex gap-3">
+      <div role="tablist" className="tabs tabs-lifted mt-5 flex">
         {localSpotNameList.map((name, index) => (
           <button
             type="button"
             key={index}
-            className={`hover:text-yellow font-medium ${index === localSpotNameIndex ? "text-yellow" : ""}`}
+            role="tab"
+            className={`tab w-15 font-medium hover:text-olive ${index === localSpotNameIndex ? "tab-active text-olive" : ""}`}
             onClick={() => setLocalSpotNameIndex(index)}
           >
             {changeSpotName(name)}

@@ -20,7 +20,13 @@ import { collection, getDocs, DocumentData } from "firebase/firestore";
 // maptiler
 import * as maptilersdk from "@maptiler/sdk";
 import "@maptiler/sdk/dist/maptiler-sdk.css";
-maptilersdk.config.apiKey = "RB0duSZSInBQe79oKC0F";
+maptilersdk.config.apiKey = import.meta.env.VITE_MAPTILERSDK_API_KEY;
+
+// framer motion
+import { motion } from "framer-motion";
+
+// shadcn
+import { Button } from "@/components/ui/button";
 
 const LocalSpots: React.FC = () => {
   const dispatch = useDispatch();
@@ -195,7 +201,11 @@ const LocalSpots: React.FC = () => {
   }, []);
 
   return (
-    <>
+    <motion.main
+      initial={{ opacity: 0 }}
+      animate={{ opacity: 1, transition: { duration: 1.5 } }}
+      exit={{ opacity: 0, transition: { duration: 1.5 } }}
+    >
       <div id="map" className="h-[450px] w-full"></div>
 
       <div className="mx-auto flex w-[90%] max-w-5xl flex-col gap-16 py-14">
@@ -270,19 +280,12 @@ const LocalSpots: React.FC = () => {
             </div>
 
             <div className="grid grid-cols-2 gap-8">
-              <button
-                type="submit"
-                className="btn btn-sm w-full border-transparent bg-pink-light hover:border-transparent hover:bg-pink-dark"
-              >
+              <Button type="submit" variant={"pink"}>
                 Search
-              </button>
-              <button
-                type="button"
-                className="btn btn-sm border-transparent bg-blue-light hover:border-transparent hover:bg-blue-dark"
-                onClick={resetHandler}
-              >
+              </Button>
+              <Button type="button" variant={"blue"} onClick={resetHandler}>
                 Reset
-              </button>
+              </Button>
             </div>
           </form>
 
@@ -343,7 +346,7 @@ const LocalSpots: React.FC = () => {
           </div>
         </section>
       </div>
-    </>
+    </motion.main>
   );
 };
 
