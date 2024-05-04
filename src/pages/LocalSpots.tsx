@@ -208,7 +208,7 @@ const LocalSpots: React.FC = () => {
     >
       <div id="map" className="h-[450px] w-full"></div>
 
-      <div className="mx-auto flex w-[90%] max-w-5xl flex-col gap-16 py-14">
+      <div className="align-container gap-20 py-24">
         <section>
           <div className="border-b border-gray-300 pb-4">
             <h2 className="text-2xl font-bold">浪點查詢</h2>

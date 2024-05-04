@@ -23,6 +23,9 @@ import { collection, addDoc, updateDoc } from "firebase/firestore";
 import ReactQuill from "react-quill";
 import "react-quill/dist/quill.snow.css";
 
+// framer motion
+import { motion } from "framer-motion";
+
 // shadcn
 import { Button } from "@/components/ui/button";
 
@@ -111,11 +114,19 @@ const PostArticle: React.FC = () => {
   };
 
   const isEdited: boolean =
-    (!!cover || !!title || (!!content && content !== "<p><br></p>")) &&
+    (!!cover ||
+      !!title ||
+      tag !== "travel" ||
+      surfingSpot !== "jialeshuei" ||
+      (!!content && content !== "<p><br></p>")) &&
     !clickSubmit;
 
   return (
-    <>
+    <motion.main
+      initial={{ opacity: 0 }}
+      animate={{ opacity: 1, transition: { duration: 1.5 } }}
+      exit={{ opacity: 0, transition: { duration: 1.5 } }}
+    >
       {/* caption */}
       <div className="grid h-[150px] w-full place-items-center bg-beige">
         <h1 className="font-veneer text-3xl leading-8 tracking-wide">
@@ -124,7 +135,7 @@ const PostArticle: React.FC = () => {
         </h1>
       </div>
 
-      <div className="mx-auto flex w-[70%] max-w-5xl flex-col gap-8 py-14">
+      <div className="align-container gap-20 py-24">
         {/* cover */}
         <div>
           <h3 className="mb-2 text-2xl font-semibold">封面</h3>
@@ -140,7 +151,7 @@ const PostArticle: React.FC = () => {
               ></img>
             )}
             {!cover && (
-              <p className="font-sriracha text-lg font-medium">
+              <p className="font-sriracha text-[18px] font-medium">
                 Choose cover from&nbsp;
                 <span
                   onClick={() => dispatch(openUnsplash())}
@@ -151,7 +162,7 @@ const PostArticle: React.FC = () => {
               </p>
             )}
             {cover && (
-              <h5 className="absolute -bottom-[30px] left-0 font-sriracha text-sm font-medium text-gray-500">
+              <h5 className="absolute -bottom-[30px] left-0 font-sriracha text-[14px] font-medium text-gray-500">
                 Change another cover?&nbsp;
                 <span
                   onClick={() => dispatch(openUnsplash())}
@@ -298,9 +309,17 @@ const PostArticle: React.FC = () => {
         </div>
 
         {/* button */}
-        <div className="mb-10 mt-6">
+        <div className="mb-10 mt-6 flex gap-4">
           <Button type="button" variant={"purple"} onClick={publishHandler}>
             發布文章
+          </Button>
+
+          <Button
+            type="button"
+            variant={"ghost"}
+            onClick={() => navigate(`/profile/my-articles`)}
+          >
+            取消
           </Button>
         </div>
 
@@ -308,7 +327,7 @@ const PostArticle: React.FC = () => {
       </div>
 
       <Blocker isEdited={isEdited} />
-    </>
+    </motion.main>
   );
 };
 

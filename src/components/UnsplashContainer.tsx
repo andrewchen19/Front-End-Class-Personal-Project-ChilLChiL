@@ -12,8 +12,10 @@ import { MdClose } from "react-icons/md";
 import { IoSearchOutline } from "react-icons/io5";
 
 const UnsplashContainer: React.FC = () => {
-  const [searchText, setSearchText] = useState<string>("");
+  const [searchText, setSearchText] = useState<string>("surf");
   const [isLoading, setIsLoading] = useState<boolean>(false);
+  const [nextPage, setNextPage] = useState<number>(1);
+
   const inputRef = useRef<HTMLInputElement | null>(null);
 
   const dispatch = useDispatch();
@@ -21,9 +23,7 @@ const UnsplashContainer: React.FC = () => {
   const enterHandler = async (e: KeyboardEvent<HTMLInputElement>) => {
     if (e.key === "Enter") {
       const trimSearchText = searchText.trim();
-
-      const searchUrl = `https://api.unsplash.com/search/photos/?client_id=${import.meta.env.VITE_UNSPLASH_ACCESS_KEY}&query=${trimSearchText}&orientation=landscape&per_page=12`;
-      console.log(searchUrl);
+      const searchUrl = `https://api.unsplash.com/search/photos/?client_id=${import.meta.env.VITE_UNSPLASH_ACCESS_KEY}&query=${trimSearchText}&orientation=landscape&per_page=12&page=${nextPage}`;
       setIsLoading(true);
       try {
         const response = await axios.get(searchUrl);
@@ -36,12 +36,12 @@ const UnsplashContainer: React.FC = () => {
   };
 
   useEffect(() => {
-    const fetchRandomImage = async () => {
-      const randomUrl = `https://api.unsplash.com/photos/random/?client_id=${import.meta.env.VITE_UNSPLASH_ACCESS_KEY}&query=surf&orientation=landscape&count=12`;
+    const fetchSurfImages = async () => {
+      const searchUrl = `https://api.unsplash.com/search/photos/?client_id=${import.meta.env.VITE_UNSPLASH_ACCESS_KEY}&query=surf&orientation=landscape&per_page=12&page=${nextPage}`;
       setIsLoading(true);
       try {
-        const response = await axios.get(randomUrl);
-        dispatch(setUnsplashData(response.data));
+        const response = await axios.get(searchUrl);
+        dispatch(setUnsplashData(response.data.results));
         if (inputRef.current) {
           inputRef.current.focus();
         }
@@ -51,14 +51,14 @@ const UnsplashContainer: React.FC = () => {
       setIsLoading(false);
     };
 
-    fetchRandomImage();
+    fetchSurfImages();
   }, []);
 
   return (
     <>
       {/* overlay */}
       <div
-        className="fixed inset-0 z-10 h-full w-full hover:cursor-pointer"
+        className="fixed inset-0 z-10 my-auto h-full w-full hover:cursor-pointer"
         style={{ backgroundColor: "rgba(0, 0, 0, 0.2)" }}
         onClick={() => dispatch(closeUnsplash())}
       ></div>

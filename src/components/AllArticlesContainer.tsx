@@ -483,7 +483,7 @@ const AllArticlesContainer: React.FC = () => {
           <p className="mt-8">loading now...</p>
         )}
         {!isArticleLoading && articlesList && articlesList.length < 1 && (
-          <h3 className="mt-8">目前尚未有相關的文章... 請重新查詢</h3>
+          <h3 className="mt-8">尚未有相關的文章... 請重新查詢</h3>
         )}
 
         {/* grid layout */}

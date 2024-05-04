@@ -11,15 +11,7 @@ import {
 } from "../components";
 
 // framer motion
-import { motion, Variants } from "framer-motion";
-const allVariant: Variants = {
-  hidden: { opacity: 0 },
-  visible: {
-    opacity: 1,
-    y: 0,
-    transition: { duration: 1.5 },
-  },
-};
+import { motion } from "framer-motion";
 
 const Profile: React.FC = () => {
   const { user, isEditContainerOpen } = useSelector(
@@ -35,10 +27,9 @@ const Profile: React.FC = () => {
 
   return (
     <motion.main
-      initial="hidden"
-      whileInView="visible"
+      initial={{ opacity: 0 }}
+      animate={{ opacity: 1, transition: { duration: 1.5 } }}
       exit={{ opacity: 0, transition: { duration: 1.5 } }}
-      variants={allVariant}
       className="mx-auto mt-20 grid w-[90%] max-w-6xl grid-cols-[auto,1fr] gap-10"
     >
       <ProfileNavbar />

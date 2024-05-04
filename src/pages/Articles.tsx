@@ -39,7 +39,7 @@ const Articles: React.FC = () => {
         </div>
       </div>
 
-      <div className="mx-auto flex w-[90%] max-w-5xl flex-col gap-16 py-14">
+      <div className="align-container gap-20 py-24">
         <HeatArticlesContainer />
         <LatestArticlesContainer />
         <NewbieArticlesContainer />

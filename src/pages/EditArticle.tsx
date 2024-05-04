@@ -27,6 +27,9 @@ import { doc, getDoc, updateDoc, DocumentData } from "firebase/firestore";
 import ReactQuill from "react-quill";
 import "react-quill/dist/quill.snow.css";
 
+// framer motion
+import { motion } from "framer-motion";
+
 // shadcn
 import { Button } from "@/components/ui/button";
 
@@ -153,7 +156,11 @@ const EditArticle: React.FC = () => {
     !clickSubmit;
 
   return (
-    <>
+    <motion.main
+      initial={{ opacity: 0 }}
+      animate={{ opacity: 1, transition: { duration: 1.5 } }}
+      exit={{ opacity: 0, transition: { duration: 1.5 } }}
+    >
       {/* caption */}
       <div className="grid h-[150px] w-full place-items-center bg-beige">
         <h1 className="font-veneer text-3xl leading-8 tracking-wide">
@@ -162,7 +169,7 @@ const EditArticle: React.FC = () => {
         </h1>
       </div>
 
-      <div className="mx-auto flex w-[70%] max-w-5xl flex-col gap-12 py-14">
+      <div className="align-container gap-20 py-24">
         {/* cover */}
         <div>
           <h3 className="mb-2 text-2xl font-semibold">封面</h3>
@@ -336,9 +343,17 @@ const EditArticle: React.FC = () => {
         </div>
 
         {/* button */}
-        <div className="mb-10 mt-6">
+        <div className="mb-10 mt-6 flex gap-4">
           <Button type="button" variant={"purple"} onClick={editHandler}>
-            發布文章
+            更新文章
+          </Button>
+
+          <Button
+            type="button"
+            variant={"ghost"}
+            onClick={() => navigate(`/articles/${id}`)}
+          >
+            取消
           </Button>
         </div>
 
@@ -346,7 +361,7 @@ const EditArticle: React.FC = () => {
       </div>
 
       <Blocker isEdited={isEdited} />
-    </>
+    </motion.main>
   );
 };
 

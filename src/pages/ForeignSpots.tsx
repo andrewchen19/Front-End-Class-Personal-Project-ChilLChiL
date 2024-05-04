@@ -47,7 +47,7 @@ const ForeignSpots: React.FC = () => {
         </div>
       </div>
 
-      <main className="mx-auto flex w-[90%] max-w-5xl flex-col gap-16 py-14">
+      <main className="align-container gap-20 py-24">
         <MonthForeignSpotsContainer />
         <NewbieForeignSpotsContainer />
         <TubeForeignSpotsContainer />

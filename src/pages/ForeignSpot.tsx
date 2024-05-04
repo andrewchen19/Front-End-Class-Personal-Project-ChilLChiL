@@ -20,6 +20,9 @@ import { MdPayment } from "react-icons/md";
 import { db } from "../main";
 import { doc, getDoc, updateDoc, DocumentData } from "firebase/firestore";
 
+// framer motion
+import { motion } from "framer-motion";
+
 // shadcn
 import { Button } from "@/components/ui/button";
 
@@ -199,7 +202,11 @@ const ForeignSpot: React.FC = () => {
   } = infoData;
 
   return (
-    <>
+    <motion.main
+      initial={{ opacity: 0 }}
+      animate={{ opacity: 1, transition: { duration: 1.5 } }}
+      exit={{ opacity: 0, transition: { duration: 1.5 } }}
+    >
       {/* banner */}
       <div className="relative h-[450px] w-full">
         <img
@@ -209,22 +216,22 @@ const ForeignSpot: React.FC = () => {
         />
         <div className="absolute left-[50%] top-[50%] -translate-x-1/2 -translate-y-1/2">
           <h2
-            className="font-dripoctober text-center text-7xl tracking-wide text-white"
+            className="text-center font-dripoctober text-7xl tracking-wide text-white"
             style={{ textShadow: "3px 3px 0 rgba(0, 0, 0, 0.2)" }}
           >
             {country.location}
           </h2>
-          <p className="font-helvetica mt-2 max-w-[800px] text-base font-semibold leading-6 text-white">
+          <p className="mt-2 max-w-[800px] font-helvetica text-base font-semibold leading-6 text-white">
             {spotDesc}
           </p>
         </div>
       </div>
 
-      <main className="mx-auto flex w-[90%] max-w-5xl flex-col gap-16 py-14">
+      <main className="align-container gap-20 py-24">
         {/* when to score */}
         <section>
           <div className="flex items-center justify-between">
-            <h3 className="font-sriracha mb-6 text-3xl font-bold">
+            <h3 className="mb-6 font-sriracha text-3xl font-bold">
               When To Surf
             </h3>
 
@@ -259,11 +266,11 @@ const ForeignSpot: React.FC = () => {
 
                   <div className="mt-3 flex flex-col">
                     <div className="flex text-sm">
-                      <p className="font-helvetica pl-6 tracking-wide">
+                      <p className="pl-6 font-helvetica tracking-wide">
                         <span className="mr-1 font-semibold">Best For:</span>
                         {item.bestFor}
                       </p>
-                      <p className="font-helvetica pl-6">
+                      <p className="pl-6 font-helvetica">
                         <span className="mr-1 font-semibold tracking-wide">
                           Crowd Factor:
                         </span>
@@ -295,7 +302,7 @@ const ForeignSpot: React.FC = () => {
                   style={{ color: spotSecondaryColor }}
                 />
                 <div
-                  className="font-helvetica my-5 text-4xl font-bold leading-tight"
+                  className="my-5 font-helvetica text-4xl font-bold leading-tight"
                   style={{ color: spotSecondaryColor }}
                 >
                   {quote.desc}
@@ -306,7 +313,7 @@ const ForeignSpot: React.FC = () => {
                 />
 
                 <p
-                  className="font-helvetica absolute -bottom-10 left-[50%]  -translate-x-1/2 text-center font-bold tracking-wide"
+                  className="absolute -bottom-10 left-[50%] -translate-x-1/2  text-center font-helvetica font-bold tracking-wide"
                   style={{ color: spotSecondaryColor }}
                 >
                   -&nbsp;{quote.name}
@@ -326,7 +333,7 @@ const ForeignSpot: React.FC = () => {
 
         {/* essential */}
         <section>
-          <h3 className="font-sriracha mb-6 text-3xl font-bold">
+          <h3 className="mb-6 font-sriracha text-3xl font-bold">
             Travel Essentials
           </h3>
 
@@ -341,7 +348,7 @@ const ForeignSpot: React.FC = () => {
               {/* culture */}
               <div>
                 <h4 className="font-palanquin text-xl font-bold">Culture</h4>
-                <p className="font-helvetica mt-3 text-gray-500">
+                <p className="mt-3 font-helvetica text-gray-500">
                   {travelEssentials.culture}
                 </p>
               </div>
@@ -351,7 +358,7 @@ const ForeignSpot: React.FC = () => {
                 <h4 className="font-palanquin text-xl font-bold">
                   Local scene
                 </h4>
-                <p className="font-helvetica mt-3 text-gray-500">
+                <p className="mt-3 font-helvetica text-gray-500">
                   {travelEssentials.localScene}
                 </p>
               </div>
@@ -361,7 +368,7 @@ const ForeignSpot: React.FC = () => {
                 <h4 className="font-palanquin text-xl font-bold">
                   How to get there
                 </h4>
-                <p className="font-helvetica mt-3 text-gray-500">
+                <p className="mt-3 font-helvetica text-gray-500">
                   {travelEssentials.getThere}
                 </p>
               </div>
@@ -371,7 +378,7 @@ const ForeignSpot: React.FC = () => {
                 <h4 className="font-palanquin text-xl font-bold">
                   What to bring
                 </h4>
-                <p className="font-helvetica mt-3 text-gray-500">
+                <p className="mt-3 font-helvetica text-gray-500">
                   {travelEssentials.localScene}
                 </p>
               </div>
@@ -381,7 +388,7 @@ const ForeignSpot: React.FC = () => {
                 <h4 className="font-palanquin text-xl font-bold">
                   Leisure time
                 </h4>
-                <p className="font-helvetica mt-3 text-gray-500">
+                <p className="mt-3 font-helvetica text-gray-500">
                   {travelEssentials.downTime}
                 </p>
               </div>
@@ -395,7 +402,7 @@ const ForeignSpot: React.FC = () => {
             className="rounded-xl p-10"
             style={{ backgroundColor: primaryColor }}
           >
-            <h3 className="font-palanquin mb-10 text-center text-2xl font-bold text-white">
+            <h3 className="mb-10 text-center font-palanquin text-2xl font-bold text-white">
               Quick Tips
             </h3>
 
@@ -544,7 +551,7 @@ const ForeignSpot: React.FC = () => {
 
         {/* other zone */}
         <section>
-          <h3 className="font-sriracha mb-6 text-3xl font-bold">
+          <h3 className="mb-6 font-sriracha text-3xl font-bold">
             Explore Other Zones
           </h3>
 
@@ -587,7 +594,7 @@ const ForeignSpot: React.FC = () => {
           </div>
         </section>
       </main>
-    </>
+    </motion.main>
   );
 };
 

@@ -184,8 +184,7 @@ body::-webkit-scrollbar {
   .padding-b {
     @apply pb-12 sm:pb-24;
   }
-
-  /* .info-text {
-    @apply font-montserrat text-slate-gray text-lg leading-7;
-  } */
+  .align-container {
+    @apply mx-auto flex w-[85%] max-w-6xl flex-col;
+  }
 }

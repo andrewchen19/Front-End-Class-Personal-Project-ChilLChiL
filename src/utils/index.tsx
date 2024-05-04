@@ -529,3 +529,89 @@ export const profileImageList: string[] = [
   "https://firebasestorage.googleapis.com/v0/b/chillchill-9a1e2.appspot.com/o/default_avatar%2Fwomen8.png?alt=media&token=98a3d09d-551a-49c7-bd45-4ab1cb321626",
   "https://firebasestorage.googleapis.com/v0/b/chillchill-9a1e2.appspot.com/o/default_avatar%2Fwomen9.png?alt=media&token=0b3963bf-434f-4d08-a15f-90b7281d1b20",
 ];
+
+export const checkSpotsLng = (name: string): number => {
+  switch (name) {
+    case "jialeshuei":
+      return 120.847076;
+    case "nanwan":
+      return 120.761719;
+    case "qijin":
+      return 120.266905;
+    case "chunan":
+      return 120.855728;
+    case "baishawan":
+      return 121.5118743;
+    case "jinshan":
+      return 121.644379;
+    case "green-bay":
+      return 121.687927;
+    case "fulong":
+      return 121.949249;
+    case "dashi":
+      return 121.886818;
+    case "double-lions":
+      return 121.851952;
+    case "wushi":
+      return 121.842392;
+    case "choushui":
+      return 121.832253;
+    case "gongs":
+      return 121.5856075;
+    case "jiqi":
+      return 121.5482475;
+    case "bashiendong":
+      return 121.48123;
+    case "chenggong":
+      return 121.397479;
+    case "donghe":
+      return 121.312485;
+    case "jinzun":
+      return 121.295114;
+    default:
+      return 120.9;
+  }
+};
+
+export const checkSpotsLat = (name: string): number => {
+  switch (name) {
+    case "jialeshuei":
+      return 21.987741;
+    case "nanwan":
+      return 21.958252;
+    case "qijin":
+      return 22.610208;
+    case "chunan":
+      return 24.698902;
+    case "baishawan":
+      return 25.2848855;
+    case "jinshan":
+      return 25.231594;
+    case "green-bay":
+      return 25.188107;
+    case "fulong":
+      return 25.021452;
+    case "dashi":
+      return 24.932688;
+    case "double-lions":
+      return 24.890467;
+    case "wushi":
+      return 24.873783;
+    case "choushui":
+      return 24.856077;
+    case "gongs":
+      return 23.829665;
+    case "jiqi":
+      return 23.707683;
+    case "bashiendong":
+      return 23.398333;
+    case "chenggong":
+      return 23.115682;
+    case "donghe":
+      return 22.975674;
+    case "jinzun":
+      return 22.955943;
+    default:
+      return 23.659;
+  }
+};

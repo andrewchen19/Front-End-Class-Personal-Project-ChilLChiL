@@ -305,7 +305,11 @@ const Article: React.FC = () => {
   const { name: authorName, profile_picture: authorImage } = author;
 
   return (
-    <>
+    <motion.main
+      initial={{ opacity: 0 }}
+      animate={{ opacity: 1, transition: { duration: 1.5 } }}
+      exit={{ opacity: 0, transition: { duration: 1.5 } }}
+    >
       {/* cover */}
       <div className="relative h-[450px] w-full">
         <img
@@ -313,13 +317,13 @@ const Article: React.FC = () => {
           alt="cover-image"
           className="h-full w-full object-cover object-center"
         />
-        <p className="absolute -bottom-[22px] right-[20px] font-helvetica text-[12px] font-medium text-gray-500">
+        <p className="absolute -bottom-[22px] right-[20px] font-sriracha text-[12px] font-medium text-gray-500">
           Photo by&nbsp;
           <a
             href={photographerLink}
             target="_blank"
             rel="noreferrer noopener"
-            className="pb-[2px] hover:border-b hover:border-blue-dark hover:text-blue-dark"
+            className="hover:border-b hover:border-blue-dark hover:text-blue-dark"
           >
             {photographerName}
           </a>
@@ -328,7 +332,7 @@ const Article: React.FC = () => {
             href="https://unsplash.com/"
             target="_blank"
             rel="noreferrer noopener"
-            className="pb-[2px] hover:border-b hover:border-blue-dark hover:text-blue-dark"
+            className="hover:border-b hover:border-blue-dark hover:text-blue-dark"
           >
             Unsplash
           </a>
@@ -336,11 +340,9 @@ const Article: React.FC = () => {
       </div>
 
       {/* context */}
-      <div className="mx-auto w-[70%] max-w-5xl">
+      <div className="align-container py-24">
         {/* title */}
-        <div className="mt-16 px-[15px] text-4xl font-bold capitalize">
-          {title}
-        </div>
+        <div className="px-[15px] text-4xl font-bold capitalize">{title}</div>
 
         {/* authorInfo */}
         <div className="mt-6 px-[15px]">
@@ -411,7 +413,7 @@ const Article: React.FC = () => {
         </div>
 
         {/* content */}
-        <div className="mb-16 mt-10">
+        <div className="mt-10">
           <div className="ql-snow">
             <div className="ql-editor" data-gramm="false">
               <Markup content={content} />
@@ -421,9 +423,11 @@ const Article: React.FC = () => {
       </div>
 
       {/* comments container */}
-      <AnimatePresence>
-        {isCommentOpen && <ArticleCommentsContainer />}
-      </AnimatePresence>
+      {isCommentOpen && (
+        <AnimatePresence>
+          <ArticleCommentsContainer />
+        </AnimatePresence>
+      )}
 
       {/* Modal */}
       {showModal && (
@@ -471,7 +475,7 @@ const Article: React.FC = () => {
           </motion.div>
         </div>
       )}
-    </>
+    </motion.main>
   );
 };
 
