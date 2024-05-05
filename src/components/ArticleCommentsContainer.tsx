@@ -1,17 +1,13 @@
 import React, { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import { toast } from "react-toastify";
-import { useDispatch, useSelector } from "react-redux";
-import { closeComment } from "../features/article/articleSlice";
+import { useSelector } from "react-redux";
 import { IRootState } from "../store";
 import { calculateTimeAgo } from "../utils";
 import { CommentInfo } from "../types";
 
 // nano id
 import { nanoid } from "nanoid";
-
-// react icons
-import { IoCloseSharp } from "react-icons/io5";
 
 // firebase
 import { db } from "../main";
@@ -38,11 +34,6 @@ import { Markup } from "interweave";
 
 // framer motion
 import { motion, Variants } from "framer-motion";
-const rightVariant: Variants = {
-  hidden: { x: "100%", opacity: 0.5 },
-  visible: { x: 0, opacity: 1, transition: { duration: 1.1 } },
-  exit: { x: "100%", opacity: 0.5 },
-};
 const topVariant: Variants = {
   hidden: { y: "-30px" },
   visible: { y: 0, transition: { duration: 1.2 } },
@@ -50,12 +41,12 @@ const topVariant: Variants = {
 
 // shadcn
 import { Button } from "@/components/ui/button";
+import { SheetContent, SheetHeader, SheetTitle } from "@/components/ui/sheet";
+import { ScrollArea } from "@/components/ui/scroll-area";
 
 const ArticleCommentsContainer: React.FC = () => {
   const { id } = useParams();
   const { user } = useSelector((state: IRootState) => state.user);
-  const { isCommentOpen } = useSelector((state: IRootState) => state.article);
-  const dispatch = useDispatch();
 
   const [isLoading, setIsLoading] = useState(false);
   const [comment, setComment] = useState<string>("");
@@ -241,40 +232,17 @@ const ArticleCommentsContainer: React.FC = () => {
   }, []);
 
   return (
-    <>
-      {/* overlay */}
-      <div
-        className="fixed inset-0 z-20 h-full w-full hover:cursor-pointer"
-        style={{ backgroundColor: "rgba(0, 0, 0, 0.2)" }}
-        onClick={() => dispatch(closeComment())}
-      ></div>
-
-      <motion.aside
-        initial="hidden"
-        whileInView="visible"
-        exit="exit"
-        variants={rightVariant}
-        viewport={{ once: true }}
-        className={`fixed right-0 top-0 z-30 h-full w-[350px] transform bg-white shadow-xl transition-transform duration-300 ${
-          isCommentOpen ? "translate-x-0" : "translate-x-full"
-        }`}
-      >
+    <SheetContent className="w-[380px]">
+      <aside className="h-full w-full">
         {/* title */}
-        <div className="flex items-center justify-between border-b border-gray-300 px-8 py-5">
-          <h3 className="text-xl font-bold text-black">
+        <SheetHeader className="flex">
+          <SheetTitle className="text-xl font-bold text-black">
             Comment&nbsp;(<span>{commentLength}</span>)
-          </h3>
-
-          <button className="mt-2" onClick={() => dispatch(closeComment())}>
-            <IoCloseSharp className="text-lg text-gray-500 hover:text-gray-700" />
-          </button>
-        </div>
+          </SheetTitle>
+        </SheetHeader>
 
         {/* comments */}
-        <div
-          className="overflow-hidden px-5 py-5"
-          style={{ height: "calc(100% - 68.91px)" }}
-        >
+        <div className="mt-3 h-full overflow-hidden">
           {/* text editor */}
           <ReactQuill
             theme="snow"
@@ -307,92 +275,103 @@ const ArticleCommentsContainer: React.FC = () => {
             )}
           </div>
 
-          {isLoading && <div className="mt-5">is loading...</div>}
+          {isLoading && <div className="mt-3">is loading...</div>}
 
           {/* real time comments */}
           {!isLoading && commentList.length < 1 && (
-            <p className="mt-5">目前尚未有留言.....</p>
+            <p className="mt-3">目前尚未有留言.....</p>
           )}
 
           {/* latest 10 comments */}
           {!isLoading && commentList.length > 0 && (
-            <div
-              className="mt-5 flex flex-col gap-3 overflow-auto"
+            <ScrollArea
+              className="mt-3"
               style={{
-                height: "calc(100% - 68.91px - 86.2px - 23.99px + 40px)",
+                height: "calc(100% - 169.34px)",
               }}
             >
-              {commentList.map((item: CommentInfo) => {
-                const {
-                  id: commentId,
-                  userId,
-                  userName,
-                  userImage,
-                  comment,
-                  created_at,
-                  isEdited,
-                } = item;
-                return (
-                  <div key={commentId} className="flex flex-col gap-1">
-                    <div className="flex items-center">
-                      <img
-                        src={userImage}
-                        alt="user-image"
-                        className="h-8 w-8 rounded-full"
-                      />
+              <div className="flex flex-col gap-3 pr-2">
+                {commentList.map((item: CommentInfo) => {
+                  const {
+                    id: commentId,
+                    userId,
+                    userName,
+                    userImage,
+                    comment,
+                    created_at,
+                    isEdited,
+                  } = item;
+                  return (
+                    <div key={commentId} className="flex flex-col gap-1">
+                      <div className="flex items-center">
+                        <img
+                          src={userImage}
+                          alt="user-image"
+                          className="h-8 w-8 rounded-full"
+                        />
 
-                      <div>
-                        <h4 className="ml-1">{userName}</h4>
+                        <div>
+                          {user && userId === user.id ? (
+                            <h4 className="ml-1 font-medium">
+                              {userName} (You)
+                            </h4>
+                          ) : (
+                            <h4 className="ml-1 font-medium">{userName}</h4>
+                          )}
 
-                        <p className="ml-1 text-xs">
-                          {calculateTimeAgo(created_at)}&nbsp;
-                          {isEdited && <span>(edited)</span>}
-                        </p>
+                          <p className="ml-1 text-xs text-gray-700">
+                            {calculateTimeAgo(created_at)}&nbsp;
+                            {isEdited && <span>(edited)</span>}
+                          </p>
+                        </div>
+
+                        {user && userId === user.id && (
+                          <div className="ml-auto flex gap-2 pr-2">
+                            <span
+                              className="cursor-pointer text-xs text-olive/80 underline hover:text-olive"
+                              onClick={() => getCommentHandler(commentId)}
+                            >
+                              Edit
+                            </span>
+                            <span
+                              className="cursor-pointer text-xs text-clay-red/80 underline hover:text-clay-red"
+                              onClick={() => deleteButtonHandler(commentId)}
+                            >
+                              Delete
+                            </span>
+                          </div>
+                        )}
                       </div>
 
-                      {user && userId === user.id && (
-                        <div className="ml-auto pr-2">
-                          <span
-                            className="cursor-pointer text-xs text-gray-500 underline hover:text-gray-600"
-                            onClick={() => getCommentHandler(commentId)}
-                          >
-                            Edit
-                          </span>
-                          <span
-                            className="ml-2 cursor-pointer text-xs text-gray-500 underline hover:text-gray-600"
-                            onClick={() => deleteButtonHandler(commentId)}
-                          >
-                            Delete
-                          </span>
-                        </div>
-                      )}
-                    </div>
-
-                    <div className="rounded-lg bg-black text-sm text-turquoise">
-                      <div className="ql-snow">
-                        <div className="ql-editor py-2" data-gramm="false">
-                          <Markup content={comment} />
+                      <div
+                        className="rounded-lg  bg-gray-300 text-sm text-black/80"
+                        style={{ width: "322px" }}
+                      >
+                        <div className="ql-snow">
+                          <div className="ql-editor py-2" data-gramm="false">
+                            <Markup content={comment} />
+                          </div>
                         </div>
                       </div>
                     </div>
-                  </div>
-                );
-              })}
-            </div>
+                  );
+                })}
+              </div>
+            </ScrollArea>
           )}
         </div>
-      </motion.aside>
+      </aside>
 
       {/* alert */}
       {showAlert && (
         <>
           <div
             className="fixed left-0 top-0 z-50 h-full bg-transparent"
-            style={{ width: "calc(100% - 350px)" }}
+            style={{ width: "calc(100% - 380px)" }}
           ></div>
 
           <div
-            className="fixed right-0 top-0 z-50 flex h-full w-[350px] items-center justify-center"
+            className="fixed right-0 top-0 z-50 flex h-full w-[380px] items-center justify-center"
             style={{ backgroundColor: "rgba(255, 255, 255, 0.96)" }}
           >
             <motion.div
@@ -436,7 +415,7 @@ const ArticleCommentsContainer: React.FC = () => {
           </div>
         </>
       )}
-    </>
+    </SheetContent>
   );
 };
 

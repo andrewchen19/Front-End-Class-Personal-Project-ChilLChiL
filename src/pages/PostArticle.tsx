@@ -4,7 +4,7 @@ import { UnsplashContainer, Blocker } from "../components";
 import { localSpotsList } from "../utils";
 import { toast } from "react-toastify";
 import { useDispatch, useSelector } from "react-redux";
-import { openUnsplash, resetCover } from "../features/article/articleSlice";
+import { resetCover, openUnsplash } from "../features/article/articleSlice";
 import { IRootState } from "../store";
 
 // icons
@@ -28,11 +28,13 @@ import { motion } from "framer-motion";
 
 // shadcn
 import { Button } from "@/components/ui/button";
+import { Sheet, SheetTrigger } from "@/components/ui/sheet";
 
 const PostArticle: React.FC = () => {
   const { user } = useSelector((state: IRootState) => state.user);
-  const { cover, isUnsplashOpen, photographerLink, photographerName } =
-    useSelector((state: IRootState) => state.article);
+  const { cover, photographerLink, photographerName } = useSelector(
+    (state: IRootState) => state.article,
+  );
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
@@ -151,26 +153,36 @@ const PostArticle: React.FC = () => {
               ></img>
             )}
             {!cover && (
-              <p className="font-sriracha text-[18px] font-medium">
-                Choose cover from&nbsp;
-                <span
-                  onClick={() => dispatch(openUnsplash())}
-                  className="font-semibold text-clay-yellow hover:cursor-pointer hover:border-b hover:border-clay-yellow"
-                >
-                  Unsplash
-                </span>
-              </p>
+              <Sheet>
+                <p className="font-sriracha text-[18px] font-medium">
+                  Choose cover from&nbsp;
+                  <SheetTrigger>
+                    <span
+                      className="font-semibold text-clay-yellow hover:cursor-pointer hover:border-b hover:border-clay-yellow"
+                      onClick={() => dispatch(openUnsplash())}
+                    >
+                      Unsplash
+                    </span>
+                  </SheetTrigger>
+                </p>
+                <UnsplashContainer />
+              </Sheet>
             )}
             {cover && (
-              <h5 className="absolute -bottom-[30px] left-0 font-sriracha text-[14px] font-medium text-gray-500">
-                Change another cover?&nbsp;
-                <span
-                  onClick={() => dispatch(openUnsplash())}
-                  className="font-semibold text-clay-yellow hover:cursor-pointer hover:border-b hover:border-clay-yellow"
-                >
-                  Unsplash
-                </span>
-              </h5>
+              <Sheet>
+                <h5 className="absolute -bottom-[30px] left-0 font-sriracha text-[14px] font-medium text-gray-500">
+                  Change another cover?&nbsp;
+                  <SheetTrigger>
+                    <span
+                      className="font-semibold text-clay-yellow hover:cursor-pointer hover:border-b hover:border-clay-yellow"
+                      onClick={() => dispatch(openUnsplash())}
+                    >
+                      Unsplash
+                    </span>
+                  </SheetTrigger>
+                </h5>
+                <UnsplashContainer />
+              </Sheet>
             )}
           </div>
         </div>
@@ -322,8 +334,6 @@ const PostArticle: React.FC = () => {
             取消
           </Button>
         </div>
-
-        {isUnsplashOpen && <UnsplashContainer />}
       </div>
 
       <Blocker isEdited={isEdited} />

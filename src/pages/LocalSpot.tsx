@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { useParams } from "react-router-dom";
+import { Link, useParams } from "react-router-dom";
 import { toast } from "react-toastify";
 import { useSelector } from "react-redux";
 import { IRootState } from "../store";
@@ -12,6 +12,8 @@ import {
   changeToWeatherIcon,
   checkSpotsLng,
   checkSpotsLat,
+  directionAbbreviation,
+  changeDirection,
 } from "../utils";
 import {
   WaveInfo,
@@ -30,7 +32,8 @@ import compass from "../assets/weather/compass.svg";
 import tideHigh from "../assets/weather/tide-high.svg";
 import windOnshore from "../assets/weather/wind-onshore.svg";
 import thermometerSun from "../assets/weather/thermometer-sun.svg";
-import surfImg from "../assets/images/illustration-1.png";
+import surfImg from "../assets/images/illustration.jpg";
+import { IoMdInformationCircleOutline } from "react-icons/io";
 
 // firebase
 import { db } from "../main";
@@ -79,6 +82,13 @@ const centerRotationVariant: Variants = {
 
 // shadcn
 import { Button } from "@/components/ui/button";
+import {
+  Tooltip,
+  TooltipContent,
+  TooltipProvider,
+  TooltipTrigger,
+} from "@/components/ui/tooltip";
+import { ScrollArea } from "@/components/ui/scroll-area";
 
 const LocalSpot: React.FC = () => {
   const { name } = useParams();
@@ -360,7 +370,7 @@ const LocalSpot: React.FC = () => {
       container: "map", // container's id or the HTML element to render the map
       style: maptilersdk.MapStyle.STREETS,
       center: centerArray, // starting position [lng, lat]
-      zoom: 10, // starting zoom
+      zoom: 13, // starting zoom
     });
 
     const executeFunction = async () => {
@@ -375,6 +385,8 @@ const LocalSpot: React.FC = () => {
         const data = await getLocalSpotTextFromFirebase(name);
         if (!data) return;
 
+        const description = `<h3 style="color:#FF9500; font-family:Noto Sans TC; font-weight: 600">${data.name.chin}</h3>`;
+
         new maptilersdk.Marker({
           color: "#FF4742",
           draggable: false,
@@ -384,9 +396,7 @@ const LocalSpot: React.FC = () => {
             new maptilersdk.Popup({
               closeButton: false,
               maxWidth: "none",
-            }).setHTML(
-              `<h3 style="color:#FF9500; font-family:Noto Sans TC; font-weight: 600">${data.name.chin}</h3>`,
-            ),
+            }).setHTML(description),
           )
           .addTo(map);
       } catch (error) {
@@ -433,21 +443,33 @@ const LocalSpot: React.FC = () => {
       <div id="map" className="h-[450px] w-full"></div>
 
       {(isLoading || !textData || !infoData) && (
-        <div className="mx-auto flex w-[90%] max-w-5xl flex-col py-14">
-          Loading...
-        </div>
+        <div className="align-container py-24">Loading...</div>
       )}
 
       {!isLoading && textData && infoData && (
-        <div className="align-container gap-20 py-24">
-          {/* tittle & button */}
-          <div className="flex flex-col gap-5">
+        <div className="align-container gap-20 pb-24 pt-16">
+          {/* breadcrumbs */}
+          <div className="breadcrumbs text-sm text-gray-500">
+            <ul>
+              <li>
+                <Link to="/" className="underline-offset-4">
+                  首頁
+                </Link>
+              </li>
+              <li>
+                <Link to="/local-spots" className="underline-offset-4">
+                  台灣浪點
+                </Link>
+              </li>
+              <li>{textData.name.chin}</li>
+            </ul>
+          </div>
+
+          {/* textData */}
+          <section className="-mt-8">
             {/* title */}
-            <div className="flex items-center justify-between">
-              <h3 className="text-2xl font-bold leading-6 text-pink">
-                {textData.name.chin}
-                <span className="pl-1 capitalize">({textData.name.eng})</span>
-              </h3>
+            <div className="mb-10 flex items-center justify-between border-b border-gray-300 pb-4">
+              <h2 className="text-2xl font-bold">浪點資訊</h2>
 
               {user && (
                 <Button
@@ -460,401 +482,49 @@ const LocalSpot: React.FC = () => {
               )}
             </div>
 
-            {/* desc */}
-            <div>
-              <h3 className="mt-8 text-2xl font-bold">
-                {/* <span className="mr-1">{today}</span> */}
-                衝浪預報
-              </h3>
-            </div>
-          </div>
-
-          {/* forecast days & hours */}
-          <div className="mx-auto -mt-10 flex w-full max-w-[800px] flex-col pl-[125px]">
-            {/* days */}
-            <div className="flex">
-              <p className="w-[192px] text-center text-lg font-bold">
-                {infoData.today}
-              </p>
-              <p className="w-[192px] text-center text-lg font-bold">
-                {infoData.tomorrow}
-              </p>
-              <p className="w-[192px] text-center text-lg font-bold">
-                {infoData.afterTomorrow}
-              </p>
-            </div>
-
-            {/* hours */}
-            <div className="flex">
-              {hours.map((hour, index) => {
-                return (
-                  <p
-                    key={index}
-                    className="item-center flex h-8 w-16 justify-center"
-                  >
-                    <span className="flex items-center text-base font-bold">
-                      {hour}
-                    </span>
-                  </p>
-                );
-              })}
-            </div>
-          </div>
-
-          {/* InfoData */}
-          <section className="mx-auto -mt-5 flex w-full max-w-[800px] flex-col gap-5">
-            <div>
-              <h3 className="mb-2 flex items-center gap-1 text-lg font-bold">
-                <img src={compass} alt="weather-icon" className="h-7 w-7" />
-                波浪 Swell
-              </h3>
-
-              <div className="flex">
-                {/* desc */}
-                <div className="w-[125px]">
-                  <p className="item-center flex h-8 w-full justify-center">
-                    <span className="flex items-center text-base">
-                      最小浪高(m)
-                    </span>
-                  </p>
-                  <p className="item-center flex h-8 w-full justify-center">
-                    <span className="flex items-center text-base">
-                      最大浪高(m)
-                    </span>
-                  </p>
-                  <p className="item-center flex h-8 w-full justify-center">
-                    <span className="flex items-center text-base">浪向</span>
-                  </p>
-                  <p className="item-center flex h-8 w-full justify-center">
-                    <span className="flex items-center text-base">
-                      波浪週期(s)
-                    </span>
-                  </p>
-                </div>
-
-                {/* wave & swell */}
-                <div className="flex">
-                  {infoData.wave.map((item: WaveInfo, index: number) => {
-                    const { surf, swells } = item;
-                    const { direction, period } = swells[0];
-                    return (
-                      <div key={index} className="w-16">
-                        <p className="item-center flex h-8 justify-center">
-                          <span className="flex items-center text-base">
-                            {surf.min}
-                          </span>
-                        </p>
-                        <p className="item-center flex h-8 justify-center">
-                          <span className="flex items-center text-base">
-                            {surf.max}
-                          </span>
-                        </p>
-                        <p className="flex h-8 items-center justify-center">
-                          <img
-                            src={locationArrow}
-                            alt="arrow-icon"
-                            className="h-5 w-5"
-                            style={{
-                              transform: `rotate(${direction.toFixed(0)}deg)`,
-                            }}
-                          />
-                        </p>
-
-                        <p className="item-center flex h-8 justify-center">
-                          <span className="flex items-center text-base">
-                            {period}
-                          </span>
-                        </p>
-                      </div>
-                    );
-                  })}
-                </div>
-              </div>
-            </div>
-
-            <div>
-              <h3 className="mb-2 flex items-center gap-1 text-lg font-bold">
-                <img src={tideHigh} alt="weather-icon" className="h-7 w-7" />
-                潮汐 Tide
-              </h3>
-
-              <div className="flex">
-                {/* desc */}
-                <div className="w-[125px]">
-                  <p className="item-center flex h-8 w-full justify-center">
-                    <span className="flex items-center text-base">潮汐(m)</span>
-                  </p>
-                </div>
-
-                {/* tide */}
-                <div className="flex">
-                  {infoData.tides.map((item: tideInfo, index: number) => {
-                    if (index > 8) return;
-                    const { height } = item;
-                    return (
-                      <div key={index} className="w-16">
-                        <p className="item-center flex h-8 justify-center">
-                          <span className="flex items-center text-base">
-                            {height}
-                          </span>
-                        </p>
-                      </div>
-                    );
-                  })}
-                </div>
-              </div>
-            </div>
-
-            <div>
-              <h3 className="mb-2 flex items-center gap-1 text-lg font-bold">
-                <img src={windOnshore} alt="weather-icon" className="h-7 w-7" />
-                風 Wind
-              </h3>
-
-              <div className="flex">
-                {/* desc */}
-                <div className="w-[125px]">
-                  <p className="item-center flex h-8 w-full justify-center">
-                    <span className="flex items-center text-base">類型</span>
-                  </p>
-                  <p className="item-center flex h-8 w-full justify-center">
-                    <span className="flex items-center text-base">風向</span>
-                  </p>
-                  <p className="item-center flex h-8 w-full justify-center">
-                    <span className="flex items-center text-base">
-                      陣風(km/h)
-                    </span>
-                  </p>
-                </div>
-
-                {/* wind */}
-                <div className="flex">
-                  {infoData.wind.map((item: WindInfo, index: number) => {
-                    const { direction, directionType, gust } = item;
-                    return (
-                      <div key={index} className="w-16">
-                        <p className="item-center flex h-8 justify-center">
-                          <span className="flex items-center text-base">
-                            {changeWindName(directionType)}
-                          </span>
-                        </p>
-                        <p className="flex h-8 items-center justify-center">
-                          <img
-                            src={locationArrow}
-                            alt="arrow-icon"
-                            className="h-5 w-5"
-                            style={{
-                              transform: `rotate(${direction.toFixed(0)}deg)`,
-                            }}
-                          />
-                        </p>
-                        <p className="item-center flex h-8 justify-center">
-                          <span className="flex items-center text-base">
-                            {gust.toFixed(1)}
-                          </span>
-                        </p>
-                      </div>
-                    );
-                  })}
-                </div>
-              </div>
-            </div>
-
-            <div>
-              <h3 className="mb-2 flex items-center gap-1 text-lg font-bold">
-                <img
-                  src={thermometerSun}
-                  alt="weather-icon"
-                  className="h-7 w-7"
-                />
-                天氣 Weather
-              </h3>
-
-              <div className="flex">
-                {/* desc */}
-                <div className="w-[125px]">
-                  <p className="item-center flex h-8 w-full justify-center">
-                    <span className="flex items-center text-base">
-                      天氣圖示
-                    </span>
-                  </p>
-                  <p className="item-center flex h-8 w-full justify-center">
-                    <span className="flex items-center text-base">
-                      溫度(°C)
-                    </span>
-                  </p>
-                </div>
-
-                {/* weather */}
-                <div className="flex">
-                  {infoData.weather.map((item: WeatherInfo, index: number) => {
-                    const { condition, temperature } = item;
-                    return (
-                      <div key={index} className="w-16">
-                        <p className="flex h-8 items-center justify-center">
-                          {changeToWeatherIcon(condition)}
-                        </p>
-                        <p className="item-center flex h-8 justify-center">
-                          <span className="flex items-center text-base">
-                            {temperature.toFixed(1)}
-                          </span>
-                        </p>
-                      </div>
-                    );
-                  })}
-                </div>
-              </div>
-            </div>
-          </section>
-
-          {/* Comments */}
-          <section className="grid grid-cols-[auto,1fr] gap-10">
-            {/* illustration */}
-            <div className="aspect-[9/16] max-w-[300px]">
-              <img src={surfImg} alt="surf-image" className="h-full w-full" />
-            </div>
-
-            <div className="flex flex-col">
-              {/* title */}
-              <h3 className="text-xl font-bold leading-6 text-pink">
-                最新留言
-              </h3>
-
-              {/* real time comments */}
-              <div className="mt-4 max-h-[335.31px] w-full overflow-auto">
-                {/* container */}
-                {commentList.length < 1 && <p>目前尚未有留言.....</p>}
-
-                {/* latest 10 comments */}
-                {commentList && (
-                  <div className="flex flex-col gap-1">
-                    {commentList.map((item: CommentInfo) => {
-                      const {
-                        id,
-                        userId,
-                        userName,
-                        userImage,
-                        comment,
-                        created_at,
-                        isEdited,
-                      } = item;
-                      return (
-                        <>
-                          <div key={id} className="flex flex-col gap-1">
-                            <div className="flex items-center">
-                              <img
-                                src={userImage}
-                                alt="user-image"
-                                className="h-5 w-5 rounded-full"
-                              />
-                              <h4 className="ml-1 w-[72px]">{userName}</h4>
-
-                              <p className="w-[125px] text-xs">
-                                {formatMessageTime(created_at)}&nbsp;
-                                {isEdited && <span>(edited)</span>}
-                              </p>
-
-                              {name && user && userId === user.id && (
-                                <>
-                                  <span
-                                    className="cursor-pointer text-xs text-gray-500 underline hover:text-gray-600"
-                                    onClick={() => getCommentHandler(id)}
-                                  >
-                                    Edit
-                                  </span>
-                                  <span
-                                    className="ml-2 cursor-pointer text-xs text-gray-500 underline hover:text-gray-600"
-                                    onClick={() => deleteButtonHandler(id)}
-                                  >
-                                    Delete
-                                  </span>
-                                </>
-                              )}
-                            </div>
-
-                            <div className="rounded-lg bg-black text-sm text-turquoise">
-                              <div className="ql-snow">
-                                <div
-                                  className="ql-editor py-2"
-                                  data-gramm="false"
-                                >
-                                  <Markup content={comment} />
-                                </div>
-                              </div>
-                            </div>
-                          </div>
-                        </>
-                      );
-                    })}
-                  </div>
-                )}
-              </div>
-
-              {/* leave comment */}
-              <div className="mt-auto">
-                {/* text-editor */}
-                <div className="max-w-[365px]">
-                  <ReactQuill
-                    theme="snow"
-                    value={comment}
-                    modules={modules}
-                    onChange={setComment}
-                    placeholder="請輸入留言 ..."
-                  />
-                </div>
-
-                {/* button */}
-                <div className="mt-3 flex gap-3">
-                  <Button
-                    type="button"
-                    variant={"purple"}
-                    size={"sm"}
-                    onClick={() => commentHandler()}
-                  >
-                    {isEditStatus ? "更新留言" : "新增留言"}
-                  </Button>
-
-                  {isEditStatus && (
-                    <Button
-                      type="button"
-                      variant={"ghost"}
-                      size={"sm"}
-                      onClick={() => cancelEditHandler()}
-                    >
-                      取消
-                    </Button>
-                  )}
-                </div>
-              </div>
-            </div>
-          </section>
-
-          {/* textData */}
-          <section>
-            <h3 className="text-2xl font-bold">浪點資訊</h3>
-            <div className="mt-5 grid grid-cols-[auto,1fr] gap-10">
-              <div className="w-[300px] px-5 py-10 shadow-xl">
+            <div className="grid grid-cols-[auto,1fr] gap-10">
+              <div className="flex w-[300px] flex-col gap-6 px-5 py-8 shadow-xl">
                 <h4 className="text-center text-turquoise">浪點圖表</h4>
-                <img
-                  src={textData.infoImage}
-                  alt="info-image"
-                  className="mt-4"
-                />
+                <img src={textData.infoImage} alt="info-image" />
               </div>
 
-              <div className="px-5 py-10 shadow-xl">
-                地點描述：
-                {splitText(textData.desc).map((item, index) => {
-                  return (
-                    <p key={index} className="mt-3">
-                      {item}
-                    </p>
-                  );
-                })}
+              <div className="flex flex-col gap-2 px-5 py-5 shadow-xl">
+                <h4 className="font-semibold">
+                  地點：
+                  <span className="ml-1 font-normal capitalize text-gray-800">
+                    {textData.name.chin} ({textData.name.eng})
+                  </span>
+                </h4>
+                <h4 className="font-semibold">
+                  所在鄉鎮市：
+                  <span className="ml-1 font-normal text-gray-800">
+                    {textData.country}
+                  </span>
+                </h4>
+                <div>
+                  <h4 className="mb-1 font-semibold">交通方式：</h4>
+                  {textData.trans.map((item: string, index: number) => {
+                    return (
+                      <p key={index} className="mb-3 text-gray-800 last:mb-0">
+                        {index + 1}. {item}
+                      </p>
+                    );
+                  })}
+                </div>
+                <div>
+                  <h4 className="mb-1 font-semibold">地點描述：</h4>
+                  {splitText(textData.desc).map((item, index) => {
+                    return (
+                      <p key={index} className="mb-3 text-gray-800 last:mb-0">
+                        {item}
+                      </p>
+                    );
+                  })}
+                </div>
               </div>
             </div>
 
-            <div className="mt-8 flex border border-black">
+            <div className="mt-10 flex border border-black">
               <div className="my-4 flex flex-grow flex-col gap-1 border-r border-r-turquoise">
                 <h4 className="px-5 text-center text-turquoise">面向</h4>
                 <p className="px-5 text-center">{textData.toward}</p>
@@ -878,6 +548,435 @@ const LocalSpot: React.FC = () => {
               <div className="my-4 flex flex-grow flex-col gap-1">
                 <h4 className="px-5 text-center text-turquoise">適合程度</h4>
                 <p className="px-5 text-center">{textData.difficulty}</p>
+              </div>
+            </div>
+          </section>
+
+          {/* InfoData */}
+          <section>
+            {/* desc */}
+            <div className="grid grid-cols-[auto,1fr] items-center border-b border-gray-300 pb-4">
+              <h2 className="w-[150px] text-2xl font-bold">衝浪預報</h2>
+
+              {/* forecast days & hours */}
+              <div className="mx-auto flex w-full flex-col">
+                {/* days */}
+                <div className="grid grid-cols-3 text-center text-lg font-bold">
+                  <p>{infoData.today} Today</p>
+                  <p>{infoData.tomorrow}</p>
+                  <p>{infoData.afterTomorrow}</p>
+                </div>
+              </div>
+            </div>
+
+            <div className="mt-5 grid grid-cols-9 pl-[150px] text-center font-semibold ">
+              {hours.map((hour, index) => {
+                return <p key={index}>{hour}</p>;
+              })}
+            </div>
+
+            <div className="mx-auto mt-5 flex w-full flex-col gap-5">
+              {/* swell */}
+              <div>
+                <h3 className="mb-2 flex items-center gap-1 text-lg font-bold">
+                  <img src={compass} alt="weather-icon" className="h-9 w-9" />
+                  波浪 Swell
+                </h3>
+
+                <div className="grid grid-cols-[auto,1fr]">
+                  {/* desc */}
+                  <div className="w-[150px]">
+                    <p className="flex h-8 w-full items-center pl-10 text-base">
+                      最小浪高 (m)
+                    </p>
+                    <p className="flex h-8 w-full items-center gap-3 pl-2 text-base">
+                      <TooltipProvider>
+                        <Tooltip>
+                          <TooltipTrigger>
+                            <IoMdInformationCircleOutline className="mt-[3px] h-5 w-5 text-gray-500" />
+                          </TooltipTrigger>
+                          <TooltipContent>
+                            <p className="text-center">
+                              對於初學者而言
+                              <br />
+                              1公尺內的浪高較為合適與安全
+                            </p>
+                          </TooltipContent>
+                        </Tooltip>
+                      </TooltipProvider>
+                      最大浪高 (m)
+                    </p>
+                    <p className="flex h-8 w-full items-center pl-10 text-base">
+                      浪向
+                    </p>
+                    <p className="flex h-8 w-full items-center gap-3 pl-2 text-base">
+                      <TooltipProvider>
+                        <Tooltip>
+                          <TooltipTrigger>
+                            <IoMdInformationCircleOutline className="mt-[3px] h-5 w-5 text-gray-500" />
+                          </TooltipTrigger>
+                          <TooltipContent>
+                            <p className="text-center">
+                              週期介於10~16秒之間
+                              <br />
+                              是衝浪者心中最理想的狀態
+                            </p>
+                          </TooltipContent>
+                        </Tooltip>
+                      </TooltipProvider>
+                      波浪週期 (s)
+                    </p>
+                  </div>
+
+                  <div className="grid grid-cols-9">
+                    {infoData.wave.map((item: WaveInfo, index: number) => {
+                      const { surf, swells } = item;
+                      const { direction, period } = swells[0];
+                      return (
+                        <div key={index} className="flex-grow">
+                          <p className="item-center flex h-8 justify-center">
+                            <span className="flex items-center text-base">
+                              {surf.min}
+                            </span>
+                          </p>
+                          <p className="item-center flex h-8 justify-center">
+                            <span className="flex items-center text-base">
+                              {surf.max}
+                            </span>
+                          </p>
+                          <p className="flex h-8 items-center justify-center">
+                            <img
+                              src={locationArrow}
+                              alt="arrow-icon"
+                              className="h-5 w-5"
+                              title={directionAbbreviation(direction)}
+                              style={{
+                                transform: `rotate(${changeDirection(direction)}deg)`,
+                              }}
+                            />
+                          </p>
+
+                          <p className="item-center flex h-8 justify-center">
+                            <span className="flex items-center text-base">
+                              {period}
+                            </span>
+                          </p>
+                        </div>
+                      );
+                    })}
+                  </div>
+                </div>
+              </div>
+
+              {/* tide */}
+              <div>
+                <h3 className="mb-2 flex items-center gap-1 text-lg font-bold">
+                  <img
+                    src={tideHigh}
+                    alt="weather-icon"
+                    className="mt-[7px] h-9 w-9"
+                  />
+                  潮汐 Tide
+                </h3>
+
+                <div className="grid grid-cols-[auto,1fr]">
+                  {/* desc */}
+                  <div className="w-[150px]">
+                    <p className="flex h-8 w-full items-center gap-3 pl-2 text-base">
+                      <TooltipProvider>
+                        <Tooltip>
+                          <TooltipTrigger>
+                            <IoMdInformationCircleOutline className="mt-[3px] h-5 w-5 text-gray-500" />
+                          </TooltipTrigger>
+                          <TooltipContent>
+                            <p className="text-center">
+                              潮汐的變化會直接影響浪型
+                              <br />
+                              不同浪點所適合的水位也有所不同
+                            </p>
+                          </TooltipContent>
+                        </Tooltip>
+                      </TooltipProvider>
+                      潮汐 (m)
+                    </p>
+                  </div>
+
+                  <div className="grid grid-cols-9">
+                    {infoData.tides.map((item: tideInfo, index: number) => {
+                      if (index > 8) return;
+                      const { height } = item;
+                      return (
+                        <div key={index} className="flex-grow">
+                          <p className="item-center flex h-8 justify-center">
+                            <span className="flex items-center text-base">
+                              {height.toFixed(2)}
+                            </span>
+                          </p>
+                        </div>
+                      );
+                    })}
+                  </div>
+                </div>
+              </div>
+
+              {/* wind */}
+              <div>
+                <h3 className="mb-2 flex items-center gap-1 text-lg font-bold">
+                  <img
+                    src={windOnshore}
+                    alt="weather-icon"
+                    className="h-9 w-9"
+                  />
+                  風 Wind
+                </h3>
+
+                <div className="grid grid-cols-[auto,1fr]">
+                  {/* desc */}
+                  <div className="w-[150px]">
+                    <p className="flex h-8 w-full items-center gap-3 pl-2 text-base">
+                      <TooltipProvider>
+                        <Tooltip>
+                          <TooltipTrigger>
+                            <IoMdInformationCircleOutline className="mt-[3px] h-5 w-5 text-gray-500" />
+                          </TooltipTrigger>
+                          <TooltipContent>
+                            <p className="text-center">
+                              微弱的陸風有助於衝浪
+                              <br />
+                              提高實際的衝浪體驗
+                            </p>
+                          </TooltipContent>
+                        </Tooltip>
+                      </TooltipProvider>
+                      類型
+                    </p>
+                    <p className="flex h-8 w-full items-center pl-10 text-base">
+                      風向
+                    </p>
+                    <p className="flex h-8 w-full items-center gap-3 pl-2 text-base">
+                      <TooltipProvider>
+                        <Tooltip>
+                          <TooltipTrigger>
+                            <IoMdInformationCircleOutline className="mt-[3px] h-5 w-5 text-gray-500" />
+                          </TooltipTrigger>
+                          <TooltipContent>
+                            <p className="text-center">
+                              小於每小時21公里的風速
+                              <br />
+                              是最理想的狀態
+                            </p>
+                          </TooltipContent>
+                        </Tooltip>
+                      </TooltipProvider>
+                      陣風 (km/h)
+                    </p>
+                  </div>
+
+                  <div className="grid grid-cols-9">
+                    {infoData.wind.map((item: WindInfo, index: number) => {
+                      const { direction, directionType, gust } = item;
+
+                      return (
+                        <div key={index} className="flex-grow">
+                          <p className="item-center flex h-8 justify-center">
+                            <span className="flex items-center text-base">
+                              {changeWindName(directionType)}
+                            </span>
+                          </p>
+                          <p className="flex h-8 items-center justify-center">
+                            <img
+                              src={locationArrow}
+                              alt="arrow-icon"
+                              className="h-5 w-5"
+                              title={directionAbbreviation(direction)}
+                              style={{
+                                transform: `rotate(${changeDirection(direction)}deg)`,
+                              }}
+                            />
+                          </p>
+                          <p className="item-center flex h-8 justify-center">
+                            <span className="flex items-center text-base">
+                              {gust.toFixed(1)}
+                            </span>
+                          </p>
+                        </div>
+                      );
+                    })}
+                  </div>
+                </div>
+              </div>
+
+              {/* weather */}
+              <div>
+                <h3 className="mb-2 flex items-center gap-1 text-lg font-bold">
+                  <img
+                    src={thermometerSun}
+                    alt="weather-icon"
+                    className="h-9 w-9"
+                  />
+                  天氣 Weather
+                </h3>
+
+                <div className="grid grid-cols-[auto,1fr]">
+                  {/* desc */}
+                  <div className="w-[150px]">
+                    <p className="flex h-8 w-full items-center pl-10 text-base">
+                      天氣圖示
+                    </p>
+                    <p className="flex h-8 w-full items-center pl-10 text-base">
+                      溫度 (°C)
+                    </p>
+                  </div>
+
+                  <div className="grid grid-cols-9">
+                    {infoData.weather.map(
+                      (item: WeatherInfo, index: number) => {
+                        const { condition, temperature } = item;
+                        console.log(condition);
+                        return (
+                          <div key={index} className="flex-grow">
+                            <p className="flex h-8 items-center justify-center">
+                              {changeToWeatherIcon(condition)}
+                            </p>
+                            <p className="item-center flex h-8 justify-center">
+                              <span className="flex items-center text-base">
+                                {temperature.toFixed(1)}
+                              </span>
+                            </p>
+                          </div>
+                        );
+                      },
+                    )}
+                  </div>
+                </div>
+              </div>
+            </div>
+          </section>
+
+          {/* Comments */}
+          <section>
+            {/* title */}
+            <div className="mb-10 border-b border-gray-300 pb-4">
+              <h2 className="text-2xl font-bold">最新留言</h2>
+            </div>
+
+            <div className="grid grid-cols-[auto,1fr] gap-10">
+              {/* illustration */}
+              <div className="aspect-[2/3] max-h-[534.21px]">
+                <img
+                  src={surfImg}
+                  alt="surf-image"
+                  className="h-full w-full rounded-xl"
+                />
+              </div>
+
+              <div className="flex flex-col">
+                {/* real time comments */}
+                <ScrollArea
+                  className={`max-h-[392px] w-full rounded-md  ${commentList.length > 0 ? "bg-gray-100 pt-2" : ""}`}
+                >
+                  {/* container */}
+                  {commentList.length < 1 && <p>目前尚未有留言.....</p>}
+
+                  {/* latest 10 comments */}
+                  {commentList && (
+                    <div className="flex flex-col">
+                      {commentList.map((item: CommentInfo) => {
+                        const {
+                          id,
+                          userId,
+                          userName,
+                          userImage,
+                          comment,
+                          created_at,
+                          isEdited,
+                        } = item;
+                        return (
+                          <div
+                            key={id}
+                            className="chat chat-start mb-2 ml-2 py-0"
+                          >
+                            <div className="chat-image avatar">
+                              <div className="mr-1 h-8 w-8 rounded-full">
+                                <img src={userImage} alt="user-image" />
+                              </div>
+                            </div>
+                            <div className="chat-header flex items-center gap-2">
+                              {user && userId === user.id ? (
+                                <p className="font-medium">{userName} (You)</p>
+                              ) : (
+                                <p className="font-medium">{userName}</p>
+                              )}
+
+                              {name && user && userId === user.id && (
+                                <div className="flex gap-2">
+                                  <span
+                                    className="cursor-pointer text-xs text-olive/80 underline hover:text-olive"
+                                    onClick={() => getCommentHandler(id)}
+                                  >
+                                    Edit
+                                  </span>
+                                  <span
+                                    className="cursor-pointer text-xs text-clay-red/80 underline hover:text-clay-red"
+                                    onClick={() => deleteButtonHandler(id)}
+                                  >
+                                    Delete
+                                  </span>
+                                </div>
+                              )}
+                            </div>
+                            <div className="chat-bubble mt-[4px] h-6 min-w-6 pt-[10px]">
+                              <Markup content={comment} />
+                            </div>
+                            <div className="chat-footer">
+                              <time className="text-xs text-gray-600">
+                                {formatMessageTime(created_at)}&nbsp;
+                                {isEdited && <span>(edited)</span>}
+                              </time>
+                            </div>
+                          </div>
+                        );
+                      })}
+                    </div>
+                  )}
+                </ScrollArea>
+
+                {/* leave comment */}
+                <div className="mt-auto">
+                  {/* text-editor */}
+                  <div className="max-w-full">
+                    <ReactQuill
+                      theme="snow"
+                      value={comment}
+                      modules={modules}
+                      onChange={setComment}
+                      placeholder="請輸入留言 ..."
+                    />
+                  </div>
+
+                  {/* button */}
+                  <div className="mt-3 flex gap-3">
+                    <Button
+                      type="button"
+                      variant={"purple"}
+                      size={"sm"}
+                      onClick={() => commentHandler()}
+                    >
+                      {isEditStatus ? "更新留言" : "新增留言"}
+                    </Button>
+
+                    {isEditStatus && (
+                      <Button
+                        type="button"
+                        variant={"ghost"}
+                        size={"sm"}
+                        onClick={() => cancelEditHandler()}
+                      >
+                        取消
+                      </Button>
+                    )}
+                  </div>
+                </div>
               </div>
             </div>
           </section>

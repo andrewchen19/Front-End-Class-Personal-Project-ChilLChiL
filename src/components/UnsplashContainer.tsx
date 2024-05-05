@@ -1,104 +1,173 @@
 import React, { useEffect, useState, KeyboardEvent, useRef } from "react";
 import axios from "axios";
 import UnsplashImagesContainer from "./UnsplashImagesContainer";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import {
   setUnsplashData,
-  closeUnsplash,
+  setTypeText,
+  setSearchText,
+  setPage,
 } from "../features/article/articleSlice";
+import { IRootState } from "../store";
 
 // react icons
-import { MdClose } from "react-icons/md";
 import { IoSearchOutline } from "react-icons/io5";
 
+// shadcn
+import { Button } from "@/components/ui/button";
+import { Loader2 } from "lucide-react";
+import { SheetContent, SheetHeader, SheetTitle } from "@/components/ui/sheet";
+import { ScrollArea } from "@/components/ui/scroll-area";
+
 const UnsplashContainer: React.FC = () => {
-  const [searchText, setSearchText] = useState<string>("surf");
+  const { page, searchText, typeText } = useSelector(
+    (state: IRootState) => state.article,
+  );
+  const dispatch = useDispatch();
+
   const [isLoading, setIsLoading] = useState<boolean>(false);
-  const [nextPage, setNextPage] = useState<number>(1);
 
   const inputRef = useRef<HTMLInputElement | null>(null);
 
-  const dispatch = useDispatch();
-
   const enterHandler = async (e: KeyboardEvent<HTMLInputElement>) => {
-    if (e.key === "Enter") {
-      const trimSearchText = searchText.trim();
-      const searchUrl = `https://api.unsplash.com/search/photos/?client_id=${import.meta.env.VITE_UNSPLASH_ACCESS_KEY}&query=${trimSearchText}&orientation=landscape&per_page=12&page=${nextPage}`;
-      setIsLoading(true);
-      try {
-        const response = await axios.get(searchUrl);
-        dispatch(setUnsplashData(response.data.results));
-      } catch (error) {
-        console.log(error);
-      }
-      setIsLoading(false);
+    if (e.key === "Enter" && typeText) {
+      const trimSearchText = typeText.trim();
+      dispatch(setSearchText(trimSearchText));
     }
   };
 
-  useEffect(() => {
-    const fetchSurfImages = async () => {
-      const searchUrl = `https://api.unsplash.com/search/photos/?client_id=${import.meta.env.VITE_UNSPLASH_ACCESS_KEY}&query=surf&orientation=landscape&per_page=12&page=${nextPage}`;
-      setIsLoading(true);
-      try {
-        const response = await axios.get(searchUrl);
-        dispatch(setUnsplashData(response.data.results));
-        if (inputRef.current) {
-          inputRef.current.focus();
-        }
-      } catch (error) {
-        console.log(error);
-      }
-      setIsLoading(false);
-    };
+  const loadMoreHandler = () => {
+    dispatch(setPage(page + 1));
+  };
 
-    fetchSurfImages();
-  }, []);
+  const fetchSearchImages = async () => {
+    const searchUrl = `https://api.unsplash.com/search/photos/?client_id=${import.meta.env.VITE_UNSPLASH_ACCESS_KEY}&query=${searchText}&orientation=landscape&per_page=12&page=${page}`;
+
+    setIsLoading(true);
+
+    try {
+      const response = await axios.get(searchUrl);
+      dispatch(setUnsplashData(response.data.results));
+    } catch (error) {
+      console.log(error);
+    }
+
+    setIsLoading(false);
+  };
+
+  const fetchSurfImages = async () => {
+    const surfUrl = `https://api.unsplash.com/search/photos/?client_id=${import.meta.env.VITE_UNSPLASH_ACCESS_KEY}&query=surf&orientation=landscape&per_page=12&page=${page}`;
+
+    setIsLoading(true);
+
+    try {
+      const response = await axios.get(surfUrl);
+      dispatch(setUnsplashData(response.data.results));
+      if (inputRef.current) {
+        inputRef.current.focus();
+      }
+    } catch (error) {
+      console.log(error);
+    }
+
+    setIsLoading(false);
+  };
+
+  useEffect(() => {
+    if (!searchText && page === 1) {
+      // console.log("execute1");
+      fetchSurfImages();
+    }
+  }, [page]);
+
+  useEffect(() => {
+    if (!searchText && page !== 1) {
+      // console.log("execute2");
+      fetchSurfImages();
+    }
+  }, [page]);
+
+  useEffect(() => {
+    if (searchText && page !== 1) {
+      // console.log("execute3");
+      dispatch(setPage(1));
+    }
+    if (searchText && page === 1) {
+      // console.log("execute3.5");
+      fetchSearchImages();
+    }
+  }, [searchText]);
+
+  useEffect(() => {
+    if (searchText) {
+      // console.log("execute4");
+      fetchSearchImages();
+    }
+  }, [page]);
 
   return (
-    <>
-      {/* overlay */}
-      <div
-        className="fixed inset-0 z-10 my-auto h-full w-full hover:cursor-pointer"
-        style={{ backgroundColor: "rgba(0, 0, 0, 0.2)" }}
-        onClick={() => dispatch(closeUnsplash())}
-      ></div>
-
-      <div
-        className="fixed inset-0 z-20 mx-auto my-[10vh] w-[600px] rounded-xl bg-white p-8"
-        style={{ boxShadow: "rgba(6, 2, 2, 0.15) 0px 2px 10px" }}
-      >
-        {/* close button */}
-        <div className="absolute right-6 top-6">
-          <button onClick={() => dispatch(closeUnsplash())}>
-            <MdClose className="text-2xl text-gray-600 hover:text-gray-700" />
-          </button>
-        </div>
+    <SheetContent className="w-[380px]">
+      <aside className="flex h-full w-full flex-col">
+        {/* title */}
+        <SheetHeader className="flex">
+          <SheetTitle className="border-b border-gray-300 pb-3 text-center text-xl font-bold text-black">
+            Photos by&nbsp;
+            <a
+              href="https://unsplash.com/"
+              target="_blank"
+              rel="noreferrer noopener"
+              className="text-navy"
+            >
+              Unsplash
+            </a>
+          </SheetTitle>
+        </SheetHeader>
 
         {/* search input */}
-        <div className="relative flex w-[330px] items-center">
+        <div className="relative mt-3 flex w-full items-center">
           <input
             type="text"
             ref={inputRef}
             placeholder="Type keywords and press Enter"
-            className="h-8 w-full grow pl-[30px] outline-none"
-            onChange={(e) => setSearchText(e.target.value)}
+            className="h-8 w-full grow  pl-[30px] outline-none"
+            onChange={(e) => dispatch(setTypeText(e.target.value))}
             onKeyDown={enterHandler}
           />
-          <div className="absolute left-[4px] top-1/2 -translate-y-1/2">
+          <div className="absolute left-[4px] top-[8px]">
             <IoSearchOutline className="text-lg" style={{ color: "#a3a3a3" }} />
           </div>
           <kbd className="kbd kbd-sm mt-[2px] px-3">Enter</kbd>
         </div>
 
-        <div
-          className={`mt-2 h-[454px] justify-around overflow-y-scroll border border-gray-300 p-4 ${
-            isLoading ? "grid place-items-center" : ""
-          }`}
+        {/* container */}
+        <ScrollArea
+          className={`mt-5 h-[508px] w-full ${isLoading ? "relative" : ""}`}
         >
-          {isLoading ? <p>Loading...</p> : <UnsplashImagesContainer />}
+          {isLoading ? (
+            <div className="absolute left-[50%] top-[50%] -translate-x-1/2 -translate-y-1/2">
+              Loading...
+            </div>
+          ) : (
+            <UnsplashImagesContainer />
+          )}
+        </ScrollArea>
+
+        {/* button */}
+        <div className="mt-auto flex justify-center">
+          <Button
+            type="button"
+            variant={"clay-red-hipster"}
+            onClick={loadMoreHandler}
+            disabled={isLoading}
+          >
+            {isLoading ? (
+              <Loader2 className="mr-1 h-3 w-3 animate-spin" />
+            ) : null}
+            {isLoading ? "Loading" : "Load More"}
+          </Button>
         </div>
-      </div>
-    </>
+      </aside>
+    </SheetContent>
   );
 };
 

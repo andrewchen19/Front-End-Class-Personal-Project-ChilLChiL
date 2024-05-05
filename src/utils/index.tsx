@@ -15,10 +15,12 @@ import clearDay from "../assets/weather/clearDay.svg";
 import clearNight from "../assets/weather/clearNight.svg";
 import cloudy from "../assets/weather/cloudy.svg";
 import drizzle from "../assets/weather/drizzle.svg";
+import fogNight from "../assets/weather/fog-night.svg";
+import fog from "../assets/weather/fog.svg";
 import notAvailable from "../assets/weather/notAvailable.svg";
 import overcastNight from "../assets/weather/overcast-night.svg";
 import overcast from "../assets/weather/overcast.svg";
-import fog from "../assets/weather/fog.svg";
+import mist from "../assets/weather/mist.svg";
 import partlyCloudyDay from "../assets/weather/partlyCloudyDay.svg";
 import partlyCloudyDayRain from "../assets/weather/partlyCloudyDayRain.svg";
 import partlyCloudyNight from "../assets/weather/partlyCloudyNight.svg";
@@ -201,10 +203,10 @@ export const hours: string[] = [
 export const changeWindName = (name: string): string => {
   let windName = "";
   if (name === "Offshore") {
-    windName = "離岸風";
+    windName = "陸風";
   }
   if (name === "Onshore") {
-    windName = "岸風";
+    windName = "海風";
   }
   if (name === "Cross-shore") {
     windName = "平行風";
@@ -212,21 +214,48 @@ export const changeWindName = (name: string): string => {
   return windName;
 };
 
+export const changeDirection = (direction: number): string => {
+  let newDirection;
+
+  if (direction >= 0 && direction < 180) {
+    newDirection = (direction + 180).toFixed(0);
+    return newDirection;
+  } else {
+    newDirection = (direction + 180 - 360).toFixed(0);
+    return newDirection;
+  }
+};
+
 export const changeToWeatherIcon = (name: string): ReactElement => {
   if (name === "CLEAR" || name === "MOSTLY_CLEAR") {
-    return <img src={clearDay} alt="weather-icon" className="h-6 w-6" />;
+    return (
+      <img src={clearDay} alt="weather-icon" title={name} className="h-6 w-6" />
+    );
   }
   if (name === "MOSTLY_CLOUDY") {
-    return <img src={partlyCloudyDay} alt="weather-icon" className="h-6 w-6" />;
+    return (
+      <img
+        src={partlyCloudyDay}
+        alt="weather-icon"
+        title={name}
+        className="h-6 w-6"
+      />
+    );
   }
   if (name === "CLOUDY" || name === "NIGHT_CLOUDY") {
-    return <img src={cloudy} alt="weather-icon" className="h-6 w-6" />;
+    return (
+      <img src={cloudy} alt="weather-icon" title={name} className="h-6 w-6" />
+    );
   }
   if (name === "OVERCAST") {
-    return <img src={overcast} alt="weather-icon" className="h-6 w-6" />;
+    return (
+      <img src={overcast} alt="weather-icon" title={name} className="h-6 w-6" />
+    );
   }
   if (name === "RAIN_AND_FOG") {
-    return <img src={fog} alt="weather-icon" className="h-6 w-6" />;
+    return (
+      <img src={fog} alt="weather-icon" title={name} className="h-6 w-6" />
+    );
   }
   if (
     name === "LIGHT_RAIN" ||
@@ -234,35 +263,73 @@ export const changeToWeatherIcon = (name: string): ReactElement => {
     name === "LIGHT_SHOWERS_POSSIBLE" ||
     name === "DRIZZLE"
   ) {
-    return <img src={drizzle} alt="weather-icon" className="h-6 w-6" />;
+    return (
+      <img src={drizzle} alt="weather-icon" title={name} className="h-6 w-6" />
+    );
   }
   if (name === "RAIN") {
-    return <img src={rain} alt="weather-icon" className="h-6 w-6" />;
+    return (
+      <img src={rain} alt="weather-icon" title={name} className="h-6 w-6" />
+    );
   }
   if (name === "BRIEF_SHOWERS" || name === "BRIEF_SHOWERS_POSSIBLE") {
     return (
-      <img src={partlyCloudyDayRain} alt="weather-icon" className="h-6 w-6" />
+      <img
+        src={partlyCloudyDayRain}
+        alt="weather-icon"
+        title={name}
+        className="h-6 w-6"
+      />
     );
   }
   if (name === "THUNDER_STORMS") {
-    return <img src={thunderstorms} alt="weather-icon" className="h-6 w-6" />;
+    return (
+      <img
+        src={thunderstorms}
+        alt="weather-icon"
+        title={name}
+        className="h-6 w-6"
+      />
+    );
   }
   if (name === "THUNDER_SHOWERS") {
     return (
-      <img src={thunderstormsDayRain} alt="weather-icon" className="h-6 w-6" />
+      <img
+        src={thunderstormsDayRain}
+        alt="weather-icon"
+        title={name}
+        className="h-6 w-6"
+      />
     );
   }
   if (name === "HEAVY_THUNDER_STORMS") {
     return (
-      <img src={thunderstormsExtreme} alt="weather-icon" className="h-6 w-6" />
+      <img
+        src={thunderstormsExtreme}
+        alt="weather-icon"
+        title={name}
+        className="h-6 w-6"
+      />
     );
   }
-  if (name === "NIGHT_CLEAR") {
-    return <img src={clearNight} alt="weather-icon" className="h-6 w-6" />;
+  if (name === "NIGHT_CLEAR" || name === "NIGHT_MOSTLY_CLEAR") {
+    return (
+      <img
+        src={clearNight}
+        alt="weather-icon"
+        title={name}
+        className="h-6 w-6"
+      />
+    );
   }
   if (name === "NIGHT_MOSTLY_CLOUDY") {
     return (
-      <img src={partlyCloudyNight} alt="weather-icon" className="h-6 w-6" />
+      <img
+        src={partlyCloudyNight}
+        alt="weather-icon"
+        title={name}
+        className="h-6 w-6"
+      />
     );
   }
   if (
@@ -275,6 +342,7 @@ export const changeToWeatherIcon = (name: string): ReactElement => {
       <img
         src={partlyCloudyNightDrizzle}
         alt="weather-icon"
+        title={name}
         className="h-6 w-6"
       />
     );
@@ -284,15 +352,32 @@ export const changeToWeatherIcon = (name: string): ReactElement => {
     name === "NIGHT_BRIEF_SHOWERS"
   ) {
     return (
-      <img src={partlyCloudyNightRain} alt="weather-icon" className="h-6 w-6" />
+      <img
+        src={partlyCloudyNightRain}
+        alt="weather-icon"
+        title={name}
+        className="h-6 w-6"
+      />
     );
   }
   if (name === "NIGHT_OVERCAST") {
-    return <img src={overcastNight} alt="weather-icon" className="h-6 w-6" />;
+    return (
+      <img
+        src={overcastNight}
+        alt="weather-icon"
+        title={name}
+        className="h-6 w-6"
+      />
+    );
   }
   if (name === "NIGHT_THUNDER_STORMS") {
     return (
-      <img src={thunderstormsNight} alt="weather-icon" className="h-6 w-6" />
+      <img
+        src={thunderstormsNight}
+        alt="weather-icon"
+        title={name}
+        className="h-6 w-6"
+      />
     );
   }
   if (name === "NIGHT_THUNDER_SHOWERS") {
@@ -300,6 +385,7 @@ export const changeToWeatherIcon = (name: string): ReactElement => {
       <img
         src={thunderstormsNightRain}
         alt="weather-icon"
+        title={name}
         className="h-6 w-6"
       />
     );
@@ -309,8 +395,19 @@ export const changeToWeatherIcon = (name: string): ReactElement => {
       <img
         src={thunderstormsNightExtreme}
         alt="weather-icon"
+        title={name}
         className="h-6 w-6"
       />
+    );
+  }
+  if (name === "NIGHT_MIST") {
+    return (
+      <img src={mist} alt="weather-icon" title={name} className="h-6 w-6" />
+    );
+  }
+  if (name === "NIGHT_FOG") {
+    return (
+      <img src={fogNight} alt="weather-icon" title={name} className="h-6 w-6" />
     );
   }
 
@@ -613,5 +710,41 @@ export const checkSpotsLat = (name: string): number => {
       return 22.955943;
     default:
       return 23.659;
+  }
+};
+
+export const directionAbbreviation = (degree: number): string => {
+  if (degree >= 11.25 && degree < 33.75) {
+    return "北北東";
+  } else if (degree >= 33.75 && degree < 56.25) {
+    return "東北";
+  } else if (degree >= 56.25 && degree < 78.75) {
+    return "東北東";
+  } else if (degree >= 78.75 && degree < 101.25) {
+    return "東";
+  } else if (degree >= 101.25 && degree < 123.75) {
+    return "東南東";
+  } else if (degree >= 123.75 && degree < 146.25) {
+    return "東南";
+  } else if (degree >= 146.25 && degree < 168.75) {
+    return "南南東";
+  } else if (degree >= 168.75 && degree < 191.25) {
+    return "南";
+  } else if (degree >= 191.25 && degree < 213.75) {
+    return "南南西";
+  } else if (degree >= 213.75 && degree < 236.25) {
+    return "西南";
+  } else if (degree >= 236.25 && degree < 258.75) {
+    return "西南西";
+  } else if (degree >= 258.75 && degree < 281.25) {
+    return "西";
+  } else if (degree >= 281.25 && degree < 303.75) {
+    return "西北西";
+  } else if (degree >= 303.75 && degree < 326.25) {
+    return "西北";
+  } else if (degree >= 326.25 && degree < 348.75) {
+    return "北北西";
+  } else {
+    return "北";
   }
 };

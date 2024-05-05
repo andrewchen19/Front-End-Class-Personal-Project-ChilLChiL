@@ -2,8 +2,7 @@ import React, { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import { ArticleCommentsContainer } from "../components";
 import { toast } from "react-toastify";
-import { useDispatch, useSelector } from "react-redux";
-import { openComment } from "../features/article/articleSlice";
+import { useSelector } from "react-redux";
 import { IRootState } from "../store";
 import { formatTime } from "../utils";
 
@@ -32,7 +31,7 @@ import {
 } from "firebase/firestore";
 
 // framer motion
-import { motion, Variants, AnimatePresence } from "framer-motion";
+import { motion, Variants } from "framer-motion";
 const centerRotationVariant: Variants = {
   hidden: { opacity: 0, rotate: -10 },
   visible: {
@@ -48,12 +47,11 @@ const centerRotationVariant: Variants = {
 
 // shadcn
 import { Button } from "@/components/ui/button";
+import { Sheet, SheetTrigger } from "@/components/ui/sheet";
 
 const Article: React.FC = () => {
   const { id } = useParams();
   const { user } = useSelector((state: IRootState) => state.user);
-  const { isCommentOpen } = useSelector((state: IRootState) => state.article);
-  const dispatch = useDispatch();
   const navigate = useNavigate();
 
   const [isLoading, setIsLoading] = useState<boolean>(false);
@@ -310,124 +308,118 @@ const Article: React.FC = () => {
       animate={{ opacity: 1, transition: { duration: 1.5 } }}
       exit={{ opacity: 0, transition: { duration: 1.5 } }}
     >
-      {/* cover */}
-      <div className="relative h-[450px] w-full">
-        <img
-          src={cover}
-          alt="cover-image"
-          className="h-full w-full object-cover object-center"
-        />
-        <p className="absolute -bottom-[22px] right-[20px] font-sriracha text-[12px] font-medium text-gray-500">
-          Photo by&nbsp;
-          <a
-            href={photographerLink}
-            target="_blank"
-            rel="noreferrer noopener"
-            className="hover:border-b hover:border-blue-dark hover:text-blue-dark"
-          >
-            {photographerName}
-          </a>
-          &nbsp;on&nbsp;
-          <a
-            href="https://unsplash.com/"
-            target="_blank"
-            rel="noreferrer noopener"
-            className="hover:border-b hover:border-blue-dark hover:text-blue-dark"
-          >
-            Unsplash
-          </a>
-        </p>
-      </div>
+      <Sheet>
+        {/* cover */}
+        <div className="relative h-[450px] w-full">
+          <img
+            src={cover}
+            alt="cover-image"
+            className="h-full w-full object-cover object-center"
+          />
+          <p className="absolute -bottom-[22px] right-[20px] font-sriracha text-[12px] font-medium text-gray-500">
+            Photo by&nbsp;
+            <a
+              href={photographerLink}
+              target="_blank"
+              rel="noreferrer noopener"
+              className="capitalize hover:border-b hover:border-blue-dark hover:text-blue-dark"
+            >
+              {photographerName}
+            </a>
+            &nbsp;on&nbsp;
+            <a
+              href="https://unsplash.com/"
+              target="_blank"
+              rel="noreferrer noopener"
+              className="hover:border-b hover:border-blue-dark hover:text-blue-dark"
+            >
+              Unsplash
+            </a>
+          </p>
+        </div>
 
-      {/* context */}
-      <div className="align-container py-24">
-        {/* title */}
-        <div className="px-[15px] text-4xl font-bold capitalize">{title}</div>
+        {/* context */}
+        <div className="align-container py-24">
+          {/* title */}
+          <div className="px-[15px] text-4xl font-bold capitalize">{title}</div>
 
-        {/* authorInfo */}
-        <div className="mt-6 px-[15px]">
-          <div className="flex items-start justify-between">
-            <div className="flex flex-col gap-2">
-              {/* userName & userImage */}
-              <div className="flex items-center gap-2">
-                <img
-                  src={authorImage}
-                  alt="author-image"
-                  className="h-10 w-10 rounded-full"
-                />
-                <p className="text-2xl">
-                  <span className="ml-2 font-fashioncountry text-turquoise">
-                    {authorName}
-                  </span>
-                </p>
+          {/* authorInfo */}
+          <div className="mt-6 px-[15px]">
+            <div className="flex items-start justify-between">
+              <div className="flex flex-col gap-2">
+                {/* userName & userImage */}
+                <div className="flex items-center gap-2">
+                  <img
+                    src={authorImage}
+                    alt="author-image"
+                    className="h-10 w-10 rounded-full"
+                  />
+                  <p className="text-2xl">
+                    <span className="ml-2 font-fashioncountry text-turquoise">
+                      {authorName}
+                    </span>
+                  </p>
+                </div>
+
+                <div className="flex items-center gap-5">
+                  <p className="flex items-center gap-1 text-sm text-gray-500">
+                    更新時間:
+                    <span className="ml-2">{formatTime(updated_at)}</span>
+                  </p>
+
+                  {/* comment button */}
+                  <SheetTrigger className="flex items-center gap-2">
+                    <TbMessageCircle className="text-lg text-pink-dark group-hover:text-pink" />
+                    <span className="text-base text-pink-dark  group-hover:text-pink">
+                      {commentLength}
+                    </span>
+                  </SheetTrigger>
+                </div>
               </div>
 
-              <div className="flex items-center gap-5">
-                <p className="flex items-center gap-1 text-sm text-gray-500">
-                  更新時間:
-                  <span className="ml-2">{formatTime(updated_at)}</span>
-                </p>
-
-                {/* comment button */}
-                <button
-                  className="group flex items-center gap-2 bg-transparent"
-                  onClick={() => dispatch(openComment())}
+              {/* edit/collection  button */}
+              {isLogin && isUser && (
+                <div className="mt-2 flex gap-4">
+                  <Button
+                    type="button"
+                    variant={"olive-hipster"}
+                    onClick={() => editHandler(articleId)}
+                  >
+                    編輯文章
+                  </Button>
+                  <Button
+                    type="button"
+                    variant={"clay-red-hipster"}
+                    onClick={() => deleteButtonHandler()}
+                  >
+                    刪除文章
+                  </Button>
+                </div>
+              )}
+              {isLogin && !isUser && id && (
+                <Button
+                  type="button"
+                  variant={"purple-hipster"}
+                  onClick={() => collectionHandler(id)}
                 >
-                  <TbMessageCircle className="text-lg text-pink-dark group-hover:text-pink" />
-                  <span className="text-base text-pink-dark  group-hover:text-pink">
-                    {commentLength}
-                  </span>
-                </button>
+                  {isLike ? "已收藏" : "加入收藏"}
+                </Button>
+              )}
+            </div>
+          </div>
+
+          {/* content */}
+          <div className="mt-10">
+            <div className="ql-snow">
+              <div className="ql-editor" data-gramm="false">
+                <Markup content={content} />
               </div>
             </div>
-
-            {/* edit/collection  button */}
-            {isLogin && isUser && (
-              <div className="mt-2 flex gap-4">
-                <Button
-                  type="button"
-                  variant={"olive-hipster"}
-                  onClick={() => editHandler(articleId)}
-                >
-                  編輯文章
-                </Button>
-                <Button
-                  type="button"
-                  variant={"clay-red-hipster"}
-                  onClick={() => deleteButtonHandler()}
-                >
-                  刪除文章
-                </Button>
-              </div>
-            )}
-            {isLogin && !isUser && id && (
-              <Button
-                type="button"
-                variant={"purple-hipster"}
-                onClick={() => collectionHandler(id)}
-              >
-                {isLike ? "已收藏" : "加入收藏"}
-              </Button>
-            )}
           </div>
         </div>
 
-        {/* content */}
-        <div className="mt-10">
-          <div className="ql-snow">
-            <div className="ql-editor" data-gramm="false">
-              <Markup content={content} />
-            </div>
-          </div>
-        </div>
-      </div>
-
-      {/* comments container */}
-      {isCommentOpen && (
-        <AnimatePresence>
-          <ArticleCommentsContainer />
-        </AnimatePresence>
-      )}
+        <ArticleCommentsContainer />
+      </Sheet>
 
       {/* Modal */}
       {showModal && (

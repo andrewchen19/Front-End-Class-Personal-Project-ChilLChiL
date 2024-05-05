@@ -32,6 +32,7 @@ import { motion } from "framer-motion";
 
 // shadcn
 import { Button } from "@/components/ui/button";
+import { Sheet, SheetTrigger } from "@/components/ui/sheet";
 
 const EditArticle: React.FC = () => {
   const { id } = useParams();
@@ -184,7 +185,7 @@ const EditArticle: React.FC = () => {
                 className="h-full w-full object-cover object-center"
               ></img>
             )}
-            {!cover && (
+            {/* {!cover && (
               <p className="font-sriracha text-lg font-medium">
                 Choose cover from&nbsp;
                 <span
@@ -194,17 +195,22 @@ const EditArticle: React.FC = () => {
                   Unsplash
                 </span>
               </p>
-            )}
+            )} */}
             {cover && (
-              <h5 className="absolute -bottom-[30px] left-0 font-sriracha text-sm font-medium text-gray-500">
-                Change another cover?&nbsp;
-                <span
-                  onClick={() => dispatch(openUnsplash())}
-                  className="font-semibold text-clay-yellow hover:cursor-pointer hover:border-b hover:border-clay-yellow"
-                >
-                  Unsplash
-                </span>
-              </h5>
+              <Sheet>
+                <h5 className="absolute -bottom-[30px] left-0 font-sriracha text-[14px] font-medium text-gray-500">
+                  Change another cover?&nbsp;
+                  <SheetTrigger>
+                    <span
+                      className="font-semibold text-clay-yellow hover:cursor-pointer hover:border-b hover:border-clay-yellow"
+                      onClick={() => dispatch(openUnsplash())}
+                    >
+                      Unsplash
+                    </span>
+                  </SheetTrigger>
+                </h5>
+                <UnsplashContainer />
+              </Sheet>
             )}
           </div>
         </div>
@@ -356,8 +362,6 @@ const EditArticle: React.FC = () => {
             取消
           </Button>
         </div>
-
-        {isUnsplashOpen && <UnsplashContainer />}
       </div>
 
       <Blocker isEdited={isEdited} />

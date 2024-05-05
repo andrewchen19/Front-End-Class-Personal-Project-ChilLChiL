@@ -12,6 +12,9 @@ interface ArticleState {
   photographerLink: string;
   photographerName: string;
   isCommentOpen: boolean;
+  typeText: string;
+  searchText: string;
+  page: number;
 }
 
 // Define the initial state using that type
@@ -22,6 +25,9 @@ const initialState: ArticleState = {
   photographerLink: "",
   photographerName: "",
   isCommentOpen: false,
+  typeText: "",
+  searchText: "",
+  page: 1,
 };
 
 const articleSlice = createSlice({
@@ -30,9 +36,15 @@ const articleSlice = createSlice({
   reducers: {
     openUnsplash: (state) => {
       state.isUnsplashOpen = true;
+      state.typeText = "";
+      state.searchText = "";
+      state.page = 1;
     },
     closeUnsplash: (state) => {
       state.isUnsplashOpen = false;
+      state.typeText = "";
+      state.searchText = "";
+      state.page = 1;
     },
     setUnsplashData: (state, action) => {
       const data = action.payload;
@@ -59,6 +71,15 @@ const articleSlice = createSlice({
     closeComment: (state) => {
       state.isCommentOpen = false;
     },
+    setTypeText: (state, action) => {
+      state.typeText = action.payload;
+    },
+    setSearchText: (state, action) => {
+      state.searchText = action.payload;
+    },
+    setPage: (state, action) => {
+      state.page = action.payload;
+    },
   },
 });
 
@@ -73,6 +94,9 @@ export const {
   resetCover,
   openComment,
   closeComment,
+  setTypeText,
+  setSearchText,
+  setPage,
 } = articleSlice.actions;
 
 // export slice.reducer

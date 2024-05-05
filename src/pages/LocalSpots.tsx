@@ -173,7 +173,9 @@ const LocalSpots: React.FC = () => {
         const spotsArray = await fetchDataFromFirebase();
 
         spotsArray.forEach((spot) => {
-          const { name, location } = spot;
+          const { name, location, id } = spot;
+
+          const description = `<h3 style="color:#FF9500; font-family:Noto Sans TC; font-weight: 600"><a href="/local-spots/${name.eng}/${id}">${name.chin}</a></h3>`;
 
           new maptilersdk.Marker({
             color: "#3A4972",
@@ -184,9 +186,7 @@ const LocalSpots: React.FC = () => {
               new maptilersdk.Popup({
                 closeButton: false,
                 maxWidth: "none",
-              }).setHTML(
-                `<h3 style="color:#FF9500; font-family:Noto Sans TC; font-weight: 600">${name.chin}</h3>`,
-              ),
+              }).setHTML(description),
             )
             .addTo(map);
         });
@@ -210,14 +210,14 @@ const LocalSpots: React.FC = () => {
 
       <div className="align-container gap-20 py-24">
         <section>
-          <div className="border-b border-gray-300 pb-4">
+          <div className="mb-10 border-b border-gray-300 pb-4">
             <h2 className="text-2xl font-bold">浪點查詢</h2>
           </div>
 
           <form
             method="get"
             onSubmit={formHandler}
-            className="mt-8 grid w-full grid-cols-2 items-end gap-4 rounded-md bg-purple-light px-8 pb-7 pt-4"
+            className="grid w-full grid-cols-2 items-end gap-4 rounded-md bg-purple-light px-8 pb-7 pt-4"
           >
             {/* select area */}
             <div className="form-control">
@@ -290,15 +290,15 @@ const LocalSpots: React.FC = () => {
           </form>
 
           {(isLoading || !selectSpots) && (
-            <p className="mt-8">loading now...</p>
+            <p className="mt-10">loading now...</p>
           )}
 
           {!isLoading && selectSpots && selectSpots.length < 1 && (
-            <h3 className="mt-8">沒有符合的浪點，請重新查詢。</h3>
+            <h3 className="mt-10">沒有符合的浪點，請重新查詢。</h3>
           )}
 
           {!isLoading && selectSpots && selectSpots.length > 0 && (
-            <div className="mt-8 grid grid-cols-4 gap-10">
+            <div className="mt-10 grid grid-cols-4 gap-10">
               {selectSpots.map((spot) => {
                 const { id, name, mapImage, likes_amount } = spot;
                 return (
@@ -313,11 +313,11 @@ const LocalSpots: React.FC = () => {
                       className="h-32 w-full rounded-t-2xl object-cover object-center"
                     />
 
-                    <div className="flex flex-col gap-5 p-3">
+                    <div className="flex h-36 flex-col px-3 py-5">
                       <h3 className="font-semibold">{name.chin}</h3>
 
-                      <div className="flex justify-between">
-                        <h5 className="font-fashioncountry capitalize text-turquoise">
+                      <div className="mt-auto flex justify-between">
+                        <h5 className="font-fashioncountry text-lg capitalize text-turquoise">
                           {name.eng}
                         </h5>
                         <div className="flex items-center gap-1">
@@ -334,11 +334,11 @@ const LocalSpots: React.FC = () => {
         </section>
 
         <section>
-          <div className="border-b border-gray-300 pb-4">
+          <div className="mb-10 border-b border-gray-300 pb-4">
             <h2 className="text-2xl font-bold">即時浪向</h2>
           </div>
 
-          <div className="mt-8 overflow-hidden">
+          <div className="overflow-hidden">
             <iframe
               className="mx-0 my-0 h-[600px] w-full"
               src="https://earth.nullschool.net/#current/wind/primary/waves/overlay=wind/orthographic=-239.11,24.00,5018"
