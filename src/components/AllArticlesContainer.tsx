@@ -29,6 +29,7 @@ import {
 
 // shadcn
 import { Button } from "@/components/ui/button";
+import { Card, CardContent } from "@/components/ui/card";
 
 const AllArticlesContainer: React.FC = () => {
   const navigate = useNavigate();
@@ -360,162 +361,158 @@ const AllArticlesContainer: React.FC = () => {
     fetchDataFromFirebase();
   }, []);
 
-  const pages = Array.from({ length: allPage }, (_, index) => {
-    return index + 1;
-  });
-
   return (
-    <>
-      <section>
-        <div className="flex justify-between border-b border-gray-300 pb-4">
-          <h2 className="text-2xl font-bold">所有文章</h2>
+    <section>
+      {/* title */}
+      <div className="mb-10 flex justify-between border-b border-gray-300 pb-4">
+        <h2 className="text-2xl font-bold">所有文章</h2>
 
-          <div className="flex gap-1">
-            <Button
-              type="button"
-              variant={`${layout === "grid" ? "olive" : "ghost"}`}
-              size={"real-full"}
-              onClick={() => setLayout("grid")}
-            >
-              <BsFillGridFill />
-            </Button>
-            <Button
-              type="button"
-              variant={`${layout === "list" ? "olive" : "ghost"}`}
-              size={"real-full"}
-              onClick={() => setLayout("list")}
-            >
-              <BsList />
-            </Button>
-          </div>
+        <div className="flex gap-1">
+          <Button
+            type="button"
+            variant={`${layout === "grid" ? "olive" : "ghost"}`}
+            size={"real-full"}
+            onClick={() => setLayout("grid")}
+          >
+            <BsFillGridFill />
+          </Button>
+          <Button
+            type="button"
+            variant={`${layout === "list" ? "olive" : "ghost"}`}
+            size={"real-full"}
+            onClick={() => setLayout("list")}
+          >
+            <BsList />
+          </Button>
+        </div>
+      </div>
+
+      <form
+        method="get"
+        onSubmit={formHandler}
+        className="mt-8 grid w-full grid-cols-2 items-end gap-4 rounded-md bg-purple-light px-8 pb-7 pt-4"
+      >
+        {/* select tag */}
+        <div className="form-control">
+          <label className="label" htmlFor="tag">
+            <span className="label-text">選擇標籤</span>
+          </label>
+          <select
+            id="tag"
+            name="tag"
+            value={tag}
+            className="select select-sm focus:outline-none"
+            onChange={(e) => setTag(e.target.value)}
+          >
+            <option value="all">全部</option>
+            <option value="travel">旅遊雜記</option>
+            <option value="knowledge">知識技巧</option>
+            <option value="life">生活分享</option>
+            <option value="gear">裝備介紹</option>
+            <option value="activity">活動競賽</option>
+            <option value="secondhand">二手拍賣</option>
+          </select>
         </div>
 
-        <form
-          method="get"
-          onSubmit={formHandler}
-          className="mt-8 grid w-full grid-cols-2 items-end gap-4 rounded-md bg-purple-light px-8 pb-7 pt-4"
-        >
-          {/* select tag */}
-          <div className="form-control">
-            <label className="label" htmlFor="tag">
-              <span className="label-text">選擇標籤</span>
-            </label>
-            <select
-              id="tag"
-              name="tag"
-              value={tag}
-              className="select select-sm focus:outline-none"
-              onChange={(e) => setTag(e.target.value)}
-            >
-              <option value="all">全部</option>
-              <option value="travel">旅遊雜記</option>
-              <option value="knowledge">知識技巧</option>
-              <option value="life">生活分享</option>
-              <option value="gear">裝備介紹</option>
-              <option value="activity">活動競賽</option>
-              <option value="secondhand">二手拍賣</option>
-            </select>
-          </div>
+        {/* select spot */}
+        <div className="form-control">
+          <label className="label" htmlFor="surfingSpot">
+            <span className="label-text">選擇地點</span>
+          </label>
+          <select
+            id="surfingSpot"
+            name="surfingSpot"
+            value={surfingSpot}
+            className="select select-sm focus:outline-none"
+            onChange={(e) => setSurfingSpot(e.target.value)}
+          >
+            <option value="all">全部</option>
+            <option value="jialeshuei">佳樂水</option>
+            <option value="nanwan">南灣</option>
+            <option value="qijin">旗津</option>
+            <option value="chunan">竹南</option>
+            <option value="baishawan">白沙灣</option>
+            <option value="jinshan">金山</option>
+            <option value="green-bay">翡翠灣</option>
+            <option value="fulong">福隆</option>
+            <option value="dashi">大溪</option>
+            <option value="double-lions">雙獅</option>
+            <option value="wushi">烏石港</option>
+            <option value="choushui">臭水</option>
+            <option value="gongs">鹽寮漁港</option>
+            <option value="jiqi">磯崎</option>
+            <option value="bashiendong">八仙洞</option>
+            <option value="chenggong">成功</option>
+            <option value="donghe">東河</option>
+            <option value="jinzun">金樽</option>
+            <option value="others">其他</option>
+          </select>
+        </div>
 
-          {/* select spot */}
-          <div className="form-control">
-            <label className="label" htmlFor="surfingSpot">
-              <span className="label-text">選擇地點</span>
-            </label>
-            <select
-              id="surfingSpot"
-              name="surfingSpot"
-              value={surfingSpot}
-              className="select select-sm focus:outline-none"
-              onChange={(e) => setSurfingSpot(e.target.value)}
-            >
-              <option value="all">全部</option>
-              <option value="jialeshuei">佳樂水</option>
-              <option value="nanwan">南灣</option>
-              <option value="qijin">旗津</option>
-              <option value="chunan">竹南</option>
-              <option value="baishawan">白沙灣</option>
-              <option value="jinshan">金山</option>
-              <option value="green-bay">翡翠灣</option>
-              <option value="fulong">福隆</option>
-              <option value="dashi">大溪</option>
-              <option value="double-lions">雙獅</option>
-              <option value="wushi">烏石港</option>
-              <option value="choushui">臭水</option>
-              <option value="gongs">鹽寮漁港</option>
-              <option value="jiqi">磯崎</option>
-              <option value="bashiendong">八仙洞</option>
-              <option value="chenggong">成功</option>
-              <option value="donghe">東河</option>
-              <option value="jinzun">金樽</option>
-              <option value="others">其他</option>
-            </select>
-          </div>
+        {/* select time */}
+        <div className="form-control">
+          <label className="label" htmlFor="order">
+            <span className="label-text">時間排序</span>
+          </label>
+          <select
+            id="order"
+            name="order"
+            value={order}
+            className="select select-sm focus:outline-none"
+            onChange={(e) => setOrder(e.target.value)}
+          >
+            <option value="desc">由新到舊</option>
+            <option value="asc">由舊到新</option>
+          </select>
+        </div>
 
-          {/* select time */}
-          <div className="form-control">
-            <label className="label" htmlFor="order">
-              <span className="label-text">時間排序</span>
-            </label>
-            <select
-              id="order"
-              name="order"
-              value={order}
-              className="select select-sm focus:outline-none"
-              onChange={(e) => setOrder(e.target.value)}
-            >
-              <option value="desc">由新到舊</option>
-              <option value="asc">由舊到新</option>
-            </select>
-          </div>
+        <div className="grid grid-cols-2 gap-8">
+          <Button type="submit" variant={"pink"}>
+            Search
+          </Button>
+          <Button type="button" variant={"blue"} onClick={resetHandler}>
+            Reset
+          </Button>
+        </div>
+      </form>
 
-          <div className="grid grid-cols-2 gap-8">
-            <Button type="submit" variant={"pink"}>
-              Search
-            </Button>
-            <Button type="button" variant={"blue"} onClick={resetHandler}>
-              Reset
-            </Button>
-          </div>
-        </form>
+      {(isArticleLoading || !articlesList) && (
+        <p className="mt-10">loading now...</p>
+      )}
+      {!isArticleLoading && articlesList && articlesList.length < 1 && (
+        <h3 className="mt-10">尚未有相關的文章... 請重新查詢</h3>
+      )}
 
-        {(isArticleLoading || !articlesList) && (
-          <p className="mt-8">loading now...</p>
-        )}
-        {!isArticleLoading && articlesList && articlesList.length < 1 && (
-          <h3 className="mt-8">尚未有相關的文章... 請重新查詢</h3>
-        )}
-
-        {/* grid layout */}
-        {layout === "grid" && (
-          <div className="mt-8 grid grid-cols-3 gap-x-12 gap-y-8">
-            {!isArticleLoading &&
-              articlesList &&
-              articlesList.length > 0 &&
-              articlesList.map((article) => {
-                const {
-                  id,
-                  cover,
-                  surfingSpot,
-                  title,
-                  likes_amount,
-                  tag,
-                  created_at,
-                  content,
-                } = article;
-                return (
-                  <article
-                    key={id}
-                    className="card shadow-xl transition-all duration-300 hover:cursor-pointer hover:shadow-2xl"
-                    onClick={() => articleHandler(id)}
-                  >
+      {/* grid layout */}
+      {layout === "grid" && (
+        <div className="mt-10 grid grid-cols-3 gap-x-12 gap-y-10">
+          {!isArticleLoading &&
+            articlesList &&
+            articlesList.length > 0 &&
+            articlesList.map((article) => {
+              const {
+                id,
+                cover,
+                surfingSpot,
+                title,
+                likes_amount,
+                tag,
+                created_at,
+                content,
+              } = article;
+              return (
+                <Card
+                  key={id}
+                  className="shadow-xs relative flex flex-grow duration-300 hover:cursor-pointer hover:shadow-lg"
+                  onClick={() => articleHandler(id)}
+                >
+                  <CardContent className="flex h-full w-full flex-col">
                     <img
                       src={cover}
                       alt={surfingSpot}
-                      className="h-[150px] w-full rounded-t-2xl object-cover object-center"
+                      className="h-[150px] w-full object-cover object-center"
                     />
-
-                    <div className="flex flex-1 flex-col p-3">
+                    <div className="flex flex-grow  flex-col p-3">
                       <h3 className="text-xl font-semibold capitalize">
                         {title}
                       </h3>
@@ -547,120 +544,110 @@ const AllArticlesContainer: React.FC = () => {
                         </div>
                       </div>
                     </div>
-                  </article>
-                );
-              })}
-          </div>
-        )}
+                  </CardContent>
+                </Card>
+              );
+            })}
+        </div>
+      )}
 
-        {/* list layout */}
-        {layout === "list" && (
-          <div className="mt-8 flex flex-col gap-y-8">
-            {!isArticleLoading &&
-              articlesList &&
-              articlesList.length > 0 &&
-              articlesList.map((article) => {
-                const {
-                  id,
-                  cover,
-                  surfingSpot,
-                  title,
-                  likes_amount,
-                  tag,
-                  created_at,
-                  content,
-                } = article;
-                return (
-                  <article
-                    key={id}
-                    className="card group flex-row items-center px-10 py-6 shadow-xl transition-all duration-300 hover:cursor-pointer hover:shadow-2xl"
-                    onClick={() => articleHandler(id)}
-                  >
-                    <img
-                      src={cover}
-                      alt={surfingSpot}
-                      className="h-[120px] w-[120px] rounded-2xl object-cover object-center duration-500 group-hover:scale-105"
-                    />
+      {/* list layout */}
+      {layout === "list" && (
+        <div className="mt-10 flex flex-col gap-y-8">
+          {!isArticleLoading &&
+            articlesList &&
+            articlesList.length > 0 &&
+            articlesList.map((article) => {
+              const {
+                id,
+                cover,
+                surfingSpot,
+                title,
+                likes_amount,
+                tag,
+                created_at,
+                content,
+              } = article;
+              return (
+                <Card
+                  key={id}
+                  className="group flex flex-row items-center px-10 py-6 duration-300 hover:cursor-pointer hover:shadow-lg"
+                  onClick={() => articleHandler(id)}
+                >
+                  <img
+                    src={cover}
+                    alt={surfingSpot}
+                    className="h-[140px] w-[140px] rounded-2xl object-cover object-center duration-500 group-hover:scale-105"
+                  />
 
-                    <div className="ml-6">
-                      <h3 className="text-xl font-semibold">{title}</h3>
+                  <div className="ml-6">
+                    <h3 className="text-xl font-semibold">{title}</h3>
 
-                      <p className="mt-3 line-clamp-1 text-base text-gray-600">
-                        {htmlToPlainText(content)}
-                      </p>
+                    <p className="mt-3 line-clamp-1 text-base text-gray-600">
+                      {htmlToPlainText(content)}
+                    </p>
 
-                      <div className="mt-5 flex items-center">
-                        <div className="flex w-[120px] gap-1">
-                          <span className="rounded-lg bg-green-bright px-1 text-xs text-white">
-                            {changeTagName(tag)}
-                          </span>
+                    <div className="mt-5 flex items-center">
+                      <div className="flex w-[120px] gap-1">
+                        <span className="rounded-lg bg-green-bright px-1 text-xs text-white">
+                          {changeTagName(tag)}
+                        </span>
 
-                          <span className="rounded-lg bg-orange-bright px-1 text-xs text-white">
-                            {changeSpotName(surfingSpot)}
-                          </span>
-                        </div>
-                      </div>
-
-                      <div className="mt-1 flex items-center">
-                        <p className="text-xs text-gray-500">
-                          {formatTime(created_at)}
-                        </p>
-                        <div className="ml-16 flex items-center gap-1">
-                          <FaStar className=" text-yellow" />
-                          <span>{likes_amount}</span>
-                        </div>
+                        <span className="rounded-lg bg-orange-bright px-1 text-xs text-white">
+                          {changeSpotName(surfingSpot)}
+                        </span>
                       </div>
                     </div>
-                  </article>
-                );
-              })}
-          </div>
-        )}
 
-        {/* pagination */}
-        {showPagination && (
-          <div className="mt-16 flex justify-center">
-            <div className="flex">
-              {/* prev button */}
-              <Button
-                type="button"
-                variant={"purple"}
-                size={"prev"}
-                disabled={nowPage === 1}
-                onClick={prevHandler}
-              >
-                prev
-              </Button>
-
-              {/* dynamic generation */}
-              {pages.map((pageNumber) => {
-                return (
-                  <div
-                    key={pageNumber}
-                    className={`join-item flex h-8 w-8 items-center justify-center bg-gray-100 px-3 text-xs font-bold sm:h-12 sm:w-12 sm:px-4 sm:text-sm ${
-                      pageNumber === nowPage && "bg-gray-300"
-                    }`}
-                  >
-                    {pageNumber}
+                    <div className="mt-1 flex items-center">
+                      <p className="text-xs text-gray-500">
+                        {formatTime(created_at)}
+                      </p>
+                      <div className="ml-16 flex items-center gap-1">
+                        <FaStar className=" text-yellow" />
+                        <span>{likes_amount}</span>
+                      </div>
+                    </div>
                   </div>
-                );
-              })}
+                </Card>
+              );
+            })}
+        </div>
+      )}
 
-              {/* next button */}
-              <Button
-                type="button"
-                variant={"purple"}
-                size={"next"}
-                disabled={nowPage === allPage}
-                onClick={nextHandler}
-              >
-                next
-              </Button>
+      {/* pagination */}
+      {showPagination && (
+        <div className="mt-16 flex justify-center">
+          <div className="flex">
+            {/* prev button */}
+            <Button
+              type="button"
+              variant={"black"}
+              size={"prev"}
+              disabled={nowPage === 1}
+              onClick={prevHandler}
+            >
+              prev
+            </Button>
+
+            <div className="flex h-12 w-[136px] items-center justify-center bg-gray-300 px-3 font-semibold">
+              Page {nowPage} / {allPage}
             </div>
+
+            {/* next button */}
+            <Button
+              type="button"
+              variant={"black"}
+              size={"next"}
+              disabled={nowPage === allPage}
+              onClick={nextHandler}
+            >
+              next
+            </Button>
           </div>
-        )}
-      </section>
-    </>
+        </div>
+      )}
+    </section>
   );
 };
 

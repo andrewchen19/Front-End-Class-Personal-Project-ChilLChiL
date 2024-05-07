@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { useParams, useNavigate } from "react-router-dom";
+import { useParams, useNavigate, NavLink } from "react-router-dom";
 import { toast } from "react-toastify";
 import { useSelector } from "react-redux";
 import { IRootState } from "../store";
@@ -25,10 +25,26 @@ import { motion } from "framer-motion";
 
 // shadcn
 import { Button } from "@/components/ui/button";
+import {
+  Carousel,
+  CarouselContent,
+  CarouselItem,
+  CarouselNext,
+  CarouselPrevious,
+} from "@/components/ui/carousel";
+import { Card, CardContent } from "@/components/ui/card";
+import Autoplay from "embla-carousel-autoplay";
+
+// react scroll
+import { Link, Element } from "react-scroll";
 
 const ForeignSpot: React.FC = () => {
   const { name } = useParams();
   const { user } = useSelector((state: IRootState) => state.user);
+
+  const plugin = React.useRef(
+    Autoplay({ delay: 4000, stopOnInteraction: false, stopOnMouseEnter: true }),
+  );
 
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const [infoData, setInfoData] = useState<DocumentData | null>(null);
@@ -207,31 +223,106 @@ const ForeignSpot: React.FC = () => {
       animate={{ opacity: 1, transition: { duration: 1.5 } }}
       exit={{ opacity: 0, transition: { duration: 1.5 } }}
     >
-      {/* banner */}
-      <div className="relative h-[450px] w-full">
+      {/* fixed scroll section */}
+      <div className="sticky top-0 z-50 flex h-14 items-center bg-gray-50 shadow-lg">
+        <div className="relative mx-auto flex w-[95%]">
+          <nav>
+            <ul className="flex">
+              <li className="w-32 ">
+                <Link
+                  to="whentosurf"
+                  smooth={true}
+                  spy={true}
+                  duration={1000}
+                  offset={-96}
+                  className="font-medium text-gray-700 duration-150 hover:cursor-pointer hover:font-semibold hover:text-gray-900"
+                  activeStyle={{ fontWeight: "600", color: "#030712" }}
+                >
+                  When to Surf
+                </Link>
+              </li>
+
+              <li className="w-40 ">
+                <Link
+                  to="travelessentials"
+                  smooth={true}
+                  spy={true}
+                  duration={1000}
+                  offset={-80}
+                  className="font-medium text-gray-700 duration-150 hover:cursor-pointer hover:font-semibold hover:text-gray-900"
+                  activeStyle={{ fontWeight: "600", color: "#030712" }}
+                >
+                  Travel Essentials
+                </Link>
+              </li>
+
+              <li className="w-44">
+                <Link
+                  to="exploreotherzones"
+                  smooth={true}
+                  spy={true}
+                  duration={1000}
+                  offset={-80}
+                  className="font-medium text-gray-700 duration-150 hover:cursor-pointer hover:font-semibold hover:text-gray-900"
+                  activeStyle={{ fontWeight: "600", color: "#030712" }}
+                >
+                  Explore Other Zones
+                </Link>
+              </li>
+            </ul>
+          </nav>
+        </div>
+      </div>
+
+      {/* Hero */}
+      <div
+        className="relative w-full"
+        style={{ height: "calc(100vh - 112px)" }}
+      >
+        {/* overlay */}
+        <div className="absolute bottom-0 left-0 z-20 h-[80%] w-full bg-gradient-to-t from-black"></div>
+
         <img
           src={spotImage}
           alt="foreign-banner"
           className="h-full w-full object-cover object-center"
         />
-        <div className="absolute left-[50%] top-[50%] -translate-x-1/2 -translate-y-1/2">
+
+        <div className="absolute bottom-[50px] left-[50%] z-30 max-w-[900px] -translate-x-1/2">
           <h2
-            className="text-center font-dripoctober text-7xl tracking-wide text-white"
+            className="text-center font-dripoctober text-8xl uppercase tracking-wide text-white"
             style={{ textShadow: "3px 3px 0 rgba(0, 0, 0, 0.2)" }}
           >
             {country.location}
           </h2>
-          <p className="mt-2 max-w-[800px] font-helvetica text-base font-semibold leading-6 text-white">
+          <p className="mt-16 font-helvetica text-base font-semibold tracking-wide text-white">
             {spotDesc}
           </p>
         </div>
       </div>
 
-      <main className="align-container gap-20 py-24">
-        {/* when to score */}
-        <section>
+      <main className="flex flex-col gap-20 pb-24 pt-16">
+        {/* breadcrumbs */}
+        <div className="breadcrumbs mx-auto w-[85%] max-w-6xl text-sm text-gray-500">
+          <ul>
+            <li>
+              <a href="/" className="underline-offset-4">
+                Home
+              </a>
+            </li>
+            <li>
+              <NavLink to="/foreign-spots" className="underline-offset-4">
+                Foreign Spots
+              </NavLink>
+            </li>
+            <li className="capitalize">{country.location}</li>
+          </ul>
+        </div>
+
+        {/* when to surf */}
+        <Element name="whentosurf" className="mx-auto -mt-8 w-[85%] max-w-6xl">
           <div className="flex items-center justify-between">
-            <h3 className="mb-6 font-sriracha text-3xl font-bold">
+            <h3 className="mb-8 font-sriracha text-3xl font-bold">
               When To Surf
             </h3>
 
@@ -246,7 +337,7 @@ const ForeignSpot: React.FC = () => {
             )}
           </div>
 
-          <div className="flex flex-col gap-5">
+          <div className="flex flex-col gap-8">
             {whenToScore.map((item: WhenToScore, index: number) => {
               return (
                 <div key={index}>
@@ -287,9 +378,9 @@ const ForeignSpot: React.FC = () => {
               );
             })}
           </div>
-        </section>
+        </Element>
 
-        {/* quote */}
+        {/* famous quote */}
         <section>
           <figure className="flex h-[600px]">
             <div
@@ -331,9 +422,12 @@ const ForeignSpot: React.FC = () => {
           </figure>
         </section>
 
-        {/* essential */}
-        <section>
-          <h3 className="mb-6 font-sriracha text-3xl font-bold">
+        {/* travel essentials */}
+        <Element
+          name="travelessentials"
+          className="mx-auto w-[85%] max-w-6xl scroll-m-14"
+        >
+          <h3 className="mb-8 font-sriracha text-3xl font-bold">
             Travel Essentials
           </h3>
 
@@ -394,10 +488,10 @@ const ForeignSpot: React.FC = () => {
               </div>
             </div>
           </div>
-        </section>
+        </Element>
 
         {/* quick tips */}
-        <section>
+        <section className="mx-auto w-[85%] max-w-6xl">
           <div
             className="rounded-xl p-10"
             style={{ backgroundColor: primaryColor }}
@@ -550,49 +644,73 @@ const ForeignSpot: React.FC = () => {
         </section>
 
         {/* other zone */}
-        <section>
-          <h3 className="mb-6 font-sriracha text-3xl font-bold">
+        <Element name="exploreotherzones" className="mx-auto w-[85%] max-w-6xl">
+          <h3 className="mb-8 font-sriracha text-3xl font-bold">
             Explore Other Zones
           </h3>
 
           {isLoading && <p>loading now...</p>}
 
-          <div className="mx-auto grid grid-cols-2 gap-10">
-            {!isLoading &&
-              relatedSpotData.length > 1 &&
-              relatedSpotData.map((spot) => {
-                const { id, country, coverImage } = spot;
-                return (
-                  <article
-                    key={id}
-                    className="relative h-[420px] overflow-hidden rounded-lg hover:cursor-pointer"
-                    onClick={() => spotHandler(country.eng, id)}
-                  >
-                    <img
-                      src={coverImage}
-                      alt={country.location}
-                      className="h-full w-full transform rounded-lg object-cover object-center transition-transform duration-500 hover:scale-110"
-                    />
+          <Carousel
+            className="w-full"
+            opts={{
+              align: "start",
+              loop: true,
+            }}
+            plugins={[plugin.current]}
+          >
+            <CarouselContent className="-ml-5">
+              {!isLoading &&
+                relatedSpotData &&
+                relatedSpotData.length > 1 &&
+                relatedSpotData.map((spot) => {
+                  const { id, country, coverImage } = spot;
+                  return (
+                    <CarouselItem
+                      key={id}
+                      className="overflow-hidden pl-5 hover:cursor-pointer md:basis-1/2 lg:basis-1/3"
+                      onClick={() => spotHandler(country.eng, id)}
+                    >
+                      <Card className="border-none">
+                        <CardContent className="group relative h-[420px]">
+                          {/* overlay */}
+                          <div className="absolute z-10 h-full w-full bg-black/15 group-hover:bg-black/50"></div>
 
-                    <div className="absolute left-[50%] top-[50%] z-20 -translate-x-1/2 -translate-y-1/2 text-center">
-                      <h3
-                        className="text-xl font-bold capitalize"
-                        style={{ color: spotSecondaryColor }}
-                      >
-                        {country.location}
-                      </h3>
-                      <p
-                        className="text-lg font-semibold"
-                        style={{ color: spotSecondaryColor }}
-                      >
-                        {country.chin}
-                      </p>
-                    </div>
-                  </article>
-                );
-              })}
-          </div>
-        </section>
+                          <img
+                            src={coverImage}
+                            alt={country.location}
+                            className="h-full w-full transform rounded-lg object-cover object-center transition-transform duration-500 group-hover:scale-110"
+                          />
+
+                          <div className="absolute left-[50%] top-[50%] z-20 -translate-x-1/2 -translate-y-1/2 text-center">
+                            <h3
+                              className="text-nowrap text-[24px] font-bold capitalize"
+                              style={{ color: primaryColor }}
+                            >
+                              {country.location}
+                            </h3>
+                            <p
+                              className="text-lg font-semibold"
+                              style={{ color: primaryColor }}
+                            >
+                              {country.chin}
+                            </p>
+                          </div>
+                        </CardContent>
+                      </Card>
+                    </CarouselItem>
+                  );
+                })}
+            </CarouselContent>
+
+            {!isLoading && relatedSpotData && relatedSpotData.length > 1 && (
+              <>
+                <CarouselPrevious />
+                <CarouselNext />
+              </>
+            )}
+          </Carousel>
+        </Element>
       </main>
     </motion.main>
   );

@@ -46,9 +46,19 @@ const ProfileEditContainer: React.FC = () => {
   };
 
   const updateHandler = async (): Promise<void> => {
+    const trimName = name.trim();
+    if (!trimName) {
+      toast.warning("Please provide your name 😬");
+      return;
+    }
+
     setIsLoading(true);
     try {
-      const updatedUser = { ...user, name, profile_picture: profileImage };
+      const updatedUser = {
+        ...user,
+        name: trimName,
+        profile_picture: profileImage,
+      };
       dispatch(updateUser(updatedUser));
       await updateDataToFirebase(updatedUser);
       toast.success("Updated Successfully 🎉");

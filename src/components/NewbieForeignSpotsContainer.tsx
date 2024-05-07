@@ -71,7 +71,7 @@ const NewbieForeignSpotsContainer: React.FC = () => {
           align: "start",
         }}
       >
-        <CarouselContent className="-ml-10">
+        <CarouselContent className="-ml-5">
           {!isSpotLoading &&
             spotsList.length > 1 &&
             spotsList.map((spot) => {
@@ -79,22 +79,25 @@ const NewbieForeignSpotsContainer: React.FC = () => {
               return (
                 <CarouselItem
                   key={id}
-                  className="overflow-hidden pl-10 hover:cursor-pointer md:basis-1/2 lg:basis-1/3"
+                  className="overflow-hidden pl-5 hover:cursor-pointer md:basis-1/2 lg:basis-1/3"
                   onClick={() => spotHandler(country.eng, id)}
                 >
                   <Card className="border-none">
-                    <CardContent className="relative h-[420px]">
+                    <CardContent className="group relative h-[420px]">
+                      {/* overlay */}
+                      <div className="absolute z-10 h-full w-full bg-black/15 group-hover:bg-black/50"></div>
+
                       <img
                         src={coverImage}
                         alt={country.location}
-                        className="h-full w-full transform rounded-lg object-cover object-center transition-transform duration-500 hover:scale-110"
+                        className="h-full w-full transform rounded-lg object-cover object-center transition-transform duration-500 group-hover:scale-110"
                       />
 
                       <div className="absolute left-[50%] top-[50%] z-20 -translate-x-1/2 -translate-y-1/2 text-center">
-                        <h3 className="text-xl font-bold capitalize text-pink">
+                        <h3 className="text-nowrap text-[24px] font-bold capitalize text-white">
                           {country.location}
                         </h3>
-                        <p className="text-lg font-semibold text-pink">
+                        <p className="text-lg font-semibold text-white">
                           {country.chin}
                         </p>
                       </div>

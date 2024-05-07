@@ -8,6 +8,9 @@ import { changeSpotName, executeOption } from "../utils";
 import { db } from "../main";
 import { doc, getDoc, DocumentData } from "firebase/firestore";
 
+// shadcn
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+
 const RealtimeContainer: React.FC = () => {
   const { user } = useSelector((state: IRootState) => state.user);
 
@@ -35,7 +38,6 @@ const RealtimeContainer: React.FC = () => {
       console.log(error);
     }
   };
-
   const fetchLocalSpotsDataFromFirebase = async (
     data: string[],
   ): Promise<void> => {
@@ -78,7 +80,7 @@ const RealtimeContainer: React.FC = () => {
     return (
       <section>
         <h2 className="text-2xl font-bold">浪點即時資訊</h2>
-        <p className="mt-5">loading now...</p>
+        <p className="mt-8">loading now...</p>
       </section>
     );
   }
@@ -93,7 +95,7 @@ const RealtimeContainer: React.FC = () => {
     return (
       <section>
         <h2 className="text-2xl font-bold">浪點即時資訊</h2>
-        <h3 className="mt-5">尚未收藏浪點...</h3>
+        <h3 className="mt-8">尚未收藏浪點...</h3>
       </section>
     );
   }
@@ -120,27 +122,38 @@ const RealtimeContainer: React.FC = () => {
     <section>
       <h2 className="text-2xl font-bold">浪點即時資訊</h2>
 
-      <div role="tablist" className="tabs tabs-lifted mt-5 flex">
-        {localSpotNameList.map((name, index) => (
-          <button
-            type="button"
-            key={index}
-            role="tab"
-            className={`tab w-15 font-medium hover:text-olive ${index === localSpotNameIndex ? "tab-active text-olive" : ""}`}
-            onClick={() => setLocalSpotNameIndex(index)}
-          >
-            {changeSpotName(name)}
-          </button>
-        ))}
-      </div>
-
-      <div className="mt-5">
-        <div className="mx-auto -ml-[94px] mt-12 h-[600px]">
-          <ReactECharts
-            option={executeOption({ waveData, gustData, tempData })}
-          />
+      <Tabs
+        value={
+          localSpotNameList && localSpotsList.length > 0
+            ? localSpotNameList[localSpotNameIndex]
+            : ""
+        }
+        className="mt-8 flex w-full flex-col"
+      >
+        <div className="flex">
+          <TabsList>
+            {localSpotNameList.map((name, index) => (
+              <TabsTrigger
+                value={name}
+                key={index}
+                onClick={() => setLocalSpotNameIndex(index)}
+              >
+                {changeSpotName(name)}
+              </TabsTrigger>
+            ))}
+          </TabsList>
         </div>
-      </div>
+
+        {localSpotNameList.map((name) => (
+          <TabsContent key={name} value={name}>
+            <div className="mx-auto -ml-[83px] mt-12 h-[600px] w-full">
+              <ReactECharts
+                option={executeOption({ waveData, gustData, tempData })}
+              />
+            </div>
+          </TabsContent>
+        ))}
+      </Tabs>
     </section>
   );
 };

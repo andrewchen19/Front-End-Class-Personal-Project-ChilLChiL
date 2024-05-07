@@ -31,12 +31,13 @@ import {
   CarouselNext,
   CarouselPrevious,
 } from "@/components/ui/carousel";
-import Autoplay from "embla-carousel-autoplay";
 import { Card, CardContent } from "@/components/ui/card";
+import Autoplay from "embla-carousel-autoplay";
 
 const RelatedArticlesContainer: React.FC = () => {
   const { name } = useParams();
   const navigate = useNavigate();
+
   const plugin = React.useRef(
     Autoplay({ delay: 4000, stopOnInteraction: false, stopOnMouseEnter: true }),
   );
@@ -101,7 +102,7 @@ const RelatedArticlesContainer: React.FC = () => {
         }}
         plugins={[plugin.current]}
       >
-        <CarouselContent className="-ml-10">
+        <CarouselContent className="-ml-8">
           {!isArticleLoading &&
             articlesList &&
             articlesList.length > 0 &&
@@ -119,7 +120,7 @@ const RelatedArticlesContainer: React.FC = () => {
               return (
                 <CarouselItem
                   key={id}
-                  className="flex flex-grow pl-10 hover:cursor-pointer md:basis-1/2 lg:basis-1/3 xl:basis-1/4"
+                  className="flex flex-grow pl-8 hover:cursor-pointer md:basis-1/2 lg:basis-1/3 xl:basis-1/4"
                   onClick={() => articleHandler(id)}
                 >
                   <Card className="flex flex-grow border-gray-900">

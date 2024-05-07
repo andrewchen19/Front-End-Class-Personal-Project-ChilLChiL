@@ -16,6 +16,9 @@ import { FaChevronDown, FaChevronUp, FaStar } from "react-icons/fa";
 // framer motion
 import { motion, useScroll, useSpring, Variants } from "framer-motion";
 
+// react scroll
+import { animateScroll as scroll } from "react-scroll";
+
 const headingText = "Why choose us?";
 const contentText =
   "Explore surf spots around the world with our surfing website. We not only provide information about surf spots but also aim to cultivate a lifestyle attitude – chill and confident. Here, you can relax,enjoy the environment, music, and broaden your horizons by experiencing different cultures and meeting new friends. Join us and embark on an exciting surfing journey!";
@@ -32,6 +35,10 @@ const centerVariant: Variants = {
   hidden: { opacity: 0 },
   visible: { opacity: 1, transition: { duration: 3 } },
 };
+const delayTopVariant: Variants = {
+  hidden: { opacity: 0, y: "-30px" },
+  visible: { opacity: 1, y: 0, transition: { delay: 3, duration: 1.5 } },
+};
 const charVariants: Variants = {
   hidden: { opacity: 0 },
   visible: { opacity: 1 },
@@ -47,6 +54,10 @@ const popVariant: Variants = {
 const bottomVariant: Variants = {
   hidden: { y: "10vh" },
   visible: { y: 0, transition: { duration: 1.5 } },
+};
+const delayBottomVariant: Variants = {
+  hidden: { opacity: 0, y: "30px" },
+  visible: { opacity: 1, y: 0, transition: { delay: 1.5, duration: 1.5 } },
 };
 const left2Variant: Variants = {
   hidden: { x: "-7vw" },
@@ -71,6 +82,13 @@ const Landing: React.FC = () => {
     damping: 30,
     restDelta: 0.001,
   });
+
+  const scrollToTop = () => {
+    scroll.scrollToTop({
+      duration: 1500,
+      smooth: true,
+    });
+  };
 
   return (
     <>
@@ -115,12 +133,18 @@ const Landing: React.FC = () => {
               We <span className="text-pink">surf</span>
             </motion.h1>
           </div>
-        </div>
 
-        {/* scroll down */}
-        <div className="absolute bottom-[30px] left-[100px] flex flex-col items-center overflow-visible text-center font-helvetica text-lg font-semibold uppercase tracking-wide">
-          Scroll down
-          <FaChevronDown className="mt-1 animate-bounce" />
+          {/* scroll down */}
+          <motion.div
+            initial="hidden"
+            whileInView="visible"
+            variants={delayTopVariant}
+            viewport={{ once: true }}
+            className="absolute bottom-[30px] left-[100px] flex flex-col items-center overflow-visible text-center font-helvetica text-lg font-semibold uppercase tracking-wide"
+          >
+            Scroll down
+            <FaChevronDown className="mt-1 animate-bounce" />
+          </motion.div>
         </div>
       </section>
 
@@ -328,15 +352,21 @@ const Landing: React.FC = () => {
         </div>
 
         {/* scroll to top */}
-        <div className="absolute bottom-[40px] left-[100px] overflow-visible text-center font-helvetica text-lg font-semibold uppercase tracking-wide">
+        <motion.div
+          initial="hidden"
+          whileInView="visible"
+          variants={delayBottomVariant}
+          viewport={{ once: true }}
+          className="absolute bottom-[45px] left-[100px] overflow-visible text-center font-helvetica text-lg font-semibold uppercase tracking-wide"
+        >
           <a
-            href="#top"
-            className="group flex flex-col items-center duration-300 hover:text-turquoise"
+            className="group flex flex-col items-center duration-300 hover:cursor-pointer hover:text-turquoise"
+            onClick={scrollToTop}
           >
             <FaChevronUp className="mb-1 animate-bounce text-center" />
             Scroll To Top
           </a>
-        </div>
+        </motion.div>
       </section>
     </>
   );

@@ -444,9 +444,9 @@ const LocalSpot: React.FC = () => {
           <div className="breadcrumbs text-sm text-gray-500">
             <ul>
               <li>
-                <Link to="/" className="underline-offset-4">
+                <a href="/" className="underline-offset-4">
                   首頁
-                </Link>
+                </a>
               </li>
               <li>
                 <Link to="/local-spots" className="underline-offset-4">

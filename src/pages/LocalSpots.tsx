@@ -210,6 +210,7 @@ const LocalSpots: React.FC = () => {
 
       <div className="align-container gap-20 py-24">
         <section>
+          {/* title */}
           <div className="mb-10 border-b border-gray-300 pb-4">
             <h2 className="text-2xl font-bold">浪點查詢</h2>
           </div>

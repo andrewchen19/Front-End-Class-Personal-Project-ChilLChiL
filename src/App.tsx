@@ -62,7 +62,6 @@ function App() {
           path: "foreign-spots/:name/:id",
           element: <ForeignSpot />,
         },
-
         {
           path: "/profile",
           element: <Navigate to="/profile/my-info" replace />,
