@@ -1,4 +1,5 @@
 import { createSlice } from "@reduxjs/toolkit";
+import { DocumentData } from "firebase/firestore";
 
 type UnsplashObject = {
   [key: string]: any;
@@ -15,6 +16,7 @@ interface ArticleState {
   typeText: string;
   searchText: string;
   page: number;
+  author: DocumentData | undefined;
 }
 
 // Define the initial state using that type
@@ -28,6 +30,7 @@ const initialState: ArticleState = {
   typeText: "",
   searchText: "",
   page: 1,
+  author: undefined,
 };
 
 const articleSlice = createSlice({
@@ -80,6 +83,9 @@ const articleSlice = createSlice({
     setPage: (state, action) => {
       state.page = action.payload;
     },
+    setAuthor: (state, action) => {
+      state.author = action.payload;
+    },
   },
 });
 
@@ -97,6 +103,7 @@ export const {
   setTypeText,
   setSearchText,
   setPage,
+  setAuthor,
 } = articleSlice.actions;
 
 // export slice.reducer

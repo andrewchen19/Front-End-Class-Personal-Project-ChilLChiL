@@ -59,7 +59,7 @@ const Header: React.FC = () => {
                   };
                 }}
               >
-                衝浪聖地
+                衝浪勝地
               </NavLink>
             </li>
             <li>

@@ -1,9 +1,20 @@
 import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
+import wave from "../assets/icons/wave.svg";
 
 // firebase
 import { db } from "../main";
 import { collection, query, getDocs, DocumentData } from "firebase/firestore";
+
+// shadcn
+import {
+  Carousel,
+  CarouselContent,
+  CarouselItem,
+  CarouselNext,
+  CarouselPrevious,
+} from "@/components/ui/carousel";
+import { Card, CardContent } from "@/components/ui/card";
 
 const TubeForeignSpotsContainer: React.FC = () => {
   const navigate = useNavigate();
@@ -46,40 +57,61 @@ const TubeForeignSpotsContainer: React.FC = () => {
 
   return (
     <section>
-      <h2 className="text-2xl font-bold">管浪愛好者? 來這邊</h2>
+      <h2 className="mb-14 flex items-center gap-3 font-sriracha text-4xl font-semibold text-gray-800">
+        Like Tube? Go Here
+        <img src={wave} alt="wave" className="h-8 w-8" />
+      </h2>
 
-      {isSpotLoading && !spotsList && <p className="mt-5">loading now...</p>}
+      {isSpotLoading && !spotsList && <p>loading now...</p>}
 
-      <div className="mx-auto mt-5 grid grid-cols-2 gap-10">
-        {!isSpotLoading &&
-          spotsList &&
-          spotsList.length > 1 &&
-          spotsList.map((spot) => {
-            const { id, country, coverImage } = spot;
-            return (
-              <article
-                key={id}
-                className="relative h-[420px] overflow-hidden rounded-lg hover:cursor-pointer"
-                onClick={() => spotHandler(country.eng, id)}
-              >
-                <img
-                  src={coverImage}
-                  alt={country.location}
-                  className="h-full w-full transform rounded-lg object-cover object-center transition-transform duration-500 hover:scale-110"
-                />
+      <Carousel
+        className="w-full"
+        opts={{
+          align: "start",
+        }}
+      >
+        <CarouselContent className="-ml-10">
+          {!isSpotLoading &&
+            spotsList &&
+            spotsList.length > 1 &&
+            spotsList.map((spot) => {
+              const { id, country, coverImage } = spot;
+              return (
+                <CarouselItem
+                  key={id}
+                  className="overflow-hidden pl-10 hover:cursor-pointer md:basis-1/2 lg:basis-1/3"
+                  onClick={() => spotHandler(country.eng, id)}
+                >
+                  <Card className="border-none">
+                    <CardContent className="relative h-[420px]">
+                      <img
+                        src={coverImage}
+                        alt={country.location}
+                        className="h-full w-full transform rounded-lg object-cover object-center transition-transform duration-500 hover:scale-110"
+                      />
 
-                <div className="absolute left-[50%] top-[50%] z-20 -translate-x-1/2 -translate-y-1/2 text-center">
-                  <h3 className="text-xl font-bold capitalize text-pink">
-                    {country.location}
-                  </h3>
-                  <p className="text-lg font-semibold text-pink">
-                    {country.chin}
-                  </p>
-                </div>
-              </article>
-            );
-          })}
-      </div>
+                      <div className="absolute left-[50%] top-[50%] z-20 -translate-x-1/2 -translate-y-1/2 text-center">
+                        <h3 className="text-xl font-bold capitalize text-pink">
+                          {country.location}
+                        </h3>
+                        <p className="text-lg font-semibold text-pink">
+                          {country.chin}
+                        </p>
+                      </div>
+                    </CardContent>
+                  </Card>
+                </CarouselItem>
+              );
+            })}
+        </CarouselContent>
+
+        {!isSpotLoading && spotsList && spotsList.length > 1 && (
+          <>
+            <CarouselPrevious />
+            <CarouselNext />
+          </>
+        )}
+      </Carousel>
     </section>
   );
 };

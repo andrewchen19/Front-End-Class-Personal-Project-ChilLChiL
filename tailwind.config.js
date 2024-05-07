@@ -119,6 +119,7 @@ module.exports = {
           light: "#F8CA86",
           DEFAULT: "#fbbf24",
         },
+        red: "#FF465A",
       },
       borderRadius: {
         lg: "var(--radius)",

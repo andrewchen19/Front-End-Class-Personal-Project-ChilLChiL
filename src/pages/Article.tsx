@@ -2,7 +2,8 @@ import React, { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import { ArticleCommentsContainer } from "../components";
 import { toast } from "react-toastify";
-import { useSelector } from "react-redux";
+import { useSelector, useDispatch } from "react-redux";
+import { setAuthor } from "../features/article/articleSlice";
 import { IRootState } from "../store";
 import { formatTime } from "../utils";
 
@@ -32,17 +33,9 @@ import {
 
 // framer motion
 import { motion, Variants } from "framer-motion";
-const centerRotationVariant: Variants = {
-  hidden: { opacity: 0, rotate: -10 },
-  visible: {
-    opacity: 1,
-    rotate: 0,
-    transition: {
-      type: "spring",
-      bounce: 0.4,
-      duration: 1.5,
-    },
-  },
+const centerVariant: Variants = {
+  hidden: { opacity: 0 },
+  visible: { opacity: 1, transition: { duration: 1 } },
 };
 
 // shadcn
@@ -52,11 +45,12 @@ import { Sheet, SheetTrigger } from "@/components/ui/sheet";
 const Article: React.FC = () => {
   const { id } = useParams();
   const { user } = useSelector((state: IRootState) => state.user);
+  const { author } = useSelector((state: IRootState) => state.article);
+  const dispatch = useDispatch();
   const navigate = useNavigate();
 
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const [article, setArticle] = useState<DocumentData | undefined>(undefined);
-  const [author, setAuthor] = useState<DocumentData | undefined>(undefined);
   const [isLogin, setIsLogin] = useState<boolean>(false);
   const [isLike, setIsLike] = useState<boolean>(false);
   const [isUser, setIsUser] = useState<boolean>(false);
@@ -174,7 +168,7 @@ const Article: React.FC = () => {
       const docRef = doc(db, "users", data.authorId);
       const docSnap = await getDoc(docRef);
       if (docSnap.exists()) {
-        setAuthor(docSnap.data());
+        dispatch(setAuthor(docSnap.data()));
       }
     } catch (error) {
       console.log(error);
@@ -322,7 +316,7 @@ const Article: React.FC = () => {
               href={photographerLink}
               target="_blank"
               rel="noreferrer noopener"
-              className="capitalize hover:border-b hover:border-blue-dark hover:text-blue-dark"
+              className="capitalize duration-150 hover:text-blue-dark hover:underline hover:underline-offset-4"
             >
               {photographerName}
             </a>
@@ -331,7 +325,7 @@ const Article: React.FC = () => {
               href="https://unsplash.com/"
               target="_blank"
               rel="noreferrer noopener"
-              className="hover:border-b hover:border-blue-dark hover:text-blue-dark"
+              className="hover:text-blue-dark hover:underline hover:underline-offset-4"
             >
               Unsplash
             </a>
@@ -352,7 +346,7 @@ const Article: React.FC = () => {
                   <img
                     src={authorImage}
                     alt="author-image"
-                    className="h-10 w-10 rounded-full"
+                    className="h-10 w-10 rounded-full border-2 border-turquoise"
                   />
                   <p className="text-2xl">
                     <span className="ml-2 font-fashioncountry text-turquoise">
@@ -369,8 +363,8 @@ const Article: React.FC = () => {
 
                   {/* comment button */}
                   <SheetTrigger className="flex items-center gap-2">
-                    <TbMessageCircle className="text-lg text-pink-dark group-hover:text-pink" />
-                    <span className="text-base text-pink-dark  group-hover:text-pink">
+                    <TbMessageCircle className="h-5 w-5 text-pink-dark group-hover:text-pink" />
+                    <span className="mb-[1px] text-[16px] text-pink-dark  group-hover:text-pink">
                       {commentLength}
                     </span>
                   </SheetTrigger>
@@ -430,7 +424,7 @@ const Article: React.FC = () => {
           <motion.div
             initial="hidden"
             whileInView="visible"
-            variants={centerRotationVariant}
+            variants={centerVariant}
             viewport={{ once: true }}
             className="flex h-[195px] w-[420px] flex-col rounded-xl bg-white p-5"
             style={{ boxShadow: "rgba(6, 2, 2, 0.15) 0px 2px 10px" }}

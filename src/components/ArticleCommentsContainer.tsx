@@ -5,9 +5,14 @@ import { useSelector } from "react-redux";
 import { IRootState } from "../store";
 import { calculateTimeAgo } from "../utils";
 import { CommentInfo } from "../types";
+import ArticleNestedCommentsContainer from "./ArticleNestedCommentsContainer";
 
 // nano id
 import { nanoid } from "nanoid";
+
+// react icons
+import { RiHeartLine, RiHeartFill } from "react-icons/ri";
+import { BiMessageRounded } from "react-icons/bi";
 
 // firebase
 import { db } from "../main";
@@ -43,15 +48,22 @@ const topVariant: Variants = {
 import { Button } from "@/components/ui/button";
 import { SheetContent, SheetHeader, SheetTitle } from "@/components/ui/sheet";
 import { ScrollArea } from "@/components/ui/scroll-area";
+import {
+  Tooltip,
+  TooltipContent,
+  TooltipProvider,
+  TooltipTrigger,
+} from "@/components/ui/tooltip";
 
 const ArticleCommentsContainer: React.FC = () => {
   const { id } = useParams();
   const { user } = useSelector((state: IRootState) => state.user);
+  const { author } = useSelector((state: IRootState) => state.article);
 
   const [isLoading, setIsLoading] = useState(false);
   const [comment, setComment] = useState<string>("");
   const [commentLength, setCommentLength] = useState<number>(0);
-  const [commentList, setCommentList] = useState<DocumentData | []>([]);
+  const [commentList, setCommentList] = useState<CommentInfo[] | []>([]);
   const [isEditStatus, setIsEditStatus] = useState<boolean>(false);
   const [editInfo, setEditInfo] = useState<DocumentData | null>(null);
   const [showAlert, setShowAlert] = useState<boolean>(false);
@@ -114,6 +126,39 @@ const ArticleCommentsContainer: React.FC = () => {
     setEditInfo(null);
     setIsEditStatus(false);
   };
+  const likeHandler = async (commentId: string): Promise<void> => {
+    if (!id) return;
+    if (!user) {
+      toast.warning("Please Log In First 😵");
+      return;
+    }
+
+    try {
+      const articleRef = doc(db, "articles", id);
+      const subCollectionRef = collection(articleRef, "comments");
+      const commentRef = doc(subCollectionRef, commentId);
+      const data = (await getDoc(commentRef))?.data();
+      if (!data) return;
+      const newLikes = [...data.likes, user.id];
+      // console.log(data);
+      const updatedData = { ...data, likes: newLikes };
+      await setDoc(commentRef, updatedData);
+      toast.success("Like comment successfully 🎉");
+    } catch (error) {
+      console.log(error);
+    }
+  };
+  // !!
+  const replyHandler = (commentId: string): void => {
+    const updatedCommentList = [...commentList].map((item: CommentInfo) => {
+      if (item.id === commentId) {
+        item.isOpen = !item.isOpen;
+        return item;
+      }
+      return item;
+    });
+    setCommentList(updatedCommentList);
+  };
 
   async function getUserInfoFromFirebase(
     commentArray: DocumentData[],
@@ -126,7 +171,8 @@ const ArticleCommentsContainer: React.FC = () => {
       if (docSnap.exists()) {
         const userName = docSnap.data().name;
         const userImage = docSnap.data().profile_picture;
-        const newComment = { ...comment, userName, userImage };
+        // !!
+        const newComment = { ...comment, userName, userImage, isOpen: false };
         newArray.push(newComment);
       }
     }
@@ -159,13 +205,15 @@ const ArticleCommentsContainer: React.FC = () => {
       created_at: Date.now(),
       updated_at: Date.now(),
       isEdited: false,
+      likes: [],
+      replies: [],
     };
 
     try {
       const articleRef = doc(db, "articles", id);
       const subCollectionRef = collection(articleRef, "comments");
       await setDoc(doc(subCollectionRef, commentId), commentObj);
-      toast.success("Add comment successful 🎉");
+      toast.success("Add comment successfully 🎉");
       setComment("");
     } catch (error) {
       console.log(error);
@@ -197,7 +245,7 @@ const ArticleCommentsContainer: React.FC = () => {
   }
 
   const modules = {
-    toolbar: [["bold", "italic", "underline", "strike"]],
+    toolbar: [[{ header: [false] }], ["bold", "italic", "underline", "strike"]],
   };
 
   useEffect(() => {
@@ -232,17 +280,16 @@ const ArticleCommentsContainer: React.FC = () => {
   }, []);
 
   return (
-    <SheetContent className="w-[380px]">
+    <SheetContent className="w-[380px] p-0">
       <aside className="h-full w-full">
         {/* title */}
-        <SheetHeader className="flex">
+        <SheetHeader className="flex px-6 pt-3">
           <SheetTitle className="text-xl font-bold text-black">
             Comment&nbsp;(<span>{commentLength}</span>)
           </SheetTitle>
         </SheetHeader>
 
-        {/* comments */}
-        <div className="mt-3 h-full overflow-hidden">
+        <div className="mt-3 px-6">
           {/* text editor */}
           <ReactQuill
             theme="snow"
@@ -274,20 +321,46 @@ const ArticleCommentsContainer: React.FC = () => {
               </Button>
             )}
           </div>
+        </div>
 
-          {isLoading && <div className="mt-3">is loading...</div>}
+        {/* divider */}
+        {!isLoading && commentList.length > 0 && (
+          <div className="mt-3 w-full border-b bg-gray-300"></div>
+        )}
+
+        {/* comments */}
+        <div className="mt-3 h-full overflow-hidden px-6">
+          {isLoading && (
+            <div
+              className="grid items-center justify-center"
+              style={{
+                height: "calc(100% - 214.34px)",
+              }}
+            >
+              <p>is loading...</p>
+            </div>
+          )}
 
           {/* real time comments */}
           {!isLoading && commentList.length < 1 && (
-            <p className="mt-3">目前尚未有留言.....</p>
+            <div
+              className="grid items-center justify-center"
+              style={{
+                height: "calc(100% - 214.34px)",
+              }}
+            >
+              <div className="flex flex-col text-center text-sm text-gray-500">
+                <i className="">No comments for this story.</i>
+                <i className="">Be the first to respond.</i>
+              </div>
+            </div>
           )}
 
-          {/* latest 10 comments */}
+          {/* all comments */}
           {!isLoading && commentList.length > 0 && (
             <ScrollArea
-              className="mt-3"
               style={{
-                height: "calc(100% - 169.34px)",
+                height: "calc(100% - 214.24px)",
               }}
             >
               <div className="flex flex-col gap-3 pr-2">
@@ -300,26 +373,42 @@ const ArticleCommentsContainer: React.FC = () => {
                     comment,
                     created_at,
                     isEdited,
+                    likes,
+                    replies,
+                    isOpen,
                   } = item;
                   return (
-                    <div key={commentId} className="flex flex-col gap-1">
+                    <div
+                      key={commentId}
+                      className=" flex flex-col gap-1 border-b border-gray-300 pb-3 last:border-none"
+                    >
                       <div className="flex items-center">
                         <img
                           src={userImage}
                           alt="user-image"
-                          className="h-8 w-8 rounded-full"
+                          className="h-8 w-8 rounded-full border border-black"
                         />
 
-                        <div>
+                        <div className="ml-2">
                           {user && userId === user.id ? (
-                            <h4 className="ml-1 font-medium">
-                              {userName} (You)
+                            <h4 className="flex items-center font-medium">
+                              {userName}
+                              <span className="ml-2 mt-[2px] h-4 rounded-sm bg-gray-200 px-[6px] text-[11px] font-normal text-gray-500">
+                                YOU
+                              </span>
+                            </h4>
+                          ) : author && userId === author.id ? (
+                            <h4 className="flex items-center font-medium">
+                              {userName}
+                              <span className="ml-2 mt-[2px] h-4 rounded-sm bg-clay-yellow px-[6px] text-[11px] font-normal text-white">
+                                AUTHOR
+                              </span>
                             </h4>
                           ) : (
-                            <h4 className="ml-1 font-medium">{userName}</h4>
+                            <h4 className="font-medium">{userName}</h4>
                           )}
 
-                          <p className="ml-1 text-xs text-gray-700">
+                          <p className="text-xs text-gray-700">
                             {calculateTimeAgo(created_at)}&nbsp;
                             {isEdited && <span>(edited)</span>}
                           </p>
@@ -343,16 +432,86 @@ const ArticleCommentsContainer: React.FC = () => {
                         )}
                       </div>
 
+                      {/* comment */}
                       <div
-                        className="rounded-lg  bg-gray-300 text-sm text-black/80"
-                        style={{ width: "322px" }}
+                        className="text-sm text-black/80"
+                        style={{ width: "318px" }}
                       >
                         <div className="ql-snow">
-                          <div className="ql-editor py-2" data-gramm="false">
+                          <div
+                            className="ql-editor pl-0 pr-0"
+                            data-gramm="false"
+                          >
                             <Markup content={comment} />
                           </div>
                         </div>
                       </div>
+
+                      {/* like and reply */}
+                      <div className="flex items-center justify-between pr-2">
+                        <div className="flex items-center gap-2">
+                          <div className="flex items-center gap-1 text-gray-900">
+                            {user && userId === user.id ? (
+                              <TooltipProvider>
+                                <Tooltip>
+                                  <TooltipTrigger>
+                                    <RiHeartFill className="mt-[2px] h-5 w-5 text-gray-200 hover:cursor-not-allowed" />
+                                  </TooltipTrigger>
+                                  <TooltipContent className="border-black">
+                                    <p className="text-sm">
+                                      You cannot like your comment
+                                    </p>
+                                  </TooltipContent>
+                                </Tooltip>
+                              </TooltipProvider>
+                            ) : user && likes.includes(user.id) ? (
+                              <TooltipProvider>
+                                <Tooltip>
+                                  <TooltipTrigger>
+                                    <RiHeartFill className="text-red mt-[2px] h-5 w-5 duration-150" />
+                                  </TooltipTrigger>
+                                  <TooltipContent className="border-black">
+                                    <p className="text-sm">
+                                      You already liked this comment
+                                    </p>
+                                  </TooltipContent>
+                                </Tooltip>
+                              </TooltipProvider>
+                            ) : (
+                              <RiHeartLine
+                                className="mt-[2px] h-5 w-5 duration-150 hover:cursor-pointer hover:text-gray-400"
+                                onClick={() => likeHandler(commentId)}
+                              />
+                            )}
+
+                            {likes.length}
+                          </div>
+
+                          {replies && replies.length > 0 && (
+                            <div className="flex items-center gap-1 text-gray-900">
+                              <BiMessageRounded className="mt-[2px] h-5 w-5" />
+                              <div>
+                                {replies.length}
+                                <span className="ml-[3px] text-sm">
+                                  {replies.length > 1 ? "replies" : "reply"}
+                                </span>
+                              </div>
+                            </div>
+                          )}
+                        </div>
+
+                        <span
+                          className="text-[14px] text-gray-900 hover:cursor-pointer hover:underline"
+                          onClick={() => replyHandler(commentId)}
+                        >
+                          {isOpen ? "Hide Reply" : "Reply"}
+                        </span>
+                      </div>
+
+                      {/* nested comments */}
+                      {isOpen && (
+                        <ArticleNestedCommentsContainer commentId={commentId} />
+                      )}
                     </div>
                   );
                 })}

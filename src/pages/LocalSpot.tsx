@@ -67,17 +67,9 @@ import { Markup } from "interweave";
 
 // framer motion
 import { motion, Variants } from "framer-motion";
-const centerRotationVariant: Variants = {
-  hidden: { opacity: 0, rotate: -10 },
-  visible: {
-    opacity: 1,
-    rotate: 0,
-    transition: {
-      type: "spring",
-      bounce: 0.4,
-      duration: 1.5,
-    },
-  },
+const centerVariant: Variants = {
+  hidden: { opacity: 0 },
+  visible: { opacity: 1, transition: { duration: 1 } },
 };
 
 // shadcn
@@ -353,7 +345,7 @@ const LocalSpot: React.FC = () => {
   }
 
   const modules = {
-    toolbar: [["bold", "italic", "underline", "strike"]],
+    toolbar: [[{ header: [false] }], ["bold", "italic", "underline", "strike"]],
   };
 
   if (!name) return;
@@ -897,7 +889,7 @@ const LocalSpot: React.FC = () => {
                             className="chat chat-start mb-2 ml-2 py-0"
                           >
                             <div className="chat-image avatar">
-                              <div className="mr-1 h-8 w-8 rounded-full">
+                              <div className="mr-1 h-8 w-8 rounded-full border border-black">
                                 <img src={userImage} alt="user-image" />
                               </div>
                             </div>
@@ -995,7 +987,7 @@ const LocalSpot: React.FC = () => {
           <motion.div
             initial="hidden"
             whileInView="visible"
-            variants={centerRotationVariant}
+            variants={centerVariant}
             viewport={{ once: true }}
             className="flex h-[195px] w-[420px] flex-col rounded-xl bg-white p-5"
             style={{

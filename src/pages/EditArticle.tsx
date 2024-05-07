@@ -185,24 +185,13 @@ const EditArticle: React.FC = () => {
                 className="h-full w-full object-cover object-center"
               ></img>
             )}
-            {/* {!cover && (
-              <p className="font-sriracha text-lg font-medium">
-                Choose cover from&nbsp;
-                <span
-                  onClick={() => dispatch(openUnsplash())}
-                  className="font-semibold text-clay-yellow hover:cursor-pointer hover:border-b hover:border-clay-yellow"
-                >
-                  Unsplash
-                </span>
-              </p>
-            )} */}
             {cover && (
               <Sheet>
                 <h5 className="absolute -bottom-[30px] left-0 font-sriracha text-[14px] font-medium text-gray-500">
                   Change another cover?&nbsp;
                   <SheetTrigger>
                     <span
-                      className="font-semibold text-clay-yellow hover:cursor-pointer hover:border-b hover:border-clay-yellow"
+                      className="font-semibold text-clay-yellow hover:cursor-pointer hover:underline hover:underline-offset-4"
                       onClick={() => dispatch(openUnsplash())}
                     >
                       Unsplash

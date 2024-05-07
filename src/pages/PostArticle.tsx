@@ -158,7 +158,7 @@ const PostArticle: React.FC = () => {
                   Choose cover from&nbsp;
                   <SheetTrigger>
                     <span
-                      className="font-semibold text-clay-yellow hover:cursor-pointer hover:border-b hover:border-clay-yellow"
+                      className="font-semibold text-clay-yellow hover:cursor-pointer hover:underline hover:underline-offset-4"
                       onClick={() => dispatch(openUnsplash())}
                     >
                       Unsplash
@@ -174,7 +174,7 @@ const PostArticle: React.FC = () => {
                   Change another cover?&nbsp;
                   <SheetTrigger>
                     <span
-                      className="font-semibold text-clay-yellow hover:cursor-pointer hover:border-b hover:border-clay-yellow"
+                      className="font-semibold text-clay-yellow hover:cursor-pointer hover:underline hover:underline-offset-4"
                       onClick={() => dispatch(openUnsplash())}
                     >
                       Unsplash

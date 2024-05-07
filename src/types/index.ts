@@ -49,4 +49,7 @@ export interface CommentInfo {
   comment: string;
   created_at: number;
   isEdited: boolean;
+  likes: string[];
+  replies?: CommentInfo[];
+  isOpen?: boolean;
 }

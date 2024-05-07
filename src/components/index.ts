@@ -1,5 +1,6 @@
 import AllArticlesContainer from "./AllArticlesContainer";
 import ArticleCommentsContainer from "./ArticleCommentsContainer";
+import ArticleNestedCommentsContainer from "./ArticleNestedCommentsContainer";
 import ArticlesCollectionContainer from "./ArticlesCollectionContainer";
 import Blocker from "./Blocker";
 import Footer from "./Footer";
@@ -26,6 +27,7 @@ import Velocity from "./Velocity";
 export {
   AllArticlesContainer,
   ArticleCommentsContainer,
+  ArticleNestedCommentsContainer,
   ArticlesCollectionContainer,
   Blocker,
   Footer,

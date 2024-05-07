@@ -14,8 +14,12 @@ import { MdClose } from "react-icons/md";
 import { db } from "../main";
 import { doc, updateDoc } from "firebase/firestore";
 
+// framer motion
+import { motion } from "framer-motion";
+
 // shadcn
 import { Button } from "@/components/ui/button";
+import { ScrollArea } from "@/components/ui/scroll-area";
 
 const ProfileEditContainer: React.FC = () => {
   const { user } = useSelector((state: IRootState) => state.user);
@@ -65,7 +69,14 @@ const ProfileEditContainer: React.FC = () => {
         onClick={() => dispatch(closeEditContainer())}
       ></div>
 
-      <div
+      <motion.div
+        initial={{ opacity: 0, scale: 0.5 }}
+        animate={{ opacity: 1, scale: 1 }}
+        transition={{
+          duration: 0.8,
+          delay: 0.3,
+          ease: [0, 0.71, 0.2, 1.01],
+        }}
         className="fixed inset-0 z-20 mx-auto my-auto h-[500px] w-[500px] rounded-xl bg-white p-8"
         style={{ boxShadow: "rgba(6, 2, 2, 0.15) 0px 2px 10px" }}
       >
@@ -93,19 +104,21 @@ const ProfileEditContainer: React.FC = () => {
         </div>
 
         {/* imagesContainer */}
-        <div className="mt-6 flex h-[272px] flex-wrap justify-around gap-y-4 overflow-y-scroll border border-gray-300 p-4">
-          {profileImageList.map((url, index) => {
-            return (
-              <div
-                key={index}
-                className={`h-28 w-28 rounded-full border-2 border-black hover:cursor-pointer ${url === profileImage ? "border-pink" : ""}`}
-                onClick={() => setProfileImage(url)}
-              >
-                <img src={url} alt="avatar-image" className="h-full w-full" />
-              </div>
-            );
-          })}
-        </div>
+        <ScrollArea className="mt-6 h-[270px] rounded-lg  bg-gray-200 pr-2">
+          <div className="my-4 grid grid-cols-[auto,auto,auto] justify-around gap-4">
+            {profileImageList.map((url, index) => {
+              return (
+                <div
+                  key={index}
+                  className={`h-28 w-28 rounded-full border-[3px] border-black hover:cursor-pointer ${url === profileImage ? "border-turquoise" : ""}`}
+                  onClick={() => setProfileImage(url)}
+                >
+                  <img src={url} alt="avatar-image" className="h-full w-full" />
+                </div>
+              );
+            })}
+          </div>
+        </ScrollArea>
 
         {/* buttons */}
         <div className="absolute bottom-8 right-8 flex items-center gap-5">
@@ -130,7 +143,7 @@ const ProfileEditContainer: React.FC = () => {
             {isLoading ? "Saving" : "Save"}
           </Button>
         </div>
-      </div>
+      </motion.div>
     </>
   );
 };
