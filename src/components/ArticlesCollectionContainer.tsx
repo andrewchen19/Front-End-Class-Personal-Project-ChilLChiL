@@ -16,6 +16,9 @@ import { FaStar } from "react-icons/fa";
 import { db } from "../main";
 import { doc, getDoc, DocumentData } from "firebase/firestore";
 
+// shadcn
+import { Card, CardContent } from "@/components/ui/card";
+
 const ArticlesCollectionContainer: React.FC = () => {
   const { user } = useSelector((state: IRootState) => state.user);
   const navigate = useNavigate();
@@ -82,19 +85,19 @@ const ArticlesCollectionContainer: React.FC = () => {
 
   return (
     <div>
-      <h2 className="flex justify-between border-b border-gray-300 pb-4 text-2xl font-bold">
+      <h2 className="mb-10 flex border-b border-gray-300 pb-4 text-2xl font-bold">
         收藏文章
       </h2>
 
       {(isArticleLoading || !articlesList) && (
-        <p className="mt-8">loading now...</p>
+        <p className="mt-10">loading now...</p>
       )}
 
       {!isArticleLoading && articlesList && articlesList.length < 1 && (
-        <h3 className="mt-8">尚未收藏任何文章...</h3>
+        <h3 className="mt-10">尚未收藏任何文章...</h3>
       )}
 
-      <div className="mt-8 grid grid-cols-3 gap-x-12 gap-y-8">
+      <div className="mt-10 grid grid-cols-3 gap-x-12 gap-y-10">
         {!isArticleLoading &&
           articlesList &&
           articlesList.length > 0 &&
@@ -110,48 +113,52 @@ const ArticlesCollectionContainer: React.FC = () => {
               content,
             } = article;
             return (
-              <article
+              <Card
                 key={id}
-                className="card shadow-xl transition-all duration-300 hover:cursor-pointer hover:shadow-2xl"
+                className="shadow-xs relative flex flex-grow duration-300 hover:cursor-pointer hover:shadow-lg"
                 onClick={() => articleHandler(id)}
               >
-                <img
-                  src={cover}
-                  alt={surfingSpot}
-                  className="h-[150px] w-full rounded-t-2xl object-cover object-center"
-                />
+                <CardContent className="flex h-full w-full flex-col">
+                  <img
+                    src={cover}
+                    alt={surfingSpot}
+                    className="h-[150px] w-full object-cover object-center"
+                  />
 
-                <div className="flex flex-1 flex-col p-3">
-                  <h3 className="text-xl font-semibold capitalize">{title}</h3>
+                  <div className="flex flex-1 flex-col p-3">
+                    <h3 className="text-xl font-semibold capitalize">
+                      {title}
+                    </h3>
 
-                  <p className="mb-5 mt-3 line-clamp-3 text-base text-gray-600">
-                    {htmlToPlainText(content)}
-                  </p>
+                    <p className="mb-5 mt-3 line-clamp-3 text-base text-gray-600">
+                      {htmlToPlainText(content)}
+                    </p>
 
-                  <div className="mt-auto">
-                    <div className="flex gap-1">
-                      <span className="rounded-lg bg-green-bright px-1 text-xs text-white">
-                        {changeTagName(tag)}
-                      </span>
+                    <div className="mt-auto">
+                      <div className="flex gap-1">
+                        <span className="bg-green rounded-lg px-2 py-1 text-xs tracking-wide text-white">
+                          {changeTagName(tag)}
+                        </span>
 
-                      <span className="rounded-lg bg-orange-bright px-1 text-xs text-white">
-                        {changeSpotName(surfingSpot)}
-                      </span>
-                    </div>
+                        <span className="bg-orange rounded-lg px-2 py-1  text-xs tracking-wide  text-white">
+                          {changeSpotName(surfingSpot)}
+                        </span>
+                      </div>
 
-                    <div className="mt-1 flex items-center justify-between">
-                      <p className="text-xs text-gray-500">
-                        {formatTime(created_at)}
-                      </p>
+                      <div className="mt-1 flex items-center justify-between">
+                        <p className="text-xs text-gray-500">
+                          {formatTime(created_at)}
+                        </p>
 
-                      <div className="flex items-center gap-1">
-                        <FaStar className=" text-yellow" />
-                        <span>{likes_amount}</span>
+                        <div className="flex items-center gap-1">
+                          <FaStar className=" text-yellow" />
+                          <span>{likes_amount}</span>
+                        </div>
                       </div>
                     </div>
                   </div>
-                </div>
-              </article>
+                </CardContent>
+              </Card>
             );
           })}
       </div>

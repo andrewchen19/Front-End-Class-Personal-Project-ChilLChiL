@@ -499,13 +499,10 @@ const ArticleCommentsContainer: React.FC = () => {
                       </div>
 
                       {/* comment */}
-                      <div
-                        className="text-sm text-black/80"
-                        style={{ width: "318px" }}
-                      >
+                      <div className="text-sm" style={{ width: "318px" }}>
                         <div className="ql-snow">
                           <div
-                            className="ql-editor pl-0 pr-0"
+                            className="ql-editor pl-0 pr-0 text-black"
                             data-gramm="false"
                           >
                             <Markup content={comment} />
@@ -564,7 +561,7 @@ const ArticleCommentsContainer: React.FC = () => {
                               </TooltipProvider>
                             ) : (
                               <RiHeartLine
-                                className="mt-[2px] h-5 w-5 duration-150 hover:cursor-pointer hover:text-gray-400"
+                                className="mt-[2px] h-5 w-5 duration-150 hover:cursor-pointer hover:text-gray-500"
                                 onClick={() => likeHandler(commentId)}
                               />
                             )}

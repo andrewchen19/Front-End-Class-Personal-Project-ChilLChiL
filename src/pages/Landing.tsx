@@ -254,7 +254,7 @@ const Landing: React.FC = () => {
             className="text-center"
           >
             <h3 className="font-palanquin text-3xl font-semibold">
-              Blog sharing
+              Story sharing
             </h3>
             <p className="mt-6 max-w-[330px] text-gray-600">
               Increasing your knowledge of surfing, marine conservation,

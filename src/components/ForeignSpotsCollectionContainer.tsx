@@ -7,6 +7,9 @@ import { IRootState } from "../store";
 import { db } from "../main";
 import { doc, getDoc, DocumentData } from "firebase/firestore";
 
+// shadcn
+import { Card, CardContent } from "@/components/ui/card";
+
 const ForeignSpotsCollectionContainer: React.FC = () => {
   const { user } = useSelector((state: IRootState) => state.user);
   const navigate = useNavigate();
@@ -78,40 +81,45 @@ const ForeignSpotsCollectionContainer: React.FC = () => {
       <h2 className="text-2xl font-bold">國外浪點</h2>
 
       {(isForeignLoading || !foreignSpotsList) && (
-        <p className="mt-8">loading now...</p>
+        <p className="mt-10">loading now...</p>
       )}
 
       {!isForeignLoading && foreignSpotsList && foreignSpotsList.length < 1 && (
-        <h3 className="mt-8">尚未收藏浪點...</h3>
+        <h3 className="mt-10">尚未收藏浪點...</h3>
       )}
 
-      <div className="mt-8 grid grid-cols-3 gap-x-12 gap-y-8">
+      <div className="mt-10 grid grid-cols-4 gap-x-6 gap-y-10">
         {!isForeignLoading &&
           foreignSpotsList &&
           foreignSpotsList.length > 0 &&
           foreignSpotsList.map((spot) => {
             const { id, country, coverImage } = spot;
             return (
-              <article
+              <Card
                 key={id}
-                className="relative h-[220px] overflow-hidden rounded-lg hover:cursor-pointer"
+                className="shadow-xs relative flex flex-grow border-none duration-300 hover:cursor-pointer hover:shadow-lg"
                 onClick={() => spotHandler(country.eng, id)}
               >
-                <img
-                  src={coverImage}
-                  alt={country.location}
-                  className="h-full w-full transform rounded-lg object-cover object-center transition-transform duration-500 hover:scale-110"
-                />
+                <CardContent className="group relative flex h-full w-full flex-col">
+                  {/* overlay */}
+                  <div className="absolute z-10 h-full w-full bg-black/15 group-hover:bg-black/50"></div>
 
-                <div className="absolute left-[50%] top-[50%] z-20 -translate-x-1/2 -translate-y-1/2 text-center">
-                  <h3 className="text-xl font-bold capitalize text-pink">
-                    {country.location}
-                  </h3>
-                  <p className="text-lg font-semibold text-pink">
-                    {country.chin}
-                  </p>
-                </div>
-              </article>
+                  <img
+                    src={coverImage}
+                    alt={country.location}
+                    className="aspect-square transform rounded-lg object-cover object-center transition-transform duration-500 group-hover:scale-110"
+                  />
+
+                  <div className="absolute left-[50%] top-[50%] z-20 -translate-x-1/2 -translate-y-1/2 text-center">
+                    <h3 className="text-xl font-bold capitalize text-pink">
+                      {country.location}
+                    </h3>
+                    <p className="text-lg font-semibold text-pink">
+                      {country.chin}
+                    </p>
+                  </div>
+                </CardContent>
+              </Card>
             );
           })}
       </div>

@@ -512,7 +512,7 @@ const AllArticlesContainer: React.FC = () => {
                       alt={surfingSpot}
                       className="h-[150px] w-full object-cover object-center"
                     />
-                    <div className="flex flex-grow  flex-col p-3">
+                    <div className="flex flex-grow flex-col p-3">
                       <h3 className="text-xl font-semibold capitalize">
                         {title}
                       </h3>
@@ -523,11 +523,11 @@ const AllArticlesContainer: React.FC = () => {
 
                       <div className="mt-auto">
                         <div className="flex gap-1">
-                          <span className="rounded-lg bg-green-bright px-1 text-xs text-white">
+                          <span className="bg-green rounded-lg px-2 py-1 text-xs tracking-wide text-white">
                             {changeTagName(tag)}
                           </span>
 
-                          <span className="rounded-lg bg-orange-bright px-1 text-xs text-white">
+                          <span className="bg-orange rounded-lg px-2 py-1 text-xs tracking-wide text-white">
                             {changeSpotName(surfingSpot)}
                           </span>
                         </div>
@@ -589,11 +589,11 @@ const AllArticlesContainer: React.FC = () => {
 
                     <div className="mt-5 flex items-center">
                       <div className="flex w-[120px] gap-1">
-                        <span className="rounded-lg bg-green-bright px-1 text-xs text-white">
+                        <span className="bg-green  rounded-lg px-[6px] py-1 text-xs tracking-wide text-white">
                           {changeTagName(tag)}
                         </span>
 
-                        <span className="rounded-lg bg-orange-bright px-1 text-xs text-white">
+                        <span className="bg-orange rounded-lg px-[6px] py-1 text-xs tracking-wide text-white">
                           {changeSpotName(surfingSpot)}
                         </span>
                       </div>
@@ -622,7 +622,7 @@ const AllArticlesContainer: React.FC = () => {
             {/* prev button */}
             <Button
               type="button"
-              variant={"black"}
+              variant={"pink"}
               size={"prev"}
               disabled={nowPage === 1}
               onClick={prevHandler}
@@ -630,14 +630,14 @@ const AllArticlesContainer: React.FC = () => {
               prev
             </Button>
 
-            <div className="flex h-12 w-[136px] items-center justify-center bg-gray-300 px-3 font-semibold">
+            <div className="flex h-12 w-[136px] items-center justify-center bg-pink-light px-3 font-semibold">
               Page {nowPage} / {allPage}
             </div>
 
             {/* next button */}
             <Button
               type="button"
-              variant={"black"}
+              variant={"pink"}
               size={"next"}
               disabled={nowPage === allPage}
               onClick={nextHandler}

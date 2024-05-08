@@ -153,7 +153,7 @@ const UnsplashContainer: React.FC = () => {
         </ScrollArea>
 
         {/* button */}
-        <div className="mt-auto flex justify-center">
+        <div className="mt-4 flex justify-center">
           <Button
             type="button"
             variant={"clay-red-hipster"}

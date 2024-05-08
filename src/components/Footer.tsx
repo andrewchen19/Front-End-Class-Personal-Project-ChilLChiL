@@ -7,7 +7,7 @@ const Footer: React.FC = () => {
   return (
     <footer className="relative grid h-14 place-items-center items-center overflow-x-clip whitespace-nowrap bg-gray-950 text-white">
       {/* animation */}
-      <div className="absolute -top-[27.9px] left-0 right-0 z-10 animate-marquee">
+      <div className="absolute -top-[28px] left-0 right-0 z-10 animate-marquee">
         <div className="h-7 w-5">
           <a href="/">
             <img

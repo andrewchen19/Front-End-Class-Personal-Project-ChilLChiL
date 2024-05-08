@@ -134,11 +134,11 @@ const NewbieArticlesContainer: React.FC = () => {
 
                         <div className="mt-auto">
                           <div className="flex gap-1">
-                            <span className="rounded-lg bg-green-bright px-1 text-xs text-white">
+                            <span className="bg-green rounded-lg px-2 py-1 text-xs tracking-wide text-white">
                               {changeTagName(tag)}
                             </span>
 
-                            <span className="rounded-lg bg-orange-bright px-1 text-xs text-white">
+                            <span className="bg-orange rounded-lg px-2 py-1 text-xs tracking-wide text-white">
                               {changeSpotName(surfingSpot)}
                             </span>
                           </div>

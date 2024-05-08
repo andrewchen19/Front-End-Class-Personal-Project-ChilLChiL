@@ -27,6 +27,7 @@ import { motion } from "framer-motion";
 
 // shadcn
 import { Button } from "@/components/ui/button";
+import { Card, CardContent } from "@/components/ui/card";
 
 const LocalSpots: React.FC = () => {
   const dispatch = useDispatch();
@@ -91,7 +92,9 @@ const LocalSpots: React.FC = () => {
     });
 
     updatedSpots.forEach((spot) => {
-      const { name, location } = spot;
+      const { name, location, id } = spot;
+
+      const description = `<h3 style="color:#FF9500; font-family:Noto Sans TC; font-weight: 600"><a href="/local-spots/${name.eng}/${id}">${name.chin}</a></h3>`;
 
       new maptilersdk.Marker({
         color: "#3A4972",
@@ -102,9 +105,7 @@ const LocalSpots: React.FC = () => {
           new maptilersdk.Popup({
             closeButton: false,
             maxWidth: "none",
-          }).setHTML(
-            `<h3 style="color:#FF9500; font-family:Noto Sans TC; font-weight:bold;">${name.chin}</h3>`,
-          ),
+          }).setHTML(description),
         )
         .addTo(map);
     });
@@ -299,35 +300,37 @@ const LocalSpots: React.FC = () => {
           )}
 
           {!isLoading && selectSpots && selectSpots.length > 0 && (
-            <div className="mt-10 grid grid-cols-4 gap-10">
+            <div className="mt-10 grid grid-cols-4 gap-x-12 gap-y-10">
               {selectSpots.map((spot) => {
                 const { id, name, mapImage, likes_amount } = spot;
                 return (
-                  <article
+                  <Card
                     key={id}
-                    className="card w-full shadow-xl transition-all duration-300 hover:cursor-pointer hover:shadow-2xl"
+                    className="shadow-xs relative flex flex-grow duration-300 hover:cursor-pointer hover:shadow-lg"
                     onClick={() => spotHandler(name.eng, id)}
                   >
-                    <img
-                      src={mapImage}
-                      alt={name.chin}
-                      className="h-32 w-full rounded-t-2xl object-cover object-center"
-                    />
+                    <CardContent className="flex h-full w-full flex-col">
+                      <img
+                        src={mapImage}
+                        alt={name.chin}
+                        className="h-[150px] w-full object-cover object-center"
+                      />
 
-                    <div className="flex h-36 flex-col px-3 py-5">
-                      <h3 className="font-semibold">{name.chin}</h3>
+                      <div className="flex flex-grow flex-col p-3">
+                        <h3 className="font-semibold">{name.chin}</h3>
 
-                      <div className="mt-auto flex justify-between">
-                        <h5 className="font-fashioncountry text-lg capitalize text-turquoise">
-                          {name.eng}
-                        </h5>
-                        <div className="flex items-center gap-1">
-                          <FaStar className=" text-yellow" />
-                          <span>{likes_amount}</span>
+                        <div className="mt-10 flex justify-between">
+                          <h5 className="font-fashioncountry text-lg capitalize text-turquoise">
+                            {name.eng}
+                          </h5>
+                          <div className="flex items-center gap-1">
+                            <FaStar className=" text-yellow" />
+                            <span>{likes_amount}</span>
+                          </div>
                         </div>
                       </div>
-                    </div>
-                  </article>
+                    </CardContent>
+                  </Card>
                 );
               })}
             </div>

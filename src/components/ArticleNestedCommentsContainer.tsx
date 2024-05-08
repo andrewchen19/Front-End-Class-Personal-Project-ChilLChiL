@@ -369,6 +369,7 @@ const ArticleNestedCommentsContainer: React.FC<Props> = ({ commentId }) => {
                   isEdited,
                   likes,
                 } = item;
+
                 return (
                   <div key={nestCommentId} className="flex flex-col gap-1">
                     <div className="flex items-center">
@@ -423,7 +424,7 @@ const ArticleNestedCommentsContainer: React.FC<Props> = ({ commentId }) => {
 
                     {/* comment */}
                     <div
-                      className="text-sm text-black/80"
+                      className="text-sm text-black"
                       style={{ width: "270px" }}
                     >
                       <div className="ql-snow">
@@ -433,7 +434,7 @@ const ArticleNestedCommentsContainer: React.FC<Props> = ({ commentId }) => {
                       </div>
                     </div>
 
-                    {/* like and reply */}
+                    {/* like*/}
                     <div className="flex items-center justify-between pr-2">
                       <div className="flex items-center gap-2">
                         <div className="flex items-center gap-1 text-gray-900">
@@ -484,8 +485,8 @@ const ArticleNestedCommentsContainer: React.FC<Props> = ({ commentId }) => {
                             </TooltipProvider>
                           ) : (
                             <RiHeartLine
-                              className="mt-[2px] h-5 w-5 duration-150 hover:cursor-pointer hover:text-gray-400"
-                              onClick={() => likeHandler(commentId)}
+                              className="mt-[2px] h-5 w-5 duration-150 hover:cursor-pointer hover:text-gray-500"
+                              onClick={() => likeHandler(nestCommentId)}
                             />
                           )}
 

@@ -86,18 +86,6 @@ function App() {
             },
           ],
         },
-        // {
-        //   path: "profile/my-info",
-        //   element: <Profile />,
-        // },
-        // {
-        //   path: "profile/my-collections",
-        //   element: <MyCollections />,
-        // },
-        // {
-        //   path: "profile/my-articles",
-        //   element: <MyArticles />,
-        // },
         {
           path: "profile/post-article",
           element: <PostArticle />,

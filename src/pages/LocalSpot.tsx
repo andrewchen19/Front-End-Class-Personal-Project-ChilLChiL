@@ -553,15 +553,15 @@ const LocalSpot: React.FC = () => {
               {/* forecast days & hours */}
               <div className="mx-auto flex w-full flex-col">
                 {/* days */}
-                <div className="grid grid-cols-3 text-center text-lg font-bold">
-                  <p>{infoData.today} Today</p>
+                <div className="grid grid-cols-3 text-center text-lg font-bold text-gray-700">
+                  <p className="text-gray-950">{infoData.today} Today</p>
                   <p>{infoData.tomorrow}</p>
                   <p>{infoData.afterTomorrow}</p>
                 </div>
               </div>
             </div>
 
-            <div className="mt-5 grid grid-cols-9 pl-[150px] text-center font-semibold ">
+            <div className="mt-5 grid grid-cols-9 pl-[150px] text-center font-medium ">
               {hours.map((hour, index) => {
                 return <p key={index}>{hour}</p>;
               })}
@@ -577,7 +577,7 @@ const LocalSpot: React.FC = () => {
 
                 <div className="grid grid-cols-[auto,1fr]">
                   {/* desc */}
-                  <div className="w-[150px]">
+                  <div className="w-[150px] font-medium">
                     <p className="flex h-8 w-full items-center pl-10 text-base">
                       最小浪高 (m)
                     </p>
@@ -620,7 +620,7 @@ const LocalSpot: React.FC = () => {
                     </p>
                   </div>
 
-                  <div className="grid grid-cols-9">
+                  <div className="grid grid-cols-9 font-medium">
                     {infoData.wave.map((item: WaveInfo, index: number) => {
                       const { surf, swells } = item;
                       const { direction, period } = swells[0];
@@ -673,7 +673,7 @@ const LocalSpot: React.FC = () => {
 
                 <div className="grid grid-cols-[auto,1fr]">
                   {/* desc */}
-                  <div className="w-[150px]">
+                  <div className="w-[150px] font-medium">
                     <p className="flex h-8 w-full items-center gap-3 pl-2 text-base">
                       <TooltipProvider>
                         <Tooltip>
@@ -693,7 +693,7 @@ const LocalSpot: React.FC = () => {
                     </p>
                   </div>
 
-                  <div className="grid grid-cols-9">
+                  <div className="grid grid-cols-9 font-medium">
                     {infoData.tides.map((item: tideInfo, index: number) => {
                       if (index > 8) return;
                       const { height } = item;
@@ -724,7 +724,7 @@ const LocalSpot: React.FC = () => {
 
                 <div className="grid grid-cols-[auto,1fr]">
                   {/* desc */}
-                  <div className="w-[150px]">
+                  <div className="w-[150px] font-medium">
                     <p className="flex h-8 w-full items-center gap-3 pl-2 text-base">
                       <TooltipProvider>
                         <Tooltip>
@@ -764,7 +764,7 @@ const LocalSpot: React.FC = () => {
                     </p>
                   </div>
 
-                  <div className="grid grid-cols-9">
+                  <div className="grid grid-cols-9 font-medium">
                     {infoData.wind.map((item: WindInfo, index: number) => {
                       const { direction, directionType, gust } = item;
 
@@ -811,7 +811,7 @@ const LocalSpot: React.FC = () => {
 
                 <div className="grid grid-cols-[auto,1fr]">
                   {/* desc */}
-                  <div className="w-[150px]">
+                  <div className="w-[150px] font-medium">
                     <p className="flex h-8 w-full items-center pl-10 text-base">
                       天氣圖示
                     </p>
@@ -820,7 +820,7 @@ const LocalSpot: React.FC = () => {
                     </p>
                   </div>
 
-                  <div className="grid grid-cols-9">
+                  <div className="grid grid-cols-9 font-medium">
                     {infoData.weather.map(
                       (item: WeatherInfo, index: number) => {
                         const { condition, temperature } = item;
