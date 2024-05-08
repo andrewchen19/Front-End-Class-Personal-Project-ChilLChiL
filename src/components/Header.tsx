@@ -21,7 +21,7 @@ const Header: React.FC = () => {
   };
 
   return (
-    <header className="flex h-14 items-center bg-black text-white">
+    <header className="flex h-14 items-center bg-gray-950 text-white">
       <div className="relative mx-auto flex w-[95%] items-center justify-center">
         {/* logo */}
         <div className="absolute left-0">
@@ -109,9 +109,9 @@ const Header: React.FC = () => {
         )}
       </div>
 
-      <div className="absolute z-50">
+      {/* <div className="absolute z-[999]">
         <MenuNavbar />
-      </div>
+      </div> */}
     </header>
   );
 };

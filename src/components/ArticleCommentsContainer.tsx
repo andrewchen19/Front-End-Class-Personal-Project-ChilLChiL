@@ -4,7 +4,7 @@ import { toast } from "react-toastify";
 import { useSelector } from "react-redux";
 import { IRootState } from "../store";
 import { calculateTimeAgo } from "../utils";
-import { CommentInfo } from "../types";
+import { CommentInfo, OpenInfo } from "../types";
 import ArticleNestedCommentsContainer from "./ArticleNestedCommentsContainer";
 
 // nano id
@@ -63,11 +63,12 @@ const ArticleCommentsContainer: React.FC = () => {
   const [isLoading, setIsLoading] = useState(false);
   const [comment, setComment] = useState<string>("");
   const [commentLength, setCommentLength] = useState<number>(0);
-  const [commentList, setCommentList] = useState<CommentInfo[] | []>([]);
+  const [commentList, setCommentList] = useState<CommentInfo[]>([]);
   const [isEditStatus, setIsEditStatus] = useState<boolean>(false);
   const [editInfo, setEditInfo] = useState<DocumentData | null>(null);
   const [showAlert, setShowAlert] = useState<boolean>(false);
   const [shouldDeleteId, setShouldDeleteId] = useState<string>("");
+  const [openList, setOpenList] = useState<OpenInfo[]>([]);
 
   const deleteButtonHandler = (commentId: string) => {
     setShowAlert(true);
@@ -77,9 +78,10 @@ const ArticleCommentsContainer: React.FC = () => {
     if (!id) return;
     if (!shouldDeleteId) return;
     try {
-      const spotRef = doc(db, "articles", id);
-      const subCollectionRef = collection(spotRef, "comments");
+      const articleRef = doc(db, "articles", id);
+      const subCollectionRef = collection(articleRef, "comments");
       await deleteDoc(doc(subCollectionRef, shouldDeleteId));
+      deleteStatusToOpenList(shouldDeleteId);
       setComment("");
       setIsEditStatus(false);
       setShouldDeleteId("");
@@ -118,7 +120,10 @@ const ArticleCommentsContainer: React.FC = () => {
     if (isEditStatus) {
       setEditedCommentToFirebase();
     } else {
-      addNewCommentToFirebase();
+      const newCommentId = await addNewCommentToFirebase();
+      if (newCommentId) {
+        addNewStatusToOpenList(newCommentId);
+      }
     }
   };
   const cancelEditHandler = (): void => {
@@ -148,31 +153,60 @@ const ArticleCommentsContainer: React.FC = () => {
       console.log(error);
     }
   };
-  // !!
   const replyHandler = (commentId: string): void => {
-    const updatedCommentList = [...commentList].map((item: CommentInfo) => {
+    const updatedOpenList = [...openList].map((item: OpenInfo) => {
       if (item.id === commentId) {
         item.isOpen = !item.isOpen;
         return item;
       }
       return item;
     });
-    setCommentList(updatedCommentList);
+    setOpenList(updatedOpenList);
+  };
+  const searchOpenStatus = (commentId: string): boolean | undefined => {
+    const foundObj = openList.find((item) => item.id === commentId);
+    if (foundObj) {
+      return foundObj.isOpen;
+    }
+  };
+  const addNewStatusToOpenList = (newCommentId: string) => {
+    const newObj = {
+      id: newCommentId,
+      isOpen: false,
+    };
+    const updatedOpenList = [...openList, newObj];
+    setOpenList(updatedOpenList);
+  };
+  const deleteStatusToOpenList = (commentId: string) => {
+    const updatedOpenList = [...openList].filter(
+      (item) => item.id !== commentId,
+    );
+    setOpenList(updatedOpenList);
   };
 
   async function getUserInfoFromFirebase(
     commentArray: DocumentData[],
   ): Promise<void> {
-    let newArray = [];
+    let newArray: CommentInfo[] = [];
 
     for (const comment of commentArray) {
       const docRef = doc(db, "users", comment.userId);
       const docSnap = await getDoc(docRef);
       if (docSnap.exists()) {
-        const userName = docSnap.data().name;
-        const userImage = docSnap.data().profile_picture;
-        // !!
-        const newComment = { ...comment, userName, userImage, isOpen: false };
+        const userName: string = docSnap.data().name;
+        const userImage: string = docSnap.data().profile_picture;
+
+        const newComment = {
+          id: comment.id,
+          userId: comment.userId,
+          comment: comment.comment,
+          created_at: comment.created_at,
+          isEdited: comment.isEdited,
+          likes: comment.likes,
+          replies: comment?.replies,
+          userName,
+          userImage,
+        };
         newArray.push(newComment);
       }
     }
@@ -192,7 +226,7 @@ const ArticleCommentsContainer: React.FC = () => {
     const commentArray = querySnapshot.docs.map((doc) => doc.data());
     await getUserInfoFromFirebase(commentArray);
   }
-  async function addNewCommentToFirebase(): Promise<void> {
+  async function addNewCommentToFirebase(): Promise<string | undefined> {
     if (!id) return;
     if (!user) return;
 
@@ -215,6 +249,7 @@ const ArticleCommentsContainer: React.FC = () => {
       await setDoc(doc(subCollectionRef, commentId), commentObj);
       toast.success("Add comment successfully 🎉");
       setComment("");
+      return commentObj.id;
     } catch (error) {
       console.log(error);
     }
@@ -277,6 +312,37 @@ const ArticleCommentsContainer: React.FC = () => {
     };
 
     fetchData();
+  }, []);
+
+  useEffect(() => {
+    if (!id) return;
+
+    const fetchId = async () => {
+      try {
+        const commentsCollectionRef = collection(
+          db,
+          "articles",
+          id,
+          "comments",
+        );
+        const q = query(commentsCollectionRef, orderBy("created_at", "desc"));
+        const querySnapshot = await getDocs(q);
+        const commentArray = querySnapshot.docs.map((doc) => doc.data());
+        let newOpenArray: OpenInfo[] = [];
+
+        for (const comment of commentArray) {
+          const newComment: OpenInfo = {
+            id: comment.id,
+            isOpen: false,
+          };
+          newOpenArray.push(newComment);
+        }
+        setOpenList(newOpenArray);
+      } catch (error) {
+        console.log(error);
+      }
+    };
+    fetchId();
   }, []);
 
   return (
@@ -375,7 +441,7 @@ const ArticleCommentsContainer: React.FC = () => {
                     isEdited,
                     likes,
                     replies,
-                    isOpen,
+                    // isOpen,
                   } = item;
                   return (
                     <div
@@ -451,11 +517,30 @@ const ArticleCommentsContainer: React.FC = () => {
                       <div className="flex items-center justify-between pr-2">
                         <div className="flex items-center gap-2">
                           <div className="flex items-center gap-1 text-gray-900">
-                            {user && userId === user.id ? (
+                            {user &&
+                            userId === user.id &&
+                            replies &&
+                            replies.length > 0 ? (
                               <TooltipProvider>
                                 <Tooltip>
                                   <TooltipTrigger>
-                                    <RiHeartFill className="mt-[2px] h-5 w-5 text-gray-200 hover:cursor-not-allowed" />
+                                    <RiHeartFill className="text-red mt-[2px] h-5 w-5 hover:cursor-not-allowed" />
+                                  </TooltipTrigger>
+                                  <TooltipContent className="border-black">
+                                    <p className="text-sm">
+                                      You cannot like your comment
+                                    </p>
+                                  </TooltipContent>
+                                </Tooltip>
+                              </TooltipProvider>
+                            ) : user &&
+                              userId === user.id &&
+                              replies &&
+                              replies.length < 1 ? (
+                              <TooltipProvider>
+                                <Tooltip>
+                                  <TooltipTrigger>
+                                    <RiHeartLine className="mt-[2px] h-5 w-5 hover:cursor-not-allowed" />
                                   </TooltipTrigger>
                                   <TooltipContent className="border-black">
                                     <p className="text-sm">
@@ -504,12 +589,12 @@ const ArticleCommentsContainer: React.FC = () => {
                           className="text-[14px] text-gray-900 hover:cursor-pointer hover:underline"
                           onClick={() => replyHandler(commentId)}
                         >
-                          {isOpen ? "Hide Reply" : "Reply"}
+                          {searchOpenStatus(commentId) ? "Hide Reply" : "Reply"}
                         </span>
                       </div>
 
                       {/* nested comments */}
-                      {isOpen && (
+                      {searchOpenStatus(commentId) && (
                         <ArticleNestedCommentsContainer commentId={commentId} />
                       )}
                     </div>

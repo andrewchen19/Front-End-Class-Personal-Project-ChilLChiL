@@ -51,5 +51,8 @@ export interface CommentInfo {
   isEdited: boolean;
   likes: string[];
   replies?: CommentInfo[];
-  isOpen?: boolean;
+}
+export interface OpenInfo {
+  id: string;
+  isOpen: boolean;
 }

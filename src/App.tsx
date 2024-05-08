@@ -21,6 +21,7 @@ import {
   MyCollections,
   PostArticle,
   Profile,
+  ProfileLayout,
   Signup,
 } from "./pages";
 
@@ -63,21 +64,40 @@ function App() {
           element: <ForeignSpot />,
         },
         {
-          path: "/profile",
-          element: <Navigate to="/profile/my-info" replace />,
+          path: "profile",
+          // element: <Navigate to="/profile/my-info" replace />,
+          element: <ProfileLayout />,
+          children: [
+            {
+              index: true,
+              element: <Navigate to="/profile/my-info" replace />,
+            },
+            {
+              path: "my-info",
+              element: <Profile />,
+            },
+            {
+              path: "my-collections",
+              element: <MyCollections />,
+            },
+            {
+              path: "my-articles",
+              element: <MyArticles />,
+            },
+          ],
         },
-        {
-          path: "profile/my-info",
-          element: <Profile />,
-        },
-        {
-          path: "profile/my-collections",
-          element: <MyCollections />,
-        },
-        {
-          path: "profile/my-articles",
-          element: <MyArticles />,
-        },
+        // {
+        //   path: "profile/my-info",
+        //   element: <Profile />,
+        // },
+        // {
+        //   path: "profile/my-collections",
+        //   element: <MyCollections />,
+        // },
+        // {
+        //   path: "profile/my-articles",
+        //   element: <MyArticles />,
+        // },
         {
           path: "profile/post-article",
           element: <PostArticle />,

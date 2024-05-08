@@ -64,26 +64,33 @@ const ArticleNestedCommentsContainer: React.FC<Props> = ({ commentId }) => {
 
   const [isLoading, setIsLoading] = useState(false);
   const [comment, setComment] = useState<string>("");
-  const [nestCommentList, setNestCommentList] = useState<CommentInfo[] | []>(
-    [],
-  );
+  const [nestCommentList, setNestCommentList] = useState<CommentInfo[]>([]);
   const [isEditStatus, setIsEditStatus] = useState<boolean>(false);
-  const [editInfo, setEditInfo] = useState<DocumentData | null>(null);
+  const [editInfo, setEditInfo] = useState<CommentInfo | null>(null);
   const [showAlert, setShowAlert] = useState<boolean>(false);
   const [shouldDeleteId, setShouldDeleteId] = useState<string>("");
 
-  // !!
-  const deleteButtonHandler = (commentId: string) => {
+  const deleteButtonHandler = (nestCommentId: string) => {
     setShowAlert(true);
-    setShouldDeleteId(commentId);
+    setShouldDeleteId(nestCommentId);
   };
   const deleteCommentHandler = async (): Promise<void> => {
     if (!id) return;
     if (!shouldDeleteId) return;
+
     try {
-      const spotRef = doc(db, "articles", id);
-      const subCollectionRef = collection(spotRef, "comments");
-      await deleteDoc(doc(subCollectionRef, shouldDeleteId));
+      const commentRef = doc(db, "articles", id, "comments", commentId);
+      const docSnap = await getDoc(commentRef);
+      if (!docSnap.exists()) return;
+
+      const newReplies = docSnap
+        .data()
+        .replies.filter((item: CommentInfo) => item.id !== shouldDeleteId);
+
+      await updateDoc(commentRef, {
+        replies: newReplies,
+      });
+
       setComment("");
       setIsEditStatus(false);
       setShouldDeleteId("");
@@ -93,17 +100,20 @@ const ArticleNestedCommentsContainer: React.FC<Props> = ({ commentId }) => {
       console.log(error);
     }
   };
-  const getCommentHandler = async (commentId: string): Promise<void> => {
+  const getCommentHandler = async (nestCommentId: string): Promise<void> => {
     if (!id) return;
     try {
       const commentRef = doc(db, "articles", id, "comments", commentId);
-
       const docSnap = await getDoc(commentRef);
 
-      if (docSnap.exists()) {
+      if (!docSnap.exists()) return;
+
+      const replies: CommentInfo[] = docSnap.data().replies;
+      const obj = replies.find((item) => item.id === nestCommentId);
+      if (obj) {
         setIsEditStatus(true);
-        setEditInfo(docSnap.data());
-        setComment(docSnap.data().comment);
+        setEditInfo(obj);
+        setComment(obj.comment);
       }
     } catch (error) {
       console.log(error);
@@ -130,7 +140,7 @@ const ArticleNestedCommentsContainer: React.FC<Props> = ({ commentId }) => {
     setEditInfo(null);
     setIsEditStatus(false);
   };
-  const likeHandler = async (commentId: string): Promise<void> => {
+  const likeHandler = async (nestCommentId: string): Promise<void> => {
     if (!id) return;
     if (!user) {
       toast.warning("Please Log In First 😵");
@@ -138,22 +148,27 @@ const ArticleNestedCommentsContainer: React.FC<Props> = ({ commentId }) => {
     }
 
     try {
-      const articleRef = doc(db, "articles", id);
-      const subCollectionRef = collection(articleRef, "comments");
-      const commentRef = doc(subCollectionRef, commentId);
-      const data = (await getDoc(commentRef))?.data();
-      if (!data) return;
-      const newLikes = [...data.likes, user.id];
-      // console.log(data);
-      const updatedData = { ...data, likes: newLikes };
-      await setDoc(commentRef, updatedData);
+      const commentRef = doc(db, "articles", id, "comments", commentId);
+      const docSnap = await getDoc(commentRef);
+      if (!docSnap.exists()) return;
+
+      const newReplies = docSnap.data().replies.map((item: CommentInfo) => {
+        if (item.id === nestCommentId) {
+          const newItem = { ...item, likes: [...item.likes, user.id] };
+          return newItem;
+        }
+        return item;
+      });
+
+      await updateDoc(commentRef, {
+        replies: newReplies,
+      });
       toast.success("Like comment successfully 🎉");
     } catch (error) {
       console.log(error);
     }
   };
 
-  // !!
   async function getUserInfoFromFirebase(
     commentArray: CommentInfo[],
   ): Promise<void> {
@@ -171,36 +186,28 @@ const ArticleNestedCommentsContainer: React.FC<Props> = ({ commentId }) => {
     }
     setNestCommentList(newArray);
   }
-  async function getNestCommentsFromFirebase(articleId: string): Promise<void> {
-    const commentsCollectionRef = collection(
-      db,
-      "articles",
-      articleId,
-      "comments",
-    );
-    const commentRef = doc(commentsCollectionRef, commentId);
+  async function getNestCommentsFromFirebase(): Promise<void> {
+    if (!id) return;
+
+    const commentRef = doc(db, "articles", id, "comments", commentId);
     const docSnap = await getDoc(commentRef);
     if (!docSnap.exists()) return;
-    // console.log(docSnap.data());
+
     if (docSnap.data().replies.length > 0) {
       const nestCommentArray: CommentInfo[] = docSnap.data().replies;
       await getUserInfoFromFirebase(nestCommentArray);
     } else {
       setNestCommentList([]);
     }
-
-    // const q = query(commentsCollectionRef, orderBy("created_at", "desc"));
-    // const querySnapshot = await getDocs(q);
-    // const commentArray = querySnapshot.docs.map((doc) => doc.data());
   }
   async function addNewNestCommentToFirebase(): Promise<void> {
     if (!id) return;
     if (!user) return;
 
-    const commentId = nanoid();
+    const newCommentId = nanoid();
 
     const commentObj = {
-      id: commentId,
+      id: newCommentId,
       userId: user.id,
       comment,
       created_at: Date.now(),
@@ -209,19 +216,10 @@ const ArticleNestedCommentsContainer: React.FC<Props> = ({ commentId }) => {
       likes: [],
     };
 
-    // console.log(id, commentId);
-
-    // const commentsCollectionRef = collection(db, "articles", id, "comments");
-    // const commentRef = doc(commentsCollectionRef, commentId);
-    // const docSnap = await getDoc(commentRef);
-    // console.log(docSnap.exists());
-    // if (!docSnap.exists()) return;
-    // console.log(docSnap.data());
-
     try {
       const commentRef = doc(db, "articles", id, "comments", commentId);
       const docSnap = await getDoc(commentRef);
-      console.log(docSnap.exists());
+
       if (!docSnap.exists()) return;
       //   console.log(docSnap.data());
       await updateDoc(commentRef, {
@@ -235,7 +233,6 @@ const ArticleNestedCommentsContainer: React.FC<Props> = ({ commentId }) => {
   }
   async function setEditedNestCommentToFirebase(): Promise<void> {
     if (!id) return;
-    if (!user) return;
     if (!editInfo) return;
 
     const commentObj = {
@@ -246,9 +243,21 @@ const ArticleNestedCommentsContainer: React.FC<Props> = ({ commentId }) => {
     };
 
     try {
-      const articleRef = doc(db, "articles", id);
-      const subCollectionRef = collection(articleRef, "comments");
-      await setDoc(doc(subCollectionRef, editInfo.id), commentObj);
+      const commentRef = doc(db, "articles", id, "comments", commentId);
+      const docSnap = await getDoc(commentRef);
+      if (!docSnap.exists()) return;
+
+      const newReplies = docSnap.data().replies.map((item: CommentInfo) => {
+        if (item.id === commentObj.id) {
+          return commentObj;
+        }
+        return item;
+      });
+
+      await updateDoc(commentRef, {
+        replies: newReplies,
+      });
+
       toast.success("Edit comment successful 🎉");
       setComment("");
       setIsEditStatus(false);
@@ -268,24 +277,17 @@ const ArticleNestedCommentsContainer: React.FC<Props> = ({ commentId }) => {
     const fetchData = async () => {
       setIsLoading(true);
 
-      // console.log("execute");
+      const commentRef = doc(db, "articles", id, "comments", commentId);
 
-      const unsubscribe = onSnapshot(
-        collection(db, "articles", id, "comments"),
-        async (snapshot) => {
-          // console.log(snapshot.docChanges());
+      const unsubscribe = onSnapshot(commentRef, async (doc) => {
+        if (doc.exists()) {
+          await getNestCommentsFromFirebase();
+        } else {
+          console.log("Document does not exist");
+        }
 
-          if (snapshot.docChanges().length > 0) {
-            const { type } = snapshot.docChanges()[0];
-            if (type === "added" || type === "modified" || type === "removed") {
-              //   console.log("execute");
-              await getNestCommentsFromFirebase(id);
-            }
-          }
-
-          setIsLoading(false);
-        },
-      );
+        setIsLoading(false);
+      });
 
       return () => unsubscribe();
     };
@@ -295,7 +297,7 @@ const ArticleNestedCommentsContainer: React.FC<Props> = ({ commentId }) => {
 
   return (
     <>
-      <div className="mt-3 border-l-4 border-gray-300 px-6">
+      <div className="mt-3 border-l-4 border-turquoise px-6">
         {/* text editor */}
         <ReactQuill
           theme="snow"
@@ -329,32 +331,17 @@ const ArticleNestedCommentsContainer: React.FC<Props> = ({ commentId }) => {
         </div>
       </div>
 
-      {/* divider */}
-      {!isLoading && nestCommentList.length > 0 && (
-        <div className="mt-3 w-full border-b bg-gray-300"></div>
-      )}
-
       {/* comments */}
-      <div className="mt-3 h-full overflow-hidden px-6">
+      <div className="mb-1 mt-3 h-full overflow-hidden">
         {isLoading && (
-          <div
-            className="grid items-center justify-center"
-            style={{
-              height: "calc(100% - 214.34px)",
-            }}
-          >
+          <div className="grid items-center justify-center px-6">
             <p>is loading...</p>
           </div>
         )}
 
         {/* real time comments */}
         {!isLoading && nestCommentList.length < 1 && (
-          <div
-            className="grid items-center justify-center"
-            style={{
-              height: "calc(100% - 214.34px)",
-            }}
-          >
+          <div className="grid items-center justify-center px-6">
             <div className="flex flex-col text-center text-sm text-gray-500">
               <i className="">No comments for this comment.</i>
               <i className="">Be the first to respond.</i>
@@ -368,11 +355,12 @@ const ArticleNestedCommentsContainer: React.FC<Props> = ({ commentId }) => {
             style={{
               height: "calc(100% - 214.24px)",
             }}
+            className="border-l-4 border-turquoise px-6"
           >
-            <div className="flex flex-col gap-3 pr-2">
+            <div className="flex flex-col gap-3">
               {nestCommentList.map((item: CommentInfo) => {
                 const {
-                  id: commentId,
+                  id: nestCommentId,
                   userId,
                   userName,
                   userImage,
@@ -382,10 +370,7 @@ const ArticleNestedCommentsContainer: React.FC<Props> = ({ commentId }) => {
                   likes,
                 } = item;
                 return (
-                  <div
-                    key={commentId}
-                    className=" flex flex-col gap-1 border-b border-gray-300 pb-3 last:border-none"
-                  >
+                  <div key={nestCommentId} className="flex flex-col gap-1">
                     <div className="flex items-center">
                       <img
                         src={userImage}
@@ -419,16 +404,16 @@ const ArticleNestedCommentsContainer: React.FC<Props> = ({ commentId }) => {
                       </div>
 
                       {user && userId === user.id && (
-                        <div className="ml-auto flex gap-2 pr-2">
+                        <div className="ml-auto flex gap-2">
                           <span
                             className="cursor-pointer text-xs text-olive/80 underline hover:text-olive"
-                            onClick={() => getCommentHandler(commentId)}
+                            onClick={() => getCommentHandler(nestCommentId)}
                           >
                             Edit
                           </span>
                           <span
                             className="cursor-pointer text-xs text-clay-red/80 underline hover:text-clay-red"
-                            onClick={() => deleteButtonHandler(commentId)}
+                            onClick={() => deleteButtonHandler(nestCommentId)}
                           >
                             Delete
                           </span>
@@ -439,7 +424,7 @@ const ArticleNestedCommentsContainer: React.FC<Props> = ({ commentId }) => {
                     {/* comment */}
                     <div
                       className="text-sm text-black/80"
-                      style={{ width: "318px" }}
+                      style={{ width: "270px" }}
                     >
                       <div className="ql-snow">
                         <div className="ql-editor pl-0 pr-0" data-gramm="false">
@@ -452,11 +437,30 @@ const ArticleNestedCommentsContainer: React.FC<Props> = ({ commentId }) => {
                     <div className="flex items-center justify-between pr-2">
                       <div className="flex items-center gap-2">
                         <div className="flex items-center gap-1 text-gray-900">
-                          {user && userId === user.id ? (
+                          {user &&
+                          userId === user.id &&
+                          likes &&
+                          likes.length > 0 ? (
                             <TooltipProvider>
                               <Tooltip>
                                 <TooltipTrigger>
-                                  <RiHeartFill className="mt-[2px] h-5 w-5 text-gray-200 hover:cursor-not-allowed" />
+                                  <RiHeartFill className="text-red mt-[2px] h-5 w-5 hover:cursor-not-allowed" />
+                                </TooltipTrigger>
+                                <TooltipContent className="border-black">
+                                  <p className="text-sm">
+                                    You cannot like your comment
+                                  </p>
+                                </TooltipContent>
+                              </Tooltip>
+                            </TooltipProvider>
+                          ) : user &&
+                            userId === user.id &&
+                            likes &&
+                            likes.length < 1 ? (
+                            <TooltipProvider>
+                              <Tooltip>
+                                <TooltipTrigger>
+                                  <RiHeartLine className="mt-[2px] h-5 w-5 hover:cursor-not-allowed" />
                                 </TooltipTrigger>
                                 <TooltipContent className="border-black">
                                   <p className="text-sm">

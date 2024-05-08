@@ -10,6 +10,11 @@ import { ReactEChartsProps } from "../components/ReactEchart";
 import user1 from "../assets/images/user1.jpg";
 import user2 from "../assets/images/user2.jpg";
 
+// react icon
+import { IoPersonCircleOutline } from "react-icons/io5";
+import { MdSurfing } from "react-icons/md";
+import { RiArticleLine } from "react-icons/ri";
+
 // weather icons
 import clearDay from "../assets/weather/clearDay.svg";
 import clearNight from "../assets/weather/clearNight.svg";
@@ -748,3 +753,26 @@ export const directionAbbreviation = (degree: number): string => {
     return "北";
   }
 };
+
+export interface ProfileNavbarProps {
+  title: string;
+  href: string;
+  icon: ReactElement;
+}
+export const profileNavbarList: ProfileNavbarProps[] = [
+  {
+    title: "個人資訊",
+    href: "/profile/my-info",
+    icon: <IoPersonCircleOutline className="h-5 w-5 text-white" />,
+  },
+  {
+    title: "收藏浪點",
+    href: "/profile/my-collections",
+    icon: <MdSurfing className="h-5 w-5 text-white" />,
+  },
+  {
+    title: "文章列表",
+    href: "/profile/my-articles",
+    icon: <RiArticleLine className="h-5 w-5 text-white" />,
+  },
+];

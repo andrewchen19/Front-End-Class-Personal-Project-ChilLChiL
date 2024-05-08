@@ -187,4 +187,7 @@ body {
   .align-container {
     @apply mx-auto flex w-[85%] max-w-6xl flex-col;
   }
+  .align-profile {
+    @apply mx-auto flex w-[85%] max-w-6xl flex-col;
+  }
 }

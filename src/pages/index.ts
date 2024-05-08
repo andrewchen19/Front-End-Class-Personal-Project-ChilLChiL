@@ -13,6 +13,7 @@ import MyArticles from "./MyArticles";
 import MyCollections from "./MyCollections";
 import PostArticle from "./PostArticle";
 import Profile from "./Profile";
+import ProfileLayout from "./ProfileLayout";
 import Signup from "./Signup";
 
 export {
@@ -31,5 +32,6 @@ export {
   MyCollections,
   PostArticle,
   Profile,
+  ProfileLayout,
   Signup,
 };
