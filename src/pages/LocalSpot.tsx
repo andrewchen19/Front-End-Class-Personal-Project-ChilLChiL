@@ -849,7 +849,7 @@ const LocalSpot: React.FC = () => {
           <section>
             {/* title */}
             <div className="mb-10 border-b border-gray-300 pb-4">
-              <h2 className="text-2xl font-bold">最新留言</h2>
+              <h2 className="text-2xl font-bold">即時留言</h2>
             </div>
 
             <div className="grid grid-cols-[auto,1fr] gap-10">

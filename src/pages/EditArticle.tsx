@@ -37,8 +37,9 @@ import { Sheet, SheetTrigger } from "@/components/ui/sheet";
 const EditArticle: React.FC = () => {
   const { id } = useParams();
   const { user } = useSelector((state: IRootState) => state.user);
-  const { cover, isUnsplashOpen, photographerLink, photographerName } =
-    useSelector((state: IRootState) => state.article);
+  const { cover, photographerLink, photographerName } = useSelector(
+    (state: IRootState) => state.article,
+  );
   const dispatch = useDispatch();
   const navigate = useNavigate();
 

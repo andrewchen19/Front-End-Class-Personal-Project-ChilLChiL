@@ -14,19 +14,7 @@ import { RiHeartLine, RiHeartFill } from "react-icons/ri";
 
 // firebase
 import { db } from "../main";
-import {
-  doc,
-  getDoc,
-  deleteDoc,
-  getDocs,
-  setDoc,
-  DocumentData,
-  collection,
-  onSnapshot,
-  query,
-  orderBy,
-  updateDoc,
-} from "firebase/firestore";
+import { doc, getDoc, onSnapshot, updateDoc } from "firebase/firestore";
 
 // React Quill
 import ReactQuill from "react-quill";

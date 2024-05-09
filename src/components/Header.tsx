@@ -4,7 +4,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { IRootState } from "../store";
 import { removeUser } from "../features/user/userSlice";
 import { toast } from "react-toastify";
-import { MenuNavbar } from "../components";
+// import { MenuNavbar } from "../components";
 
 // shadcn
 import { Button } from "@/components/ui/button";
