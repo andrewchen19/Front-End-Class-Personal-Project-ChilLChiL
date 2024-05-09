@@ -146,7 +146,7 @@ const RealtimeContainer: React.FC = () => {
 
         {localSpotNameList.map((name) => (
           <TabsContent key={name} value={name}>
-            <div className="mt-16 h-[600px] w-full">
+            <div className="mt-16 h-[500px] w-full">
               <ReactECharts
                 option={executeOption({ waveData, gustData, tempData })}
               />

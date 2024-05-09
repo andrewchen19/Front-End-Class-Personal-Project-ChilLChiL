@@ -75,7 +75,7 @@ const ProfileEditContainer: React.FC = () => {
       {/* overlay */}
       <div
         className="fixed inset-0 z-10 h-full w-full hover:cursor-pointer"
-        style={{ backgroundColor: "rgba(0, 0, 0, 0.2)" }}
+        style={{ backgroundColor: "rgba(0, 0, 0, 0.5)" }}
         onClick={() => dispatch(closeEditContainer())}
       ></div>
 

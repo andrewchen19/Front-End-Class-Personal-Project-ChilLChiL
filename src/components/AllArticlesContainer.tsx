@@ -522,7 +522,7 @@ const AllArticlesContainer: React.FC = () => {
                       </p>
 
                       <div className="mt-auto">
-                        <div className="flex gap-1">
+                        <div className="flex gap-2">
                           <span className="bg-green rounded-lg px-2 py-1 text-xs tracking-wide text-white">
                             {changeTagName(tag)}
                           </span>
@@ -571,7 +571,7 @@ const AllArticlesContainer: React.FC = () => {
               return (
                 <Card
                   key={id}
-                  className="group flex flex-row items-center px-10 py-6 duration-300 hover:cursor-pointer hover:shadow-lg"
+                  className="group flex flex-row items-center bg-gray-50 px-10 py-6 duration-300 hover:cursor-pointer hover:shadow-lg"
                   onClick={() => articleHandler(id)}
                 >
                   <img
@@ -581,14 +581,20 @@ const AllArticlesContainer: React.FC = () => {
                   />
 
                   <div className="ml-6">
-                    <h3 className="text-xl font-semibold">{title}</h3>
+                    <div className="flex justify-between">
+                      <h3 className="text-xl font-semibold">{title}</h3>
+                      <div className="ml-16 flex items-center gap-1">
+                        <FaStar className=" text-yellow" />
+                        <span>{likes_amount}</span>
+                      </div>
+                    </div>
 
                     <p className="mt-3 line-clamp-1 text-base text-gray-600">
                       {htmlToPlainText(content)}
                     </p>
 
                     <div className="mt-5 flex items-center">
-                      <div className="flex w-[120px] gap-1">
+                      <div className="flex gap-2">
                         <span className="bg-green  rounded-lg px-[6px] py-1 text-xs tracking-wide text-white">
                           {changeTagName(tag)}
                         </span>
@@ -603,10 +609,6 @@ const AllArticlesContainer: React.FC = () => {
                       <p className="text-xs text-gray-500">
                         {formatTime(created_at)}
                       </p>
-                      <div className="ml-16 flex items-center gap-1">
-                        <FaStar className=" text-yellow" />
-                        <span>{likes_amount}</span>
-                      </div>
                     </div>
                   </div>
                 </Card>

@@ -16,9 +16,6 @@ import { FaChevronDown, FaChevronUp, FaStar } from "react-icons/fa";
 // framer motion
 import { motion, useScroll, useSpring, Variants } from "framer-motion";
 
-// react scroll
-import { animateScroll as scroll } from "react-scroll";
-
 const headingText = "Why choose us?";
 const contentText =
   "Explore surf spots around the world with our surfing website. We not only provide information about surf spots but also aim to cultivate a lifestyle attitude – chill and confident. Here, you can relax,enjoy the environment, music, and broaden your horizons by experiencing different cultures and meeting new friends. Join us and embark on an exciting surfing journey!";
@@ -83,18 +80,11 @@ const Landing: React.FC = () => {
     restDelta: 0.001,
   });
 
-  const scrollToTop = () => {
-    scroll.scrollToTop({
-      duration: 1500,
-      smooth: true,
-    });
-  };
-
   return (
     <>
       {/* scroll bar */}
       <motion.div
-        className="fixed left-0 right-0 top-0 z-20 h-[10px] origin-left bg-clay-red"
+        className="bg-pink-red fixed left-0 right-0 top-0 z-20 h-[5px] origin-left"
         style={{ scaleX }}
       />
 
@@ -361,7 +351,7 @@ const Landing: React.FC = () => {
         >
           <a
             className="group flex flex-col items-center duration-300 hover:cursor-pointer hover:text-turquoise"
-            onClick={scrollToTop}
+            href="#top"
           >
             <FaChevronUp className="mb-1 animate-bounce text-center" />
             Scroll To Top

@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { Navigate } from "react-router-dom";
 import { toast } from "react-toastify";
 import { useDispatch, useSelector } from "react-redux";
@@ -17,6 +17,22 @@ const Profile: React.FC = () => {
     toast.warning("Please Log In First 😠");
     return <Navigate to="/log-in" />;
   }
+
+  useEffect(() => {
+    const body = document.querySelector("body");
+    if (!body) return;
+
+    if (isEditContainerOpen) {
+      body.style.overflow = "hidden";
+    } else {
+      body.style.overflow = "auto";
+    }
+
+    // Ensure scrolling is re-enabled when component unmounts
+    return () => {
+      body.style.overflow = "auto";
+    };
+  }, [isEditContainerOpen]);
 
   return (
     <main className="align-profile gap-20 py-24">

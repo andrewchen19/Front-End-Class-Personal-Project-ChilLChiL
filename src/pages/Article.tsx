@@ -281,6 +281,22 @@ const Article: React.FC = () => {
     fetchData();
   }, []);
 
+  useEffect(() => {
+    const body = document.querySelector("body");
+    if (!body) return;
+
+    if (showModal) {
+      body.style.overflow = "hidden";
+    } else {
+      body.style.overflow = "auto";
+    }
+
+    // Ensure scrolling is re-enabled when component unmounts
+    return () => {
+      body.style.overflow = "auto";
+    };
+  }, [showModal]);
+
   if (isLoading || !article || !author) {
     return <div>Loading...</div>;
   }
@@ -419,14 +435,14 @@ const Article: React.FC = () => {
       {showModal && (
         <div
           className="fixed inset-0 flex h-full w-full items-center justify-center"
-          style={{ backgroundColor: "rgba(0, 0, 0, 0.2)" }}
+          style={{ backgroundColor: "rgba(0, 0, 0, 0.5)" }}
         >
           <motion.div
             initial="hidden"
             whileInView="visible"
             variants={centerVariant}
             viewport={{ once: true }}
-            className="flex h-[195px] w-[420px] flex-col rounded-xl bg-white p-5"
+            className="flex w-[420px] flex-col rounded-xl bg-white p-5"
             style={{ boxShadow: "rgba(6, 2, 2, 0.15) 0px 2px 10px" }}
           >
             <div className="flex flex-col text-center font-helvetica">
@@ -440,7 +456,7 @@ const Article: React.FC = () => {
               </p>
             </div>
 
-            <div className="mx-auto mt-auto flex gap-4">
+            <div className="mx-auto mt-4 flex gap-4">
               <Button
                 type="button"
                 variant={"turquoise-hipster"}

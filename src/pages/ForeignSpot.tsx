@@ -224,7 +224,7 @@ const ForeignSpot: React.FC = () => {
       exit={{ opacity: 0, transition: { duration: 1.5 } }}
     >
       {/* fixed scroll section */}
-      <div className="sticky top-0 z-50 flex h-14 items-center bg-gray-50 shadow-lg">
+      <div className="sticky top-0 z-50 flex h-14 items-center bg-white shadow-lg">
         <div className="relative mx-auto flex w-[95%]">
           <nav>
             <ul className="flex">
@@ -235,7 +235,7 @@ const ForeignSpot: React.FC = () => {
                   spy={true}
                   duration={1000}
                   offset={-96}
-                  className="font-medium text-gray-700 duration-150 hover:cursor-pointer hover:font-semibold hover:text-gray-900"
+                  className="font-medium text-gray-500 duration-150 hover:cursor-pointer hover:font-semibold hover:text-gray-900"
                   activeStyle={{ fontWeight: "600", color: "#030712" }}
                 >
                   When to Surf
@@ -249,7 +249,7 @@ const ForeignSpot: React.FC = () => {
                   spy={true}
                   duration={1000}
                   offset={-80}
-                  className="font-medium text-gray-700 duration-150 hover:cursor-pointer hover:font-semibold hover:text-gray-900"
+                  className="font-medium text-gray-500 duration-150 hover:cursor-pointer hover:font-semibold hover:text-gray-900"
                   activeStyle={{ fontWeight: "600", color: "#030712" }}
                 >
                   Travel Essentials
@@ -263,7 +263,7 @@ const ForeignSpot: React.FC = () => {
                   spy={true}
                   duration={1000}
                   offset={-80}
-                  className="font-medium text-gray-700 duration-150 hover:cursor-pointer hover:font-semibold hover:text-gray-900"
+                  className="font-medium text-gray-500 duration-150 hover:cursor-pointer hover:font-semibold hover:text-gray-900"
                   activeStyle={{ fontWeight: "600", color: "#030712" }}
                 >
                   Explore Other Zones

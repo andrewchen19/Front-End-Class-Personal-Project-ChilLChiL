@@ -441,8 +441,9 @@ const ArticleCommentsContainer: React.FC = () => {
                     isEdited,
                     likes,
                     replies,
-                    // isOpen,
                   } = item;
+
+                  console.log(item);
                   return (
                     <div
                       key={commentId}
@@ -514,26 +515,7 @@ const ArticleCommentsContainer: React.FC = () => {
                       <div className="flex items-center justify-between pr-2">
                         <div className="flex items-center gap-2">
                           <div className="flex items-center gap-1 text-gray-900">
-                            {user &&
-                            userId === user.id &&
-                            replies &&
-                            replies.length > 0 ? (
-                              <TooltipProvider>
-                                <Tooltip>
-                                  <TooltipTrigger>
-                                    <RiHeartFill className="text-red mt-[2px] h-5 w-5 hover:cursor-not-allowed" />
-                                  </TooltipTrigger>
-                                  <TooltipContent className="border-black">
-                                    <p className="text-sm">
-                                      You cannot like your comment
-                                    </p>
-                                  </TooltipContent>
-                                </Tooltip>
-                              </TooltipProvider>
-                            ) : user &&
-                              userId === user.id &&
-                              replies &&
-                              replies.length < 1 ? (
+                            {user && userId === user.id ? (
                               <TooltipProvider>
                                 <Tooltip>
                                   <TooltipTrigger>
