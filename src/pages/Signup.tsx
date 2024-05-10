@@ -2,10 +2,17 @@ import React, { FormEvent, useState } from "react";
 import { NavLink, useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
 import { UserInfo } from "../types";
+import signupImg from "../assets/images/signup.jpg";
 
+// firebase
 import { db } from "../main";
 import { getAuth, createUserWithEmailAndPassword } from "firebase/auth";
 import { doc, setDoc } from "firebase/firestore";
+
+// shadcn
+import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
 
 const Signup: React.FC = () => {
   const [name, setName] = useState("");
@@ -20,11 +27,6 @@ const Signup: React.FC = () => {
 
   const submitHandler = (e: FormEvent<HTMLFormElement>): void => {
     e.preventDefault();
-
-    if (!name || !email || !password) {
-      toast.warning("Please Provide All Values 😬");
-      return;
-    }
 
     // sign up with firebase authentication
     const auth = getAuth();
@@ -49,13 +51,14 @@ const Signup: React.FC = () => {
           addDocToFirebase(userInfo);
         }
 
-        toast.success("Sign up successful 😎");
+        toast.success("Sign up successfully 😎");
         setTimeout(() => {
           navigate("/log-in");
         }, 800);
       })
       .catch((error) => {
         const errorCode = error.code;
+        console.log(errorCode);
 
         if (!errorCode) return;
 
@@ -63,90 +66,122 @@ const Signup: React.FC = () => {
           toast.error("Email is already in use 😵");
         }
 
-        if (errorCode.includes("weak-password")) {
-          toast.error("Password should be at least 6 characters 😵");
+        if (errorCode.includes("auth/invalid-email")) {
+          toast.error("Invalid email 😵");
         }
+
+        // if (errorCode.includes("weak-password")) {
+        //   toast.error("Password should be at least 6 characters 😵");
+        // }
       });
   };
 
   return (
-    <>
-      <header className="flex h-20 items-center border-b border-gray-300 bg-white text-black">
-        <div className="mx-auto flex w-[95%] items-center justify-between">
-          <NavLink to="/">
-            <h1 className="font-superglue text-2xl tracking-widest text-turquoise">
-              ChilLChilL
-            </h1>
-          </NavLink>
-        </div>
-      </header>
+    <div className="h-screen w-full border lg:grid lg:grid-cols-2 ">
+      <div className="flex items-center justify-center py-12">
+        <form
+          className="mx-auto grid w-[400px] gap-6"
+          onSubmit={(e) => submitHandler(e)}
+        >
+          <div className="grid gap-4 text-center">
+            <h1 className="text-3xl font-bold">Sign up</h1>
+            <p className="text-balance text-muted-foreground">
+              Enter your email below to create your account
+            </p>
+          </div>
 
-      <form
-        className="mx-auto flex max-w-96 flex-col gap-y-4 p-8"
-        onSubmit={(e) => submitHandler(e)}
-      >
-        <div className="flex flex-col gap-y-2">
-          <label htmlFor="name" className="text-sm">
-            Name
-          </label>
-          <input
-            type="text"
-            name="name"
-            id="name"
-            className="w-full rounded-lg border border-gray-300 px-4 py-2"
-            value={name}
-            onChange={(e) => setName(e.target.value)}
-            autoComplete="user-name"
-          />
-        </div>
-        <div className="flex flex-col gap-y-2">
-          <label htmlFor="email" className="text-sm">
-            Email
-          </label>
-          <input
-            type="email"
-            name="email"
-            id="email"
-            className="w-full rounded-lg border border-gray-300 px-4 py-2"
-            value={email}
-            onChange={(e) => setEmail(e.target.value)}
-            autoComplete="user-email"
-          />
-        </div>
-        <div className="flex flex-col gap-y-2">
-          <label htmlFor="password" className="text-sm">
-            Password
-          </label>
-          <input
-            type="password"
-            name="password"
-            id="password"
-            className="w-full rounded-lg border border-gray-300 px-4 py-2"
-            value={password}
-            onChange={(e) => setPassword(e.target.value)}
-            autoComplete="current-password"
-          />
-        </div>
+          <div className="grid gap-7">
+            <div className="relative grid gap-2">
+              <Label htmlFor="name">Name</Label>
+              <Input
+                id="name"
+                type="text"
+                name="name"
+                value={name}
+                onChange={(e) => setName(e.target.value)}
+                aria-describedby="nameHelp"
+                autoComplete="user-name"
+              />
+              {name.length > 20 && (
+                <small
+                  id="nameHelp"
+                  className="text-red absolute -bottom-[20px] left-0"
+                >
+                  Limit to 20 characters
+                </small>
+              )}
+            </div>
 
-        <div className="mt-4 flex justify-center">
-          <button
-            type="submit"
-            className="border-2 border-black p-2 font-semibold text-black"
-          >
-            Sign Up
-          </button>
-        </div>
-      </form>
+            <div className="grid gap-2">
+              <Label htmlFor="email">Email</Label>
+              <Input
+                id="email"
+                type="email"
+                name="email"
+                placeholder="chilL@gmail.com"
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
+                autoComplete="user-email"
+              />
+            </div>
 
-      <div className="mx-auto max-w-96 px-8">
-        <h3 className="text-center font-notosans text-lg font-bold tracking-wide text-gray-500">
-          已經有帳號?
-          <NavLink to="/log-in" className="pl-4 text-turquoise">
-            立即登入
-          </NavLink>
-        </h3>
+            <div className="relative grid gap-2">
+              <div className="flex items-center">
+                <Label htmlFor="password">Password</Label>
+              </div>
+              <Input
+                id="password"
+                type="password"
+                name="password"
+                value={password}
+                onChange={(e) => setPassword(e.target.value)}
+                aria-describedby="nameHelp"
+                autoComplete="current-password"
+              />
+              {password.length < 6 && (
+                <small
+                  id="passwordHelp"
+                  className="text-red absolute -bottom-[20px] left-0"
+                >
+                  Must be at least 6 characters
+                </small>
+              )}
+            </div>
+
+            <Button
+              type="submit"
+              size={"xl"}
+              className="w-full"
+              disabled={
+                !name ||
+                !email ||
+                !password ||
+                name.length > 20 ||
+                password.length < 6
+              }
+            >
+              Sign up
+            </Button>
+          </div>
+
+          <div className="flex justify-center gap-3 font-helvetica text-sm">
+            Already have an account?
+            <NavLink to="/log-in" className="hover:text-turquoise">
+              Log in
+            </NavLink>
+          </div>
+        </form>
       </div>
-    </>
+      <div className="hidden lg:block">
+        <div className="h-screen w-full">
+          <img
+            src={signupImg}
+            alt="Image"
+            className="h-full w-full object-cover object-bottom"
+          />
+        </div>
+      </div>
+    </div>
   );
 };
 

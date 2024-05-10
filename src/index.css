@@ -129,6 +129,15 @@ body {
   }
 }
 
+.nav-li .active {
+  color: #fff;
+  background-color: #030712;
+}
+.nav-li:hover .active {
+  color: #fff;
+  background-color: #030712;
+}
+
 @font-face {
   font-family: "Helvetica";
   src: url(./assets/fonts/Helvetica.ttf);

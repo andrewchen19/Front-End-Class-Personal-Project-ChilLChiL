@@ -59,7 +59,7 @@ const Profile: React.FC = () => {
 
             <div>
               <button
-                className="link text-sm text-gray-500 duration-300 hover:text-gray-600"
+                className="link text-sm text-gray-400 duration-300 hover:text-gray-500"
                 onClick={() => dispatch(openEditContainer())}
               >
                 Edit Profile

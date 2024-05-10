@@ -3,11 +3,17 @@ import { useNavigate, NavLink } from "react-router-dom";
 import { toast } from "react-toastify";
 import { useDispatch } from "react-redux";
 import { setUser } from "../features/user/userSlice";
+import loginImg from "../assets/images/login.jpg";
 
 // firebase
 import { db } from "../main";
 import { getAuth, signInWithEmailAndPassword } from "firebase/auth";
 import { query, collection, where, getDocs } from "firebase/firestore";
+
+// shadcn
+import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
 
 const Login: React.FC = () => {
   const [email, setEmail] = useState("");
@@ -23,7 +29,7 @@ const Login: React.FC = () => {
     if (!querySnapshot.empty) {
       const user = querySnapshot.docs[0].data();
       dispatch(setUser(user));
-      toast.success("Login Successful 😎");
+      toast.success("Log in Successfully 😎");
       setTimeout(() => {
         navigate("/profile");
       }, 800);
@@ -32,6 +38,9 @@ const Login: React.FC = () => {
 
   const submitHandler = (e: FormEvent<HTMLFormElement>): void => {
     e.preventDefault();
+
+    console.log(email);
+    console.log(password);
 
     if (!email || !password) {
       toast.warning("Please Provide All Values 😬");
@@ -62,69 +71,72 @@ const Login: React.FC = () => {
   };
 
   return (
-    <>
-      <header className="flex h-20 items-center border-b border-gray-300 bg-white text-black">
-        <div className="mx-auto flex w-[95%] items-center justify-between">
-          <NavLink to="/">
-            <h1 className="font-superglue text-2xl tracking-widest text-turquoise">
-              ChilLChilL
-            </h1>
-          </NavLink>
-        </div>
-      </header>
+    <div className="h-screen w-full border lg:grid lg:grid-cols-2 ">
+      <div className="flex items-center justify-center py-12">
+        <form
+          className="mx-auto grid w-[400px] gap-6"
+          onSubmit={(e) => submitHandler(e)}
+        >
+          <div className="grid gap-4 text-center">
+            <h1 className="text-3xl font-bold">Login</h1>
+            <p className="text-muted-foreground">
+              Enter your email below to login to your account
+            </p>
+          </div>
 
-      <form
-        className="mx-auto flex max-w-96 flex-col gap-y-4 p-8"
-        onSubmit={(e) => submitHandler(e)}
-      >
-        <div className="flex flex-col gap-y-2">
-          <label htmlFor="email" className="text-sm">
-            Email
-          </label>
-          <input
-            type="email"
-            name="email"
-            id="email"
-            className="w-full rounded-lg border border-gray-300 px-4 py-2"
-            value={email}
-            onChange={(e) => setEmail(e.target.value)}
-            autoComplete="user-email"
-          />
-        </div>
-        <div className="flex flex-col gap-y-2">
-          <label htmlFor="password" className="text-sm">
-            Password
-          </label>
-          <input
-            type="password"
-            name="password"
-            id="password"
-            className="w-full rounded-lg border border-gray-300 px-4 py-2"
-            value={password}
-            onChange={(e) => setPassword(e.target.value)}
-            autoComplete="current-password"
-          />
-        </div>
+          <div className="grid gap-7">
+            <div className="grid gap-2">
+              <Label htmlFor="email">Email</Label>
+              <Input
+                id="email"
+                type="email"
+                name="email"
+                placeholder="chilL@gmail.com"
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
+                required
+                autoComplete="user-email"
+              />
+            </div>
 
-        <div className="mt-4 flex justify-center">
-          <button
-            type="submit"
-            className="hover:border-red-200 hover:text-red-200 border-2 border-black p-2 font-semibold text-black"
-          >
-            Login
-          </button>
-        </div>
-      </form>
+            <div className="grid gap-2">
+              <div className="flex items-center">
+                <Label htmlFor="password">Password</Label>
+              </div>
+              <Input
+                id="password"
+                type="password"
+                name="password"
+                value={password}
+                onChange={(e) => setPassword(e.target.value)}
+                required
+                autoComplete="current-password"
+              />
+            </div>
 
-      <div className="mx-auto max-w-96 px-8">
-        <h3 className="text-center font-notosans text-lg font-bold tracking-wide text-gray-500">
-          還沒有帳號?
-          <NavLink to="/sign-up" className="pl-4 text-turquoise">
-            立即註冊
-          </NavLink>
-        </h3>
+            <Button type="submit" size={"xl"} className="w-full">
+              Login
+            </Button>
+          </div>
+
+          <div className="flex justify-center gap-3 font-helvetica text-sm">
+            Don&apos;t have an account?
+            <NavLink to="/sign-up" className="hover:text-turquoise">
+              Sign up
+            </NavLink>
+          </div>
+        </form>
       </div>
-    </>
+      <div className="hidden  lg:block">
+        <div className="h-screen w-full">
+          <img
+            src={loginImg}
+            alt="Image"
+            className="h-full w-full object-cover object-bottom"
+          />
+        </div>
+      </div>
+    </div>
   );
 };
 

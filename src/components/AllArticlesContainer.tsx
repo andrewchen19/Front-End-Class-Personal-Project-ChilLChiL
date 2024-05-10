@@ -61,7 +61,7 @@ const AllArticlesContainer: React.FC = () => {
         where("isDeleted", "!=", true),
         orderBy("created_at"),
         endBefore(firstDocument),
-        limitToLast(9),
+        limitToLast(12),
       );
     } else {
       prev = query(
@@ -69,7 +69,7 @@ const AllArticlesContainer: React.FC = () => {
         where("isDeleted", "!=", true),
         orderBy("created_at", "desc"),
         endBefore(firstDocument),
-        limitToLast(9),
+        limitToLast(12),
       );
     }
 
@@ -96,7 +96,7 @@ const AllArticlesContainer: React.FC = () => {
         where("isDeleted", "!=", true),
         orderBy("created_at"),
         startAfter(lastDocument),
-        limit(9),
+        limit(12),
       );
     } else {
       next = query(
@@ -104,7 +104,7 @@ const AllArticlesContainer: React.FC = () => {
         where("isDeleted", "!=", true),
         orderBy("created_at", "desc"),
         startAfter(lastDocument),
-        limit(9),
+        limit(12),
       );
     }
 
@@ -153,9 +153,9 @@ const AllArticlesContainer: React.FC = () => {
     // check numbers of articles
     const q = query(articlesCollectionRef, where("isDeleted", "!=", true));
     const querySnapshot = await getDocs(q);
-    if (querySnapshot.size > 9) {
+    if (querySnapshot.size > 12) {
       setShowPagination(true);
-      setAllPage(Math.ceil(querySnapshot.size / 9));
+      setAllPage(Math.ceil(querySnapshot.size / 12));
     } else {
       setShowPagination(false);
       setAllPage(1);
@@ -168,14 +168,14 @@ const AllArticlesContainer: React.FC = () => {
         articlesCollectionRef,
         where("isDeleted", "!=", true),
         orderBy("created_at"),
-        limit(9),
+        limit(12),
       );
     } else {
       first = query(
         articlesCollectionRef,
         where("isDeleted", "!=", true),
         orderBy("created_at", "desc"),
-        limit(9),
+        limit(12),
       );
     }
     const documentSnapshots = await getDocs(first);
@@ -200,9 +200,9 @@ const AllArticlesContainer: React.FC = () => {
       where("isDeleted", "!=", true),
     );
     const querySnapshot = await getDocs(q);
-    if (querySnapshot.size > 9) {
+    if (querySnapshot.size > 12) {
       setShowPagination(true);
-      setAllPage(Math.ceil(querySnapshot.size / 9));
+      setAllPage(Math.ceil(querySnapshot.size / 12));
     } else {
       setShowPagination(false);
       setAllPage(1);
@@ -216,7 +216,7 @@ const AllArticlesContainer: React.FC = () => {
         where("tag", "==", tag),
         where("isDeleted", "!=", true),
         orderBy("created_at"),
-        limit(9),
+        limit(12),
       );
     } else {
       first = query(
@@ -224,7 +224,7 @@ const AllArticlesContainer: React.FC = () => {
         where("tag", "==", tag),
         where("isDeleted", "!=", true),
         orderBy("created_at", "desc"),
-        limit(9),
+        limit(12),
       );
     }
     const documentSnapshots = await getDocs(first);
@@ -251,9 +251,9 @@ const AllArticlesContainer: React.FC = () => {
       where("isDeleted", "!=", true),
     );
     const querySnapshot = await getDocs(q);
-    if (querySnapshot.size > 9) {
+    if (querySnapshot.size > 12) {
       setShowPagination(true);
-      setAllPage(Math.ceil(querySnapshot.size / 9));
+      setAllPage(Math.ceil(querySnapshot.size / 12));
     } else {
       setShowPagination(false);
       setAllPage(1);
@@ -267,7 +267,7 @@ const AllArticlesContainer: React.FC = () => {
         where("surfingSpot", "==", surfingSpot),
         where("isDeleted", "!=", true),
         orderBy("created_at"),
-        limit(9),
+        limit(12),
       );
     } else {
       first = query(
@@ -275,7 +275,7 @@ const AllArticlesContainer: React.FC = () => {
         where("surfingSpot", "==", surfingSpot),
         where("isDeleted", "!=", true),
         orderBy("created_at", "desc"),
-        limit(9),
+        limit(12),
       );
     }
     const documentSnapshots = await getDocs(first);
@@ -304,9 +304,9 @@ const AllArticlesContainer: React.FC = () => {
       where("isDeleted", "!=", true),
     );
     const querySnapshot = await getDocs(q);
-    if (querySnapshot.size > 9) {
+    if (querySnapshot.size > 12) {
       setShowPagination(true);
-      setAllPage(Math.ceil(querySnapshot.size / 9));
+      setAllPage(Math.ceil(querySnapshot.size / 12));
     } else {
       setShowPagination(false);
       setAllPage(1);
@@ -321,7 +321,7 @@ const AllArticlesContainer: React.FC = () => {
         where("surfingSpot", "==", surfingSpot),
         where("isDeleted", "!=", true),
         orderBy("created_at"),
-        limit(9),
+        limit(12),
       );
     } else {
       first = query(
@@ -330,7 +330,7 @@ const AllArticlesContainer: React.FC = () => {
         where("surfingSpot", "==", surfingSpot),
         where("isDeleted", "!=", true),
         orderBy("created_at", "desc"),
-        limit(9),
+        limit(12),
       );
     }
     const documentSnapshots = await getDocs(first);
@@ -485,7 +485,7 @@ const AllArticlesContainer: React.FC = () => {
 
       {/* grid layout */}
       {layout === "grid" && (
-        <div className="mt-10 grid grid-cols-3 gap-x-12 gap-y-10">
+        <div className="mt-10 grid grid-cols-4 gap-x-8 gap-y-10">
           {!isArticleLoading &&
             articlesList &&
             articlesList.length > 0 &&

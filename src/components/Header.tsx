@@ -23,15 +23,6 @@ const Header: React.FC = () => {
   return (
     <header className="flex h-14 items-center bg-gray-950 text-white">
       <div className="relative mx-auto flex w-[95%] items-center justify-center">
-        {/* logo */}
-        <div className="absolute left-0">
-          <NavLink to="/">
-            <h1 className="font-superglue text-3xl tracking-widest text-turquoise">
-              ChilLChilL
-            </h1>
-          </NavLink>
-        </div>
-
         {/* links */}
         <nav>
           <ul className="flex gap-8">
@@ -92,22 +83,31 @@ const Header: React.FC = () => {
             )}
           </ul>
         </nav>
-
-        {/* buttons */}
-        {user ? (
-          <div className="absolute right-0">
-            <Button size={"sm"} onClick={logoutHandler}>
-              登出
-            </Button>
-          </div>
-        ) : (
-          <div className="absolute right-0">
-            <NavLink to="/log-in">
-              <Button size={"sm"}>登入 / 註冊</Button>
-            </NavLink>
-          </div>
-        )}
       </div>
+
+      {/* logo */}
+      <div className="absolute left-7">
+        <NavLink to="/">
+          <h1 className="font-superglue text-3xl tracking-widest text-turquoise">
+            ChilLChilL
+          </h1>
+        </NavLink>
+      </div>
+
+      {/* buttons */}
+      {user ? (
+        <div className="absolute right-7">
+          <Button size={"sm"} onClick={logoutHandler}>
+            登出
+          </Button>
+        </div>
+      ) : (
+        <div className="absolute right-7">
+          <NavLink to="/log-in">
+            <Button size={"sm"}>登入 / 註冊</Button>
+          </NavLink>
+        </div>
+      )}
 
       {/* <div className="absolute z-[999]">
         <MenuNavbar />

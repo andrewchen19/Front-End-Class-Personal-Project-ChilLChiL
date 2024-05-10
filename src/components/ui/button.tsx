@@ -26,8 +26,8 @@ const buttonVariants = cva(
         "clay-red": "bg-clay-red bg text-white hover:bg-clay-red/90 capitalize",
         "clay-red-hipster":
           "bg-clay-red border border-transparent text-white capitalize hover:border hover: border-clay-red hover:text-clay-red hover:bg-transparent",
-        // outline:
-        //   "border border-gray-200 bg-white hover:bg-gray-100 hover:text-gray-900 dark:border-gray-800 dark:bg-sl-950 dark:hover:bg-gray-800 dark:hover:text-gray-50 capitalize",
+        outline:
+          "border border-gray-200 bg-white hover:bg-gray-100 hover:text-gray-900 dark:border-gray-800 dark:bg-sl-950 dark:hover:bg-gray-800 dark:hover:text-gray-50 capitalize",
         black: "bg-gray-900 text-white hover:bg-gray-900/90 capitalize",
         destructive:
           "bg-destructive text-destructive-foreground hover:bg-destructive/90 capitalize",
@@ -39,6 +39,7 @@ const buttonVariants = cva(
         xs: "h-6 px-2 text-[12px]",
         sm: "h-7 px-3",
         lg: "h-9 px-5",
+        xl: "h-10 px-5",
         prev: "rounded-none w-16 h-12 rounded-l-xl",
         next: "rounded-none w-16 h-12 rounded-r-xl",
         full: "rounded-full h-8 px-4 py-2",

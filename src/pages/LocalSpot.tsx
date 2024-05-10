@@ -553,7 +553,7 @@ const LocalSpot: React.FC = () => {
               {/* forecast days & hours */}
               <div className="mx-auto flex w-full flex-col">
                 {/* days */}
-                <div className="grid grid-cols-3 text-center text-lg font-bold text-gray-500">
+                <div className="grid grid-cols-3 text-center text-lg font-bold text-gray-600">
                   <p className="text-gray-950">{infoData.today} Today</p>
                   <p>{infoData.tomorrow}</p>
                   <p>{infoData.afterTomorrow}</p>

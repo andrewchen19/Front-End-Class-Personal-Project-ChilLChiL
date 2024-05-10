@@ -763,16 +763,16 @@ export const profileNavbarList: ProfileNavbarProps[] = [
   {
     title: "個人資訊",
     href: "/profile/my-info",
-    icon: <IoPersonCircleOutline className="h-5 w-5 text-white" />,
+    icon: <IoPersonCircleOutline className="h-5 w-5" />,
   },
   {
     title: "收藏浪點",
     href: "/profile/my-collections",
-    icon: <MdSurfing className="h-5 w-5 text-white" />,
+    icon: <MdSurfing className="h-5 w-5" />,
   },
   {
     title: "文章列表",
     href: "/profile/my-articles",
-    icon: <RiArticleLine className="h-5 w-5 text-white" />,
+    icon: <RiArticleLine className="h-5 w-5" />,
   },
 ];

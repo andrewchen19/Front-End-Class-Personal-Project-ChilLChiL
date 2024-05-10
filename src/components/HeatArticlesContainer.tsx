@@ -111,7 +111,7 @@ const HeatArticlesContainer: React.FC = () => {
               return (
                 <CarouselItem
                   key={id}
-                  className="flex flex-grow pl-8 hover:cursor-pointer md:basis-1/2 lg:basis-1/3 xl:basis-1/4"
+                  className="flex flex-grow pl-8 hover:cursor-pointer md:basis-1/2 lg:basis-1/3"
                   onClick={() => articleHandler(id)}
                 >
                   <Card className="flex flex-grow border-gray-900">
@@ -132,7 +132,7 @@ const HeatArticlesContainer: React.FC = () => {
                         </p>
 
                         <div className="mt-auto">
-                          <div className="flex gap-1">
+                          <div className="flex gap-2">
                             <span className="bg-green rounded-lg px-2 py-1 text-xs tracking-wide text-white">
                               {changeTagName(tag)}
                             </span>

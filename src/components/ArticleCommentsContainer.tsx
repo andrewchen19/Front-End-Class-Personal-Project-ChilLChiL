@@ -443,7 +443,6 @@ const ArticleCommentsContainer: React.FC = () => {
                     replies,
                   } = item;
 
-                  console.log(item);
                   return (
                     <div
                       key={commentId}

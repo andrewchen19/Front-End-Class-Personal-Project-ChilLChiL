@@ -3,6 +3,8 @@ import {
   Navigate,
   RouterProvider,
 } from "react-router-dom";
+
+// toastify
 import { ToastContainer, Zoom } from "react-toastify";
 
 import {
@@ -114,6 +116,8 @@ function App() {
       <ToastContainer
         position="top-center"
         autoClose={2000}
+        theme="dark"
+        hideProgressBar
         transition={Zoom}
       />
     </>

@@ -27,28 +27,25 @@ const ProfileNavbar: React.FC = () => {
   };
 
   return (
-    <div className="relative z-20 bg-gray-950 pt-24">
-      <nav className="sticky top-24 w-[140px]">
-        <ul className="flex flex-col gap-6 font-medium">
+    <div
+      className="relative z-[2] border-r-2 bg-white pt-24"
+      style={{ minHeight: "calc(100vh - 56px)" }}
+    >
+      <nav className="sticky top-24 w-[209.7px]">
+        <ul className=" flex flex-col gap-6 font-medium">
           {profileNavbarList.map((item, index: number) => {
             return (
-              <li
-                key={index}
-                className="flex items-center justify-center gap-3"
-              >
-                <motion.div {...framerIcon}>{item.icon}</motion.div>
-
+              <li key={index} className="nav-li">
                 <NavLink
                   to={item.href}
-                  className="border-b border-b-transparent text-white hover:border-b-purple-light hover:text-purple-light"
-                  style={({ isActive }) => {
-                    return {
-                      color: isActive ? "#968095" : "",
-                      borderBottom: isActive ? "1px solid #968095" : "",
-                    };
-                  }}
+                  className="mx-auto flex w-[155.7px] items-center justify-center rounded-lg hover:bg-gray-200"
                 >
-                  <motion.span {...framerText(index)}>{item.title}</motion.span>
+                  <button className="text-b flex h-full w-full items-center justify-between rounded-lg px-5 py-2">
+                    <motion.div {...framerIcon}>{item.icon}</motion.div>
+                    <motion.span {...framerText(index)}>
+                      {item.title}
+                    </motion.span>
+                  </button>
                 </NavLink>
               </li>
             );

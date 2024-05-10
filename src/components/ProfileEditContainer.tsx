@@ -20,6 +20,8 @@ import { motion } from "framer-motion";
 // shadcn
 import { Button } from "@/components/ui/button";
 import { ScrollArea } from "@/components/ui/scroll-area";
+import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
 
 const ProfileEditContainer: React.FC = () => {
   const { user } = useSelector((state: IRootState) => state.user);
@@ -98,23 +100,30 @@ const ProfileEditContainer: React.FC = () => {
         </div>
 
         {/* name */}
-        <div className="mt-4">
-          <label htmlFor="name" className="text-sm">
-            Name
-          </label>
-          <input
+        <div className="relative mt-4">
+          <Label htmlFor="name">Name</Label>
+          <Input
             type="text"
             name="name"
             id="name"
             className="w-full rounded-lg border border-gray-300 px-4 py-2"
             value={name}
             onChange={(e) => setName(e.target.value)}
+            aria-describedby="nameHelp"
             autoComplete="user-name"
           />
+          {name.length > 20 && (
+            <small
+              id="nameHelp"
+              className="text-red absolute -bottom-[20px] left-0"
+            >
+              Limit to 20 characters
+            </small>
+          )}
         </div>
 
         {/* imagesContainer */}
-        <ScrollArea className="mt-6 h-[270px] rounded-lg  bg-gray-200 pr-2">
+        <ScrollArea className="mt-8 h-[270px] rounded-lg bg-gray-200 pr-2">
           <div className="my-4 grid grid-cols-[auto,auto,auto] justify-around gap-4">
             {profileImageList.map((url, index) => {
               return (
@@ -146,7 +155,8 @@ const ProfileEditContainer: React.FC = () => {
             variant={"purple-hipster"}
             disabled={
               (user.name === name && user.profile_picture === profileImage) ||
-              isLoading
+              isLoading ||
+              name.length > 20
             }
             onClick={updateHandler}
           >

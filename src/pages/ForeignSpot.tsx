@@ -224,7 +224,10 @@ const ForeignSpot: React.FC = () => {
       exit={{ opacity: 0, transition: { duration: 1.5 } }}
     >
       {/* fixed scroll section */}
-      <div className="sticky top-0 z-50 flex h-14 items-center bg-white shadow-lg">
+      <div
+        className="sticky top-0 z-50 flex h-14 items-center shadow-lg"
+        style={{ backgroundColor: "hsl(0 0% 100%/ 0.9)" }}
+      >
         <div className="relative mx-auto flex w-[95%]">
           <nav>
             <ul className="flex">
