@@ -1,7 +1,7 @@
 import React from "react";
 import { Link } from "react-router-dom";
 import { splitStringUsingRegex, reviews } from "../utils";
-import { Velocity } from "../components";
+import { Velocity, VideoContainer } from "../components";
 
 import coverImage from "../assets/images/landing-cover.jpg";
 import grid1Image from "../assets/images/landing-grid1.jpg";
@@ -77,6 +77,10 @@ const spinnerCenterVariant: Variants = {
     transition: { type: "spring", bounce: 0.2, duration: 2, delay: 1 },
   },
 };
+const delayVariant: Variants = {
+  hidden: { opacity: 0 },
+  visible: { opacity: 1, transition: { delay: 1.5, duration: 1.5 } },
+};
 
 const Landing: React.FC = () => {
   const headingChars = splitStringUsingRegex(headingText);
@@ -98,7 +102,7 @@ const Landing: React.FC = () => {
       />
 
       {/* banner */}
-      <section
+      {/* <section
         className="relative bg-turquoise"
         style={{ minHeight: "calc(100vh - 56px)" }}
       >
@@ -133,7 +137,63 @@ const Landing: React.FC = () => {
             </motion.h1>
           </div>
 
-          {/* scroll down */}
+          <motion.div
+            initial="hidden"
+            whileInView="visible"
+            variants={delayTopVariant}
+            viewport={{ once: true }}
+            className="absolute bottom-[30px] left-[100px] flex flex-col items-center overflow-visible text-center font-helvetica text-lg font-semibold uppercase tracking-wide"
+          >
+            Scroll down
+            <FaChevronDown className="mt-1 animate-bounce" />
+          </motion.div>
+        </div>
+      </section> */}
+
+      <section
+        className="relative"
+        style={{ height: "calc(100vh - 56px)", width: "100%" }}
+      >
+        <motion.div
+          initial="hidden"
+          whileInView="visible"
+          variants={delayVariant}
+          viewport={{ once: true }}
+        >
+          <VideoContainer />
+        </motion.div>
+
+        <div className="absolute inset-0 flex items-center justify-center bg-transparent">
+          <div className="-mt-20 text-center">
+            <motion.h1
+              initial="hidden"
+              whileInView="visible"
+              variants={leftVariant}
+              viewport={{ once: true }}
+              className="font-veneer text-8xl text-white"
+            >
+              We <span className="text-clay-yellow">eat</span>
+            </motion.h1>
+            <motion.h1
+              initial="hidden"
+              whileInView="visible"
+              variants={rightVariant}
+              viewport={{ once: true }}
+              className="font-veneer text-8xl text-white"
+            >
+              We <span className="text-green-fluorescent">live</span>
+            </motion.h1>
+            <motion.h1
+              initial="hidden"
+              whileInView="visible"
+              variants={centerVariant}
+              viewport={{ once: true }}
+              className="ml-4 font-veneer text-8xl text-white"
+            >
+              We <span className="text-pink">surf</span>
+            </motion.h1>
+          </div>
+
           <motion.div
             initial="hidden"
             whileInView="visible"

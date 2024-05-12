@@ -10,7 +10,6 @@ import HeatArticlesContainer from "./HeatArticlesContainer";
 import LatestArticlesContainer from "./LatestArticlesContainer";
 import Loading from "./Loading";
 import LoadingSmall from "./LoadingSmall";
-
 import LocalSpotsCollectionContainer from "./LocalSpotsCollectionContainer";
 import MenuNavbar from "./MenuNavbar";
 import MonthForeignSpotsContainer from "./MonthForeignSpotsContainer";
@@ -26,6 +25,7 @@ import TubeForeignSpotsContainer from "./TubeForeignSpotsContainer";
 import UnsplashContainer from "./UnsplashContainer";
 import UnsplashImagesContainer from "./UnsplashImagesContainer";
 import Velocity from "./Velocity";
+import VideoContainer from "./VideoContainer";
 
 export {
   AllArticlesContainer,
@@ -55,4 +55,5 @@ export {
   UnsplashContainer,
   UnsplashImagesContainer,
   Velocity,
+  VideoContainer,
 };

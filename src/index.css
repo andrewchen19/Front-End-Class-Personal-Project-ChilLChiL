@@ -226,7 +226,6 @@ body {
 }
 
 /* small loading */
-
 .loader-3 {
   width: 10em;
   display: flex;
@@ -284,7 +283,6 @@ body {
   background-color: #f94346;
   animation-delay: 0.8s;
 }
-
 @keyframes animateLoader38 {
   0% {
     transform: scale(1);
@@ -299,6 +297,11 @@ body {
   100% {
     opacity: 0;
   }
+}
+
+/* video */
+video::-webkit-media-controls {
+  display: none !important;
 }
 
 /* font */
