@@ -286,7 +286,7 @@ const ForeignSpot: React.FC = () => {
         style={{ height: "calc(100vh - 112px)" }}
       >
         {/* overlay */}
-        <div className="absolute bottom-0 left-0 z-20 h-[80%] w-full bg-gradient-to-t from-black"></div>
+        <div className="grid-cols-[auto, 1fr] absolute bottom-0 left-0 z-20 grid h-[80%] w-full bg-gradient-to-t from-black"></div>
 
         <img
           src={spotImage}
