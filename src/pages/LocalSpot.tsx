@@ -29,10 +29,10 @@ import { nanoid } from "nanoid";
 
 // icons & images
 import locationArrow from "../assets/weather/arrow.svg";
-import compass from "../assets/weather/compass.svg";
-import tideHigh from "../assets/weather/tide-high.svg";
-import windOnshore from "../assets/weather/wind-onshore.svg";
-import thermometerSun from "../assets/weather/thermometer-sun.svg";
+// import compass from "../assets/weather/compass.svg";
+// import tideHigh from "../assets/weather/tide-high.svg";
+// import windOnshore from "../assets/weather/wind-onshore.svg";
+// import thermometerSun from "../assets/weather/thermometer-sun.svg";
 import surfImg from "../assets/images/illustration.jpg";
 import van from "../assets/icons/van.svg";
 import waterWeather from "../assets/icons/waterWeather.svg";
