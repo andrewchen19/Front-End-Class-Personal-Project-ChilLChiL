@@ -6,6 +6,7 @@ import { Velocity } from "../components";
 import coverImage from "../assets/images/landing-cover.jpg";
 import grid1Image from "../assets/images/landing-grid1.jpg";
 import grid2Image from "../assets/images/landing-grid2.jpg";
+import spinText from "../assets/icons/spin-text.svg";
 
 // shadcn
 import { Button } from "@/components/ui/button";
@@ -67,6 +68,14 @@ const right2Variant: Variants = {
 const topVariant: Variants = {
   hidden: { y: "-10vh" },
   visible: { y: 0, transition: { duration: 1.5 } },
+};
+const spinnerCenterVariant: Variants = {
+  hidden: { opacity: 0, scale: 0.3 },
+  visible: {
+    opacity: 1,
+    scale: 1,
+    transition: { type: "spring", bounce: 0.2, duration: 2, delay: 1 },
+  },
 };
 
 const Landing: React.FC = () => {
@@ -161,8 +170,8 @@ const Landing: React.FC = () => {
       </section>
 
       {/* intro */}
-      <section className="bg-white">
-        <div className="mx-auto flex w-[90%] max-w-5xl flex-col py-40">
+      <section className="relative bg-white">
+        <div className="relative z-[3] mx-auto flex w-[90%] max-w-5xl flex-col py-40">
           <motion.h2
             initial="hidden"
             whileInView="visible"
@@ -188,7 +197,7 @@ const Landing: React.FC = () => {
             whileInView="visible"
             transition={{ staggerChildren: 0.01 }}
             viewport={{ once: true, amount: 0.1 }}
-            className="mx-auto mt-8 max-w-[580px] text-center tracking-wide text-gray-500"
+            className="mx-auto mt-8 max-w-[580px] text-center leading-7 tracking-wide text-gray-500"
           >
             {contentChars.map((char, index) => {
               return (
@@ -203,6 +212,22 @@ const Landing: React.FC = () => {
             })}
           </motion.p>
         </div>
+
+        <motion.div
+          initial="hidden"
+          whileInView="visible"
+          variants={spinnerCenterVariant}
+          viewport={{ once: true, amount: 0.1 }}
+          className="absolute right-16 top-0 z-[2]"
+        >
+          <img
+            src={spinText}
+            alt="spin-text"
+            width={330}
+            height={220}
+            className="animate-spin-slow text-turquoise"
+          />
+        </motion.div>
       </section>
 
       {/* grid */}

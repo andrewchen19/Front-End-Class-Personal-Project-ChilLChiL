@@ -11,8 +11,8 @@ import { doc, setDoc } from "firebase/firestore";
 
 // shadcn
 import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
+import { Input } from "@/components/ui/input";
 
 const Signup: React.FC = () => {
   const [name, setName] = useState("");
@@ -27,6 +27,16 @@ const Signup: React.FC = () => {
 
   const submitHandler = (e: FormEvent<HTMLFormElement>): void => {
     e.preventDefault();
+
+    // regex
+    const passwordRegex = /^(?=.*[1-9a-zA-Z])[1-9a-zA-Z]{6,}$/;
+
+    if (!passwordRegex.test(password)) {
+      toast.error(
+        "Password must only contain number, lowercase and uppercase letter 😵",
+      );
+      return;
+    }
 
     // sign up with firebase authentication
     const auth = getAuth();
@@ -78,7 +88,7 @@ const Signup: React.FC = () => {
 
   return (
     <div className="h-screen w-full border lg:grid lg:grid-cols-2 ">
-      <div className="flex items-center justify-center py-12">
+      <div className="relative flex items-center justify-center py-12">
         <form
           className="mx-auto grid w-[400px] gap-6"
           onSubmit={(e) => submitHandler(e)}
@@ -171,7 +181,16 @@ const Signup: React.FC = () => {
             </NavLink>
           </div>
         </form>
+
+        <div className="absolute left-7 top-5">
+          <NavLink to="/">
+            <h1 className="font-superglue text-2xl tracking-widest text-turquoise">
+              ChilLChilL
+            </h1>
+          </NavLink>
+        </div>
       </div>
+
       <div className="hidden lg:block">
         <div className="h-screen w-full">
           <img

@@ -3,7 +3,7 @@ import { useParams } from "react-router-dom";
 import { toast } from "react-toastify";
 import { useSelector } from "react-redux";
 import { IRootState } from "../store";
-import { calculateTimeAgo } from "../utils";
+import { calculateTimeAgo, isOnlyEmptyParagraphs } from "../utils";
 import { CommentInfo, OpenInfo } from "../types";
 import ArticleNestedCommentsContainer from "./ArticleNestedCommentsContainer";
 
@@ -86,7 +86,7 @@ const ArticleCommentsContainer: React.FC = () => {
       setIsEditStatus(false);
       setShouldDeleteId("");
       setShowAlert(false);
-      toast.success("Delete comment successful 🎉");
+      toast.success("Delete comment successfully 🎉");
     } catch (error) {
       console.log(error);
     }
@@ -113,7 +113,7 @@ const ArticleCommentsContainer: React.FC = () => {
       toast.warning("Please Log In First 😵");
       return;
     }
-    if (!comment || comment === "<p><br></p>") {
+    if (!comment || isOnlyEmptyParagraphs(comment)) {
       toast.warning("Comment can't be empty 😬");
       return;
     }
@@ -270,7 +270,7 @@ const ArticleCommentsContainer: React.FC = () => {
       const articleRef = doc(db, "articles", id);
       const subCollectionRef = collection(articleRef, "comments");
       await setDoc(doc(subCollectionRef, editInfo.id), commentObj);
-      toast.success("Edit comment successful 🎉");
+      toast.success("Edit comment successfully 🎉");
       setComment("");
       setIsEditStatus(false);
       setEditInfo(null);
@@ -280,7 +280,7 @@ const ArticleCommentsContainer: React.FC = () => {
   }
 
   const modules = {
-    toolbar: [[{ header: [false] }], ["bold", "italic", "underline", "strike"]],
+    toolbar: [[{ header: [false] }], ["bold", "italic", "underline"]],
   };
 
   useEffect(() => {
@@ -356,14 +356,16 @@ const ArticleCommentsContainer: React.FC = () => {
         </SheetHeader>
 
         <div className="mt-3 px-6">
-          {/* text editor */}
-          <ReactQuill
-            theme="snow"
-            value={comment}
-            modules={modules}
-            onChange={setComment}
-            placeholder="請輸入留言 ..."
-          />
+          <div className="h-[86.25px] max-w-full overflow-auto">
+            {/* text editor */}
+            <ReactQuill
+              theme="snow"
+              value={comment}
+              modules={modules}
+              onChange={setComment}
+              placeholder="請輸入留言 ..."
+            />
+          </div>
 
           {/* button */}
           <div className="mt-3 flex gap-3">
@@ -483,13 +485,13 @@ const ArticleCommentsContainer: React.FC = () => {
                         {user && userId === user.id && (
                           <div className="ml-auto flex gap-2 pr-2">
                             <span
-                              className="cursor-pointer text-xs text-olive/80 underline hover:text-olive"
+                              className="cursor-pointer text-xs text-olive underline hover:text-olive/80"
                               onClick={() => getCommentHandler(commentId)}
                             >
                               Edit
                             </span>
                             <span
-                              className="cursor-pointer text-xs text-clay-red/80 underline hover:text-clay-red"
+                              className="cursor-pointer text-xs text-clay-red  underline hover:text-clay-red/80"
                               onClick={() => deleteButtonHandler(commentId)}
                             >
                               Delete
@@ -564,7 +566,7 @@ const ArticleCommentsContainer: React.FC = () => {
                         </div>
 
                         <span
-                          className="text-[14px] text-gray-900 hover:cursor-pointer hover:underline"
+                          className="text-[14px] text-navy hover:cursor-pointer hover:underline"
                           onClick={() => replyHandler(commentId)}
                         >
                           {searchOpenStatus(commentId) ? "Hide Reply" : "Reply"}

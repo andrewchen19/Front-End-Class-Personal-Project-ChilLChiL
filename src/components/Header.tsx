@@ -16,7 +16,7 @@ const Header: React.FC = () => {
 
   const logoutHandler = () => {
     dispatch(removeUser());
-    toast.success("Logout Successful 😎");
+    toast.success("Log out Successfully 😎");
     navigate("/");
   };
 
@@ -97,9 +97,15 @@ const Header: React.FC = () => {
       {/* buttons */}
       {user ? (
         <div className="absolute right-7">
-          <Button size={"sm"} onClick={logoutHandler}>
-            登出
-          </Button>
+          <div className="flex items-center gap-5">
+            <div className="font-fashioncountry text-sm tracking-wider">
+              Aloha !! {user.name}
+            </div>
+
+            <Button size={"sm"} onClick={logoutHandler}>
+              登出
+            </Button>
+          </div>
         </div>
       ) : (
         <div className="absolute right-7">

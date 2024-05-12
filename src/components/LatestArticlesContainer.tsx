@@ -6,6 +6,7 @@ import {
   changeTagName,
   htmlToPlainText,
 } from "../utils";
+import newImg from "../assets/icons/new.svg";
 
 // react icons
 import { FaStar } from "react-icons/fa";
@@ -78,10 +79,17 @@ const LatestArticlesContainer: React.FC = () => {
     <section>
       {/* title */}
       <div className="mb-10 border-b border-gray-300 pb-4">
-        <h2 className="text-2xl font-bold">最新發布</h2>
+        <div className="flex items-center gap-3">
+          <img src={newImg} alt="image" className="h-8 w-8" />
+          <h2 className="text-2xl font-bold">最新發布</h2>
+        </div>
       </div>
 
-      {(isArticleLoading || !articlesList) && <p>loading now...</p>}
+      {(isArticleLoading || !articlesList) && (
+        <div className="grid w-full gap-8 md:grid-cols-2 lg:grid-cols-3">
+          <div className="skeleton h-[360px] rounded-lg"></div>
+        </div>
+      )}
 
       {!isArticleLoading && articlesList && articlesList.length < 1 && (
         <h3>尚未有任何文章...</h3>

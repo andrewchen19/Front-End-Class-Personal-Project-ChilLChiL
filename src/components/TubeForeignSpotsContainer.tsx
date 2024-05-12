@@ -62,7 +62,11 @@ const TubeForeignSpotsContainer: React.FC = () => {
         <img src={wave} alt="wave" className="h-8 w-8" />
       </h2>
 
-      {isSpotLoading && !spotsList && <p>loading now...</p>}
+      {isSpotLoading && (
+        <div className="grid w-full gap-5 md:grid-cols-2 lg:grid-cols-3">
+          <div className="skeleton h-[420px] rounded-lg"></div>
+        </div>
+      )}
 
       <Carousel
         className="w-full"

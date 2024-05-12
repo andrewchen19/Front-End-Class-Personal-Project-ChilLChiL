@@ -12,8 +12,8 @@ import { query, collection, where, getDocs } from "firebase/firestore";
 
 // shadcn
 import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
+import { Input } from "@/components/ui/input";
 
 const Login: React.FC = () => {
   const [email, setEmail] = useState("");
@@ -38,9 +38,6 @@ const Login: React.FC = () => {
 
   const submitHandler = (e: FormEvent<HTMLFormElement>): void => {
     e.preventDefault();
-
-    console.log(email);
-    console.log(password);
 
     if (!email || !password) {
       toast.warning("Please Provide All Values 😬");
@@ -72,7 +69,7 @@ const Login: React.FC = () => {
 
   return (
     <div className="h-screen w-full border lg:grid lg:grid-cols-2 ">
-      <div className="flex items-center justify-center py-12">
+      <div className="relative flex items-center justify-center py-12">
         <form
           className="mx-auto grid w-[400px] gap-6"
           onSubmit={(e) => submitHandler(e)}
@@ -80,7 +77,7 @@ const Login: React.FC = () => {
           <div className="grid gap-4 text-center">
             <h1 className="text-3xl font-bold">Login</h1>
             <p className="text-muted-foreground">
-              Enter your email below to login to your account
+              Enter your email below to start the journey
             </p>
           </div>
 
@@ -126,6 +123,14 @@ const Login: React.FC = () => {
             </NavLink>
           </div>
         </form>
+
+        <div className="absolute left-7 top-5">
+          <NavLink to="/">
+            <h1 className="font-superglue text-2xl tracking-widest text-turquoise">
+              ChilLChilL
+            </h1>
+          </NavLink>
+        </div>
       </div>
       <div className="hidden  lg:block">
         <div className="h-screen w-full">

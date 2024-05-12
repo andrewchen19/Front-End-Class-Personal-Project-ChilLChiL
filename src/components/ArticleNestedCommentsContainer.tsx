@@ -3,7 +3,7 @@ import { useParams } from "react-router-dom";
 import { toast } from "react-toastify";
 import { useSelector } from "react-redux";
 import { IRootState } from "../store";
-import { calculateTimeAgo } from "../utils";
+import { calculateTimeAgo, isOnlyEmptyParagraphs } from "../utils";
 import { CommentInfo } from "../types";
 
 // nano id
@@ -83,7 +83,7 @@ const ArticleNestedCommentsContainer: React.FC<Props> = ({ commentId }) => {
       setIsEditStatus(false);
       setShouldDeleteId("");
       setShowAlert(false);
-      toast.success("Delete comment successful 🎉");
+      toast.success("Delete comment successfully 🎉");
     } catch (error) {
       console.log(error);
     }
@@ -113,7 +113,7 @@ const ArticleNestedCommentsContainer: React.FC<Props> = ({ commentId }) => {
       toast.warning("Please Log In First 😵");
       return;
     }
-    if (!comment || comment === "<p><br></p>") {
+    if (!comment || isOnlyEmptyParagraphs(comment)) {
       toast.warning("Comment can't be empty 😬");
       return;
     }
@@ -213,7 +213,7 @@ const ArticleNestedCommentsContainer: React.FC<Props> = ({ commentId }) => {
       await updateDoc(commentRef, {
         replies: [...docSnap.data().replies, commentObj],
       });
-      toast.success("Add nest comment successfully 🎉");
+      toast.success("Add comment successfully 🎉");
       setComment("");
     } catch (error) {
       console.log(error);
@@ -246,7 +246,7 @@ const ArticleNestedCommentsContainer: React.FC<Props> = ({ commentId }) => {
         replies: newReplies,
       });
 
-      toast.success("Edit comment successful 🎉");
+      toast.success("Edit comment successfully 🎉");
       setComment("");
       setIsEditStatus(false);
       setEditInfo(null);
@@ -256,7 +256,7 @@ const ArticleNestedCommentsContainer: React.FC<Props> = ({ commentId }) => {
   }
 
   const modules = {
-    toolbar: [[{ header: [false] }], ["bold", "italic", "underline", "strike"]],
+    toolbar: [[{ header: [false] }], ["bold", "italic", "underline"]],
   };
 
   useEffect(() => {
@@ -286,14 +286,16 @@ const ArticleNestedCommentsContainer: React.FC<Props> = ({ commentId }) => {
   return (
     <>
       <div className="mt-3 border-l-4 border-turquoise px-6">
-        {/* text editor */}
-        <ReactQuill
-          theme="snow"
-          value={comment}
-          modules={modules}
-          onChange={setComment}
-          placeholder="請輸入留言 ..."
-        />
+        <div className="h-[86.25px]  overflow-auto">
+          {/* text editor */}
+          <ReactQuill
+            theme="snow"
+            value={comment}
+            modules={modules}
+            onChange={setComment}
+            placeholder="請輸入留言 ..."
+          />
+        </div>
 
         {/* button */}
         <div className="mt-3 flex gap-3">
@@ -395,13 +397,13 @@ const ArticleNestedCommentsContainer: React.FC<Props> = ({ commentId }) => {
                       {user && userId === user.id && (
                         <div className="ml-auto flex gap-2">
                           <span
-                            className="cursor-pointer text-xs text-olive/80 underline hover:text-olive"
+                            className="cursor-pointer text-xs text-olive underline hover:text-olive/80 "
                             onClick={() => getCommentHandler(nestCommentId)}
                           >
                             Edit
                           </span>
                           <span
-                            className="cursor-pointer text-xs text-clay-red/80 underline hover:text-clay-red"
+                            className="cursor-pointer text-xs text-clay-red  underline hover:text-clay-red/80"
                             onClick={() => deleteButtonHandler(nestCommentId)}
                           >
                             Delete
@@ -422,7 +424,7 @@ const ArticleNestedCommentsContainer: React.FC<Props> = ({ commentId }) => {
                       </div>
                     </div>
 
-                    {/* like*/}
+                    {/* like */}
                     <div className="flex items-center justify-between pr-2">
                       <div className="flex items-center gap-2">
                         <div className="flex items-center gap-1 text-gray-900">

@@ -2,6 +2,8 @@ import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { useSelector } from "react-redux";
 import { IRootState } from "../store";
+import coconut from "../assets/icons/coconut.svg";
+import LoadingSmall from "./LoadingSmall";
 
 // firebase
 import { db } from "../main";
@@ -78,51 +80,61 @@ const ForeignSpotsCollectionContainer: React.FC = () => {
 
   return (
     <section>
-      <h2 className="text-2xl font-bold">國外浪點</h2>
+      <div className="mb-10 flex border-b border-gray-300 pb-4 text-2xl font-bold">
+        <div className="flex items-center gap-3">
+          <img src={coconut} alt="image" className="h-8 w-8" />
+          <h2 className="text-2xl font-bold">國外浪點</h2>
+        </div>
+      </div>
 
-      {(isForeignLoading || !foreignSpotsList) && (
-        <p className="mt-10">loading now...</p>
-      )}
+      {/* {(isForeignLoading || !foreignSpotsList) && (
+        <div className="mt-10 grid gap-x-12 md:grid-cols-2 lg:grid-cols-3">
+          <div className="skeleton h-[268px] rounded-lg"></div>
+        </div>
+      )} */}
+
+      {(isForeignLoading || !foreignSpotsList) && <LoadingSmall />}
 
       {!isForeignLoading && foreignSpotsList && foreignSpotsList.length < 1 && (
         <h3 className="mt-10">尚未收藏浪點...</h3>
       )}
 
-      <div className="mt-10 grid grid-cols-4 gap-x-6 gap-y-10">
-        {!isForeignLoading &&
-          foreignSpotsList &&
-          foreignSpotsList.length > 0 &&
-          foreignSpotsList.map((spot) => {
-            const { id, country, coverImage } = spot;
-            return (
-              <Card
-                key={id}
-                className="shadow-xs relative flex flex-grow border-none duration-300 hover:cursor-pointer hover:shadow-lg"
-                onClick={() => spotHandler(country.eng, id)}
-              >
-                <CardContent className="group relative flex h-full w-full flex-col">
-                  {/* overlay */}
-                  <div className="absolute z-10 h-full w-full bg-black/15 group-hover:bg-black/50"></div>
+      {!isForeignLoading && (
+        <div className="mt-10 grid gap-x-12 gap-y-10 md:grid-cols-2 lg:grid-cols-3">
+          {foreignSpotsList &&
+            foreignSpotsList.length > 0 &&
+            foreignSpotsList.map((spot) => {
+              const { id, country, coverImage } = spot;
+              return (
+                <Card
+                  key={id}
+                  className="shadow-xs relative flex flex-grow border-none duration-300 hover:cursor-pointer hover:shadow-lg"
+                  onClick={() => spotHandler(country.eng, id)}
+                >
+                  <CardContent className="group relative h-[268px]">
+                    {/* overlay */}
+                    <div className="absolute z-10 h-full w-full bg-black/15 group-hover:bg-black/50"></div>
 
-                  <img
-                    src={coverImage}
-                    alt={country.location}
-                    className="aspect-square transform rounded-lg object-cover object-center transition-transform duration-500 group-hover:scale-110"
-                  />
+                    <img
+                      src={coverImage}
+                      alt={country.location}
+                      className="aspect-square transform rounded-lg object-cover object-center transition-transform duration-500 group-hover:scale-110"
+                    />
 
-                  <div className="absolute left-[50%] top-[50%] z-20 -translate-x-1/2 -translate-y-1/2 text-center">
-                    <h3 className="text-xl font-bold capitalize text-pink">
-                      {country.location}
-                    </h3>
-                    <p className="text-lg font-semibold text-pink">
-                      {country.chin}
-                    </p>
-                  </div>
-                </CardContent>
-              </Card>
-            );
-          })}
-      </div>
+                    <div className="absolute left-[50%] top-[50%] z-20 -translate-x-1/2 -translate-y-1/2 text-center">
+                      <h3 className="text-xl font-bold capitalize text-pink">
+                        {country.location}
+                      </h3>
+                      <p className="text-lg font-semibold text-pink">
+                        {country.chin}
+                      </p>
+                    </div>
+                  </CardContent>
+                </Card>
+              );
+            })}
+        </div>
+      )}
     </section>
   );
 };

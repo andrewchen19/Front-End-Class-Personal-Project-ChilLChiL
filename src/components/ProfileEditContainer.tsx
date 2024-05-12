@@ -20,8 +20,8 @@ import { motion } from "framer-motion";
 // shadcn
 import { Button } from "@/components/ui/button";
 import { ScrollArea } from "@/components/ui/scroll-area";
-import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
+import { Input } from "@/components/ui/input";
 
 const ProfileEditContainer: React.FC = () => {
   const { user } = useSelector((state: IRootState) => state.user);
@@ -100,7 +100,7 @@ const ProfileEditContainer: React.FC = () => {
         </div>
 
         {/* name */}
-        <div className="relative mt-4">
+        <div className="relative mt-6 grid gap-2">
           <Label htmlFor="name">Name</Label>
           <Input
             type="text"
@@ -123,7 +123,7 @@ const ProfileEditContainer: React.FC = () => {
         </div>
 
         {/* imagesContainer */}
-        <ScrollArea className="mt-8 h-[270px] rounded-lg bg-gray-200 pr-2">
+        <ScrollArea className="mt-[26px] h-[270px] rounded-lg bg-gray-200 pr-2">
           <div className="my-4 grid grid-cols-[auto,auto,auto] justify-around gap-4">
             {profileImageList.map((url, index) => {
               return (

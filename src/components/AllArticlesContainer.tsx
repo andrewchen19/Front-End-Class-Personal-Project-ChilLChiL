@@ -6,6 +6,7 @@ import {
   changeTagName,
   htmlToPlainText,
 } from "../utils";
+import books from "../assets/icons/books.svg";
 
 // react icons
 import { FaStar } from "react-icons/fa";
@@ -365,7 +366,10 @@ const AllArticlesContainer: React.FC = () => {
     <section>
       {/* title */}
       <div className="mb-10 flex justify-between border-b border-gray-300 pb-4">
-        <h2 className="text-2xl font-bold">所有文章</h2>
+        <div className="flex items-center gap-3">
+          <img src={books} alt="image" className="mt-1 h-9 w-9" />
+          <h2 className="text-2xl font-bold">所有文章</h2>
+        </div>
 
         <div className="flex gap-1">
           <Button
@@ -390,7 +394,7 @@ const AllArticlesContainer: React.FC = () => {
       <form
         method="get"
         onSubmit={formHandler}
-        className="mt-8 grid w-full grid-cols-2 items-end gap-4 rounded-md bg-purple-light px-8 pb-7 pt-4"
+        className="mb-10 grid w-full grid-cols-2 items-end gap-4 rounded-md bg-purple-light px-8 pb-7 pt-4"
       >
         {/* select tag */}
         <div className="form-control">
@@ -401,7 +405,7 @@ const AllArticlesContainer: React.FC = () => {
             id="tag"
             name="tag"
             value={tag}
-            className="select select-sm focus:outline-none"
+            className="select select-sm bg-white focus:outline-none"
             onChange={(e) => setTag(e.target.value)}
           >
             <option value="all">全部</option>
@@ -423,7 +427,7 @@ const AllArticlesContainer: React.FC = () => {
             id="surfingSpot"
             name="surfingSpot"
             value={surfingSpot}
-            className="select select-sm focus:outline-none"
+            className="select select-sm bg-white focus:outline-none"
             onChange={(e) => setSurfingSpot(e.target.value)}
           >
             <option value="all">全部</option>
@@ -458,7 +462,7 @@ const AllArticlesContainer: React.FC = () => {
             id="order"
             name="order"
             value={order}
-            className="select select-sm focus:outline-none"
+            className="select select-sm bg-white focus:outline-none"
             onChange={(e) => setOrder(e.target.value)}
           >
             <option value="desc">由新到舊</option>
@@ -477,17 +481,19 @@ const AllArticlesContainer: React.FC = () => {
       </form>
 
       {(isArticleLoading || !articlesList) && (
-        <p className="mt-10">loading now...</p>
+        <div className="grid w-full gap-8 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
+          <div className="skeleton h-[360px] rounded-lg"></div>
+        </div>
       )}
+
       {!isArticleLoading && articlesList && articlesList.length < 1 && (
-        <h3 className="mt-10">尚未有相關的文章... 請重新查詢</h3>
+        <h3>尚未有相關的文章... 請重新查詢</h3>
       )}
 
       {/* grid layout */}
-      {layout === "grid" && (
-        <div className="mt-10 grid grid-cols-4 gap-x-8 gap-y-10">
-          {!isArticleLoading &&
-            articlesList &&
+      {!isArticleLoading && layout === "grid" && (
+        <div className="grid gap-x-8 gap-y-10 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
+          {articlesList &&
             articlesList.length > 0 &&
             articlesList.map((article) => {
               const {
@@ -552,10 +558,9 @@ const AllArticlesContainer: React.FC = () => {
       )}
 
       {/* list layout */}
-      {layout === "list" && (
-        <div className="mt-10 flex flex-col gap-y-8">
-          {!isArticleLoading &&
-            articlesList &&
+      {!isArticleLoading && layout === "list" && (
+        <div className="flex flex-col gap-y-8">
+          {articlesList &&
             articlesList.length > 0 &&
             articlesList.map((article) => {
               const {

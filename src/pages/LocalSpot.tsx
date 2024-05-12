@@ -14,6 +14,7 @@ import {
   checkSpotsLat,
   directionAbbreviation,
   changeDirection,
+  isOnlyEmptyParagraphs,
 } from "../utils";
 import {
   WaveInfo,
@@ -33,6 +34,9 @@ import tideHigh from "../assets/weather/tide-high.svg";
 import windOnshore from "../assets/weather/wind-onshore.svg";
 import thermometerSun from "../assets/weather/thermometer-sun.svg";
 import surfImg from "../assets/images/illustration.jpg";
+import van from "../assets/icons/van.svg";
+import waterWeather from "../assets/icons/waterWeather.svg";
+import commentImg from "../assets/icons/comment.svg";
 import { IoMdInformationCircleOutline } from "react-icons/io";
 
 // firebase
@@ -180,7 +184,7 @@ const LocalSpot: React.FC = () => {
       await deleteDoc(doc(subCollectionRef, chooseCommentId));
       setComment("");
       setIsEditStatus(false);
-      toast.success("Delete comment successful 🎉");
+      toast.success("Delete comment successfully 🎉");
     } catch (error) {
       console.log(error);
     }
@@ -207,7 +211,7 @@ const LocalSpot: React.FC = () => {
       toast.warning("Please Log In First 😵");
       return;
     }
-    if (!comment || comment === "<p><br></p>") {
+    if (!comment || isOnlyEmptyParagraphs(comment)) {
       toast.warning("Comment can't be empty 😬");
       return;
     }
@@ -313,7 +317,7 @@ const LocalSpot: React.FC = () => {
       const spotRef = doc(db, "local-spots", name);
       const subCollectionRef = collection(spotRef, "comments");
       await setDoc(doc(subCollectionRef, commentId), commentObj);
-      toast.success("Add comment successful 🎉");
+      toast.success("Add comment successfully 🎉");
       setComment("");
     } catch (error) {
       console.log(error);
@@ -335,7 +339,7 @@ const LocalSpot: React.FC = () => {
       const spotRef = doc(db, "local-spots", name);
       const subCollectionRef = collection(spotRef, "comments");
       await setDoc(doc(subCollectionRef, editInfo.id), commentObj);
-      toast.success("Edit comment successful 🎉");
+      toast.success("Edit comment successfully 🎉");
       setComment("");
       setIsEditStatus(false);
       setEditInfo(null);
@@ -426,6 +430,22 @@ const LocalSpot: React.FC = () => {
     fetchRealTimeData();
   }, []);
 
+  useEffect(() => {
+    const body = document.querySelector("body");
+    if (!body) return;
+
+    if (showModal) {
+      body.style.overflow = "hidden";
+    } else {
+      body.style.overflow = "auto";
+    }
+
+    // Ensure scrolling is re-enabled when component unmounts
+    return () => {
+      body.style.overflow = "auto";
+    };
+  }, [showModal]);
+
   return (
     <motion.main
       initial={{ opacity: 0 }}
@@ -435,7 +455,32 @@ const LocalSpot: React.FC = () => {
       <div id="map" className="h-[450px] w-full"></div>
 
       {(isLoading || !textData || !infoData) && (
-        <div className="align-container py-24">Loading...</div>
+        <div className="align-container gap-20 pb-24 pt-16">
+          {/* breadcrumb skeleton */}
+          <div className="breadcrumbs flex gap-4">
+            <ul>
+              <li className="skeleton h-5 w-10"></li>
+            </ul>
+            <ul>
+              <li className="skeleton h-5 w-14"></li>
+            </ul>
+            <ul>
+              <li className="skeleton h-5 w-14"></li>
+            </ul>
+          </div>
+
+          {/* textData title skeleton */}
+          <section className="-mt-8">
+            <div className="mb-10 flex items-center justify-between border-b border-gray-300 pb-4">
+              <div className="flex w-[150px] items-center gap-3">
+                <div className="skeleton h-8 w-8" />
+                <div className="skeleton h-8  w-24 rounded-lg" />
+              </div>
+
+              <div className="skeleton h-8 w-[90px] rounded-lg" />
+            </div>
+          </section>
+        </div>
       )}
 
       {!isLoading && textData && infoData && (
@@ -461,7 +506,10 @@ const LocalSpot: React.FC = () => {
           <section className="-mt-8">
             {/* title */}
             <div className="mb-10 flex items-center justify-between border-b border-gray-300 pb-4">
-              <h2 className="text-2xl font-bold">浪點資訊</h2>
+              <div className="flex w-[150px] items-center gap-3">
+                <img src={van} alt="image" className="h-8 w-8" />
+                <h2 className="text-2xl font-bold">浪點介紹</h2>
+              </div>
 
               {user && (
                 <Button
@@ -547,41 +595,52 @@ const LocalSpot: React.FC = () => {
           {/* InfoData */}
           <section>
             {/* desc */}
-            <div className="grid grid-cols-[auto,1fr] items-center border-b border-gray-300 pb-4">
-              <h2 className="w-[150px] text-2xl font-bold">衝浪預報</h2>
+            <div className="grid grid-cols-[auto,1fr] items-center border-b border-gray-300">
+              <div className="flex h-[32px] w-[150px] items-center gap-3 pb-4">
+                <img src={waterWeather} alt="image" className="h-8 w-8" />
+                <h2 className="text-2xl font-bold">衝浪預報</h2>
+              </div>
 
               {/* forecast days & hours */}
               <div className="mx-auto flex w-full flex-col">
                 {/* days */}
-                <div className="grid grid-cols-3 text-center text-lg font-bold text-gray-600">
-                  <p className="text-gray-950">{infoData.today} Today</p>
-                  <p>{infoData.tomorrow}</p>
-                  <p>{infoData.afterTomorrow}</p>
+                <div className="grid grid-cols-3 text-center text-lg font-bold text-gray-700">
+                  <p className="border-r border-r-gray-300 pb-4 text-gray-950">
+                    {infoData.today} Today
+                  </p>
+                  <p className="border-r border-r-gray-300 pb-4">
+                    {infoData.tomorrow}
+                  </p>
+                  <p className="pb-4">{infoData.afterTomorrow}</p>
                 </div>
               </div>
             </div>
 
-            <div className="mt-5 grid grid-cols-9 pl-[150px] text-center font-medium ">
-              {hours.map((hour, index) => {
-                return <p key={index}>{hour}</p>;
-              })}
+            <div className="mt-5 grid grid-cols-[auto,1fr] font-medium">
+              <div className="w-[150px] pl-8">時間</div>
+
+              <div className="grid grid-cols-9 text-center">
+                {hours.map((hour, index) => {
+                  return <p key={index}>{hour}</p>;
+                })}
+              </div>
             </div>
 
             <div className="mx-auto mt-5 flex w-full flex-col gap-5">
               {/* swell */}
               <div>
                 <h3 className="mb-2 flex items-center gap-1 text-lg font-bold">
-                  <img src={compass} alt="weather-icon" className="h-9 w-9" />
                   波浪 Swell
+                  {/* <img src={compass} alt="weather-icon" className="h-9 w-9" /> */}
                 </h3>
 
                 <div className="grid grid-cols-[auto,1fr]">
                   {/* desc */}
                   <div className="w-[150px] font-medium">
-                    <p className="flex h-8 w-full items-center pl-10 text-base">
+                    <p className="flex h-8 w-full items-center pl-8">
                       最小浪高 (m)
                     </p>
-                    <p className="flex h-8 w-full items-center gap-3 pl-2 text-base">
+                    <p className="flex h-8 w-full items-center gap-3">
                       <TooltipProvider>
                         <Tooltip>
                           <TooltipTrigger>
@@ -598,10 +657,10 @@ const LocalSpot: React.FC = () => {
                       </TooltipProvider>
                       最大浪高 (m)
                     </p>
-                    <p className="flex h-8 w-full items-center pl-10 text-base">
+                    <p className="flex h-8 w-full items-center pl-8 text-base">
                       浪向
                     </p>
-                    <p className="flex h-8 w-full items-center gap-3 pl-2 text-base">
+                    <p className="flex h-8 w-full items-center gap-3  text-base">
                       <TooltipProvider>
                         <Tooltip>
                           <TooltipTrigger>
@@ -663,18 +722,18 @@ const LocalSpot: React.FC = () => {
               {/* tide */}
               <div>
                 <h3 className="mb-2 flex items-center gap-1 text-lg font-bold">
-                  <img
+                  潮汐 Tide
+                  {/* <img
                     src={tideHigh}
                     alt="weather-icon"
                     className="mt-[7px] h-9 w-9"
-                  />
-                  潮汐 Tide
+                  /> */}
                 </h3>
 
                 <div className="grid grid-cols-[auto,1fr]">
                   {/* desc */}
                   <div className="w-[150px] font-medium">
-                    <p className="flex h-8 w-full items-center gap-3 pl-2 text-base">
+                    <p className="flex h-8 w-full items-center gap-3  text-base">
                       <TooltipProvider>
                         <Tooltip>
                           <TooltipTrigger>
@@ -714,18 +773,18 @@ const LocalSpot: React.FC = () => {
               {/* wind */}
               <div>
                 <h3 className="mb-2 flex items-center gap-1 text-lg font-bold">
-                  <img
+                  風 Wind
+                  {/* <img
                     src={windOnshore}
                     alt="weather-icon"
                     className="h-9 w-9"
-                  />
-                  風 Wind
+                  /> */}
                 </h3>
 
                 <div className="grid grid-cols-[auto,1fr]">
                   {/* desc */}
                   <div className="w-[150px] font-medium">
-                    <p className="flex h-8 w-full items-center gap-3 pl-2 text-base">
+                    <p className="flex h-8 w-full items-center gap-3 text-base">
                       <TooltipProvider>
                         <Tooltip>
                           <TooltipTrigger>
@@ -742,10 +801,10 @@ const LocalSpot: React.FC = () => {
                       </TooltipProvider>
                       類型
                     </p>
-                    <p className="flex h-8 w-full items-center pl-10 text-base">
+                    <p className="flex h-8 w-full items-center pl-8 text-base">
                       風向
                     </p>
-                    <p className="flex h-8 w-full items-center gap-3 pl-2 text-base">
+                    <p className="flex h-8 w-full items-center gap-3 text-base">
                       <TooltipProvider>
                         <Tooltip>
                           <TooltipTrigger>
@@ -801,21 +860,21 @@ const LocalSpot: React.FC = () => {
               {/* weather */}
               <div>
                 <h3 className="mb-2 flex items-center gap-1 text-lg font-bold">
-                  <img
+                  天氣 Weather
+                  {/* <img
                     src={thermometerSun}
                     alt="weather-icon"
                     className="h-9 w-9"
-                  />
-                  天氣 Weather
+                  /> */}
                 </h3>
 
                 <div className="grid grid-cols-[auto,1fr]">
                   {/* desc */}
                   <div className="w-[150px] font-medium">
-                    <p className="flex h-8 w-full items-center pl-10 text-base">
+                    <p className="flex h-8 w-full items-center pl-8 text-base">
                       天氣圖示
                     </p>
-                    <p className="flex h-8 w-full items-center pl-10 text-base">
+                    <p className="flex h-8 w-full items-center pl-8 text-base">
                       溫度 (°C)
                     </p>
                   </div>
@@ -848,13 +907,16 @@ const LocalSpot: React.FC = () => {
           {/* Comments */}
           <section>
             {/* title */}
-            <div className="mb-10 border-b border-gray-300 pb-4">
-              <h2 className="text-2xl font-bold">即時留言</h2>
+            <div className="mb-10  border-b border-gray-300 pb-4">
+              <div className="flex items-center gap-3">
+                <img src={commentImg} alt="image" className="mt-2 h-7 w-7" />
+                <h2 className="text-2xl font-bold">即時留言</h2>
+              </div>
             </div>
 
-            <div className="grid grid-cols-[auto,1fr] gap-10">
+            <div className="grid h-[600px] grid-cols-[auto,1fr] gap-10">
               {/* illustration */}
-              <div className="aspect-[2/3] max-h-[534.21px]">
+              <div className="aspect-[2/3] h-[600px]">
                 <img
                   src={surfImg}
                   alt="surf-image"
@@ -865,7 +927,7 @@ const LocalSpot: React.FC = () => {
               <div className="flex flex-col">
                 {/* real time comments */}
                 <ScrollArea
-                  className={`max-h-[392px] w-full rounded-md  ${commentList.length > 0 ? "bg-gray-100 pt-2" : ""}`}
+                  className={`max-h-[437.9px] w-full rounded-md  ${commentList.length > 0 ? "bg-gray-100 pt-2" : ""}`}
                 >
                   {/* container */}
                   {commentList.length < 1 && <p>目前尚未有留言.....</p>}
@@ -886,13 +948,14 @@ const LocalSpot: React.FC = () => {
                         return (
                           <div
                             key={id}
-                            className="chat chat-start mb-2 ml-2 py-0"
+                            className="chat chat-start mb-2 ml-3 py-0"
                           >
                             <div className="chat-image avatar">
                               <div className="mr-1 h-8 w-8 rounded-full border border-black">
                                 <img src={userImage} alt="user-image" />
                               </div>
                             </div>
+
                             <div className="chat-header flex items-center gap-2">
                               {user && userId === user.id ? (
                                 <p className="font-medium">{userName} (You)</p>
@@ -903,13 +966,13 @@ const LocalSpot: React.FC = () => {
                               {name && user && userId === user.id && (
                                 <div className="flex gap-2">
                                   <span
-                                    className="cursor-pointer text-xs text-olive/80 underline hover:text-olive"
+                                    className="cursor-pointer text-xs text-olive underline hover:text-olive/80"
                                     onClick={() => getCommentHandler(id)}
                                   >
                                     Edit
                                   </span>
                                   <span
-                                    className="cursor-pointer text-xs text-clay-red/80 underline hover:text-clay-red"
+                                    className="cursor-pointer text-xs text-clay-red underline hover:text-clay-red/80"
                                     onClick={() => deleteButtonHandler(id)}
                                   >
                                     Delete
@@ -917,9 +980,11 @@ const LocalSpot: React.FC = () => {
                                 </div>
                               )}
                             </div>
-                            <div className="chat-bubble mt-[4px] h-6 min-w-6 pt-[10px]">
+
+                            <div className="chat-bubble my-[1px]">
                               <Markup content={comment} />
                             </div>
+
                             <div className="chat-footer">
                               <time className="text-xs text-gray-600">
                                 {formatMessageTime(created_at)}&nbsp;
@@ -936,7 +1001,7 @@ const LocalSpot: React.FC = () => {
                 {/* leave comment */}
                 <div className="mt-auto">
                   {/* text-editor */}
-                  <div className="max-w-full">
+                  <div className="h-[86.25px] max-w-full overflow-auto">
                     <ReactQuill
                       theme="snow"
                       value={comment}

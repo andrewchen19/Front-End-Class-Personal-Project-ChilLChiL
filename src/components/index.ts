@@ -8,6 +8,9 @@ import ForeignSpotsCollectionContainer from "./ForeignSpotsCollectionContainer";
 import Header from "./Header";
 import HeatArticlesContainer from "./HeatArticlesContainer";
 import LatestArticlesContainer from "./LatestArticlesContainer";
+import Loading from "./Loading";
+import LoadingSmall from "./LoadingSmall";
+
 import LocalSpotsCollectionContainer from "./LocalSpotsCollectionContainer";
 import MenuNavbar from "./MenuNavbar";
 import MonthForeignSpotsContainer from "./MonthForeignSpotsContainer";
@@ -35,6 +38,8 @@ export {
   Header,
   HeatArticlesContainer,
   LatestArticlesContainer,
+  Loading,
+  LoadingSmall,
   LocalSpotsCollectionContainer,
   MenuNavbar,
   MonthForeignSpotsContainer,

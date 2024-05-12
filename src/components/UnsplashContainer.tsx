@@ -1,6 +1,7 @@
 import React, { useEffect, useState, KeyboardEvent, useRef } from "react";
 import axios from "axios";
 import UnsplashImagesContainer from "./UnsplashImagesContainer";
+import LoadingSmall from "./LoadingSmall";
 import { useDispatch, useSelector } from "react-redux";
 import {
   setUnsplashData,
@@ -129,23 +130,23 @@ const UnsplashContainer: React.FC = () => {
             type="text"
             ref={inputRef}
             placeholder="Type keywords and press Enter"
-            className="h-8 w-full grow  pl-[30px] outline-none"
+            className="h-8 w-full grow bg-white pl-[30px] outline-none"
             onChange={(e) => dispatch(setTypeText(e.target.value))}
             onKeyDown={enterHandler}
           />
           <div className="absolute left-[4px] top-[8px]">
             <IoSearchOutline className="text-lg" style={{ color: "#a3a3a3" }} />
           </div>
-          <kbd className="kbd kbd-sm mt-[2px] px-3">Enter</kbd>
+          <kbd className="kbd kbd-sm mt-[2px] bg-gray-100 px-3">Enter</kbd>
         </div>
 
         {/* container */}
         <ScrollArea
-          className={`mt-5 h-[508px] w-full ${isLoading ? "relative" : ""}`}
+          className={`mt-4 h-[508px] w-full ${isLoading ? "relative" : ""}`}
         >
           {isLoading ? (
             <div className="absolute left-[50%] top-[50%] -translate-x-1/2 -translate-y-1/2">
-              Loading...
+              <LoadingSmall />
             </div>
           ) : (
             <UnsplashImagesContainer />
@@ -153,7 +154,7 @@ const UnsplashContainer: React.FC = () => {
         </ScrollArea>
 
         {/* button */}
-        <div className="mt-4 flex justify-center">
+        <div className="mt-5 flex justify-center">
           <Button
             type="button"
             variant={"clay-red-hipster"}

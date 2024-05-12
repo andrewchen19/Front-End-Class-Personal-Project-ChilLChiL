@@ -4,9 +4,9 @@ import { toast } from "react-toastify";
 import { useSelector } from "react-redux";
 import { IRootState } from "../store";
 import { WhenToScore } from "../types";
-import { ReadMore } from "../components";
+import { ReadMore, Loading } from "../components";
 
-// react-icons
+// react-icons & icons
 import { FaQuoteLeft, FaQuoteRight, FaRegIdCard } from "react-icons/fa";
 import { MdAirplaneTicket } from "react-icons/md";
 import { FaWifi } from "react-icons/fa6";
@@ -15,6 +15,9 @@ import { GiTwoCoins } from "react-icons/gi";
 import { IoWater } from "react-icons/io5";
 import { CgDanger } from "react-icons/cg";
 import { MdPayment } from "react-icons/md";
+import surfBoard from "../assets/icons/surfboard.svg";
+import airplant from "../assets/icons/airplant.svg";
+import globe from "../assets/icons/globe.svg";
 
 // firebase
 import { db } from "../main";
@@ -202,7 +205,7 @@ const ForeignSpot: React.FC = () => {
   }, []);
 
   if (isLoading || !infoData || !relatedSpotData) {
-    return <div>Loading...</div>;
+    return <Loading />;
   }
 
   const {
@@ -225,8 +228,8 @@ const ForeignSpot: React.FC = () => {
     >
       {/* fixed scroll section */}
       <div
-        className="sticky top-0 z-50 flex h-14 items-center shadow-lg"
-        style={{ backgroundColor: "hsl(0 0% 100%/ 0.9)" }}
+        className="sticky top-0 z-50 flex h-14 items-center shadow-lg backdrop-blur"
+        style={{ backgroundColor: "hsl(0 0% 100%/ 0.7)" }}
       >
         <div className="relative mx-auto flex w-[95%]">
           <nav>
@@ -236,7 +239,7 @@ const ForeignSpot: React.FC = () => {
                   to="whentosurf"
                   smooth={true}
                   spy={true}
-                  duration={1000}
+                  duration={500}
                   offset={-96}
                   className="font-medium text-gray-500 duration-150 hover:cursor-pointer hover:font-semibold hover:text-gray-900"
                   activeStyle={{ fontWeight: "600", color: "#030712" }}
@@ -250,7 +253,7 @@ const ForeignSpot: React.FC = () => {
                   to="travelessentials"
                   smooth={true}
                   spy={true}
-                  duration={1000}
+                  duration={500}
                   offset={-80}
                   className="font-medium text-gray-500 duration-150 hover:cursor-pointer hover:font-semibold hover:text-gray-900"
                   activeStyle={{ fontWeight: "600", color: "#030712" }}
@@ -264,7 +267,7 @@ const ForeignSpot: React.FC = () => {
                   to="exploreotherzones"
                   smooth={true}
                   spy={true}
-                  duration={1000}
+                  duration={500}
                   offset={-80}
                   className="font-medium text-gray-500 duration-150 hover:cursor-pointer hover:font-semibold hover:text-gray-900"
                   activeStyle={{ fontWeight: "600", color: "#030712" }}
@@ -325,9 +328,10 @@ const ForeignSpot: React.FC = () => {
         {/* when to surf */}
         <Element name="whentosurf" className="mx-auto -mt-8 w-[85%] max-w-6xl">
           <div className="flex items-center justify-between">
-            <h3 className="mb-8 font-sriracha text-3xl font-bold">
-              When To Surf
-            </h3>
+            <div className="mb-8 flex items-center gap-3 font-sriracha text-3xl font-bold">
+              <img src={surfBoard} alt="image" className="h-8 w-8" />
+              <h2>When To Surf</h2>
+            </div>
 
             {user && (
               <Button
@@ -430,9 +434,10 @@ const ForeignSpot: React.FC = () => {
           name="travelessentials"
           className="mx-auto w-[85%] max-w-6xl scroll-m-14"
         >
-          <h3 className="mb-8 font-sriracha text-3xl font-bold">
-            Travel Essentials
-          </h3>
+          <div className="mb-8 flex items-center gap-3 font-sriracha text-3xl font-bold">
+            <img src={airplant} alt="image" className="h-8 w-8" />
+            <h2>Travel Essentials</h2>
+          </div>
 
           <div className="columns-2 gap-20">
             <div className="flex flex-col gap-8">
@@ -648,9 +653,10 @@ const ForeignSpot: React.FC = () => {
 
         {/* other zone */}
         <Element name="exploreotherzones" className="mx-auto w-[85%] max-w-6xl">
-          <h3 className="mb-8 font-sriracha text-3xl font-bold">
-            Explore Other Zones
-          </h3>
+          <div className="mb-8 flex items-center gap-3 font-sriracha text-3xl font-bold">
+            <img src={globe} alt="image" className="h-8 w-8" />
+            <h2>Explore Other Zones</h2>
+          </div>
 
           {isLoading && <p>loading now...</p>}
 

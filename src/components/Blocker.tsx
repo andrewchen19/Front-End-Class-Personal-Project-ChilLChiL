@@ -53,18 +53,17 @@ const Blocker: React.FC<BlockerProps> = ({ isEdited }) => {
         >
           <motion.div
             initial="hidden"
-            whileInView="visible"
+            animate="visible"
             variants={centerVariant}
-            viewport={{ once: true }}
             className="flex w-[365px] flex-col rounded-xl bg-white p-5"
             style={{ boxShadow: "rgba(6, 2, 2, 0.15) 0px 2px 10px" }}
           >
             <div className="flex flex-col items-center justify-center gap-4">
-              <div className="grid h-8 w-8 place-items-center rounded-full bg-pink-light">
+              <div className="grid h-8 w-8 animate-bounce place-items-center rounded-full bg-pink-light">
                 <AiOutlineWarning className="text-xl text-carrot" />
               </div>
 
-              <div className="-mt-1 flex flex-col gap-1 text-center font-helvetica text-sm text-gray-500">
+              <div className="-mt-1 flex flex-col gap-1 text-center font-helvetica text-sm text-gray-700">
                 <p>Changes you made may not be saved.</p>
                 <p>Are you sure you want to leave?</p>
               </div>

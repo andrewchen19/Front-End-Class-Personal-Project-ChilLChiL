@@ -9,6 +9,8 @@ import {
   setBreaks,
   setDifficulty,
 } from "../features/articles/articlesSlice";
+import placeHolder from "../assets/icons/placeholder.svg";
+import wave from "../assets/icons/wave2.svg";
 
 // react-icons
 import { FaStar } from "react-icons/fa";
@@ -213,13 +215,16 @@ const LocalSpots: React.FC = () => {
         <section>
           {/* title */}
           <div className="mb-10 border-b border-gray-300 pb-4">
-            <h2 className="text-2xl font-bold">浪點查詢</h2>
+            <div className="flex items-center gap-3">
+              <img src={placeHolder} alt="image" className="h-8 w-8" />
+              <h2 className="text-2xl font-bold">浪點查詢</h2>
+            </div>
           </div>
 
           <form
             method="get"
             onSubmit={formHandler}
-            className="grid w-full grid-cols-2 items-end gap-4 rounded-md bg-purple-light px-8 pb-7 pt-4"
+            className="mb-10 grid w-full grid-cols-2 items-end gap-4 rounded-md bg-purple-light px-8 pb-7 pt-4"
           >
             {/* select area */}
             <div className="form-control">
@@ -230,7 +235,7 @@ const LocalSpots: React.FC = () => {
                 id="area"
                 name="area"
                 value={area}
-                className="select select-sm focus:outline-none"
+                className="select select-sm bg-white focus:outline-none"
                 onChange={(e) => dispatch(setArea(e.target.value))}
               >
                 <option value="all">全部</option>
@@ -251,7 +256,7 @@ const LocalSpots: React.FC = () => {
                 id="breaks"
                 name="breaks"
                 value={breaks}
-                className="select select-sm focus:outline-none"
+                className="select select-sm  bg-white focus:outline-none"
                 onChange={(e) => dispatch(setBreaks(e.target.value))}
               >
                 <option value="all">全部</option>
@@ -262,7 +267,7 @@ const LocalSpots: React.FC = () => {
               </select>
             </div>
 
-            {/* select break */}
+            {/* select difficulty */}
             <div className="form-control">
               <label className="label" htmlFor="difficulty">
                 <span className="label-text">適合程度</span>
@@ -271,7 +276,7 @@ const LocalSpots: React.FC = () => {
                 id="difficulty"
                 name="difficulty"
                 value={difficulty}
-                className="select select-sm focus:outline-none"
+                className="select select-sm bg-white focus:outline-none"
                 onChange={(e) => dispatch(setDifficulty(e.target.value))}
               >
                 <option value="all">全部</option>
@@ -292,39 +297,45 @@ const LocalSpots: React.FC = () => {
           </form>
 
           {(isLoading || !selectSpots) && (
-            <p className="mt-10">loading now...</p>
+            <div className="grid gap-x-10 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
+              <div className="skeleton h-[268px] rounded-lg"></div>
+            </div>
           )}
 
           {!isLoading && selectSpots && selectSpots.length < 1 && (
-            <h3 className="mt-10">沒有符合的浪點，請重新查詢。</h3>
+            <h3>沒有符合的浪點，請重新查詢。</h3>
           )}
 
           {!isLoading && selectSpots && selectSpots.length > 0 && (
-            <div className="mt-10 grid grid-cols-4 gap-x-12 gap-y-10">
+            <div className="grid gap-x-10 gap-y-10 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
               {selectSpots.map((spot) => {
                 const { id, name, mapImage, likes_amount } = spot;
                 return (
                   <Card
                     key={id}
-                    className="shadow-xs relative flex flex-grow duration-300 hover:cursor-pointer hover:shadow-lg"
+                    className="shadow-xs group relative flex flex-grow duration-300 hover:cursor-pointer hover:shadow-lg"
                     onClick={() => spotHandler(name.eng, id)}
                   >
                     <CardContent className="flex h-full w-full flex-col">
-                      <img
-                        src={mapImage}
-                        alt={name.chin}
-                        className="h-[150px] w-full object-cover object-center"
-                      />
+                      <div className="h-[150px] w-full overflow-hidden">
+                        <img
+                          src={mapImage}
+                          alt={name.chin}
+                          className="h-full w-full object-cover object-center duration-300 group-hover:scale-105"
+                        />
+                      </div>
 
                       <div className="flex flex-grow flex-col p-3">
-                        <h3 className="font-semibold">{name.chin}</h3>
+                        <h3 className="font-semibold tracking-wide">
+                          {name.chin}
+                        </h3>
 
                         <div className="mt-10 flex justify-between">
                           <h5 className="font-fashioncountry text-lg capitalize text-turquoise">
                             {name.eng}
                           </h5>
                           <div className="flex items-center gap-1">
-                            <FaStar className=" text-yellow" />
+                            <FaStar className="text-yellow group-hover:animate-accordion-up" />
                             <span>{likes_amount}</span>
                           </div>
                         </div>
@@ -338,8 +349,11 @@ const LocalSpots: React.FC = () => {
         </section>
 
         <section>
-          <div className="mb-10 border-b border-gray-300 pb-4">
-            <h2 className="text-2xl font-bold">即時浪向</h2>
+          <div className="mb-10 border-b border-gray-300 pb-3">
+            <div className="flex items-center gap-3">
+              <img src={wave} alt="image" className="mt-[6px] h-8 w-8" />
+              <h2 className="text-2xl font-bold">即時浪向</h2>
+            </div>
           </div>
 
           <div className="overflow-hidden">

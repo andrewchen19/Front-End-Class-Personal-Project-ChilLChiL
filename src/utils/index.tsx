@@ -761,7 +761,7 @@ export interface ProfileNavbarProps {
 }
 export const profileNavbarList: ProfileNavbarProps[] = [
   {
-    title: "個人資訊",
+    title: "個人訊息",
     href: "/profile/my-info",
     icon: <IoPersonCircleOutline className="h-5 w-5" />,
   },
@@ -776,3 +776,11 @@ export const profileNavbarList: ProfileNavbarProps[] = [
     icon: <RiArticleLine className="h-5 w-5" />,
   },
 ];
+
+export const isOnlyEmptyParagraphs = (htmlString: string) => {
+  // Remove HTML tags
+  const text = htmlString.replace(/<[^>]*>/g, "");
+
+  // Check if the remaining string contains only whitespace characters
+  return /^\s*$/.test(text);
+};

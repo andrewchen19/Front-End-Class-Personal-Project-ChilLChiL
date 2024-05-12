@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import fire from "../assets/icons/fire.svg";
+import medalGold from "../assets/icons/medal-gold.svg";
 
 // firebase
 import { db } from "../main";
@@ -58,12 +58,16 @@ const MonthForeignSpotsContainer: React.FC = () => {
 
   return (
     <section>
-      <h2 className="mb-14 flex items-center gap-3 font-sriracha text-4xl font-semibold text-gray-800">
+      <h2 className="mb-12 flex items-center gap-3 font-sriracha text-4xl font-semibold text-gray-800">
         Best In May
-        <img src={fire} alt="fire" className="h-8 w-8" />
+        <img src={medalGold} alt="medalGold" className="h-10 w-10" />
       </h2>
 
-      {isSpotLoading && <p>loading now...</p>}
+      {isSpotLoading && (
+        <div className="grid w-full gap-5 md:grid-cols-2 lg:grid-cols-3">
+          <div className="skeleton h-[420px] rounded-lg"></div>
+        </div>
+      )}
 
       <Carousel
         className="w-full"

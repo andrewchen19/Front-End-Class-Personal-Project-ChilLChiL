@@ -6,6 +6,8 @@ import { openEditContainer } from "../features/user/userSlice";
 import { IRootState } from "../store";
 import { RealtimeContainer, ProfileEditContainer } from "../components";
 
+import setting from "../assets/icons/setting.svg";
+
 const Profile: React.FC = () => {
   const { user, isEditContainerOpen } = useSelector(
     (state: IRootState) => state.user,
@@ -38,7 +40,11 @@ const Profile: React.FC = () => {
     <main className="align-profile gap-20 py-24">
       {/* personal info */}
       <section>
-        <h2 className="text-2xl font-bold">個人訊息</h2>
+        <h2 className="text-2xl font-bold"></h2>
+        <div className="flex items-center gap-6">
+          <img src={setting} alt="image" className="ml-2 h-8 w-8" />
+          <h2 className="text-2xl font-bold">個人資訊</h2>
+        </div>
 
         <div className="mt-10 flex items-center gap-10">
           <img

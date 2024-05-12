@@ -7,6 +7,7 @@ import {
   changeTagName,
   htmlToPlainText,
 } from "../utils";
+import flower from "../assets/icons/flower.svg";
 
 // react icons
 import { FaStar } from "react-icons/fa";
@@ -85,10 +86,18 @@ const RelatedArticlesContainer: React.FC = () => {
     <section>
       {/* title */}
       <div className="mb-10 border-b border-gray-300 pb-4">
-        <h2 className="text-2xl font-bold">相關文章</h2>
+        <h2 className="text-2xl font-bold"></h2>
+        <div className="flex items-center gap-3">
+          <img src={flower} alt="image" className=" h-8 w-8" />
+          <h2 className="text-2xl font-bold">相關文章</h2>
+        </div>
       </div>
 
-      {(isArticleLoading || !articlesList) && <p>loading now...</p>}
+      {(isArticleLoading || !articlesList) && (
+        <div className="grid w-full gap-8 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
+          <div className="skeleton h-[360px] rounded-lg"></div>
+        </div>
+      )}
 
       {!isArticleLoading && articlesList && articlesList.length < 1 && (
         <h3>尚未有相關的文章...</h3>

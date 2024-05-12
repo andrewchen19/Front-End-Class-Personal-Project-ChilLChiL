@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
-import { ArticleCommentsContainer } from "../components";
+import { ArticleCommentsContainer, Loading } from "../components";
 import { toast } from "react-toastify";
 import { useSelector, useDispatch } from "react-redux";
 import { setAuthor } from "../features/article/articleSlice";
@@ -298,7 +298,7 @@ const Article: React.FC = () => {
   }, [showModal]);
 
   if (isLoading || !article || !author) {
-    return <div>Loading...</div>;
+    return <Loading />;
   }
 
   const {

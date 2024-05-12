@@ -3,6 +3,8 @@ import { useSelector } from "react-redux";
 import { IRootState } from "../store";
 import { ReactECharts } from "./ReactEchart";
 import { changeSpotName, executeOption } from "../utils";
+import location from "../assets/icons/location.svg";
+import LoadingSmall from "./LoadingSmall";
 
 // firebase
 import { db } from "../main";
@@ -79,8 +81,19 @@ const RealtimeContainer: React.FC = () => {
   if (isLoading || !localSpotNameList || !localSpotsList) {
     return (
       <section>
-        <h2 className="text-2xl font-bold">浪點即時資訊</h2>
-        <p className="mt-8">loading now...</p>
+        <div className="flex items-center gap-3">
+          <img src={location} alt="image" className="h-[52px] w-[52px]" />
+          <h2 className="text-2xl font-bold">浪點即時資訊</h2>
+        </div>
+
+        {/* <div className="mt-4">
+          <div className="skeleton h-10 w-[66px] rounded-lg"></div>
+          <div className="skeleton mt-16 h-[500px] w-full"></div>
+        </div> */}
+
+        <div className="mt-4">
+          <LoadingSmall />
+        </div>
       </section>
     );
   }
@@ -94,8 +107,11 @@ const RealtimeContainer: React.FC = () => {
   ) {
     return (
       <section>
-        <h2 className="text-2xl font-bold">浪點即時資訊</h2>
-        <h3 className="mt-8">尚未收藏浪點...</h3>
+        <div className="flex items-center gap-3">
+          <img src={location} alt="image" className="h-[52px] w-[52px]" />
+          <h2 className="text-2xl font-bold">浪點即時資訊</h2>
+        </div>
+        <h3 className="mt-4">尚未收藏浪點...</h3>
       </section>
     );
   }
@@ -120,15 +136,14 @@ const RealtimeContainer: React.FC = () => {
 
   return (
     <section>
-      <h2 className="text-2xl font-bold">浪點即時資訊</h2>
+      <div className="flex items-center gap-3">
+        <img src={location} alt="image" className="h-[52px] w-[52px]" />
+        <h2 className="text-2xl font-bold">浪點即時資訊</h2>
+      </div>
 
       <Tabs
-        value={
-          localSpotNameList && localSpotsList.length > 0
-            ? localSpotNameList[localSpotNameIndex]
-            : ""
-        }
-        className="mt-8 flex w-full flex-col"
+        value={localSpotNameList[localSpotNameIndex]}
+        className="mt-4 flex w-full flex-col"
       >
         <div className="flex">
           <TabsList>

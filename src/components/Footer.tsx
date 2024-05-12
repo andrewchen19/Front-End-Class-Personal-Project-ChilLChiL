@@ -7,8 +7,8 @@ const Footer: React.FC = () => {
   return (
     <footer className="relative grid h-14 place-items-center items-center overflow-x-clip whitespace-nowrap bg-gray-950 text-white">
       {/* animation */}
-      <div className="absolute -top-[28px] left-0 right-0 z-[70] animate-marquee">
-        <div className="h-7 w-5">
+      <div className="absolute -top-[50px] left-0 right-0 z-[100] animate-marquee">
+        {/* <div className="h-7 w-5">
           <a href="/">
             <img
               src="https://akstatic.streetvoice.com/asset/images/sv-cat.gif"
@@ -16,6 +16,14 @@ const Footer: React.FC = () => {
               className="h-full w-full"
             />
           </a>
+        </div> */}
+
+        <div className="h-16 w-16">
+          <iframe
+            src="https://giphy.com/embed/6fe3FqaajDFeHdfG1V"
+            className="h-full w-full"
+            sandbox="allow-same-origin allow-scripts"
+          ></iframe>
         </div>
       </div>
 

@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { Navigate, useNavigate, useParams } from "react-router-dom";
 import { UnsplashContainer, Blocker } from "../components";
-import { localSpotsList } from "../utils";
+import { localSpotsList, isOnlyEmptyParagraphs } from "../utils";
 import { toast } from "react-toastify";
 import { useDispatch, useSelector } from "react-redux";
 import {
@@ -32,7 +32,10 @@ import { motion } from "framer-motion";
 
 // shadcn
 import { Button } from "@/components/ui/button";
+import { Loader2 } from "lucide-react";
 import { Sheet, SheetTrigger } from "@/components/ui/sheet";
+import { Label } from "@/components/ui/label";
+import { Input } from "@/components/ui/input";
 
 const EditArticle: React.FC = () => {
   const { id } = useParams();
@@ -50,6 +53,7 @@ const EditArticle: React.FC = () => {
   const [surfingSpot, setSurfingSpot] = useState<string>("");
   const [content, setContent] = useState<string>("");
   const [clickSubmit, setClickSubmit] = useState<boolean>(false);
+  const [isButtonLoading, setIsButtonLoading] = useState<boolean>(false);
 
   // restrict access
   if (!user) {
@@ -87,12 +91,14 @@ const EditArticle: React.FC = () => {
       toast.warning("Please choose a surfingSpot 😬");
       return;
     }
-    if (!content) {
+    if (!content || isOnlyEmptyParagraphs(content)) {
       toast.warning("Content can't be empty 😬");
       return;
     }
 
     if (!id) return;
+
+    setIsButtonLoading(true);
 
     try {
       const now = Date.now();
@@ -109,7 +115,7 @@ const EditArticle: React.FC = () => {
         photographerName,
       });
       setClickSubmit(true);
-      toast.success("Updated successful 🎉");
+      toast.success("Updated successfully 🎉");
       setTimeout(() => {
         navigate("/profile/my-articles");
         dispatch(resetCover());
@@ -117,6 +123,8 @@ const EditArticle: React.FC = () => {
     } catch (error) {
       console.log(error);
     }
+
+    setIsButtonLoading(false);
   };
 
   const fetchArticleFromFirebase = async (): Promise<void> => {
@@ -206,14 +214,24 @@ const EditArticle: React.FC = () => {
         </div>
 
         {/* title */}
-        <div className="mt-[20px]">
-          <h3 className="mb-2 text-xl font-semibold">標題</h3>
-          <input
+        <div className="relative mt-[20px]">
+          <Label className="text-xl font-semibold">標題</Label>
+          <Input
             type="text"
-            className="input input-sm rounded-lg border border-gray-300 px-4 py-2 outline-none focus:outline-none"
+            className="mt-2 w-[300px] rounded-lg border border-gray-300 px-4 py-2"
             value={title}
+            maxLength={50}
             onChange={(e) => setTitle(e.target.value)}
+            aria-describedby="titleHelp"
           />
+          {title.length === 50 && (
+            <small
+              id="titleHelp"
+              className="text-red absolute -bottom-[28px] left-0"
+            >
+              Limit to 50 characters
+            </small>
+          )}
         </div>
 
         {/* tag */}
@@ -227,6 +245,7 @@ const EditArticle: React.FC = () => {
                 name="tag"
                 id="travel"
                 value="travel"
+                className="bg-white"
                 checked={tag === "travel"}
                 onChange={(e) => setTag(e.target.value)}
               />
@@ -240,6 +259,7 @@ const EditArticle: React.FC = () => {
                 name="tag"
                 id="gear"
                 value="gear"
+                className="bg-white"
                 checked={tag === "gear"}
                 onChange={(e) => setTag(e.target.value)}
               />
@@ -253,6 +273,7 @@ const EditArticle: React.FC = () => {
                 name="tag"
                 id="knowledge"
                 value="knowledge"
+                className="bg-white"
                 checked={tag === "knowledge"}
                 onChange={(e) => setTag(e.target.value)}
               />
@@ -266,6 +287,7 @@ const EditArticle: React.FC = () => {
                 name="tag"
                 id="life"
                 value="life"
+                className="bg-white"
                 checked={tag === "life"}
                 onChange={(e) => setTag(e.target.value)}
               />
@@ -279,6 +301,7 @@ const EditArticle: React.FC = () => {
                 name="tag"
                 id="activity"
                 value="activity"
+                className="bg-white"
                 checked={tag === "activity"}
                 onChange={(e) => setTag(e.target.value)}
               />
@@ -292,6 +315,7 @@ const EditArticle: React.FC = () => {
                 name="tag"
                 id="secondhand"
                 value="secondhand"
+                className="bg-white"
                 checked={tag === "secondhand"}
                 onChange={(e) => setTag(e.target.value)}
               />
@@ -309,7 +333,7 @@ const EditArticle: React.FC = () => {
             <select
               name="surfingSpot"
               value={surfingSpot}
-              className="select select-sm focus:outline-none"
+              className="select select-sm border-gray-300 bg-white focus:outline-none"
               onChange={(e) => setSurfingSpot(e.target.value)}
             >
               {localSpotsList.map((item) => {
@@ -340,13 +364,22 @@ const EditArticle: React.FC = () => {
 
         {/* button */}
         <div className="mb-10 mt-6 flex gap-4">
-          <Button type="button" variant={"purple"} onClick={editHandler}>
-            更新文章
+          <Button
+            type="button"
+            variant={"purple"}
+            onClick={editHandler}
+            disabled={isButtonLoading}
+          >
+            {isButtonLoading ? (
+              <Loader2 className="mr-1 h-3 w-3 animate-spin" />
+            ) : null}
+            {isButtonLoading ? "更新中" : "更新文章"}
           </Button>
 
           <Button
             type="button"
             variant={"ghost"}
+            disabled={isButtonLoading}
             onClick={() => navigate(`/articles/${id}`)}
           >
             取消
