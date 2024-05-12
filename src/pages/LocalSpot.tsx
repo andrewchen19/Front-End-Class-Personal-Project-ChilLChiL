@@ -29,10 +29,6 @@ import { nanoid } from "nanoid";
 
 // icons & images
 import locationArrow from "../assets/weather/arrow.svg";
-// import compass from "../assets/weather/compass.svg";
-// import tideHigh from "../assets/weather/tide-high.svg";
-// import windOnshore from "../assets/weather/wind-onshore.svg";
-// import thermometerSun from "../assets/weather/thermometer-sun.svg";
 import surfImg from "../assets/images/illustration.jpg";
 import van from "../assets/icons/van.svg";
 import waterWeather from "../assets/icons/waterWeather.svg";
@@ -616,31 +612,35 @@ const LocalSpot: React.FC = () => {
               </div>
             </div>
 
-            <div className="mt-5 grid grid-cols-[auto,1fr] font-medium">
-              <div className="w-[150px] pl-8">時間</div>
+            <div className="grid grid-cols-[auto,1fr]  font-medium">
+              <div className="w-[150px] border-r border-r-gray-300 pl-8 pt-5 leading-5">
+                時間
+              </div>
 
               <div className="grid grid-cols-9 text-center">
                 {hours.map((hour, index) => {
-                  return <p key={index}>{hour}</p>;
+                  return (
+                    <p
+                      key={index}
+                      className={`pt-5 leading-5 ${index === 2 || index === 5 ? "border-r border-r-gray-300" : ""}`}
+                    >
+                      {hour}
+                    </p>
+                  );
                 })}
               </div>
             </div>
 
-            <div className="mx-auto mt-5 flex w-full flex-col gap-5">
+            <div className="mx-auto flex w-full flex-col">
               {/* swell */}
               <div>
-                <h3 className="mb-2 flex items-center gap-1 text-lg font-bold">
-                  波浪 Swell
-                  {/* <img src={compass} alt="weather-icon" className="h-9 w-9" /> */}
-                </h3>
-
                 <div className="grid grid-cols-[auto,1fr]">
                   {/* desc */}
                   <div className="w-[150px] font-medium">
-                    <p className="flex h-8 w-full items-center pl-8">
+                    <p className=" flex w-full items-center border-r border-r-gray-300 pl-8 pt-5">
                       最小浪高 (m)
                     </p>
-                    <p className="flex h-8 w-full items-center gap-3">
+                    <p className="flex  w-full items-center gap-3 border-r border-r-gray-300 pt-5">
                       <TooltipProvider>
                         <Tooltip>
                           <TooltipTrigger>
@@ -657,10 +657,10 @@ const LocalSpot: React.FC = () => {
                       </TooltipProvider>
                       最大浪高 (m)
                     </p>
-                    <p className="flex h-8 w-full items-center pl-8 text-base">
+                    <p className="flex  w-full items-center border-r border-r-gray-300 pl-8 pt-5 text-base">
                       浪向
                     </p>
-                    <p className="flex h-8 w-full items-center gap-3  text-base">
+                    <p className="flex  w-full items-center gap-3 border-r border-r-gray-300 pt-5 text-base">
                       <TooltipProvider>
                         <Tooltip>
                           <TooltipTrigger>
@@ -684,18 +684,21 @@ const LocalSpot: React.FC = () => {
                       const { surf, swells } = item;
                       const { direction, period } = swells[0];
                       return (
-                        <div key={index} className="flex-grow">
-                          <p className="item-center flex h-8 justify-center">
+                        <div
+                          key={index}
+                          className={`${index === 2 || index === 5 ? "border-r border-r-gray-300" : ""}`}
+                        >
+                          <p className="item-center flex justify-center pt-5">
                             <span className="flex items-center text-base">
                               {surf.min}
                             </span>
                           </p>
-                          <p className="item-center flex h-8 justify-center">
+                          <p className="item-center flex justify-center pt-5">
                             <span className="flex items-center text-base">
                               {surf.max}
                             </span>
                           </p>
-                          <p className="flex h-8 items-center justify-center">
+                          <p className="flex  items-center justify-center pt-5">
                             <img
                               src={locationArrow}
                               alt="arrow-icon"
@@ -706,8 +709,7 @@ const LocalSpot: React.FC = () => {
                               }}
                             />
                           </p>
-
-                          <p className="item-center flex h-8 justify-center">
+                          <p className="item-center flex  justify-center pt-5">
                             <span className="flex items-center text-base">
                               {period}
                             </span>
@@ -721,19 +723,10 @@ const LocalSpot: React.FC = () => {
 
               {/* tide */}
               <div>
-                <h3 className="mb-2 flex items-center gap-1 text-lg font-bold">
-                  潮汐 Tide
-                  {/* <img
-                    src={tideHigh}
-                    alt="weather-icon"
-                    className="mt-[7px] h-9 w-9"
-                  /> */}
-                </h3>
-
                 <div className="grid grid-cols-[auto,1fr]">
                   {/* desc */}
                   <div className="w-[150px] font-medium">
-                    <p className="flex h-8 w-full items-center gap-3  text-base">
+                    <p className="flex  w-full items-center gap-3 border-r border-r-gray-300 pt-5 text-base">
                       <TooltipProvider>
                         <Tooltip>
                           <TooltipTrigger>
@@ -757,8 +750,11 @@ const LocalSpot: React.FC = () => {
                       if (index > 8) return;
                       const { height } = item;
                       return (
-                        <div key={index} className="flex-grow">
-                          <p className="item-center flex h-8 justify-center">
+                        <div
+                          key={index}
+                          className={`${index === 2 || index === 5 ? "border-r border-r-gray-300" : ""}`}
+                        >
+                          <p className="item-center flex  justify-center pt-5">
                             <span className="flex items-center text-base">
                               {height.toFixed(2)}
                             </span>
@@ -772,19 +768,13 @@ const LocalSpot: React.FC = () => {
 
               {/* wind */}
               <div>
-                <h3 className="mb-2 flex items-center gap-1 text-lg font-bold">
-                  風 Wind
-                  {/* <img
-                    src={windOnshore}
-                    alt="weather-icon"
-                    className="h-9 w-9"
-                  /> */}
-                </h3>
-
                 <div className="grid grid-cols-[auto,1fr]">
                   {/* desc */}
                   <div className="w-[150px] font-medium">
-                    <p className="flex h-8 w-full items-center gap-3 text-base">
+                    <p className="flex  w-full items-center border-r border-r-gray-300 pl-8 pt-5 text-base">
+                      風向
+                    </p>
+                    <p className="flex  w-full items-center gap-3 border-r border-r-gray-300 pt-5 text-base">
                       <TooltipProvider>
                         <Tooltip>
                           <TooltipTrigger>
@@ -799,12 +789,10 @@ const LocalSpot: React.FC = () => {
                           </TooltipContent>
                         </Tooltip>
                       </TooltipProvider>
-                      類型
+                      風向類型
                     </p>
-                    <p className="flex h-8 w-full items-center pl-8 text-base">
-                      風向
-                    </p>
-                    <p className="flex h-8 w-full items-center gap-3 text-base">
+
+                    <p className="flex  w-full items-center gap-3 border-r border-r-gray-300 pt-5 text-base">
                       <TooltipProvider>
                         <Tooltip>
                           <TooltipTrigger>
@@ -828,13 +816,11 @@ const LocalSpot: React.FC = () => {
                       const { direction, directionType, gust } = item;
 
                       return (
-                        <div key={index} className="flex-grow">
-                          <p className="item-center flex h-8 justify-center">
-                            <span className="flex items-center text-base">
-                              {changeWindName(directionType)}
-                            </span>
-                          </p>
-                          <p className="flex h-8 items-center justify-center">
+                        <div
+                          key={index}
+                          className={`${index === 2 || index === 5 ? "border-r border-r-gray-300" : ""}`}
+                        >
+                          <p className="flex  items-center justify-center pt-5">
                             <img
                               src={locationArrow}
                               alt="arrow-icon"
@@ -845,7 +831,12 @@ const LocalSpot: React.FC = () => {
                               }}
                             />
                           </p>
-                          <p className="item-center flex h-8 justify-center">
+                          <p className="item-center flex  justify-center pt-5">
+                            <span className="flex items-center text-base">
+                              {changeWindName(directionType)}
+                            </span>
+                          </p>
+                          <p className="item-center flex  justify-center pt-5">
                             <span className="flex items-center text-base">
                               {gust.toFixed(1)}
                             </span>
@@ -859,22 +850,13 @@ const LocalSpot: React.FC = () => {
 
               {/* weather */}
               <div>
-                <h3 className="mb-2 flex items-center gap-1 text-lg font-bold">
-                  天氣 Weather
-                  {/* <img
-                    src={thermometerSun}
-                    alt="weather-icon"
-                    className="h-9 w-9"
-                  /> */}
-                </h3>
-
                 <div className="grid grid-cols-[auto,1fr]">
                   {/* desc */}
                   <div className="w-[150px] font-medium">
-                    <p className="flex h-8 w-full items-center pl-8 text-base">
+                    <p className="flex  w-full items-center border-r border-r-gray-300 pl-8 pt-5 text-base">
                       天氣圖示
                     </p>
-                    <p className="flex h-8 w-full items-center pl-8 text-base">
+                    <p className="flex  w-full items-center border-r border-r-gray-300 pl-8 pt-5 text-base">
                       溫度 (°C)
                     </p>
                   </div>
@@ -885,11 +867,14 @@ const LocalSpot: React.FC = () => {
                         const { condition, temperature } = item;
                         console.log(condition);
                         return (
-                          <div key={index} className="flex-grow">
-                            <p className="flex h-8 items-center justify-center">
+                          <div
+                            key={index}
+                            className={`${index === 2 || index === 5 ? "border-r border-r-gray-300" : ""}`}
+                          >
+                            <p className="flex  items-center justify-center pt-5">
                               {changeToWeatherIcon(condition)}
                             </p>
-                            <p className="item-center flex h-8 justify-center">
+                            <p className="item-center flex  justify-center pt-5">
                               <span className="flex items-center text-base">
                                 {temperature.toFixed(1)}
                               </span>
@@ -907,7 +892,7 @@ const LocalSpot: React.FC = () => {
           {/* Comments */}
           <section>
             {/* title */}
-            <div className="mb-10  border-b border-gray-300 pb-4">
+            <div className="mb-10 border-b border-gray-300 pb-4">
               <div className="flex items-center gap-3">
                 <img src={commentImg} alt="image" className="mt-2 h-7 w-7" />
                 <h2 className="text-2xl font-bold">即時留言</h2>

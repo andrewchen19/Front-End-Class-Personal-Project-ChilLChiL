@@ -16,7 +16,7 @@ import { IoWater } from "react-icons/io5";
 import { CgDanger } from "react-icons/cg";
 import { MdPayment } from "react-icons/md";
 import surfBoard from "../assets/icons/surfboard.svg";
-import airplant from "../assets/icons/airplant.svg";
+import airplane from "../assets/icons/airplane.svg";
 import globe from "../assets/icons/globe.svg";
 
 // firebase
@@ -435,7 +435,7 @@ const ForeignSpot: React.FC = () => {
           className="mx-auto w-[85%] max-w-6xl scroll-m-14"
         >
           <div className="mb-8 flex items-center gap-3 font-sriracha text-3xl font-bold">
-            <img src={airplant} alt="image" className="h-8 w-8" />
+            <img src={airplane} alt="image" className="h-8 w-8" />
             <h2>Travel Essentials</h2>
           </div>
 
