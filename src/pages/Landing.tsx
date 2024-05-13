@@ -157,6 +157,7 @@ const Landing: React.FC = () => {
           </motion.div>
         </div>
       </section> */}
+
       <section
         className="relative"
         style={{ height: "calc(100vh - 56px)", width: "100%" }}
@@ -166,12 +167,13 @@ const Landing: React.FC = () => {
           whileInView="visible"
           variants={delayVideoVariant}
           viewport={{ once: true }}
+          className="h-full w-full"
         >
           <VideoContainer />
         </motion.div>
 
         <div className="absolute inset-0 flex items-center justify-center bg-transparent">
-          <div className="-mt-20 text-center">
+          <div className="text-center">
             <motion.h1
               initial="hidden"
               whileInView="visible"
