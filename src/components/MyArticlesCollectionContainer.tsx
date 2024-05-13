@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { NavLink, useNavigate } from "react-router-dom";
+import { useNavigate, Link } from "react-router-dom";
 import { useSelector } from "react-redux";
 import { resetCover } from "../features/article/articleSlice";
 import { useDispatch } from "react-redux";
@@ -12,6 +12,10 @@ import {
 } from "../utils";
 import starFish from "../assets/icons/starfish.svg";
 import LoadingSmall from "./LoadingSmall";
+import surfBoy from "../assets/lotties/surf-boy.json";
+
+// lottie-react
+import Lottie from "lottie-react";
 
 // react icons
 import { FaStar } from "react-icons/fa";
@@ -78,28 +82,51 @@ const MyArticlesCollectionContainer: React.FC = () => {
           <h2 className="text-2xl font-bold">我的文章</h2>
         </div>
 
-        <NavLink to="/profile/post-article">
-          <Button
-            type="button"
-            variant={"purple"}
-            size={"sm"}
-            className="mt-[4px]"
-            onClick={() => dispatch(resetCover())}
-          >
-            新增文章
-          </Button>
-        </NavLink>
+        {articlesList && articlesList.length > 0 && (
+          <Link to="/profile/post-article">
+            <Button
+              type="button"
+              variant={"purple"}
+              size={"xs"}
+              className="mt-[6px]"
+              onClick={() => dispatch(resetCover())}
+            >
+              新增文章
+            </Button>
+          </Link>
+        )}
       </div>
 
-      {/* {(isLoading || !articlesList) && (
-        <div className="grid w-full gap-8 md:grid-cols-2 lg:grid-cols-3">
-          <div className="skeleton h-[360px] rounded-lg"></div>
+      {(isLoading || !articlesList) && (
+        <div className="mt-11">
+          <LoadingSmall />
         </div>
-      )} */}
-      {(isLoading || !articlesList) && <LoadingSmall />}
+      )}
 
       {!isLoading && articlesList && articlesList.length < 1 && (
-        <h3>尚未有文章，快來撰寫吧~</h3>
+        <div className="flex gap-4">
+          <div
+            className="h-[180px] w-[180px]"
+            style={{ transform: "scaleX(-1)" }}
+          >
+            <Lottie animationData={surfBoy} loop={true} />
+          </div>
+
+          <div className="mt-5">
+            <div className="font-sriracha">
+              <h3>No any articles yet?</h3>
+              <p>Write down some stories now!</p>
+            </div>
+
+            <div className="mt-2">
+              <Link to="/profile/post-article">
+                <Button variant={"purple-hipster"} size={"xs"}>
+                  Create Article
+                </Button>
+              </Link>
+            </div>
+          </div>
+        </div>
       )}
 
       {!isLoading && (
@@ -120,7 +147,7 @@ const MyArticlesCollectionContainer: React.FC = () => {
               return (
                 <Card
                   key={id}
-                  className="shadow-xs relative flex flex-grow duration-300 hover:cursor-pointer hover:shadow-lg"
+                  className="relative flex flex-grow shadow-xs duration-300 hover:cursor-pointer hover:shadow-lg"
                   onClick={() => articleHandler(id)}
                 >
                   <CardContent className="flex h-full w-full flex-col">
@@ -141,11 +168,11 @@ const MyArticlesCollectionContainer: React.FC = () => {
 
                       <div className="mt-auto">
                         <div className="flex gap-1">
-                          <span className="bg-green rounded-lg px-2 py-1 text-xs tracking-wide text-white">
+                          <span className="rounded-lg bg-green px-2 py-1 text-xs tracking-wide text-white">
                             {changeTagName(tag)}
                           </span>
 
-                          <span className="bg-orange rounded-lg px-2 py-1 text-xs tracking-wide text-white">
+                          <span className="rounded-lg bg-orange px-2 py-1 text-xs tracking-wide text-white">
                             {changeSpotName(surfingSpot)}
                           </span>
                         </div>

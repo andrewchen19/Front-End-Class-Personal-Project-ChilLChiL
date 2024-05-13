@@ -1,16 +1,22 @@
 import React, { useEffect, useState } from "react";
+import { Link } from "react-router-dom";
 import { useSelector } from "react-redux";
 import { IRootState } from "../store";
 import { ReactECharts } from "./ReactEchart";
 import { changeSpotName, executeOption } from "../utils";
 import location from "../assets/icons/location.svg";
 import LoadingSmall from "./LoadingSmall";
+import surfBoy from "../assets/lotties/surf-boy.json";
+
+// lottie-react
+import Lottie from "lottie-react";
 
 // firebase
 import { db } from "../main";
 import { doc, getDoc, DocumentData } from "firebase/firestore";
 
 // shadcn
+import { Button } from "@/components/ui/button";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 
 const RealtimeContainer: React.FC = () => {
@@ -86,12 +92,7 @@ const RealtimeContainer: React.FC = () => {
           <h2 className="text-2xl font-bold">浪點即時資訊</h2>
         </div>
 
-        {/* <div className="mt-4">
-          <div className="skeleton h-10 w-[66px] rounded-lg"></div>
-          <div className="skeleton mt-16 h-[500px] w-full"></div>
-        </div> */}
-
-        <div className="mt-4">
+        <div className="mt-7">
           <LoadingSmall />
         </div>
       </section>
@@ -111,7 +112,30 @@ const RealtimeContainer: React.FC = () => {
           <img src={location} alt="image" className="h-[52px] w-[52px]" />
           <h2 className="text-2xl font-bold">浪點即時資訊</h2>
         </div>
-        <h3 className="mt-4">尚未收藏浪點...</h3>
+
+        <div className="mt-4 flex gap-4">
+          <div
+            className="h-[180px] w-[180px]"
+            style={{ transform: "scaleX(-1)" }}
+          >
+            <Lottie animationData={surfBoy} loop={true} />
+          </div>
+
+          <div className="mt-5">
+            <div className="font-sriracha">
+              <h3>No any collection yet?</h3>
+              <p>Explore some spots now!</p>
+            </div>
+
+            <div className="mt-2">
+              <Link to="/local-spots">
+                <Button variant={"turquoise-hipster"} size={"xs"}>
+                  Local Spots
+                </Button>
+              </Link>
+            </div>
+          </div>
+        </div>
       </section>
     );
   }

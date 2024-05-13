@@ -7,7 +7,7 @@ import coverImage from "../assets/images/landing-cover.jpg";
 import grid1Image from "../assets/images/landing-grid1.jpg";
 import grid2Image from "../assets/images/landing-grid2.jpg";
 import spinText from "../assets/icons/spin-text.svg";
-import lottieFile from "../assets/lotties/surf-boy.json";
+import surfVan from "../assets/lotties/surf-van.json";
 
 // lottie-react
 import Lottie from "lottie-react";
@@ -36,6 +36,10 @@ const rightVariant: Variants = {
 const centerVariant: Variants = {
   hidden: { opacity: 0 },
   visible: { opacity: 1, transition: { duration: 3 } },
+};
+const delayVideoVariant: Variants = {
+  hidden: { opacity: 0 },
+  visible: { opacity: 1, transition: { delay: 1.5, duration: 1.5 } },
 };
 const delayTopVariant: Variants = {
   hidden: { opacity: 0, y: "-30px" },
@@ -78,12 +82,12 @@ const spinnerCenterVariant: Variants = {
   visible: {
     opacity: 1,
     scale: 1,
-    transition: { type: "spring", bounce: 0.2, duration: 2, delay: 1 },
+    transition: { type: "spring", bounce: 0.2, duration: 2, delay: 1.25 },
   },
 };
-const delayVideoVariant: Variants = {
-  hidden: { opacity: 0 },
-  visible: { opacity: 1, transition: { delay: 1.5, duration: 1.5 } },
+const leftVanVariant: Variants = {
+  hidden: { opacity: 0, x: "-80px" },
+  visible: { opacity: 1, x: 0, transition: { duration: 2, delay: 1.25 } },
 };
 
 const Landing: React.FC = () => {
@@ -293,9 +297,15 @@ const Landing: React.FC = () => {
           />
         </motion.div>
 
-        <div className="absolute bottom-0 left-24 z-[2] h-[200px] w-[200px]">
-          <Lottie animationData={lottieFile} loop={true} />
-        </div>
+        <motion.div
+          initial="hidden"
+          whileInView="visible"
+          variants={leftVanVariant}
+          viewport={{ once: true, amount: 0.1 }}
+          className="absolute -bottom-7 left-20 z-[2] h-[200px] w-[230px]"
+        >
+          <Lottie animationData={surfVan} loop={true} />
+        </motion.div>
       </section>
 
       {/* grid */}

@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
+import { Link } from "react-router-dom";
 import { useSelector } from "react-redux";
 import { IRootState } from "../store";
 import {
@@ -10,6 +11,10 @@ import {
 } from "../utils";
 import jellyfish from "../assets/icons/jellyfish.svg";
 import LoadingSmall from "./LoadingSmall";
+import surfBoy from "../assets/lotties/surf-boy.json";
+
+// lottie-react
+import Lottie from "lottie-react";
 
 // react icons
 import { FaStar } from "react-icons/fa";
@@ -19,6 +24,7 @@ import { db } from "../main";
 import { doc, getDoc, DocumentData } from "firebase/firestore";
 
 // shadcn
+import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 
 const ArticlesCollectionContainer: React.FC = () => {
@@ -94,16 +100,36 @@ const ArticlesCollectionContainer: React.FC = () => {
         </div>
       </div>
 
-      {/* {(isArticleLoading || !articlesList) && (
-        <div className="grid w-full gap-8 md:grid-cols-2 lg:grid-cols-3">
-          <div className="skeleton h-[360px] rounded-lg"></div>
+      {(isArticleLoading || !articlesList) && (
+        <div className="mt-11">
+          <LoadingSmall />
         </div>
-      )} */}
-
-      {(isArticleLoading || !articlesList) && <LoadingSmall />}
+      )}
 
       {!isArticleLoading && articlesList && articlesList.length < 1 && (
-        <h3>尚未收藏任何文章...</h3>
+        <div className="flex gap-4">
+          <div
+            className="h-[180px] w-[180px]"
+            style={{ transform: "scaleX(-1)" }}
+          >
+            <Lottie animationData={surfBoy} loop={true} />
+          </div>
+
+          <div className="mt-5">
+            <div className="font-sriracha">
+              <h3>No any collection yet?</h3>
+              <p>Explore some stories now!</p>
+            </div>
+
+            <div className="mt-2">
+              <Link to="/articles">
+                <Button variant={"pink-hipster"} size={"xs"}>
+                  Surfing Blog
+                </Button>
+              </Link>
+            </div>
+          </div>
+        </div>
       )}
 
       {!isArticleLoading && (
@@ -124,7 +150,7 @@ const ArticlesCollectionContainer: React.FC = () => {
               return (
                 <Card
                   key={id}
-                  className="shadow-xs relative flex flex-grow duration-300 hover:cursor-pointer hover:shadow-lg"
+                  className="relative flex flex-grow shadow-xs duration-300 hover:cursor-pointer hover:shadow-lg"
                   onClick={() => articleHandler(id)}
                 >
                   <CardContent className="flex h-full w-full flex-col">
@@ -145,11 +171,11 @@ const ArticlesCollectionContainer: React.FC = () => {
 
                       <div className="mt-auto">
                         <div className="flex gap-1">
-                          <span className="bg-green rounded-lg px-2 py-1 text-xs tracking-wide text-white">
+                          <span className="rounded-lg bg-green px-2 py-1 text-xs tracking-wide text-white">
                             {changeTagName(tag)}
                           </span>
 
-                          <span className="bg-orange rounded-lg px-2 py-1  text-xs tracking-wide  text-white">
+                          <span className="rounded-lg bg-orange px-2 py-1  text-xs tracking-wide  text-white">
                             {changeSpotName(surfingSpot)}
                           </span>
                         </div>

@@ -1,15 +1,21 @@
 import React, { useEffect, useState } from "react";
+import { Link } from "react-router-dom";
 import { useNavigate } from "react-router-dom";
 import { useSelector } from "react-redux";
 import { IRootState } from "../store";
 import coconut from "../assets/icons/coconut.svg";
 import LoadingSmall from "./LoadingSmall";
+import surfBoy from "../assets/lotties/surf-boy.json";
+
+// lottie-react
+import Lottie from "lottie-react";
 
 // firebase
 import { db } from "../main";
 import { doc, getDoc, DocumentData } from "firebase/firestore";
 
 // shadcn
+import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 
 const ForeignSpotsCollectionContainer: React.FC = () => {
@@ -87,20 +93,40 @@ const ForeignSpotsCollectionContainer: React.FC = () => {
         </div>
       </div>
 
-      {/* {(isForeignLoading || !foreignSpotsList) && (
-        <div className="mt-10 grid gap-x-12 md:grid-cols-2 lg:grid-cols-3">
-          <div className="skeleton h-[268px] rounded-lg"></div>
+      {(isForeignLoading || !foreignSpotsList) && (
+        <div className="mt-11">
+          <LoadingSmall />
         </div>
-      )} */}
-
-      {(isForeignLoading || !foreignSpotsList) && <LoadingSmall />}
+      )}
 
       {!isForeignLoading && foreignSpotsList && foreignSpotsList.length < 1 && (
-        <h3 className="mt-10">尚未收藏浪點...</h3>
+        <div className="flex gap-4">
+          <div
+            className="h-[180px] w-[180px]"
+            style={{ transform: "scaleX(-1)" }}
+          >
+            <Lottie animationData={surfBoy} loop={true} />
+          </div>
+
+          <div className="mt-5">
+            <div className="font-sriracha">
+              <h3>No any collection yet?</h3>
+              <p>Explore some spots now!</p>
+            </div>
+
+            <div className="mt-2">
+              <Link to="/foreign-spots">
+                <Button variant={"pink-hipster"} size={"xs"}>
+                  Foreign Spots
+                </Button>
+              </Link>
+            </div>
+          </div>
+        </div>
       )}
 
       {!isForeignLoading && (
-        <div className="mt-10 grid gap-x-12 gap-y-10 md:grid-cols-2 lg:grid-cols-3">
+        <div className="grid gap-x-12 gap-y-10 md:grid-cols-2 lg:grid-cols-3">
           {foreignSpotsList &&
             foreignSpotsList.length > 0 &&
             foreignSpotsList.map((spot) => {
@@ -108,7 +134,7 @@ const ForeignSpotsCollectionContainer: React.FC = () => {
               return (
                 <Card
                   key={id}
-                  className="shadow-xs relative flex flex-grow border-none duration-300 hover:cursor-pointer hover:shadow-lg"
+                  className="relative flex flex-grow border-none shadow-xs duration-300 hover:cursor-pointer hover:shadow-lg"
                   onClick={() => spotHandler(country.eng, id)}
                 >
                   <CardContent className="group relative h-[268px]">

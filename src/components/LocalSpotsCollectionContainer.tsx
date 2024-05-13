@@ -1,9 +1,14 @@
 import React, { useEffect, useState } from "react";
+import { Link } from "react-router-dom";
 import { useNavigate } from "react-router-dom";
 import { useSelector } from "react-redux";
 import { IRootState } from "../store";
 import beachUmbrella from "../assets/icons/beach-umbrella.svg";
 import LoadingSmall from "./LoadingSmall";
+import surfBoy from "../assets/lotties/surf-boy.json";
+
+// lottie-react
+import Lottie from "lottie-react";
 
 // react-icons
 import { FaStar } from "react-icons/fa";
@@ -13,6 +18,7 @@ import { db } from "../main";
 import { doc, getDoc, DocumentData } from "firebase/firestore";
 
 // shadcn
+import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 
 const LocalSpotsCollectionContainer: React.FC = () => {
@@ -90,16 +96,36 @@ const LocalSpotsCollectionContainer: React.FC = () => {
         </div>
       </div>
 
-      {/* {(isLocalLoading || !localSpotsList) && (
-        <div className="grid gap-x-12 md:grid-cols-2 lg:grid-cols-3">
-          <div className="skeleton h-[268px] rounded-lg"></div>
+      {(isLocalLoading || !localSpotsList) && (
+        <div className="mt-11">
+          <LoadingSmall />
         </div>
-      )} */}
-
-      {(isLocalLoading || !localSpotsList) && <LoadingSmall />}
+      )}
 
       {!isLocalLoading && localSpotsList && localSpotsList.length < 1 && (
-        <h3>尚未收藏浪點...</h3>
+        <div className="flex gap-4">
+          <div
+            className="h-[180px] w-[180px]"
+            style={{ transform: "scaleX(-1)" }}
+          >
+            <Lottie animationData={surfBoy} loop={true} />
+          </div>
+
+          <div className="mt-5">
+            <div className="font-sriracha">
+              <h3>No any collection yet?</h3>
+              <p>Explore some spots now!</p>
+            </div>
+
+            <div className="mt-2">
+              <Link to="/local-spots">
+                <Button variant={"turquoise-hipster"} size={"xs"}>
+                  Local Spots
+                </Button>
+              </Link>
+            </div>
+          </div>
+        </div>
       )}
 
       {!isLocalLoading && (
@@ -111,7 +137,7 @@ const LocalSpotsCollectionContainer: React.FC = () => {
               return (
                 <Card
                   key={id}
-                  className="shadow-xs group relative flex flex-grow duration-300 hover:cursor-pointer hover:shadow-lg"
+                  className="group relative flex flex-grow shadow-xs duration-300 hover:cursor-pointer hover:shadow-lg"
                   onClick={() => spotHandler(name.eng, id)}
                 >
                   <CardContent className="flex h-full w-full flex-col">
