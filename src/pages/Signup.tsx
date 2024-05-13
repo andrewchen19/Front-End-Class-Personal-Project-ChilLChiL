@@ -34,7 +34,9 @@ const Signup: React.FC = () => {
     e.preventDefault();
 
     // regex
-    const passwordRegex = /^(?=.*[1-9a-zA-Z])[1-9a-zA-Z]{6,}$/;
+    const passwordRegex = /^(?=.*[0-9a-zA-Z])[0-9a-zA-Z]{6,}$/;
+
+    // console.log(passwordRegex.test(password));
 
     if (!passwordRegex.test(password)) {
       toast.error(
@@ -79,7 +81,6 @@ const Signup: React.FC = () => {
     } catch (error) {
       if (error instanceof FirebaseError) {
         const errorCode = error.code;
-        console.log(errorCode);
 
         if (!errorCode) return;
 
