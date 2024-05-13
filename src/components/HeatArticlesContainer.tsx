@@ -1,11 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import {
-  formatTime,
-  changeSpotName,
-  changeTagName,
-  htmlToPlainText,
-} from "../utils";
+import { formatTime, changeSpotName, changeTagName } from "../utils";
 import fire from "../assets/icons/fire.svg";
 
 // react icons
@@ -24,13 +19,6 @@ import {
 } from "firebase/firestore";
 
 // shadcn
-import {
-  Carousel,
-  CarouselContent,
-  CarouselItem,
-  CarouselNext,
-  CarouselPrevious,
-} from "@/components/ui/carousel";
 import { Card, CardContent } from "@/components/ui/card";
 
 const HeatArticlesContainer: React.FC = () => {

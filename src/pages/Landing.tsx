@@ -7,6 +7,10 @@ import coverImage from "../assets/images/landing-cover.jpg";
 import grid1Image from "../assets/images/landing-grid1.jpg";
 import grid2Image from "../assets/images/landing-grid2.jpg";
 import spinText from "../assets/icons/spin-text.svg";
+import lottieFile from "../assets/lotties/surf-boy.json";
+
+// lottie-react
+import Lottie from "lottie-react";
 
 // shadcn
 import { Button } from "@/components/ui/button";
@@ -97,7 +101,7 @@ const Landing: React.FC = () => {
     <>
       {/* scroll bar */}
       <motion.div
-        className="bg-pink-red fixed left-0 right-0 top-0 z-20 h-[5px] origin-left"
+        className="fixed left-0 right-0 top-0 z-[900] h-[5px] origin-left bg-pink-red"
         style={{ scaleX }}
       />
 
@@ -149,7 +153,6 @@ const Landing: React.FC = () => {
           </motion.div>
         </div>
       </section> */}
-
       <section
         className="relative"
         style={{ height: "calc(100vh - 56px)", width: "100%" }}
@@ -231,7 +234,7 @@ const Landing: React.FC = () => {
 
       {/* intro */}
       <section className="relative bg-white">
-        <div className="relative z-[3] mx-auto flex w-[90%] max-w-5xl flex-col py-40">
+        <div className="relative mx-auto flex w-[90%] max-w-5xl flex-col py-40">
           <motion.h2
             initial="hidden"
             whileInView="visible"
@@ -273,6 +276,7 @@ const Landing: React.FC = () => {
           </motion.p>
         </div>
 
+        {/* spinner circle */}
         <motion.div
           initial="hidden"
           whileInView="visible"
@@ -288,6 +292,10 @@ const Landing: React.FC = () => {
             className="animate-spin-slow text-turquoise"
           />
         </motion.div>
+
+        <div className="absolute bottom-0 left-24 z-[2] h-[200px] w-[200px]">
+          <Lottie animationData={lottieFile} loop={true} />
+        </div>
       </section>
 
       {/* grid */}
