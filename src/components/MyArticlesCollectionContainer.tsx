@@ -167,7 +167,7 @@ const MyArticlesCollectionContainer: React.FC = () => {
                       </p>
 
                       <div className="mt-auto">
-                        <div className="flex gap-1">
+                        <div className="flex gap-2">
                           <span className="rounded-lg bg-green px-2 py-1 text-xs tracking-wide text-white">
                             {changeTagName(tag)}
                           </span>

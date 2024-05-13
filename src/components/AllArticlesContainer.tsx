@@ -496,72 +496,6 @@ const AllArticlesContainer: React.FC = () => {
       )}
 
       {/* grid layout */}
-      {/* {!isArticleLoading && layout === "grid" && (
-        <div className="grid gap-x-8 gap-y-10 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
-          {articlesList &&
-            articlesList.length > 0 &&
-            articlesList.map((article) => {
-              const {
-                id,
-                cover,
-                surfingSpot,
-                title,
-                likes_amount,
-                tag,
-                created_at,
-                content,
-              } = article;
-              return (
-                <Card
-                  key={id}
-                  className="shadow-xs relative flex flex-grow duration-300 hover:cursor-pointer hover:shadow-lg"
-                  onClick={() => articleHandler(id)}
-                >
-                  <CardContent className="flex h-full w-full flex-col">
-                    <img
-                      src={cover}
-                      alt={surfingSpot}
-                      className="h-[150px] w-full object-cover object-center"
-                    />
-                    <div className="flex flex-grow flex-col p-3">
-                      <h3 className="text-xl font-semibold capitalize">
-                        {title}
-                      </h3>
-
-                      <p className="mb-5 mt-3 line-clamp-3 text-base text-gray-600">
-                        {htmlToPlainText(content)}
-                      </p>
-
-                      <div className="mt-auto">
-                        <div className="flex gap-2">
-                          <span className="bg-green rounded-lg px-2 py-1 text-xs tracking-wide text-white">
-                            {changeTagName(tag)}
-                          </span>
-
-                          <span className="bg-orange rounded-lg px-2 py-1 text-xs tracking-wide text-white">
-                            {changeSpotName(surfingSpot)}
-                          </span>
-                        </div>
-
-                        <div className="mt-1 flex items-center justify-between">
-                          <p className="text-xs text-gray-500">
-                            {formatTime(created_at)}
-                          </p>
-
-                          <div className="flex items-center gap-1">
-                            <FaStar className=" text-yellow" />
-                            <span>{likes_amount}</span>
-                          </div>
-                        </div>
-                      </div>
-                    </div>
-                  </CardContent>
-                </Card>
-              );
-            })}
-        </div>
-      )} */}
-
       {!isArticleLoading && layout === "grid" && (
         <div className="grid gap-x-8 gap-y-10 md:grid-cols-2 lg:grid-cols-3">
           {articlesList &&
@@ -583,11 +517,14 @@ const AllArticlesContainer: React.FC = () => {
                   className="relative flex flex-grow rounded-none border-none"
                 >
                   <CardContent className="flex h-full w-full flex-col">
-                    <div className="relative">
+                    <div
+                      className="relative hover:cursor-pointer"
+                      onClick={() => articleHandler(id)}
+                    >
                       <img
                         src={cover}
                         alt={surfingSpot}
-                        className="h-[230px] w-full rounded-lg object-cover object-center"
+                        className="h-[230px] w-full rounded-lg object-cover object-center "
                       />
 
                       <div className="absolute inset-0 flex items-center justify-center px-10">

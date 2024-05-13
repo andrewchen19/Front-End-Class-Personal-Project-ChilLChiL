@@ -39,7 +39,7 @@ const HeatArticlesContainer: React.FC = () => {
       articlesCollectionRef,
       where("isDeleted", "!=", true),
       orderBy("likes_amount", "desc"),
-      limit(6),
+      limit(5),
     );
 
     const querySnapshot = await getDocs(q);
@@ -76,8 +76,8 @@ const HeatArticlesContainer: React.FC = () => {
       {(isArticleLoading || !articlesList) && (
         <div className="flex w-full gap-8">
           <div className="skeleton h-[240px] w-1/3 rounded-lg"></div>
-          <div className="skeleton  h-[512px] w-1/3 rounded-lg"></div>
-          <div className="skeleton  h-[240px] w-1/3 rounded-lg"></div>
+          <div className="skeleton h-[512px] w-1/3 rounded-lg"></div>
+          <div className="skeleton h-[240px] w-1/3 rounded-lg"></div>
         </div>
       )}
 
@@ -169,69 +169,6 @@ const HeatArticlesContainer: React.FC = () => {
 
       {!isArticleLoading && articlesList && articlesList.length > 0 && (
         <div className="w-full">
-          {/* {articlesList.map((article) => {
-            const {
-              id,
-              cover,
-              surfingSpot,
-              title,
-              likes_amount,
-              tag,
-              created_at,
-              content,
-            } = article;
-            return (
-              <div
-                key={id}
-                className="flex flex-grow hover:cursor-pointer md:basis-1/2 lg:basis-1/3"
-                onClick={() => articleHandler(id)}
-              >
-                <Card className="flex flex-grow border-gray-900">
-                  <CardContent className="flex h-full w-full flex-col">
-                    <img
-                      src={cover}
-                      alt={surfingSpot}
-                      className="h-[150px] w-full object-cover object-center"
-                    />
-
-                    <div className="flex flex-grow flex-col p-3">
-                      <h3 className="text-xl font-semibold capitalize">
-                        {title}
-                      </h3>
-
-                      <p className="mb-5 mt-3 line-clamp-3 text-base text-gray-600">
-                        {htmlToPlainText(content)}
-                      </p>
-
-                      <div className="mt-auto">
-                        <div className="flex gap-2">
-                          <span className="bg-green rounded-lg px-2 py-1 text-xs tracking-wide text-white">
-                            {changeTagName(tag)}
-                          </span>
-
-                          <span className="bg-orange rounded-lg px-2 py-1 text-xs tracking-wide text-white">
-                            {changeSpotName(surfingSpot)}
-                          </span>
-                        </div>
-
-                        <div className="mt-1 flex items-center justify-between">
-                          <p className="text-xs text-gray-500">
-                            {formatTime(created_at)}
-                          </p>
-
-                          <div className="flex items-center gap-1">
-                            <FaStar className=" text-yellow" />
-                            <span>{likes_amount}</span>
-                          </div>
-                        </div>
-                      </div>
-                    </div>
-                  </CardContent>
-                </Card>
-              </div>
-            );
-          })} */}
-
           <div className="flex gap-8">
             <div className="flex w-1/3 flex-col gap-8">
               <div

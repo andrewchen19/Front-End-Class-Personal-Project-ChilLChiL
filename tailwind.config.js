@@ -103,11 +103,11 @@ module.exports = {
         olive: "#888D54",
         green: {
           fluorescent: "#76E694",
-          DEFAULT: "#0F4C3A",
+          DEFAULT: "#255359",
           bright: "#0BD674",
         },
         orange: {
-          DEFAULT: "#e68600",
+          DEFAULT: "#EB6F2B",
           bright: "#ff9500",
         },
         carrot: "#FF4742",
