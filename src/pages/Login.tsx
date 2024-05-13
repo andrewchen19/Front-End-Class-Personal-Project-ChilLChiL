@@ -9,15 +9,18 @@ import loginImg from "../assets/images/login.jpg";
 import { db } from "../main";
 import { getAuth, signInWithEmailAndPassword } from "firebase/auth";
 import { query, collection, where, getDocs } from "firebase/firestore";
+import { FirebaseError } from "@firebase/util";
 
 // shadcn
 import { Button } from "@/components/ui/button";
+import { Loader2 } from "lucide-react";
 import { Label } from "@/components/ui/label";
 import { Input } from "@/components/ui/input";
 
 const Login: React.FC = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [isLoading, setIsLoading] = useState<boolean>(false);
 
   const navigate = useNavigate();
   const dispatch = useDispatch();
@@ -36,7 +39,9 @@ const Login: React.FC = () => {
     }
   }
 
-  const submitHandler = (e: FormEvent<HTMLFormElement>): void => {
+  const submitHandler = async (
+    e: FormEvent<HTMLFormElement>,
+  ): Promise<void> => {
     e.preventDefault();
 
     if (!email || !password) {
@@ -44,19 +49,25 @@ const Login: React.FC = () => {
       return;
     }
 
-    // sign in with firebase authentication
-    const auth = getAuth();
-    signInWithEmailAndPassword(auth, email, password)
-      .then((userCredential) => {
-        // Signed in
-        const user = userCredential.user;
+    setIsLoading(true);
 
-        if (user) {
-          const id = user.uid;
-          getUserFromFirebase(id);
-        }
-      })
-      .catch((error) => {
+    // sign in with firebase authentication
+    try {
+      const auth = getAuth();
+      const userCredential = await signInWithEmailAndPassword(
+        auth,
+        email,
+        password,
+      );
+      // Signed in
+      const user = userCredential.user;
+
+      if (user) {
+        const id = user.uid;
+        await getUserFromFirebase(id);
+      }
+    } catch (error) {
+      if (error instanceof FirebaseError) {
         const errorCode = error.code;
 
         if (!errorCode) return;
@@ -64,7 +75,10 @@ const Login: React.FC = () => {
         if (errorCode.includes("invalid-credential")) {
           toast.error("Invalid Credential 😵");
         }
-      });
+      }
+    }
+
+    setIsLoading(false);
   };
 
   return (
@@ -112,7 +126,10 @@ const Login: React.FC = () => {
             </div>
 
             <Button type="submit" size={"xl"} className="w-full">
-              Login
+              {isLoading ? (
+                <Loader2 className="mr-1 h-3 w-3 animate-spin" />
+              ) : null}
+              {isLoading ? "Loading" : "Login"}
             </Button>
           </div>
 

@@ -55,19 +55,19 @@ const bottomVariant: Variants = {
 };
 const delayBottomVariant: Variants = {
   hidden: { opacity: 0, y: "30px" },
-  visible: { opacity: 1, y: 0, transition: { delay: 1.5, duration: 1.5 } },
+  visible: { opacity: 1, y: 0, transition: { delay: 1.2, duration: 1.5 } },
 };
 const left2Variant: Variants = {
-  hidden: { x: "-7vw" },
-  visible: { x: 0, transition: { duration: 2 } },
+  hidden: { opacity: 0, x: "-7vw" },
+  visible: { opacity: 1, x: 0, transition: { duration: 2 } },
 };
 const right2Variant: Variants = {
-  hidden: { x: "7vw" },
-  visible: { x: 0, transition: { duration: 2 } },
+  hidden: { opacity: 0, x: "7vw" },
+  visible: { opacity: 1, x: 0, transition: { duration: 2 } },
 };
 const topVariant: Variants = {
-  hidden: { y: "-10vh" },
-  visible: { y: 0, transition: { duration: 1.5 } },
+  hidden: { opacity: 0, y: "-10vh" },
+  visible: { opacity: 1, y: 0, transition: { delay: 0.2, duration: 1.8 } },
 };
 const spinnerCenterVariant: Variants = {
   hidden: { opacity: 0, scale: 0.3 },
@@ -77,7 +77,7 @@ const spinnerCenterVariant: Variants = {
     transition: { type: "spring", bounce: 0.2, duration: 2, delay: 1 },
   },
 };
-const delayVariant: Variants = {
+const delayVideoVariant: Variants = {
   hidden: { opacity: 0 },
   visible: { opacity: 1, transition: { delay: 1.5, duration: 1.5 } },
 };
@@ -157,7 +157,7 @@ const Landing: React.FC = () => {
         <motion.div
           initial="hidden"
           whileInView="visible"
-          variants={delayVariant}
+          variants={delayVideoVariant}
           viewport={{ once: true }}
         >
           <VideoContainer />

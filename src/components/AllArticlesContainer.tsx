@@ -480,9 +480,14 @@ const AllArticlesContainer: React.FC = () => {
         </div>
       </form>
 
-      {(isArticleLoading || !articlesList) && (
+      {(isArticleLoading || !articlesList) && layout === "grid" && (
         <div className="grid w-full gap-8 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
           <div className="skeleton h-[360px] rounded-lg"></div>
+        </div>
+      )}
+      {(isArticleLoading || !articlesList) && layout === "list" && (
+        <div className="grid w-full">
+          <div className="skeleton h-[190px] rounded-lg"></div>
         </div>
       )}
 
@@ -491,7 +496,7 @@ const AllArticlesContainer: React.FC = () => {
       )}
 
       {/* grid layout */}
-      {!isArticleLoading && layout === "grid" && (
+      {/* {!isArticleLoading && layout === "grid" && (
         <div className="grid gap-x-8 gap-y-10 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
           {articlesList &&
             articlesList.length > 0 &&
@@ -555,6 +560,93 @@ const AllArticlesContainer: React.FC = () => {
               );
             })}
         </div>
+      )} */}
+
+      {!isArticleLoading && layout === "grid" && (
+        <div className="grid gap-x-8 gap-y-10 md:grid-cols-2 lg:grid-cols-3">
+          {articlesList &&
+            articlesList.length > 0 &&
+            articlesList.map((article) => {
+              const {
+                id,
+                cover,
+                surfingSpot,
+                title,
+                likes_amount,
+                tag,
+                created_at,
+                content,
+              } = article;
+              return (
+                <Card
+                  key={id}
+                  className="relative flex flex-grow rounded-none border-none"
+                >
+                  <CardContent className="flex h-full w-full flex-col">
+                    <div className="relative">
+                      <img
+                        src={cover}
+                        alt={surfingSpot}
+                        className="h-[230px] w-full rounded-lg object-cover object-center"
+                      />
+
+                      <div className="absolute inset-0 flex items-center justify-center px-10">
+                        <div
+                          className="mx-auto "
+                          style={{ backgroundColor: "rgba(255,255,255,0.8)" }}
+                        >
+                          <div className="p-2 text-center shadow-lg">
+                            <h3 className="text-xl font-semibold capitalize">
+                              {title}
+                            </h3>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+
+                    <div className="flex flex-grow flex-col pt-3">
+                      <div className="mb-3 flex flex-col gap-2">
+                        <p className="line-clamp-3 text-base text-gray-600">
+                          {htmlToPlainText(content)}
+                        </p>
+                        <div>
+                          <span
+                            className="relative border-b-clay-red text-clay-red hover:cursor-pointer hover:border-b"
+                            onClick={() => articleHandler(id)}
+                          >
+                            Continue Reading
+                          </span>
+                        </div>
+                      </div>
+
+                      <div className="mt-auto">
+                        <div className="flex gap-2">
+                          <span className="rounded-lg bg-gray-200 px-2 py-1 text-xs font-semibold tracking-wide text-gray-700">
+                            {changeTagName(tag)}
+                          </span>
+
+                          <span className="rounded-lg bg-gray-200 px-2 py-1 text-xs font-semibold tracking-wide text-gray-700">
+                            {changeSpotName(surfingSpot)}
+                          </span>
+                        </div>
+
+                        <div className="mt-1 flex items-center justify-between">
+                          <p className="text-xs text-gray-700">
+                            {formatTime(created_at)}
+                          </p>
+
+                          <div className="flex items-center gap-1">
+                            <FaStar className=" text-yellow" />
+                            <span>{likes_amount}</span>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </CardContent>
+                </Card>
+              );
+            })}
+        </div>
       )}
 
       {/* list layout */}
@@ -600,11 +692,11 @@ const AllArticlesContainer: React.FC = () => {
 
                     <div className="mt-5 flex items-center">
                       <div className="flex gap-2">
-                        <span className="bg-green  rounded-lg px-[6px] py-1 text-xs tracking-wide text-white">
+                        <span className="rounded-lg  bg-green px-[6px] py-1 text-xs tracking-wide text-white">
                           {changeTagName(tag)}
                         </span>
 
-                        <span className="bg-orange rounded-lg px-[6px] py-1 text-xs tracking-wide text-white">
+                        <span className="rounded-lg bg-orange px-[6px] py-1 text-xs tracking-wide text-white">
                           {changeSpotName(surfingSpot)}
                         </span>
                       </div>

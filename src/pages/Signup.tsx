@@ -8,9 +8,11 @@ import signupImg from "../assets/images/signup.jpg";
 import { db } from "../main";
 import { getAuth, createUserWithEmailAndPassword } from "firebase/auth";
 import { doc, setDoc } from "firebase/firestore";
+import { FirebaseError } from "@firebase/util";
 
 // shadcn
 import { Button } from "@/components/ui/button";
+import { Loader2 } from "lucide-react";
 import { Label } from "@/components/ui/label";
 import { Input } from "@/components/ui/input";
 
@@ -18,6 +20,7 @@ const Signup: React.FC = () => {
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [isLoading, setIsLoading] = useState<boolean>(false);
 
   const navigate = useNavigate();
 
@@ -25,7 +28,9 @@ const Signup: React.FC = () => {
     await setDoc(doc(db, "users", userInfo.id), userInfo);
   };
 
-  const submitHandler = (e: FormEvent<HTMLFormElement>): void => {
+  const submitHandler = async (
+    e: FormEvent<HTMLFormElement>,
+  ): Promise<void> => {
     e.preventDefault();
 
     // regex
@@ -38,35 +43,41 @@ const Signup: React.FC = () => {
       return;
     }
 
+    setIsLoading(true);
+
     // sign up with firebase authentication
-    const auth = getAuth();
-    createUserWithEmailAndPassword(auth, email, password)
-      .then((userCredential) => {
-        // Signed up
-        const user = userCredential.user;
+    try {
+      const auth = getAuth();
+      const userCredential = await createUserWithEmailAndPassword(
+        auth,
+        email,
+        password,
+      );
+      // Signed up
+      const user = userCredential.user;
 
-        if (user) {
-          const id = user.uid;
-          const userInfo = {
-            id,
-            name,
-            email,
-            profile_picture:
-              "https://firebasestorage.googleapis.com/v0/b/chillchill-9a1e2.appspot.com/o/default_avatar%2Fmen1.png?alt=media&token=a991ddf6-2639-4617-97c7-0b9d3a2b6cba",
-            theme: "light",
-            articlesCollection: [],
-            localSpotsCollection: [],
-            foreignSpotsCollection: [],
-          };
-          addDocToFirebase(userInfo);
-        }
+      if (user) {
+        const id = user.uid;
+        const userInfo = {
+          id,
+          name,
+          email,
+          profile_picture:
+            "https://firebasestorage.googleapis.com/v0/b/chillchill-9a1e2.appspot.com/o/default_avatar%2Fmen1.png?alt=media&token=a991ddf6-2639-4617-97c7-0b9d3a2b6cba",
+          theme: "light",
+          articlesCollection: [],
+          localSpotsCollection: [],
+          foreignSpotsCollection: [],
+        };
+        await addDocToFirebase(userInfo);
+      }
 
-        toast.success("Sign up successfully 😎");
-        setTimeout(() => {
-          navigate("/log-in");
-        }, 800);
-      })
-      .catch((error) => {
+      toast.success("Sign up successfully 😎");
+      setTimeout(() => {
+        navigate("/log-in");
+      }, 800);
+    } catch (error) {
+      if (error instanceof FirebaseError) {
         const errorCode = error.code;
         console.log(errorCode);
 
@@ -83,7 +94,10 @@ const Signup: React.FC = () => {
         // if (errorCode.includes("weak-password")) {
         //   toast.error("Password should be at least 6 characters 😵");
         // }
-      });
+      }
+    }
+
+    setIsLoading(false);
   };
 
   return (
@@ -115,7 +129,7 @@ const Signup: React.FC = () => {
               {name.length > 20 && (
                 <small
                   id="nameHelp"
-                  className="text-red absolute -bottom-[20px] left-0"
+                  className="absolute -bottom-[20px] left-0 text-red"
                 >
                   Limit to 20 characters
                 </small>
@@ -151,7 +165,7 @@ const Signup: React.FC = () => {
               {password.length < 6 && (
                 <small
                   id="passwordHelp"
-                  className="text-red absolute -bottom-[20px] left-0"
+                  className="absolute -bottom-[20px] left-0 text-red"
                 >
                   Must be at least 6 characters
                 </small>
@@ -170,7 +184,10 @@ const Signup: React.FC = () => {
                 password.length < 6
               }
             >
-              Sign up
+              {isLoading ? (
+                <Loader2 className="mr-1 h-3 w-3 animate-spin" />
+              ) : null}
+              {isLoading ? "Loading" : "Sign up"}
             </Button>
           </div>
 

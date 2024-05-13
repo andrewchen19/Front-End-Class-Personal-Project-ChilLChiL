@@ -8,6 +8,7 @@ import {
   openUnsplash,
   setCover,
   resetCover,
+  setPhotographer,
 } from "../features/article/articleSlice";
 import { IRootState } from "../store";
 
@@ -136,12 +137,19 @@ const EditArticle: React.FC = () => {
       const docSnap = await getDoc(docRef);
 
       if (docSnap.exists()) {
-        setArticle(docSnap.data());
-        setTitle(docSnap.data().title);
-        setTag(docSnap.data().tag);
-        setSurfingSpot(docSnap.data().surfingSpot);
-        setContent(docSnap.data().content);
-        dispatch(setCover(docSnap.data().cover));
+        const article = docSnap.data();
+        setArticle(article);
+        setTitle(article.title);
+        setTag(article.tag);
+        setSurfingSpot(article.surfingSpot);
+        setContent(article.content);
+        dispatch(setCover(article.cover));
+        dispatch(
+          setPhotographer({
+            link: article.photographerLink,
+            name: article.photographerName,
+          }),
+        );
       }
     } catch (error) {
       console.log(error);
