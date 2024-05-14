@@ -16,7 +16,7 @@ const Header: React.FC = () => {
   const logoutHandler = () => {
     dispatch(removeUser());
     toast.success("Log out Successfully 😎");
-    navigate("/");
+    navigate("/log-in");
   };
 
   return (

@@ -57,7 +57,7 @@ const MenuItem: React.FC<MenuItemProps> = ({ id, title, url }) => {
     dispatch(closeSidebar());
     dispatch(closeNavigation());
     dispatch(removeUser());
-    navigate("/");
+    navigate("/log-in");
     toast.success("Log out Successfully 😎");
   };
 

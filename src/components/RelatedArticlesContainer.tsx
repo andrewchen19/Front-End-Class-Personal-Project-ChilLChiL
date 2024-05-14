@@ -40,7 +40,7 @@ const RelatedArticlesContainer: React.FC = () => {
   const navigate = useNavigate();
 
   const plugin = React.useRef(
-    Autoplay({ delay: 4000, stopOnInteraction: false, stopOnMouseEnter: true }),
+    Autoplay({ delay: 3500, stopOnInteraction: false, stopOnMouseEnter: true }),
   );
 
   const [isArticleLoading, setIsArticleLoading] = useState<boolean>(false);
@@ -150,11 +150,11 @@ const RelatedArticlesContainer: React.FC = () => {
 
                         <div className="mt-auto">
                           <div className="flex gap-2">
-                            <span className="bg-green rounded-lg px-2 py-1 text-xs tracking-wide text-white">
+                            <span className="rounded-lg bg-green px-2 py-1 text-xs tracking-wide text-white">
                               {changeTagName(tag)}
                             </span>
 
-                            <span className="bg-orange rounded-lg px-2 py-1 text-xs tracking-wide text-white">
+                            <span className="rounded-lg bg-orange px-2 py-1 text-xs tracking-wide text-white">
                               {changeSpotName(surfingSpot)}
                             </span>
                           </div>
