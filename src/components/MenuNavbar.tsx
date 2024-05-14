@@ -1,10 +1,13 @@
 import React from "react";
 import { useRef } from "react";
-import { motion } from "framer-motion";
-import { useDimensions } from "../utils/useDimensions";
-import MenuToggle from "./MenuToggle";
 import { useSelector } from "react-redux";
 import { IRootState } from "../store";
+import MenuToggle from "./MenuToggle";
+import MenuNavigation from "./MenuNavigation";
+
+// framer motion
+import { motion } from "framer-motion";
+import { useDimensions } from "../utils/useDimensions";
 
 const sidebar = {
   open: (height = 1000) => ({
@@ -38,13 +41,14 @@ const MenuNavbar: React.FC = () => {
       animate={isSideBarOpen ? "open" : "closed"}
       custom={height}
       ref={containerRef}
-      className={`absolute -top-[41px] bottom-0 left-0`}
+      className="absolute -top-[41px] bottom-0 left-0"
     >
       <motion.div
-        className={`fixed inset-0 h-full w-full bg-clay-red`}
+        className={`fixed inset-0 h-full w-full bg-turquoise`}
         variants={sidebar}
       />
       <MenuToggle />
+      <MenuNavigation />
     </motion.nav>
   );
 };

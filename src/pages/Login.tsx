@@ -125,7 +125,12 @@ const Login: React.FC = () => {
               />
             </div>
 
-            <Button type="submit" size={"xl"} className="w-full">
+            <Button
+              type="submit"
+              size={"xl"}
+              className="w-full"
+              disabled={isLoading}
+            >
               {isLoading ? (
                 <Loader2 className="mr-1 h-3 w-3 animate-spin" />
               ) : null}

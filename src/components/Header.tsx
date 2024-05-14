@@ -4,7 +4,6 @@ import { useDispatch, useSelector } from "react-redux";
 import { IRootState } from "../store";
 import { removeUser } from "../features/user/userSlice";
 import { toast } from "react-toastify";
-// import { MenuNavbar } from "../components";
 
 // shadcn
 import { Button } from "@/components/ui/button";
@@ -98,7 +97,7 @@ const Header: React.FC = () => {
       {user ? (
         <div className="absolute right-7">
           <div className="flex items-center gap-5">
-            <div className="font-fashioncountry text-sm tracking-wider">
+            <div className="mt-1 font-fashioncountry text-base leading-4 tracking-wider">
               Aloha !! {user.name}
             </div>
 
@@ -114,10 +113,6 @@ const Header: React.FC = () => {
           </NavLink>
         </div>
       )}
-
-      {/* <div className="absolute z-[999]">
-        <MenuNavbar />
-      </div> */}
     </header>
   );
 };

@@ -5,6 +5,7 @@ import { useSelector } from "react-redux";
 import { IRootState } from "../store";
 import { WhenToScore } from "../types";
 import { ReadMore, Loading } from "../components";
+import { splitStringUsingRegex } from "../utils";
 
 // react-icons & icons
 import { FaQuoteLeft, FaQuoteRight, FaRegIdCard } from "react-icons/fa";
@@ -24,7 +25,29 @@ import { db } from "../main";
 import { doc, getDoc, updateDoc, DocumentData } from "firebase/firestore";
 
 // framer motion
-import { motion } from "framer-motion";
+import { motion, Variants } from "framer-motion";
+const quoteVariants: Variants = {
+  hidden: { opacity: 0 },
+  visible: { opacity: 1 },
+};
+const popVariant: Variants = {
+  hidden: { opacity: 0, scale: 0.3 },
+  visible: {
+    opacity: 1,
+    scale: 1,
+    transition: { type: "spring", bounce: 0.2, duration: 2 },
+  },
+};
+const bottomVariant = (id: number): Variants => {
+  return {
+    hidden: { opacity: 0, y: "20px" },
+    visible: {
+      opacity: 1,
+      y: 0,
+      transition: { duration: 0.8, delay: id * 0.3 },
+    },
+  };
+};
 
 // shadcn
 import { Button } from "@/components/ui/button";
@@ -220,6 +243,8 @@ const ForeignSpot: React.FC = () => {
     quickTips,
   } = infoData;
 
+  const quoteChars = splitStringUsingRegex(quote.desc);
+
   return (
     <motion.main
       initial={{ opacity: 0 }}
@@ -399,12 +424,26 @@ const ForeignSpot: React.FC = () => {
                   className="text-5xl"
                   style={{ color: spotSecondaryColor }}
                 />
-                <div
-                  className="my-5 font-helvetica text-4xl font-bold leading-tight"
+                <motion.div
+                  initial="hidden"
+                  whileInView="visible"
+                  transition={{ staggerChildren: 0.06 }}
+                  viewport={{ once: true, amount: 0.1 }}
+                  className="my-5"
                   style={{ color: spotSecondaryColor }}
                 >
-                  {quote.desc}
-                </div>
+                  {quoteChars.map((char, index) => {
+                    return (
+                      <motion.span
+                        key={index}
+                        variants={quoteVariants}
+                        className="font-helvetica text-4xl font-bold leading-tight"
+                      >
+                        {char}
+                      </motion.span>
+                    );
+                  })}
+                </motion.div>
                 <FaQuoteRight
                   className="ml-auto text-5xl"
                   style={{ color: spotSecondaryColor }}
@@ -441,11 +480,24 @@ const ForeignSpot: React.FC = () => {
 
           <div className="columns-2 gap-20">
             <div className="flex flex-col gap-8">
-              <img
-                src={travelEssentials.image}
-                alt="travel-image"
-                className="aspect-[4/3] rounded-lg object-cover object-center"
-              />
+              <div className="relative aspect-[4/3] w-full">
+                <motion.img
+                  loading="lazy"
+                  src={travelEssentials.image}
+                  alt="travel-image"
+                  initial="hidden"
+                  whileInView="visible"
+                  variants={popVariant}
+                  viewport={{ once: true }}
+                  className="relative z-[3] aspect-[4/3] rounded-lg object-cover object-center"
+                />
+
+                <div
+                  className="absolute left-3 top-3 z-[2] aspect-[4/3] w-full rounded-lg"
+                  style={{ backgroundColor: primaryColor }}
+                  // style={{ border: "4px solid", borderColor: primaryColor }}
+                ></div>
+              </div>
 
               {/* culture */}
               <div>
@@ -509,7 +561,13 @@ const ForeignSpot: React.FC = () => {
             </h3>
 
             <div className="grid grid-cols-4 gap-x-4 gap-y-5 text-white">
-              <div className="flex flex-col items-center">
+              <motion.div
+                initial="hidden"
+                whileInView="visible"
+                variants={bottomVariant(0)}
+                viewport={{ once: true, amount: 0.1 }}
+                className="flex flex-col items-center"
+              >
                 <MdAirplaneTicket
                   className="text-3xl"
                   style={{ color: spotSecondaryColor }}
@@ -539,9 +597,15 @@ const ForeignSpot: React.FC = () => {
                     </p>
                   </div>
                 </div>
-              </div>
+              </motion.div>
 
-              <div className="flex flex-col items-center ">
+              <motion.div
+                initial="hidden"
+                whileInView="visible"
+                variants={bottomVariant(1)}
+                viewport={{ once: true, amount: 0.1 }}
+                className="flex flex-col items-center "
+              >
                 <FaWifi
                   className="text-3xl"
                   style={{ color: spotSecondaryColor }}
@@ -553,9 +617,15 @@ const ForeignSpot: React.FC = () => {
                   </h4>
                   <p className="mt-2 text-center">{quickTips.connectivity}</p>
                 </div>
-              </div>
+              </motion.div>
 
-              <div className="flex flex-col items-center ">
+              <motion.div
+                initial="hidden"
+                whileInView="visible"
+                variants={bottomVariant(2)}
+                viewport={{ once: true, amount: 0.1 }}
+                className="flex flex-col items-center "
+              >
                 <BsCurrencyExchange
                   className="text-3xl"
                   style={{ color: spotSecondaryColor }}
@@ -565,9 +635,15 @@ const ForeignSpot: React.FC = () => {
                   <h4 className="font-palanquin text-xl font-bold">Currency</h4>
                   <p className="mt-2 text-center">{quickTips.currency}</p>
                 </div>
-              </div>
+              </motion.div>
 
-              <div className="flex flex-col items-center">
+              <motion.div
+                initial="hidden"
+                whileInView="visible"
+                variants={bottomVariant(3)}
+                viewport={{ once: true, amount: 0.1 }}
+                className="flex flex-col items-center"
+              >
                 <GiTwoCoins
                   className="text-3xl"
                   style={{ color: spotSecondaryColor }}
@@ -592,9 +668,15 @@ const ForeignSpot: React.FC = () => {
                     </p>
                   </div>
                 </div>
-              </div>
+              </motion.div>
 
-              <div className="flex flex-col items-center">
+              <motion.div
+                initial="hidden"
+                whileInView="visible"
+                variants={bottomVariant(4)}
+                viewport={{ once: true, amount: 0.1 }}
+                className="flex flex-col items-center"
+              >
                 <FaRegIdCard
                   className="text-3xl"
                   style={{ color: spotSecondaryColor }}
@@ -606,9 +688,15 @@ const ForeignSpot: React.FC = () => {
                   </h4>
                   <p className="mt-2 text-center">{quickTips.visa}</p>
                 </div>
-              </div>
+              </motion.div>
 
-              <div className="flex flex-col items-center">
+              <motion.div
+                initial="hidden"
+                whileInView="visible"
+                variants={bottomVariant(5)}
+                viewport={{ once: true, amount: 0.1 }}
+                className="flex flex-col items-center"
+              >
                 <IoWater
                   className="text-3xl"
                   style={{ color: spotSecondaryColor }}
@@ -620,9 +708,15 @@ const ForeignSpot: React.FC = () => {
                   </h4>
                   <p className="mt-2 text-center">{quickTips.waterQuality}</p>
                 </div>
-              </div>
+              </motion.div>
 
-              <div className="flex flex-col items-center">
+              <motion.div
+                initial="hidden"
+                whileInView="visible"
+                variants={bottomVariant(6)}
+                viewport={{ once: true, amount: 0.1 }}
+                className="flex flex-col items-center"
+              >
                 <CgDanger
                   className="text-3xl"
                   style={{ color: spotSecondaryColor }}
@@ -632,9 +726,15 @@ const ForeignSpot: React.FC = () => {
                   <h4 className="font-palanquin text-xl font-bold">Hazard</h4>
                   <p className="mt-2 text-center">{quickTips.hazard}</p>
                 </div>
-              </div>
+              </motion.div>
 
-              <div className="flex flex-col items-center">
+              <motion.div
+                initial="hidden"
+                whileInView="visible"
+                variants={bottomVariant(7)}
+                viewport={{ once: true, amount: 0.1 }}
+                className="flex flex-col items-center"
+              >
                 <MdPayment
                   className="text-3xl"
                   style={{ color: spotSecondaryColor }}
@@ -646,7 +746,7 @@ const ForeignSpot: React.FC = () => {
                   </h4>
                   <p className="mt-2 text-center">{quickTips.cashCard}</p>
                 </div>
-              </div>
+              </motion.div>
             </div>
           </div>
         </section>

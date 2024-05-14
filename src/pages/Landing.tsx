@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import { splitStringUsingRegex, reviews } from "../utils";
 import { Velocity, VideoContainer } from "../components";
@@ -93,6 +93,7 @@ const leftVanVariant: Variants = {
 const Landing: React.FC = () => {
   const headingChars = splitStringUsingRegex(headingText);
   const contentChars = splitStringUsingRegex(contentText);
+  const [isVisible, setIsVisible] = useState(true);
 
   const { scrollYProgress } = useScroll();
   const scaleX = useSpring(scrollYProgress, {
@@ -100,6 +101,19 @@ const Landing: React.FC = () => {
     damping: 30,
     restDelta: 0.001,
   });
+
+  useEffect(() => {
+    const handleScroll = () => {
+      const scrollTop = window.scrollY;
+      setIsVisible(scrollTop <= 24);
+    };
+
+    window.addEventListener("scroll", handleScroll);
+
+    return () => {
+      window.removeEventListener("scroll", handleScroll);
+    };
+  }, []);
 
   return (
     <>
@@ -109,59 +123,17 @@ const Landing: React.FC = () => {
         style={{ scaleX }}
       />
 
+      {/* logo */}
+      <div
+        className={`absolute left-[100px] top-[24px] z-[1000] font-superglue text-[23px] tracking-widest text-red transition-opacity duration-300 ${
+          isVisible ? "opacity-100" : "opacity-0"
+        }`}
+      >
+        ChilLChilL
+      </div>
+
       {/* banner */}
-      {/* <section
-        className="relative bg-turquoise"
-        style={{ minHeight: "calc(100vh - 56px)" }}
-      >
-        <div className="flex h-full w-full items-center justify-center">
-          <div className="-mt-20 text-center">
-            <motion.h1
-              initial="hidden"
-              whileInView="visible"
-              variants={leftVariant}
-              viewport={{ once: true }}
-              className="font-veneer text-8xl text-white"
-            >
-              We <span className="text-clay-yellow">eat</span>
-            </motion.h1>
-            <motion.h1
-              initial="hidden"
-              whileInView="visible"
-              variants={rightVariant}
-              viewport={{ once: true }}
-              className="font-veneer text-8xl text-white"
-            >
-              We <span className="text-green-fluorescent">live</span>
-            </motion.h1>
-            <motion.h1
-              initial="hidden"
-              whileInView="visible"
-              variants={centerVariant}
-              viewport={{ once: true }}
-              className="ml-4 font-veneer text-8xl text-white"
-            >
-              We <span className="text-pink">surf</span>
-            </motion.h1>
-          </div>
-
-          <motion.div
-            initial="hidden"
-            whileInView="visible"
-            variants={delayTopVariant}
-            viewport={{ once: true }}
-            className="absolute bottom-[30px] left-[100px] flex flex-col items-center overflow-visible text-center font-helvetica text-lg font-semibold uppercase tracking-wide"
-          >
-            Scroll down
-            <FaChevronDown className="mt-1 animate-bounce" />
-          </motion.div>
-        </div>
-      </section> */}
-
-      <section
-        className="relative"
-        style={{ height: "calc(100vh - 56px)", width: "100%" }}
-      >
+      <section className="relative h-screen w-full">
         <motion.div
           initial="hidden"
           whileInView="visible"
@@ -173,7 +145,7 @@ const Landing: React.FC = () => {
         </motion.div>
 
         <div className="absolute inset-0 flex items-center justify-center bg-transparent">
-          <div className="text-center">
+          <div className="flex flex-col gap-8 text-center">
             <motion.h1
               initial="hidden"
               whileInView="visible"

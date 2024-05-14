@@ -1,15 +1,10 @@
-import { Outlet, useNavigation } from "react-router-dom";
-
+import { Outlet } from "react-router-dom";
 import { ProfileNavbar } from "@/components";
-import Loading from "../components/Loading";
 
 // framer motion
 import { motion } from "framer-motion";
 
 const ProfileLayout: React.FC = () => {
-  const navigation = useNavigation();
-  const isLoading = navigation.state === "loading";
-
   return (
     <motion.main
       initial={{ opacity: 0, x: "-140px" }}
@@ -18,7 +13,7 @@ const ProfileLayout: React.FC = () => {
       className="grid w-full grid-cols-[auto,1fr]"
     >
       <ProfileNavbar />
-      {isLoading ? <Loading /> : <Outlet />}
+      <Outlet />
     </motion.main>
   );
 };

@@ -182,7 +182,8 @@ const Signup: React.FC = () => {
                 !email ||
                 !password ||
                 name.length > 20 ||
-                password.length < 6
+                password.length < 6 ||
+                isLoading
               }
             >
               {isLoading ? (

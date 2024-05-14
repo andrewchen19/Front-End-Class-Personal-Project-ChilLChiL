@@ -6,6 +6,7 @@ interface UserState {
   theme: string;
   isEditContainerOpen: boolean;
   isSideBarOpen: boolean;
+  shouldNavigationOpen: boolean;
 }
 
 interface Themes {
@@ -41,6 +42,7 @@ const initialState: UserState = {
   theme: getThemeFromLocalStorage(),
   isEditContainerOpen: false,
   isSideBarOpen: false,
+  shouldNavigationOpen: false,
 };
 
 const userSlice = createSlice({
@@ -60,9 +62,9 @@ const userSlice = createSlice({
       localStorage.setItem("theme", JSON.stringify(state.theme));
     },
     removeUser: (state) => {
+      console.log("execute");
       state.user = null;
       state.isEditContainerOpen = false;
-      state.isSideBarOpen = false;
       localStorage.removeItem("user");
     },
     updateUser: (state, action) => {
@@ -79,6 +81,15 @@ const userSlice = createSlice({
       const newIsSidebarOpen = !state.isSideBarOpen;
       state.isSideBarOpen = newIsSidebarOpen;
     },
+    closeSidebar: (state) => {
+      state.isSideBarOpen = false;
+    },
+    openNavigation: (state) => {
+      state.shouldNavigationOpen = true;
+    },
+    closeNavigation: (state) => {
+      state.shouldNavigationOpen = false;
+    },
   },
 });
 
@@ -92,6 +103,9 @@ export const {
   closeEditContainer,
   updateUser,
   toggleSidebar,
+  closeSidebar,
+  openNavigation,
+  closeNavigation,
 } = userSlice.actions;
 
 // export slice.reducer
