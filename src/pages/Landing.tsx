@@ -8,6 +8,7 @@ import grid1Image from "../assets/images/landing-grid1.jpg";
 import grid2Image from "../assets/images/landing-grid2.jpg";
 import spinText from "../assets/icons/spin-text.svg";
 import surfVan from "../assets/lotties/surf-van.json";
+import logoRed from "../assets/logos/logo-red.png";
 
 // lottie-react
 import Lottie from "lottie-react";
@@ -125,11 +126,11 @@ const Landing: React.FC = () => {
 
       {/* logo */}
       <div
-        className={`absolute left-[100px] top-[24px] z-[1000] font-superglue text-[23px] tracking-widest text-red transition-opacity duration-300 ${
+        className={`absolute left-[100px] top-[20px] z-[1000] font-superglue text-[23px] tracking-widest text-red transition-opacity duration-300 ${
           isVisible ? "opacity-100" : "opacity-0"
         }`}
       >
-        ChilLChilL
+        <img src={logoRed} alt="logo" className="h-12 w-24" />
       </div>
 
       {/* banner */}

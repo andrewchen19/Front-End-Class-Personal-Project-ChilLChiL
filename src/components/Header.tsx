@@ -4,6 +4,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { IRootState } from "../store";
 import { removeUser } from "../features/user/userSlice";
 import { toast } from "react-toastify";
+import logoBlue from "../assets/logos/logo-turquoise.png";
 
 // shadcn
 import { Button } from "@/components/ui/button";
@@ -87,9 +88,7 @@ const Header: React.FC = () => {
       {/* logo */}
       <div className="absolute left-7">
         <NavLink to="/">
-          <h1 className="font-superglue text-3xl tracking-widest text-turquoise">
-            ChilLChilL
-          </h1>
+          <img src={logoBlue} alt="logo" className="h-8 w-16" />
         </NavLink>
       </div>
 

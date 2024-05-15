@@ -32,7 +32,7 @@ const MenuToggle: React.FC = () => {
 
   return (
     <button
-      className="absolute left-[15px] top-[18px] grid h-[50px] w-[50px] cursor-pointer place-items-center rounded-full border-none bg-transparent outline-none"
+      className="absolute left-[15px] top-[24px] grid h-[50px] w-[50px] cursor-pointer place-items-center rounded-full border-none bg-transparent outline-none"
       onClick={() => {
         if (!isSideBarOpen) {
           dispatch(toggleSidebar());
