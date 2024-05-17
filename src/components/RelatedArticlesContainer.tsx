@@ -83,12 +83,12 @@ const RelatedArticlesContainer: React.FC = () => {
   }, []);
 
   return (
-    <section>
+    <section className="w-full">
       {/* title */}
       <div className="mb-10 border-b border-gray-300 pb-4">
         <h2 className="text-2xl font-bold"></h2>
         <div className="flex items-center gap-3">
-          <img src={flower} alt="image" className=" h-8 w-8" />
+          <img src={flower} alt="image" className="h-8 w-8" />
           <h2 className="text-2xl font-bold">相關文章</h2>
         </div>
       </div>
@@ -104,14 +104,14 @@ const RelatedArticlesContainer: React.FC = () => {
       )}
 
       <Carousel
-        className="w-full"
+        className="w-[85vw] md:w-full"
         opts={{
           align: "start",
           loop: true,
         }}
         plugins={[plugin.current]}
       >
-        <CarouselContent className="-ml-8">
+        <CarouselContent className="ml-0 md:-ml-8">
           {!isArticleLoading &&
             articlesList &&
             articlesList.length > 0 &&
@@ -129,7 +129,7 @@ const RelatedArticlesContainer: React.FC = () => {
               return (
                 <CarouselItem
                   key={id}
-                  className="flex flex-grow pl-8 hover:cursor-pointer md:basis-1/2 lg:basis-1/3 xl:basis-1/4"
+                  className="flex flex-grow pl-0 hover:cursor-pointer md:basis-1/2 md:pl-8 lg:basis-1/3 xl:basis-1/4"
                   onClick={() => articleHandler(id)}
                 >
                   <Card className="flex flex-grow border-gray-900">
@@ -179,10 +179,10 @@ const RelatedArticlesContainer: React.FC = () => {
         </CarouselContent>
 
         {!isArticleLoading && articlesList && articlesList.length > 0 && (
-          <>
+          <div className="hidden md:block">
             <CarouselPrevious />
             <CarouselNext />
-          </>
+          </div>
         )}
       </Carousel>
     </section>

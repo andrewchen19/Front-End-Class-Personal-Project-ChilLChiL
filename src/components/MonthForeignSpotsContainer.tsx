@@ -14,10 +14,15 @@ import {
   CarouselNext,
   CarouselPrevious,
 } from "@/components/ui/carousel";
+import Autoplay from "embla-carousel-autoplay";
 import { Card, CardContent } from "@/components/ui/card";
 
 const MonthForeignSpotsContainer: React.FC = () => {
   const navigate = useNavigate();
+
+  const plugin = React.useRef(
+    Autoplay({ delay: 4000, stopOnInteraction: false, stopOnMouseEnter: true }),
+  );
 
   const [isSpotLoading, setIsSpotLoading] = useState<boolean>(false);
   const [spotsList, setSpotsList] = useState<DocumentData[] | []>([]);
@@ -57,10 +62,14 @@ const MonthForeignSpotsContainer: React.FC = () => {
   }, []);
 
   return (
-    <section>
-      <h2 className="mb-12 flex items-center gap-3 font-sriracha text-4xl font-semibold text-gray-800">
+    <section className="w-full">
+      <h2 className="mb-12 flex items-center gap-3 font-sriracha text-2xl font-semibold text-gray-800 md:text-4xl">
         Best In May
-        <img src={medalGold} alt="medalGold" className="h-10 w-10" />
+        <img
+          src={medalGold}
+          alt="medalGold"
+          className="h-8 w-8 md:h-10 md:w-10"
+        />
       </h2>
 
       {isSpotLoading && (
@@ -70,12 +79,14 @@ const MonthForeignSpotsContainer: React.FC = () => {
       )}
 
       <Carousel
-        className="w-full"
+        className="w-[85vw] md:w-full"
         opts={{
           align: "start",
+          loop: true,
         }}
+        plugins={[plugin.current]}
       >
-        <CarouselContent className="-ml-5">
+        <CarouselContent className="ml-0 md:-ml-5">
           {!isSpotLoading &&
             spotsList.length > 1 &&
             spotsList.map((spot) => {
@@ -83,7 +94,7 @@ const MonthForeignSpotsContainer: React.FC = () => {
               return (
                 <CarouselItem
                   key={id}
-                  className="overflow-hidden pl-5 hover:cursor-pointer md:basis-1/2 lg:basis-1/3"
+                  className="overflow-hidden pl-0 hover:cursor-pointer md:basis-1/2 md:pl-5 lg:basis-1/3"
                   onClick={() => spotHandler(country.eng, id)}
                 >
                   <Card className="border-none">
@@ -113,10 +124,10 @@ const MonthForeignSpotsContainer: React.FC = () => {
         </CarouselContent>
 
         {!isSpotLoading && spotsList && spotsList.length > 1 && (
-          <>
+          <div className="hidden md:block">
             <CarouselPrevious />
             <CarouselNext />
-          </>
+          </div>
         )}
       </Carousel>
     </section>

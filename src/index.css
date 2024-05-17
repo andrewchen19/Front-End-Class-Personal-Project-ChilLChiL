@@ -179,6 +179,11 @@ li {
   mask-repeat: no-repeat;
   mask-position: center;
 }
+@media (max-width: 768px) {
+  .chat-bubble:before {
+    bottom: 11px;
+  }
+}
 
 /* global loading */
 .global-loader {

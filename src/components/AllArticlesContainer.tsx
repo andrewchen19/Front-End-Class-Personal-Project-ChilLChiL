@@ -399,7 +399,7 @@ const AllArticlesContainer: React.FC = () => {
         {/* select tag */}
         <div className="form-control">
           <label className="label" htmlFor="tag">
-            <span className="label-text">選擇標籤</span>
+            <span className="label-text text-gray-900">選擇標籤</span>
           </label>
           <select
             id="tag"
@@ -421,7 +421,7 @@ const AllArticlesContainer: React.FC = () => {
         {/* select spot */}
         <div className="form-control">
           <label className="label" htmlFor="surfingSpot">
-            <span className="label-text">選擇地點</span>
+            <span className="label-text text-gray-900">選擇地點</span>
           </label>
           <select
             id="surfingSpot"
@@ -456,7 +456,7 @@ const AllArticlesContainer: React.FC = () => {
         {/* select time */}
         <div className="form-control">
           <label className="label" htmlFor="order">
-            <span className="label-text">時間排序</span>
+            <span className="label-text text-gray-900">時間排序</span>
           </label>
           <select
             id="order"

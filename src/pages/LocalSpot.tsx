@@ -518,13 +518,13 @@ const LocalSpot: React.FC = () => {
               )}
             </div>
 
-            <div className="grid grid-cols-[auto,1fr] gap-10">
-              <div className="flex w-[300px] flex-col gap-6 px-5 py-8 shadow-xl">
+            <div className="grid gap-10 md:grid-cols-[auto,1fr]">
+              <div className="flex w-full flex-col gap-6 px-5 py-8 shadow-xl md:w-[300px]">
                 <h4 className="text-center text-turquoise">浪點圖表</h4>
                 <img src={textData.infoImage} alt="info-image" />
               </div>
 
-              <div className="flex flex-col gap-2 px-5 py-5 shadow-xl">
+              <div className="flex flex-col gap-3 px-5 py-5 shadow-xl md:gap-2">
                 <h4 className="font-semibold">
                   地點：
                   <span className="ml-1 font-normal capitalize text-gray-800">
@@ -560,30 +560,39 @@ const LocalSpot: React.FC = () => {
               </div>
             </div>
 
-            <div className="mt-10 flex border border-black">
-              <div className="my-4 flex flex-grow flex-col gap-1 border-r border-r-turquoise">
-                <h4 className="px-5 text-center text-turquoise">面向</h4>
-                <p className="px-5 text-center">{textData.toward}</p>
+            <div className="mt-10 flex flex-col border border-black md:flex-row">
+              <div className="flex flex-grow">
+                <div className="my-4 flex flex-grow flex-col gap-1 border-r border-r-turquoise">
+                  <h4 className="px-5 text-center text-turquoise">面向</h4>
+                  <p className="px-5 text-center">{textData.toward}</p>
+                </div>
+
+                <div className="my-4 flex flex-grow flex-col gap-1 border-r border-r-turquoise">
+                  <h4 className="px-5 text-center text-turquoise">類型</h4>
+                  <p className="px-5 text-center">{textData.breaks}</p>
+                </div>
+
+                <div className="my-4 flex flex-grow flex-col gap-1 md:border-r md:border-r-turquoise">
+                  <h4 className="px-5 text-center text-turquoise">最佳潮汐</h4>
+                  <p className="px-5 text-center">{textData.bestTide}</p>
+                </div>
               </div>
-              <div className="my-4 flex flex-grow flex-col gap-1 border-r border-r-turquoise">
-                <h4 className="px-5 text-center text-turquoise">類型</h4>
-                <p className="px-5 text-center">{textData.breaks}</p>
-              </div>
-              <div className="my-4 flex flex-grow flex-col gap-1 border-r border-r-turquoise">
-                <h4 className="px-5 text-center text-turquoise">最佳潮汐</h4>
-                <p className="px-5 text-center">{textData.bestTide}</p>
-              </div>
-              <div className="my-4 flex flex-grow flex-col gap-1 border-r border-r-turquoise">
-                <h4 className="px-5 text-center text-turquoise">方向</h4>
-                <p className="px-5 text-center">{textData.direction}</p>
-              </div>
-              <div className="my-4 flex flex-grow flex-col gap-1 border-r border-r-turquoise">
-                <h4 className="px-5 text-center text-turquoise">最佳風向</h4>
-                <p className="px-5 text-center">{textData.bestWind}</p>
-              </div>
-              <div className="my-4 flex flex-grow flex-col gap-1">
-                <h4 className="px-5 text-center text-turquoise">適合程度</h4>
-                <p className="px-5 text-center">{textData.difficulty}</p>
+
+              <div className="flex flex-grow">
+                <div className="my-4 flex flex-grow flex-col gap-1 border-r border-r-turquoise">
+                  <h4 className="px-5 text-center text-turquoise">方向</h4>
+                  <p className="px-5 text-center">{textData.direction}</p>
+                </div>
+
+                <div className="my-4 flex flex-grow flex-col gap-1 border-r border-r-turquoise">
+                  <h4 className="px-5 text-center text-turquoise">最佳風向</h4>
+                  <p className="px-5 text-center">{textData.bestWind}</p>
+                </div>
+
+                <div className="my-4 flex flex-grow flex-col gap-1">
+                  <h4 className="px-5 text-center text-turquoise">適合程度</h4>
+                  <p className="px-5 text-center">{textData.difficulty}</p>
+                </div>
               </div>
             </div>
           </section>
@@ -689,7 +698,7 @@ const LocalSpot: React.FC = () => {
                           className={`${index === 2 || index === 5 ? "border-r border-r-gray-300" : ""}`}
                         >
                           <p className="item-center flex justify-center pt-5">
-                            <span className="flex items-center text-base">
+                            <span className="flex  items-center text-base">
                               {surf.min}
                             </span>
                           </p>
@@ -698,7 +707,7 @@ const LocalSpot: React.FC = () => {
                               {surf.max}
                             </span>
                           </p>
-                          <p className="flex  items-center justify-center pt-5">
+                          <p className="flex items-center justify-center pt-5">
                             <img
                               src={locationArrow}
                               alt="arrow-icon"
@@ -899,9 +908,9 @@ const LocalSpot: React.FC = () => {
               </div>
             </div>
 
-            <div className="grid h-[600px] grid-cols-[auto,1fr] gap-10">
+            <div className="grid h-[600px] gap-10 lg:grid-cols-[auto,1fr]">
               {/* illustration */}
-              <div className="aspect-[2/3] h-[600px]">
+              <div className="hidden aspect-[2/3] h-[600px] lg:block">
                 <img
                   src={surfImg}
                   alt="surf-image"
@@ -912,7 +921,7 @@ const LocalSpot: React.FC = () => {
               <div className="flex flex-col">
                 {/* real time comments */}
                 <ScrollArea
-                  className={`max-h-[437.9px] w-full rounded-md  ${commentList.length > 0 ? "bg-gray-100 pt-2" : ""}`}
+                  className={`max-h-[437.9px] w-full rounded-md ${commentList.length > 0 ? "bg-gray-100 pt-2" : ""}`}
                 >
                   {/* container */}
                   {commentList.length < 1 && <p>目前尚未有留言.....</p>}
@@ -966,7 +975,7 @@ const LocalSpot: React.FC = () => {
                               )}
                             </div>
 
-                            <div className="chat-bubble my-[1px]">
+                            <div className="chat-bubble my-[1px] text-[14px] md:text-base">
                               <Markup content={comment} />
                             </div>
 
@@ -986,7 +995,7 @@ const LocalSpot: React.FC = () => {
                 {/* leave comment */}
                 <div className="mt-auto">
                   {/* text-editor */}
-                  <div className="h-[86.25px] max-w-full overflow-auto">
+                  <div className="h-[86.25px] w-full overflow-auto">
                     <ReactQuill
                       theme="snow"
                       value={comment}
