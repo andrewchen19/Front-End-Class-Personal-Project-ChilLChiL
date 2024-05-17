@@ -54,7 +54,7 @@ const AllArticlesContainer: React.FC = () => {
   const prevHandler = async () => {
     const articlesCollectionRef = collection(db, "articles");
 
-    // get the prev 10 documents
+    // get the prev 12 documents
     let prev: Query<DocumentData, DocumentData>;
     if (order === "asc") {
       prev = query(
@@ -89,7 +89,7 @@ const AllArticlesContainer: React.FC = () => {
   const nextHandler = async () => {
     const articlesCollectionRef = collection(db, "articles");
 
-    // get the next 10 documents
+    // get the next 12 documents
     let next: Query<DocumentData, DocumentData>;
     if (order === "asc") {
       next = query(

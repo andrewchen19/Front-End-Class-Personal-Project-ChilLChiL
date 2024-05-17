@@ -865,7 +865,7 @@ const LocalSpot: React.FC = () => {
                     {infoData.weather.map(
                       (item: WeatherInfo, index: number) => {
                         const { condition, temperature } = item;
-                        console.log(condition);
+                        // console.log(condition);
                         return (
                           <div
                             key={index}
@@ -935,7 +935,7 @@ const LocalSpot: React.FC = () => {
                             key={id}
                             className="chat chat-start mb-2 ml-3 py-0"
                           >
-                            <div className="chat-image avatar">
+                            <div className="avatar chat-image">
                               <div className="mr-1 h-8 w-8 rounded-full border border-black">
                                 <img src={userImage} alt="user-image" />
                               </div>
