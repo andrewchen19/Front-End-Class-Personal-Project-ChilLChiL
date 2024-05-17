@@ -42,7 +42,6 @@ const MenuItem: React.FC<MenuItemProps> = ({ id, title, url }) => {
     "#3000b3",
   ];
   const style = { backgroundColor: `${colors[id - 1]}` };
-  //   const style2 = { border: `2px solid ${colors[id - 1]}` };
 
   const navigate = useNavigate();
   const dispatch = useDispatch();
@@ -66,35 +65,32 @@ const MenuItem: React.FC<MenuItemProps> = ({ id, title, url }) => {
       variants={variants}
       whileHover={{ scale: 1.08 }}
       whileTap={{ scale: 0.95 }}
-      className=" relative flex cursor-pointer list-none items-center"
+      className="relative flex cursor-pointer list-none items-center justify-center gap-8 sm:gap-20"
     >
       {/* icon */}
       <div
-        className="absolute left-0 top-1/2 mt-2 h-10 w-10 -translate-y-1/2 rounded-full"
+        className="top-1/2 mt-0 h-7 w-7 rounded-full sm:mt-2 sm:h-10 sm:w-10"
         style={style}
       />
 
       {/* text */}
       {id && id <= 5 ? (
         <div
-          className="my-auto h-[50px] flex-grow rounded text-center font-helvetica text-[50px] font-bold leading-[50px] tracking-wide text-white"
-          //   style={style2}
+          className="my-auto mt-2 h-[50px] flex-grow rounded font-helvetica text-[30px] font-bold leading-[35px] tracking-wide text-white sm:mt-0 sm:text-[50px] sm:leading-[50px]"
           onClick={() => navigateHandler(url)}
         >
           <span className="border-b-4 border-white">{title}</span>
         </div>
       ) : id && id === 6 ? (
         <div
-          className="my-auto h-[50px] flex-grow rounded text-center font-helvetica text-[50px] font-bold leading-[50px] tracking-wide text-white"
-          //   style={style2}
+          className="my-auto h-[50px] flex-grow rounded font-helvetica text-[30px] font-bold leading-[35px] tracking-wide text-white sm:text-[50px] sm:leading-[50px]"
           onClick={() => navigateHandler(url)}
         >
           <span className="border-b-4 border-white">{title}</span>
         </div>
       ) : (
         <div
-          className="my-auto h-[50px] flex-grow rounded text-center font-helvetica text-[50px] font-bold leading-[50px] tracking-wide text-white"
-          //   style={style2}
+          className="my-auto h-[50px] flex-grow rounded font-helvetica text-[30px] font-bold leading-[35px] tracking-wide text-white sm:text-[50px] sm:leading-[50px]"
           onClick={logoutHandler}
         >
           <span className="border-b-4 border-white">{title}</span>

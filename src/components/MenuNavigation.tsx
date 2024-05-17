@@ -32,12 +32,11 @@ const MenuNavigation: React.FC = () => {
 
   return (
     <motion.div
-      className={`absolute left-0 top-[80px] h-screen w-screen ${shouldNavigationOpen ? "block" : "hidden"}`}
-      style={{ height: "calc(100vh - 80px)" }}
+      className={`fixed inset-0 top-[100px]  ${shouldNavigationOpen ? "flex justify-center" : "hidden"}`}
     >
       <motion.ul
         variants={variants}
-        className="flex h-full w-full flex-col gap-9 pl-[220px] pr-60"
+        className="mx-auto flex h-full w-[80%] max-w-[400px] flex-col gap-4 sm:gap-10"
       >
         {itemsList.map((item) => {
           if (user && item.id === 5) {
