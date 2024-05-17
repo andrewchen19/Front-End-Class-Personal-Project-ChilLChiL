@@ -36,7 +36,7 @@ const MenuNavigation: React.FC = () => {
     >
       <motion.ul
         variants={variants}
-        className="mx-auto flex h-full w-[80%] max-w-[400px] flex-col gap-4 sm:gap-10"
+        className="mx-auto flex h-full w-[80%] max-w-[400px] flex-col gap-4 sm:gap-7 md:gap-10"
       >
         {itemsList.map((item) => {
           if (user && item.id === 5) {
