@@ -229,7 +229,7 @@ const LocalSpots: React.FC = () => {
             {/* select area */}
             <div className="form-control">
               <label className="label" htmlFor="area">
-                <span className="label-text">選擇區域</span>
+                <span className="label-text text-gray-900">選擇區域</span>
               </label>
               <select
                 id="area"
@@ -250,7 +250,7 @@ const LocalSpots: React.FC = () => {
             {/* select break */}
             <div className="form-control">
               <label className="label" htmlFor="breaks">
-                <span className="label-text">選擇浪型</span>
+                <span className="label-text text-gray-900">選擇浪型</span>
               </label>
               <select
                 id="breaks"
@@ -270,7 +270,7 @@ const LocalSpots: React.FC = () => {
             {/* select difficulty */}
             <div className="form-control">
               <label className="label" htmlFor="difficulty">
-                <span className="label-text">適合程度</span>
+                <span className="label-text text-gray-900">適合程度</span>
               </label>
               <select
                 id="difficulty"
@@ -286,7 +286,7 @@ const LocalSpots: React.FC = () => {
               </select>
             </div>
 
-            <div className="grid grid-cols-2 gap-8">
+            <div className="grid grid-cols-2 gap-3 sm:gap-5 md:gap-8">
               <Button type="submit" variant={"pink"}>
                 Search
               </Button>
@@ -313,7 +313,7 @@ const LocalSpots: React.FC = () => {
                 return (
                   <Card
                     key={id}
-                    className="shadow-xs group relative flex flex-grow duration-300 hover:cursor-pointer hover:shadow-lg"
+                    className="group relative flex flex-grow shadow-xs duration-300 hover:cursor-pointer hover:shadow-lg"
                     onClick={() => spotHandler(name.eng, id)}
                   >
                     <CardContent className="flex h-full w-full flex-col">
