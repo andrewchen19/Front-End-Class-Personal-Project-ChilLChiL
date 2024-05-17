@@ -82,10 +82,10 @@ const Login: React.FC = () => {
   };
 
   return (
-    <div className="h-screen w-full border lg:grid lg:grid-cols-2 ">
-      <div className="relative flex items-center justify-center py-12">
+    <div className="h-screen w-full border lg:grid lg:grid-cols-2">
+      <div className="relative mt-28 flex items-center justify-center lg:mt-0">
         <form
-          className="mx-auto grid w-[400px] gap-6"
+          className="mx-auto grid w-[80%] min-w-[300px] gap-6"
           onSubmit={(e) => submitHandler(e)}
         >
           <div className="grid gap-4 text-center">
@@ -145,16 +145,9 @@ const Login: React.FC = () => {
             </NavLink>
           </div>
         </form>
-
-        <div className="absolute left-7 top-5">
-          <NavLink to="/">
-            <h1 className="font-superglue text-2xl tracking-widest text-turquoise">
-              ChilLChilL
-            </h1>
-          </NavLink>
-        </div>
       </div>
-      <div className="hidden  lg:block">
+
+      <div className="hidden lg:block">
         <div className="h-screen w-full">
           <img
             src={loginImg}
@@ -162,6 +155,14 @@ const Login: React.FC = () => {
             className="h-full w-full object-cover object-bottom"
           />
         </div>
+      </div>
+
+      <div className="absolute left-7 top-5">
+        <NavLink to="/">
+          <h1 className="font-superglue text-2xl tracking-widest text-turquoise">
+            ChilLChilL
+          </h1>
+        </NavLink>
       </div>
     </div>
   );
