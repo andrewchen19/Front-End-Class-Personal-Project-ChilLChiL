@@ -365,7 +365,7 @@ const AllArticlesContainer: React.FC = () => {
   return (
     <section>
       {/* title */}
-      <div className="mb-10 flex justify-between border-b border-gray-300 pb-4">
+      <div className="mb-10 flex items-center justify-between border-b border-gray-300 pb-4">
         <div className="flex items-center gap-3">
           <img src={books} alt="image" className="mt-1 h-9 w-9" />
           <h2 className="text-2xl font-bold">所有文章</h2>
@@ -380,14 +380,16 @@ const AllArticlesContainer: React.FC = () => {
           >
             <BsFillGridFill />
           </Button>
-          <Button
-            type="button"
-            variant={`${layout === "list" ? "olive" : "ghost"}`}
-            size={"real-full"}
-            onClick={() => setLayout("list")}
-          >
-            <BsList />
-          </Button>
+          <div className="max-sm:hidden">
+            <Button
+              type="button"
+              variant={`${layout === "list" ? "olive" : "ghost"}`}
+              size={"real-full"}
+              onClick={() => setLayout("list")}
+            >
+              <BsList />
+            </Button>
+          </div>
         </div>
       </div>
 
@@ -470,7 +472,7 @@ const AllArticlesContainer: React.FC = () => {
           </select>
         </div>
 
-        <div className="grid grid-cols-2 gap-8">
+        <div className="grid grid-cols-2 gap-3 sm:gap-5 md:gap-8">
           <Button type="submit" variant={"pink"}>
             Search
           </Button>
@@ -543,12 +545,12 @@ const AllArticlesContainer: React.FC = () => {
 
                     <div className="flex flex-grow flex-col pt-3">
                       <div className="mb-3 flex flex-col gap-2">
-                        <p className="line-clamp-3 text-base text-gray-600">
+                        <p className="line-clamp-3 text-sm text-gray-600 sm:text-base">
                           {htmlToPlainText(content)}
                         </p>
                         <div>
                           <span
-                            className="relative border-b-clay-red text-clay-red hover:cursor-pointer hover:border-b"
+                            className="relative border-b-clay-red text-sm text-clay-red hover:cursor-pointer hover:border-b sm:text-base"
                             onClick={() => articleHandler(id)}
                           >
                             Continue Reading
@@ -588,7 +590,7 @@ const AllArticlesContainer: React.FC = () => {
 
       {/* list layout */}
       {!isArticleLoading && layout === "list" && (
-        <div className="flex flex-col gap-y-8">
+        <div className="hidden flex-col gap-y-8 sm:flex">
           {articlesList &&
             articlesList.length > 0 &&
             articlesList.map((article) => {

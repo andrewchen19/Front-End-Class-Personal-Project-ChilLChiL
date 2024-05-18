@@ -74,10 +74,10 @@ const LatestArticlesContainer: React.FC = () => {
       </div>
 
       {(isArticleLoading || !articlesList) && (
-        <div className="flex w-full gap-8">
-          <div className="skeleton h-[240px] w-1/3 rounded-lg"></div>
-          <div className="skeleton h-[512px] w-1/3 rounded-lg"></div>
-          <div className="skeleton h-[240px] w-1/3 rounded-lg"></div>
+        <div className="flex w-full gap-8 max-sm:flex-col">
+          <div className="skeleton h-[240px] rounded-lg sm:w-1/3"></div>
+          <div className="sm:s-1/3 skeleton h-[240px] rounded-lg sm:h-[512px]"></div>
+          <div className="skeleton h-[240px] rounded-lg sm:w-1/3"></div>
         </div>
       )}
 
@@ -87,8 +87,8 @@ const LatestArticlesContainer: React.FC = () => {
 
       {!isArticleLoading && articlesList && articlesList.length > 0 && (
         <div className="w-full">
-          <div className="flex gap-8">
-            <div className="flex w-1/3 flex-col gap-8">
+          <div className="flex gap-8 max-sm:flex-col">
+            <div className="flex flex-col gap-8 sm:w-1/3">
               <div
                 className="group h-[240px] hover:cursor-pointer"
                 onClick={() => articleHandler(articlesList[1].id)}
@@ -190,13 +190,13 @@ const LatestArticlesContainer: React.FC = () => {
               </div>
             </div>
 
-            <div className="flex w-1/3 flex-grow items-stretch">
+            <div className="flex max-sm:-order-1 sm:w-1/3 sm:flex-grow sm:items-stretch">
               <div
-                className="group h-[512px] hover:cursor-pointer"
+                className="group h-[256px] w-full hover:cursor-pointer sm:h-[512px]"
                 onClick={() => articleHandler(articlesList[0].id)}
               >
                 <Card className="flex flex-grow border-none">
-                  <CardContent className="relative flex h-[512px] w-full flex-col">
+                  <CardContent className="relative flex h-[256px] w-full flex-col sm:h-[512px]">
                     <img
                       src={articlesList[0].cover}
                       alt={articlesList[0].surfingSpot}
@@ -242,7 +242,7 @@ const LatestArticlesContainer: React.FC = () => {
               </div>
             </div>
 
-            <div className="flex w-1/3 flex-col gap-8">
+            <div className="flex flex-col gap-8 sm:w-1/3">
               <div
                 className="group h-[240px] hover:cursor-pointer"
                 onClick={() => articleHandler(articlesList[3].id)}

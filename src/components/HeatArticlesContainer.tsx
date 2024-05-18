@@ -74,10 +74,10 @@ const HeatArticlesContainer: React.FC = () => {
       </div>
 
       {(isArticleLoading || !articlesList) && (
-        <div className="flex w-full gap-8">
-          <div className="skeleton h-[240px] w-1/3 rounded-lg"></div>
-          <div className="skeleton h-[512px] w-1/3 rounded-lg"></div>
-          <div className="skeleton h-[240px] w-1/3 rounded-lg"></div>
+        <div className="flex w-full gap-8 max-sm:flex-col">
+          <div className="skeleton h-[240px] rounded-lg sm:w-1/3"></div>
+          <div className="sm:s-1/3 skeleton h-[240px] rounded-lg sm:h-[512px]"></div>
+          <div className="skeleton h-[240px] rounded-lg sm:w-1/3"></div>
         </div>
       )}
 
@@ -85,97 +85,15 @@ const HeatArticlesContainer: React.FC = () => {
         <h3>尚未有任何文章...</h3>
       )}
 
-      {/* {!isArticleLoading && (
-        <Carousel
-          className="w-full"
-          opts={{
-            align: "start",
-          }}
-        >
-          <CarouselContent className="-ml-8">
-            {articlesList &&
-              articlesList.length > 0 &&
-              articlesList.map((article) => {
-                const {
-                  id,
-                  cover,
-                  surfingSpot,
-                  title,
-                  likes_amount,
-                  tag,
-                  created_at,
-                  content,
-                } = article;
-                return (
-                  <CarouselItem
-                    key={id}
-                    className="flex flex-grow pl-8 hover:cursor-pointer md:basis-1/2 lg:basis-1/3"
-                    onClick={() => articleHandler(id)}
-                  >
-                    <Card className="flex flex-grow border-gray-900">
-                      <CardContent className="flex h-full w-full flex-col">
-                        <img
-                          src={cover}
-                          alt={surfingSpot}
-                          className="h-[150px] w-full object-cover object-center"
-                        />
-
-                        <div className="flex flex-grow flex-col p-3">
-                          <h3 className="text-xl font-semibold capitalize">
-                            {title}
-                          </h3>
-
-                          <p className="mb-5 mt-3 line-clamp-3 text-base text-gray-600">
-                            {htmlToPlainText(content)}
-                          </p>
-
-                          <div className="mt-auto">
-                            <div className="flex gap-2">
-                              <span className="bg-green rounded-lg px-2 py-1 text-xs tracking-wide text-white">
-                                {changeTagName(tag)}
-                              </span>
-
-                              <span className="bg-orange rounded-lg px-2 py-1 text-xs tracking-wide text-white">
-                                {changeSpotName(surfingSpot)}
-                              </span>
-                            </div>
-
-                            <div className="mt-1 flex items-center justify-between">
-                              <p className="text-xs text-gray-500">
-                                {formatTime(created_at)}
-                              </p>
-
-                              <div className="flex items-center gap-1">
-                                <FaStar className=" text-yellow" />
-                                <span>{likes_amount}</span>
-                              </div>
-                            </div>
-                          </div>
-                        </div>
-                      </CardContent>
-                    </Card>
-                  </CarouselItem>
-                );
-              })}
-          </CarouselContent>
-          {!isArticleLoading && articlesList && articlesList.length > 0 && (
-            <>
-              <CarouselPrevious />
-              <CarouselNext />
-            </>
-          )}
-        </Carousel>
-      )} */}
-
       {!isArticleLoading && articlesList && articlesList.length > 0 && (
         <div className="w-full">
-          <div className="flex gap-8">
-            <div className="flex w-1/3 flex-col gap-8">
+          <div className="flex gap-8 max-sm:flex-col">
+            <div className="flex flex-col gap-8 sm:w-1/3">
               <div
-                className="group h-[240px] hover:cursor-pointer"
+                className="group flex h-[240px] hover:cursor-pointer"
                 onClick={() => articleHandler(articlesList[1].id)}
               >
-                <Card className="flex flex-grow border-none">
+                <Card className="w-full border-none">
                   <CardContent className="relative flex h-[240px] w-full flex-col">
                     <img
                       src={articlesList[1].cover}
@@ -272,13 +190,13 @@ const HeatArticlesContainer: React.FC = () => {
               </div>
             </div>
 
-            <div className="flex w-1/3 flex-grow items-stretch">
+            <div className="flex max-sm:-order-1 sm:w-1/3 sm:flex-grow sm:items-stretch">
               <div
-                className="group h-[512px] hover:cursor-pointer"
+                className="group h-[256px] w-full hover:cursor-pointer sm:h-[512px]"
                 onClick={() => articleHandler(articlesList[0].id)}
               >
                 <Card className="flex flex-grow border-none">
-                  <CardContent className="relative flex h-[512px] w-full flex-col">
+                  <CardContent className="relative flex h-[256px] w-full flex-col sm:h-[512px]">
                     <img
                       src={articlesList[0].cover}
                       alt={articlesList[0].surfingSpot}
@@ -324,7 +242,7 @@ const HeatArticlesContainer: React.FC = () => {
               </div>
             </div>
 
-            <div className="flex w-1/3 flex-col gap-8">
+            <div className="flex flex-col gap-8 sm:w-1/3">
               <div
                 className="group h-[240px] hover:cursor-pointer"
                 onClick={() => articleHandler(articlesList[3].id)}

@@ -326,7 +326,7 @@ const Article: React.FC = () => {
             alt="cover-image"
             className="h-full w-full object-cover object-center"
           />
-          <p className="absolute -bottom-[22px] right-[20px] font-sriracha text-[12px] font-medium text-gray-500">
+          <p className="absolute -bottom-[22px] right-[10px] font-sriracha text-[10px] font-medium text-gray-500 sm:right-[20px] sm:text-[12px]">
             Photo by&nbsp;
             <a
               href={photographerLink}
@@ -351,12 +351,14 @@ const Article: React.FC = () => {
         {/* context */}
         <div className="align-container py-24">
           {/* title */}
-          <div className="px-[15px] text-4xl font-bold capitalize">{title}</div>
+          <div className="px-[15px] text-3xl font-bold capitalize sm:text-4xl">
+            {title}
+          </div>
 
           {/* authorInfo */}
           <div className="mt-6 px-[15px]">
-            <div className="flex items-start justify-between">
-              <div className="flex flex-col gap-2">
+            <div className="flex flex-col gap-2">
+              <div className="flex items-center justify-between">
                 {/* userName & userImage */}
                 <div className="flex items-center gap-2">
                   <img
@@ -371,50 +373,50 @@ const Article: React.FC = () => {
                   </p>
                 </div>
 
-                <div className="flex items-center gap-5">
-                  <p className="flex items-center gap-1 text-sm text-gray-500">
-                    更新時間:
-                    <span className="ml-2">{formatTime(updated_at)}</span>
-                  </p>
-
-                  {/* comment button */}
-                  <SheetTrigger className="flex items-center gap-2">
-                    <TbMessageCircle className="h-5 w-5 text-pink-dark group-hover:text-pink" />
-                    <span className="mb-[1px] text-[16px] text-pink-dark  group-hover:text-pink">
-                      {commentLength}
-                    </span>
-                  </SheetTrigger>
-                </div>
+                {/* edit/collection  button */}
+                {isLogin && isUser && (
+                  <div className="mt-2 flex gap-4">
+                    <Button
+                      type="button"
+                      variant={"olive-hipster"}
+                      onClick={() => editHandler(articleId)}
+                    >
+                      編輯文章
+                    </Button>
+                    <Button
+                      type="button"
+                      variant={"clay-red-hipster"}
+                      onClick={() => deleteButtonHandler()}
+                    >
+                      刪除文章
+                    </Button>
+                  </div>
+                )}
+                {isLogin && !isUser && id && (
+                  <Button
+                    type="button"
+                    variant={"purple-hipster"}
+                    onClick={() => collectionHandler(id)}
+                  >
+                    {isLike ? "已收藏" : "加入收藏"}
+                  </Button>
+                )}
               </div>
 
-              {/* edit/collection  button */}
-              {isLogin && isUser && (
-                <div className="mt-2 flex gap-4">
-                  <Button
-                    type="button"
-                    variant={"olive-hipster"}
-                    onClick={() => editHandler(articleId)}
-                  >
-                    編輯文章
-                  </Button>
-                  <Button
-                    type="button"
-                    variant={"clay-red-hipster"}
-                    onClick={() => deleteButtonHandler()}
-                  >
-                    刪除文章
-                  </Button>
-                </div>
-              )}
-              {isLogin && !isUser && id && (
-                <Button
-                  type="button"
-                  variant={"purple-hipster"}
-                  onClick={() => collectionHandler(id)}
-                >
-                  {isLike ? "已收藏" : "加入收藏"}
-                </Button>
-              )}
+              <div className="flex items-center gap-3 sm:gap-5">
+                <p className="flex items-center gap-1 text-sm text-gray-500">
+                  更新時間:
+                  <span className="ml-1 sm:ml-2">{formatTime(updated_at)}</span>
+                </p>
+
+                {/* comment button */}
+                <SheetTrigger className="flex items-center gap-1 sm:gap-2">
+                  <TbMessageCircle className="h-5 w-5 text-pink-dark group-hover:text-pink" />
+                  <span className="mb-[1px] text-[16px] text-pink-dark group-hover:text-pink">
+                    {commentLength}
+                  </span>
+                </SheetTrigger>
+              </div>
             </div>
           </div>
 
