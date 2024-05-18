@@ -257,44 +257,44 @@ const ForeignSpot: React.FC = () => {
         style={{ backgroundColor: "hsl(0 0% 100%/ 0.7)" }}
       >
         <div className="relative mx-auto flex w-[95%]">
-          <nav>
-            <ul className="flex">
-              <li className="w-32 ">
+          <nav className="h-full w-full">
+            <ul className="flex justify-between sm:justify-start sm:gap-10">
+              <li>
                 <Link
                   to="whentosurf"
                   smooth={true}
                   spy={true}
                   duration={500}
                   offset={-96}
-                  className="font-medium text-gray-500 duration-150 hover:cursor-pointer hover:font-semibold hover:text-gray-900"
+                  className="font-medium text-gray-500 duration-150 hover:cursor-pointer hover:font-semibold hover:text-gray-900 max-sm:text-xs"
                   activeStyle={{ fontWeight: "600", color: "#030712" }}
                 >
                   When to Surf
                 </Link>
               </li>
 
-              <li className="w-40 ">
+              <li>
                 <Link
                   to="travelessentials"
                   smooth={true}
                   spy={true}
                   duration={500}
                   offset={-80}
-                  className="font-medium text-gray-500 duration-150 hover:cursor-pointer hover:font-semibold hover:text-gray-900"
+                  className="font-medium text-gray-500 duration-150 hover:cursor-pointer hover:font-semibold hover:text-gray-900 max-sm:text-xs"
                   activeStyle={{ fontWeight: "600", color: "#030712" }}
                 >
                   Travel Essentials
                 </Link>
               </li>
 
-              <li className="w-44">
+              <li>
                 <Link
                   to="exploreotherzones"
                   smooth={true}
                   spy={true}
                   duration={500}
                   offset={-80}
-                  className="font-medium text-gray-500 duration-150 hover:cursor-pointer hover:font-semibold hover:text-gray-900"
+                  className="font-medium text-gray-500 duration-150 hover:cursor-pointer hover:font-semibold hover:text-gray-900 max-sm:text-xs"
                   activeStyle={{ fontWeight: "600", color: "#030712" }}
                 >
                   Explore Other Zones
@@ -319,14 +319,14 @@ const ForeignSpot: React.FC = () => {
           className="h-full w-full object-cover object-center"
         />
 
-        <div className="absolute bottom-[50px] left-[50%] z-30 max-w-[900px] -translate-x-1/2">
+        <div className="absolute left-1/2 z-30 max-w-[900px] -translate-x-1/2 max-sm:top-1/2 max-sm:-translate-y-1/2 sm:bottom-[50px] ">
           <h2
-            className="text-center font-dripoctober text-8xl uppercase tracking-wide text-white"
+            className="text-center font-dripoctober text-6xl uppercase leading-tight tracking-wide text-white md:text-7xl lg:text-8xl"
             style={{ textShadow: "3px 3px 0 rgba(0, 0, 0, 0.2)" }}
           >
             {country.location}
           </h2>
-          <p className="mt-16 font-helvetica text-base font-semibold tracking-wide text-white">
+          <p className="mt-16 hidden font-helvetica text-base font-semibold tracking-wide text-white sm:block">
             {spotDesc}
           </p>
         </div>
@@ -352,8 +352,8 @@ const ForeignSpot: React.FC = () => {
 
         {/* when to surf */}
         <Element name="whentosurf" className="mx-auto -mt-8 w-[85%] max-w-6xl">
-          <div className="flex items-center justify-between">
-            <div className="mb-8 flex items-center gap-3 font-sriracha text-3xl font-bold">
+          <div className="mb-8 flex items-center justify-between">
+            <div className="flex items-center gap-3 font-sriracha text-2xl font-bold sm:text-3xl">
               <img src={surfBoard} alt="image" className="h-8 w-8" />
               <h2>When To Surf</h2>
             </div>
@@ -388,7 +388,7 @@ const ForeignSpot: React.FC = () => {
                   </div>
 
                   <div className="mt-3 flex flex-col">
-                    <div className="flex text-sm">
+                    <div className="flex text-sm max-sm:flex-col">
                       <p className="pl-6 font-helvetica tracking-wide">
                         <span className="mr-1 font-semibold">Best For:</span>
                         {item.bestFor}
@@ -414,14 +414,14 @@ const ForeignSpot: React.FC = () => {
 
         {/* famous quote */}
         <section>
-          <figure className="flex h-[600px]">
+          <figure className="flex max-md:flex-col">
             <div
-              className="flex w-1/2 items-center justify-center"
+              className="flex h-[450px] items-center justify-center md:h-[600px] md:w-1/2"
               style={{ backgroundColor: primaryColor }}
             >
               <figcaption className="relative mx-5 my-auto max-w-[500px]">
                 <FaQuoteLeft
-                  className="text-5xl"
+                  className="text-2xl sm:text-3xl md:text-5xl"
                   style={{ color: spotSecondaryColor }}
                 />
                 <motion.div
@@ -429,7 +429,7 @@ const ForeignSpot: React.FC = () => {
                   whileInView="visible"
                   transition={{ staggerChildren: 0.06 }}
                   viewport={{ once: true, amount: 0.1 }}
-                  className="my-5"
+                  className="mx-auto my-5 w-[95%] text-center"
                   style={{ color: spotSecondaryColor }}
                 >
                   {quoteChars.map((char, index) => {
@@ -437,7 +437,7 @@ const ForeignSpot: React.FC = () => {
                       <motion.span
                         key={index}
                         variants={quoteVariants}
-                        className="font-helvetica text-4xl font-bold leading-tight"
+                        className="font-helvetica text-2xl font-bold leading-tight sm:text-3xl md:text-4xl"
                       >
                         {char}
                       </motion.span>
@@ -445,12 +445,12 @@ const ForeignSpot: React.FC = () => {
                   })}
                 </motion.div>
                 <FaQuoteRight
-                  className="ml-auto text-5xl"
+                  className="ml-auto text-2xl sm:text-3xl md:text-5xl"
                   style={{ color: spotSecondaryColor }}
                 />
 
                 <p
-                  className="absolute -bottom-10 left-[50%] -translate-x-1/2  text-center font-helvetica font-bold tracking-wide"
+                  className="absolute -bottom-10 left-[50%] -translate-x-1/2 text-nowrap text-center font-helvetica font-bold tracking-wide"
                   style={{ color: spotSecondaryColor }}
                 >
                   -&nbsp;{quote.name}
@@ -458,7 +458,7 @@ const ForeignSpot: React.FC = () => {
               </figcaption>
             </div>
 
-            <div className="w-1/2">
+            <div className="h-[450px] max-md:-order-1 md:h-[600px] md:w-1/2">
               <img
                 src={quote.image}
                 alt="quote-image"
@@ -473,12 +473,12 @@ const ForeignSpot: React.FC = () => {
           name="travelessentials"
           className="mx-auto w-[85%] max-w-6xl scroll-m-14"
         >
-          <div className="mb-8 flex items-center gap-3 font-sriracha text-3xl font-bold">
+          <div className="mb-8 flex items-center gap-3 font-sriracha text-2xl font-bold sm:text-3xl">
             <img src={airplane} alt="image" className="h-8 w-8" />
             <h2>Travel Essentials</h2>
           </div>
 
-          <div className="columns-2 gap-20">
+          <div className="columns-1 gap-20 md:columns-2">
             <div className="flex flex-col gap-8">
               <div className="relative aspect-[4/3] w-full">
                 <motion.img
@@ -495,14 +495,13 @@ const ForeignSpot: React.FC = () => {
                 <div
                   className="absolute left-3 top-3 z-[2] aspect-[4/3] w-full rounded-lg"
                   style={{ backgroundColor: primaryColor }}
-                  // style={{ border: "4px solid", borderColor: primaryColor }}
                 ></div>
               </div>
 
               {/* culture */}
               <div>
                 <h4 className="font-palanquin text-xl font-bold">Culture</h4>
-                <p className="mt-3 font-helvetica text-gray-500">
+                <p className="mt-3 font-helvetica text-gray-500 max-sm:text-sm">
                   {travelEssentials.culture}
                 </p>
               </div>
@@ -512,7 +511,7 @@ const ForeignSpot: React.FC = () => {
                 <h4 className="font-palanquin text-xl font-bold">
                   Local scene
                 </h4>
-                <p className="mt-3 font-helvetica text-gray-500">
+                <p className="mt-3 font-helvetica text-gray-500 max-sm:text-sm">
                   {travelEssentials.localScene}
                 </p>
               </div>
@@ -522,7 +521,7 @@ const ForeignSpot: React.FC = () => {
                 <h4 className="font-palanquin text-xl font-bold">
                   How to get there
                 </h4>
-                <p className="mt-3 font-helvetica text-gray-500">
+                <p className="mt-3 font-helvetica text-gray-500 max-sm:text-sm">
                   {travelEssentials.getThere}
                 </p>
               </div>
@@ -532,7 +531,7 @@ const ForeignSpot: React.FC = () => {
                 <h4 className="font-palanquin text-xl font-bold">
                   What to bring
                 </h4>
-                <p className="mt-3 font-helvetica text-gray-500">
+                <p className="mt-3 font-helvetica text-gray-500 max-sm:text-sm">
                   {travelEssentials.localScene}
                 </p>
               </div>
@@ -542,7 +541,7 @@ const ForeignSpot: React.FC = () => {
                 <h4 className="font-palanquin text-xl font-bold">
                   Leisure time
                 </h4>
-                <p className="mt-3 font-helvetica text-gray-500">
+                <p className="mt-3 font-helvetica text-gray-500 max-sm:text-sm">
                   {travelEssentials.downTime}
                 </p>
               </div>
@@ -560,7 +559,7 @@ const ForeignSpot: React.FC = () => {
               Quick Tips
             </h3>
 
-            <div className="grid grid-cols-4 gap-x-4 gap-y-5 text-white">
+            <div className="grid gap-x-4 gap-y-5 text-white sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4">
               <motion.div
                 initial="hidden"
                 whileInView="visible"
@@ -577,7 +576,7 @@ const ForeignSpot: React.FC = () => {
                   <h4 className="font-palanquin text-xl font-bold">
                     Travel Time
                   </h4>
-                  <div className="mt-2 flex flex-col items-center">
+                  <div className="mt-2 flex flex-col items-center max-sm:text-sm">
                     <p>
                       TPE:
                       <span className="px-1">{quickTips.traveTime.TPE}</span>
@@ -615,7 +614,9 @@ const ForeignSpot: React.FC = () => {
                   <h4 className="font-palanquin text-xl font-bold">
                     Connectivity
                   </h4>
-                  <p className="mt-2 text-center">{quickTips.connectivity}</p>
+                  <p className="mt-2 text-center max-sm:text-sm">
+                    {quickTips.connectivity}
+                  </p>
                 </div>
               </motion.div>
 
@@ -633,7 +634,9 @@ const ForeignSpot: React.FC = () => {
 
                 <div className="mt-2 flex flex-col items-center">
                   <h4 className="font-palanquin text-xl font-bold">Currency</h4>
-                  <p className="mt-2 text-center">{quickTips.currency}</p>
+                  <p className="mt-2 text-center max-sm:text-sm">
+                    {quickTips.currency}
+                  </p>
                 </div>
               </motion.div>
 
@@ -649,7 +652,7 @@ const ForeignSpot: React.FC = () => {
                   style={{ color: spotSecondaryColor }}
                 />
 
-                <div className="mt-2 flex flex-col items-center">
+                <div className="mt-2 flex flex-col items-center max-sm:text-sm">
                   <h4 className="font-palanquin text-xl font-bold">
                     Avg. cost
                   </h4>
@@ -686,7 +689,9 @@ const ForeignSpot: React.FC = () => {
                   <h4 className="font-palanquin text-xl font-bold">
                     Visa Requirements
                   </h4>
-                  <p className="mt-2 text-center">{quickTips.visa}</p>
+                  <p className="mt-2 text-center max-sm:text-sm">
+                    {quickTips.visa}
+                  </p>
                 </div>
               </motion.div>
 
@@ -706,7 +711,9 @@ const ForeignSpot: React.FC = () => {
                   <h4 className="font-palanquin text-xl font-bold">
                     Drink Water Quality
                   </h4>
-                  <p className="mt-2 text-center">{quickTips.waterQuality}</p>
+                  <p className="mt-2 text-center max-sm:text-sm">
+                    {quickTips.waterQuality}
+                  </p>
                 </div>
               </motion.div>
 
@@ -724,7 +731,9 @@ const ForeignSpot: React.FC = () => {
 
                 <div className="mt-2 flex flex-col items-center">
                   <h4 className="font-palanquin text-xl font-bold">Hazard</h4>
-                  <p className="mt-2 text-center">{quickTips.hazard}</p>
+                  <p className="mt-2 text-center max-sm:text-sm">
+                    {quickTips.hazard}
+                  </p>
                 </div>
               </motion.div>
 
@@ -744,7 +753,9 @@ const ForeignSpot: React.FC = () => {
                   <h4 className="font-palanquin text-xl font-bold">
                     Cash & Card
                   </h4>
-                  <p className="mt-2 text-center">{quickTips.cashCard}</p>
+                  <p className="mt-2 text-center max-sm:text-sm">
+                    {quickTips.cashCard}
+                  </p>
                 </div>
               </motion.div>
             </div>
@@ -752,8 +763,11 @@ const ForeignSpot: React.FC = () => {
         </section>
 
         {/* other zone */}
-        <Element name="exploreotherzones" className="mx-auto w-[85%] max-w-6xl">
-          <div className="mb-8 flex items-center gap-3 font-sriracha text-3xl font-bold">
+        <Element
+          name="exploreotherzones"
+          className="mx-auto w-[85vw] max-w-6xl"
+        >
+          <div className="mb-8 flex items-center gap-3 font-sriracha text-2xl font-bold sm:text-3xl">
             <img src={globe} alt="image" className="h-8 w-8" />
             <h2>Explore Other Zones</h2>
           </div>
@@ -761,14 +775,14 @@ const ForeignSpot: React.FC = () => {
           {isLoading && <p>loading now...</p>}
 
           <Carousel
-            className="w-full"
+            className="w-[85vw] md:w-full"
             opts={{
               align: "start",
               loop: true,
             }}
             plugins={[plugin.current]}
           >
-            <CarouselContent className="-ml-5">
+            <CarouselContent className="ml-0 md:-ml-5">
               {!isLoading &&
                 relatedSpotData &&
                 relatedSpotData.length > 1 &&
@@ -777,7 +791,7 @@ const ForeignSpot: React.FC = () => {
                   return (
                     <CarouselItem
                       key={id}
-                      className="overflow-hidden pl-5 hover:cursor-pointer md:basis-1/2 lg:basis-1/3"
+                      className="overflow-hidden pl-0 hover:cursor-pointer md:basis-1/2 md:pl-5 lg:basis-1/3"
                       onClick={() => spotHandler(country.eng, id)}
                     >
                       <Card className="border-none">
@@ -813,10 +827,10 @@ const ForeignSpot: React.FC = () => {
             </CarouselContent>
 
             {!isLoading && relatedSpotData && relatedSpotData.length > 1 && (
-              <>
+              <div className="hidden md:block">
                 <CarouselPrevious />
                 <CarouselNext />
-              </>
+              </div>
             )}
           </Carousel>
         </Element>

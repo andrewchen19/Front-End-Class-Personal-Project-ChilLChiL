@@ -20,7 +20,10 @@ const ReadMore: React.FC<ReadMoreProps> = ({
     : text;
   const endText = spiltText.slice(amountOfWords - 1).join(" ");
   return (
-    <p id={id} className="mt-1 pl-6 font-helvetica text-gray-500">
+    <p
+      id={id}
+      className="mt-1 pl-6 font-helvetica text-gray-500 max-sm:text-sm"
+    >
       {beginText}
       {itCanOverflow && (
         <>
