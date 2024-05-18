@@ -1,6 +1,5 @@
 import React from "react";
-import surfVideo from "../assets/videos/3125821-uhd_3840_2160_24fps.mp4";
-// import surfVideo2 from "../assets/videos/202405131712.mp4";
+import surfVideo from "../assets/videos/surf-video-reduce.mp4";
 
 const VideoContainer: React.FC = () => {
   return (
