@@ -444,7 +444,7 @@ const Article: React.FC = () => {
             whileInView="visible"
             variants={centerVariant}
             viewport={{ once: true }}
-            className="flex w-[420px] flex-col rounded-xl bg-white p-5"
+            className="flex max-w-[350px] flex-col rounded-xl bg-white px-1 py-5"
             style={{ boxShadow: "rgba(6, 2, 2, 0.15) 0px 2px 10px" }}
           >
             <div className="flex flex-col text-center font-helvetica">

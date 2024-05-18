@@ -180,14 +180,16 @@ const EditArticle: React.FC = () => {
       exit={{ opacity: 0, transition: { duration: 1.5 } }}
     >
       {/* caption */}
-      <div className="grid h-[150px] w-full place-items-center bg-beige">
-        <h1 className="font-veneer text-3xl leading-8 tracking-wide">
-          <span className="text-green-fluorescent">Update</span> your surf
-          stories and keep the waves rolling
-        </h1>
+      <div className="grid h-[200px] place-items-center bg-beige">
+        <div className="mx-auto w-[80%]">
+          <h1 className="text-center font-veneer text-2xl leading-8 tracking-wide sm:text-3xl">
+            <span className="text-green-fluorescent">Update</span> your surf
+            stories and keep the waves rolling
+          </h1>
+        </div>
       </div>
 
-      <div className="align-container gap-20 py-24">
+      <div className="align-container gap-10 py-12 sm:gap-20 sm:py-24">
         {/* cover */}
         <div>
           <h3 className="mb-2 text-2xl font-semibold">封面</h3>
@@ -235,7 +237,7 @@ const EditArticle: React.FC = () => {
           {title.length === 50 && (
             <small
               id="titleHelp"
-              className="text-red absolute -bottom-[28px] left-0"
+              className="absolute -bottom-[28px] left-0 text-red"
             >
               Limit to 50 characters
             </small>
@@ -246,7 +248,7 @@ const EditArticle: React.FC = () => {
         <div>
           <h3 className="mb-2 text-xl font-semibold">類型</h3>
 
-          <div className="grid grid-cols-[auto,auto,auto] items-center gap-y-3">
+          <div className="grid grid-cols-[auto,auto] items-center gap-y-3 sm:grid-cols-[auto,auto,auto]">
             <div className="flex items-center gap-1">
               <input
                 type="radio"
@@ -371,7 +373,7 @@ const EditArticle: React.FC = () => {
         </div>
 
         {/* button */}
-        <div className="mb-10 mt-6 flex gap-4">
+        <div className="mb-10 flex gap-4">
           <Button
             type="button"
             variant={"purple"}
