@@ -315,6 +315,14 @@ video::-webkit-media-controls {
   display: none !important;
 }
 
+/* custom grid */
+.grid-cols-custom-3 {
+  grid-template-columns: repeat(3, minmax(180px, 1fr));
+}
+.grid-cols-custom-9 {
+  grid-template-columns: repeat(9, minmax(60px, 1fr));
+}
+
 /* font */
 @font-face {
   font-family: "Helvetica";

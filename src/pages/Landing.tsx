@@ -421,7 +421,7 @@ const Landing: React.FC = () => {
             <input
               type="text"
               placeholder="subscribe@chilLchilL.com"
-              className="ml-2 bg-beige outline-none"
+              className="ml-2 w-full bg-beige outline-none"
             />
             <Button size={"full"}>sign up</Button>
           </motion.div>
