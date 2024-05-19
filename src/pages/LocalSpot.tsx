@@ -572,16 +572,16 @@ const LocalSpot: React.FC = () => {
                   <p className="px-5 text-center">{textData.breaks}</p>
                 </div>
 
-                <div className="my-4 flex flex-grow flex-col gap-1 md:border-r md:border-r-turquoise">
-                  <h4 className="px-5 text-center text-turquoise">最佳潮汐</h4>
-                  <p className="px-5 text-center">{textData.bestTide}</p>
+                <div className="my-4 flex flex-grow flex-col gap-1 md:border-r md:border-r-turquoise ">
+                  <h4 className="px-5 text-center text-turquoise">方向</h4>
+                  <p className="px-5 text-center">{textData.direction}</p>
                 </div>
               </div>
 
               <div className="flex flex-grow">
                 <div className="my-4 flex flex-grow flex-col gap-1 border-r border-r-turquoise">
-                  <h4 className="px-5 text-center text-turquoise">方向</h4>
-                  <p className="px-5 text-center">{textData.direction}</p>
+                  <h4 className="px-5 text-center text-turquoise">最佳潮汐</h4>
+                  <p className="px-5 text-center">{textData.bestTide}</p>
                 </div>
 
                 <div className="my-4 flex flex-grow flex-col gap-1 border-r border-r-turquoise">
