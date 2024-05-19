@@ -89,7 +89,7 @@ const ProfileEditContainer: React.FC = () => {
           delay: 0.3,
           ease: [0, 0.71, 0.2, 1.01],
         }}
-        className="fixed inset-0 z-20 mx-auto my-auto h-[500px] w-[500px] rounded-xl bg-white p-8"
+        className="fixed inset-0 z-20 mx-auto my-auto h-[500px] w-[320px] rounded-xl bg-white p-8 sm:w-[500px]"
         style={{ boxShadow: "rgba(6, 2, 2, 0.15) 0px 2px 10px" }}
       >
         {/* close button */}
@@ -115,7 +115,7 @@ const ProfileEditContainer: React.FC = () => {
           {name.length > 20 && (
             <small
               id="nameHelp"
-              className="text-red absolute -bottom-[20px] left-0"
+              className="absolute -bottom-[20px] left-0 text-red"
             >
               Limit to 20 characters
             </small>
@@ -123,8 +123,8 @@ const ProfileEditContainer: React.FC = () => {
         </div>
 
         {/* imagesContainer */}
-        <ScrollArea className="mt-[26px] h-[270px] rounded-lg bg-gray-200 pr-2">
-          <div className="my-4 grid grid-cols-[auto,auto,auto] justify-around gap-4">
+        <ScrollArea className="mt-[26px] h-[270px] rounded-lg bg-gray-200 px-2">
+          <div className="my-4 grid grid-cols-[auto,auto] justify-around gap-4 sm:grid-cols-[auto,auto,auto]">
             {profileImageList.map((url, index) => {
               return (
                 <div

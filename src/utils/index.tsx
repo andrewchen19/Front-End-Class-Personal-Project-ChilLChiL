@@ -491,6 +491,8 @@ interface WeatherProps {
   gustData: number[];
   tempData: number[];
 }
+
+// desktop
 export const executeOption = ({
   waveData,
   gustData,
@@ -578,6 +580,127 @@ export const executeOption = ({
           lineStyle: {
             color: colors[0],
           },
+        },
+        min: 5,
+        max: 35,
+        interval: 5,
+        axisLabel: {
+          formatter: "{value} °C",
+        },
+      },
+    ],
+    series: [
+      {
+        name: "Temperature",
+        type: "line",
+        yAxisIndex: 2,
+        data: tempData,
+      },
+      {
+        name: "Wave Height",
+        type: "bar",
+        data: waveData,
+      },
+      {
+        name: "Gust Speed",
+        type: "bar",
+        yAxisIndex: 1,
+        data: gustData,
+      },
+    ],
+  };
+
+  return option;
+};
+// mobile
+export const executeOption2 = ({
+  waveData,
+  gustData,
+  tempData,
+}: WeatherProps) => {
+  const colors = ["#F48080", "#70ACC7", "#968095"];
+
+  const option: ReactEChartsProps["option"] = {
+    color: colors,
+
+    tooltip: {
+      trigger: "axis",
+      axisPointer: {
+        type: "cross",
+      },
+    },
+    grid: {
+      right: "30%",
+    },
+    toolbox: {
+      feature: {
+        restore: { show: false },
+        magicType: { show: false, type: ["line", "bar"] },
+      },
+    },
+    legend: {
+      type: "scroll",
+      data: ["Temperature", "Wave Height", "Gust Speed"],
+      top: "top",
+    },
+    xAxis: [
+      {
+        type: "category",
+        axisTick: {
+          alignWithLabel: true,
+        },
+        data: ["00", "08", "16", "00", "08", "16", "00", "08", "16"],
+      },
+    ],
+    yAxis: [
+      {
+        type: "value",
+        name: "最大浪高",
+        position: "right",
+        alignTicks: true,
+        axisLine: {
+          show: false,
+          lineStyle: {
+            color: colors[1],
+          },
+        },
+        min: 0,
+        max: 2.4,
+        interval: 0.4,
+        axisLabel: {
+          formatter: "{value} m",
+        },
+      },
+      {
+        type: "value",
+        name: "陣風",
+        position: "right",
+        alignTicks: false,
+        offset: 45,
+        axisLine: {
+          show: false,
+          lineStyle: {
+            color: colors[2],
+          },
+        },
+        min: 0,
+        max: 60,
+        interval: 10,
+        axisLabel: {
+          formatter: "{value} km/h",
+        },
+      },
+      {
+        type: "value",
+        name: "溫度",
+        position: "left",
+        alignTicks: true,
+        axisLine: {
+          show: false,
+          lineStyle: {
+            color: colors[0],
+          },
+          onZeroAxisIndex: 50,
         },
         min: 5,
         max: 35,

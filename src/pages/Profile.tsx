@@ -37,10 +37,9 @@ const Profile: React.FC = () => {
   }, [isEditContainerOpen]);
 
   return (
-    <main className="align-profile gap-20 py-24">
+    <main className="flex flex-col gap-16 py-20 sm:gap-20 sm:py-24">
       {/* personal info */}
-      <section>
-        <h2 className="text-2xl font-bold"></h2>
+      <section className="mx-auto w-[85%] max-w-6xl">
         <div className="flex items-center gap-6">
           <img src={setting} alt="image" className="ml-2 h-8 w-8" />
           <h2 className="text-2xl font-bold">個人資訊</h2>
@@ -50,10 +49,10 @@ const Profile: React.FC = () => {
           <img
             src={user.profile_picture}
             alt="user-image"
-            className="h-32 w-32 rounded-full border-4 border-turquoise"
+            className="h-28 w-28 rounded-full border-4 border-turquoise sm:h-32 sm:w-32"
           />
 
-          <div className="flex flex-col gap-5 font-semibold">
+          <div className="flex flex-col gap-5 font-semibold max-sm:text-sm">
             <h4 className="capitalize">
               姓名：
               <span className="font-ppwoodland pl-2">{user.name}</span>

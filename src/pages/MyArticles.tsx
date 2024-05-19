@@ -18,7 +18,7 @@ const MyArticles: React.FC = () => {
   }
 
   return (
-    <div className="align-profile gap-20 py-24">
+    <div className="align-profile gap-16 py-20 sm:gap-20 sm:py-24">
       <MyArticlesCollectionContainer />
       <ArticlesCollectionContainer />
     </div>

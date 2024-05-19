@@ -3,7 +3,7 @@ import { Link } from "react-router-dom";
 import { useSelector } from "react-redux";
 import { IRootState } from "../store";
 import { ReactECharts } from "./ReactEchart";
-import { changeSpotName, executeOption } from "../utils";
+import { changeSpotName, executeOption, executeOption2 } from "../utils";
 import location from "../assets/icons/location.svg";
 import LoadingSmall from "./LoadingSmall";
 import surfBoy from "../assets/lotties/surf-boy.json";
@@ -30,6 +30,7 @@ const RealtimeContainer: React.FC = () => {
   const [localSpotsList, setLocalSpotsList] = useState<DocumentData[] | null>(
     null,
   );
+  const [isDesktopSize, setIsDesktopSize] = useState(window.innerWidth > 480);
 
   const fetchLocalSpotsIdFromFirebase = async (): Promise<
     string[] | undefined
@@ -82,6 +83,20 @@ const RealtimeContainer: React.FC = () => {
 
   useEffect(() => {
     fetchDataFromFirebase();
+  }, []);
+
+  useEffect(() => {
+    const handleResize = () => {
+      setIsDesktopSize(window.innerWidth > 480);
+    };
+
+    handleResize();
+
+    window.addEventListener("resize", handleResize);
+
+    return () => {
+      window.removeEventListener("resize", handleResize);
+    };
   }, []);
 
   if (isLoading || !localSpotNameList || !localSpotsList) {
@@ -160,7 +175,7 @@ const RealtimeContainer: React.FC = () => {
 
   return (
     <section>
-      <div className="flex items-center gap-3">
+      <div className="mx-auto flex w-[85%] max-w-6xl items-center gap-3">
         <img src={location} alt="image" className="h-[52px] w-[52px]" />
         <h2 className="text-2xl font-bold">浪點即時資訊</h2>
       </div>
@@ -169,7 +184,7 @@ const RealtimeContainer: React.FC = () => {
         value={localSpotNameList[localSpotNameIndex]}
         className="mt-4 flex w-full flex-col"
       >
-        <div className="flex">
+        <div className="mx-auto flex w-[85%] max-w-6xl">
           <TabsList>
             {localSpotNameList.map((name, index) => (
               <TabsTrigger
@@ -185,10 +200,16 @@ const RealtimeContainer: React.FC = () => {
 
         {localSpotNameList.map((name) => (
           <TabsContent key={name} value={name}>
-            <div className="mt-16 h-[500px] w-full">
-              <ReactECharts
-                option={executeOption({ waveData, gustData, tempData })}
-              />
+            <div className="mx-auto mt-8 flex h-[500px] w-full max-w-6xl  sm:mt-16">
+              <div className="mx-auto w-full border border-red pl-2">
+                <ReactECharts
+                  option={
+                    isDesktopSize
+                      ? executeOption({ waveData, gustData, tempData })
+                      : executeOption2({ waveData, gustData, tempData })
+                  }
+                />
+              </div>
             </div>
           </TabsContent>
         ))}
