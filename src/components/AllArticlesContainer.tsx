@@ -473,10 +473,15 @@ const AllArticlesContainer: React.FC = () => {
         </div>
 
         <div className="grid grid-cols-2 gap-3 sm:gap-5 md:gap-8">
-          <Button type="submit" variant={"pink"}>
+          <Button type="submit" variant={"pink"} size={"original"}>
             Search
           </Button>
-          <Button type="button" variant={"blue"} onClick={resetHandler}>
+          <Button
+            type="button"
+            variant={"blue"}
+            size={"original"}
+            onClick={resetHandler}
+          >
             Reset
           </Button>
         </div>
