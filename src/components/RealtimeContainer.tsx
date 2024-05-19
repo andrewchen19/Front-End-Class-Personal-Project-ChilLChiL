@@ -200,8 +200,8 @@ const RealtimeContainer: React.FC = () => {
 
         {localSpotNameList.map((name) => (
           <TabsContent key={name} value={name}>
-            <div className="mx-auto mt-8 flex h-[500px] w-full max-w-6xl  sm:mt-16">
-              <div className="mx-auto w-full border border-red pl-2">
+            <div className="mx-auto mt-8 flex h-[500px] w-full max-w-6xl sm:mt-16">
+              <div className="mx-auto w-full pl-2">
                 <ReactECharts
                   option={
                     isDesktopSize

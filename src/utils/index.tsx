@@ -641,7 +641,8 @@ export const executeOption2 = ({
     legend: {
       type: "scroll",
       data: ["Temperature", "Wave Height", "Gust Speed"],
-      top: "top",
+      itemGap: 30,
+      left: 20,
     },
     xAxis: [
       {
