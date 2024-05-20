@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React from "react";
 import { useParams } from "react-router-dom";
 import { useNavigate } from "react-router-dom";
 import {
@@ -8,21 +8,10 @@ import {
   htmlToPlainText,
 } from "../utils";
 import flower from "../assets/icons/flower.svg";
+import useGetArticlesFromFirestore from "@/utils/hooks/useGetArticlesFromFirestore";
 
 // react icons
 import { FaStar } from "react-icons/fa";
-
-// firebase
-import { db } from "../main";
-import {
-  collection,
-  query,
-  where,
-  getDocs,
-  DocumentData,
-  limit,
-  orderBy,
-} from "firebase/firestore";
 
 // shadcn
 import {
@@ -43,44 +32,17 @@ const RelatedArticlesContainer: React.FC = () => {
     Autoplay({ delay: 3500, stopOnInteraction: false, stopOnMouseEnter: true }),
   );
 
-  const [isArticleLoading, setIsArticleLoading] = useState<boolean>(false);
-  const [articlesList, setArticlesList] = useState<DocumentData[] | null>(null);
-
   const articleHandler = (id: string) => {
     navigate(`/articles/${id}`);
   };
 
-  const fetchArticlesFromFirebase = async (name: string): Promise<void> => {
-    const q = query(
-      collection(db, "articles"),
-      where("surfingSpot", "==", name),
-      where("isDeleted", "!=", true),
-      orderBy("created_at", "desc"),
-      limit(6),
-    );
-    const querySnapshot = await getDocs(q);
-    const articlesArray = querySnapshot.docs.map((doc) => doc.data());
-    // console.log(articlesArray);
-    setArticlesList(articlesArray);
-  };
+  if (!name) return;
 
-  useEffect(() => {
-    const fetchDataFromFirebase = async (): Promise<void> => {
-      if (!name) return;
-
-      setIsArticleLoading(true);
-
-      try {
-        await fetchArticlesFromFirebase(name);
-      } catch (error) {
-        console.log(error);
-      }
-
-      setIsArticleLoading(false);
-    };
-
-    fetchDataFromFirebase();
-  }, []);
+  // custom hook
+  const { isLoading: isArticleLoading, articlesList } =
+    useGetArticlesFromFirestore({
+      name,
+    });
 
   return (
     <section className="w-full">
