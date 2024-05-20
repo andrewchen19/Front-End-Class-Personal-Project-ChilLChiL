@@ -1,10 +1,10 @@
 import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import wave from "../assets/icons/wave.svg";
+import UseGetDocsFromFirestore from "@/utils/hooks/useGetDocsFromFirestore";
 
 // firebase
-import { db } from "../main";
-import { collection, query, getDocs, DocumentData } from "firebase/firestore";
+import { DocumentData } from "firebase/firestore";
 
 // shadcn
 import {
@@ -24,41 +24,27 @@ const TubeForeignSpotsContainer: React.FC = () => {
     Autoplay({ delay: 4000, stopOnInteraction: false, stopOnMouseEnter: true }),
   );
 
-  const [isSpotLoading, setIsSpotLoading] = useState<boolean>(false);
   const [spotsList, setSpotsList] = useState<DocumentData[] | null>(null);
 
   const spotHandler = (name: string, id: string) => {
     navigate(`/foreign-spots/${name}/${id}`);
   };
 
-  const fetchSpotsFromFirebase = async (): Promise<void> => {
-    const q = query(collection(db, "foreign-spots"));
-    const querySnapshot = await getDocs(q);
-    let spotsArray: DocumentData[] = [];
-    querySnapshot.docs.forEach((doc) => {
-      const data = doc.data() as DocumentData;
-      if (doc.data().category.includes("tube")) {
-        spotsArray.push(data);
-      }
-    });
-    setSpotsList(spotsArray);
-  };
+  // custom hook
+  const { isLoading, data: spotsArray } = UseGetDocsFromFirestore({
+    path: "foreign-spots",
+  });
 
   useEffect(() => {
-    const fetchDataFromFirebase = async (): Promise<void> => {
-      setIsSpotLoading(true);
-
-      try {
-        await fetchSpotsFromFirebase();
-      } catch (error) {
-        console.log(error);
+    let newSpotsArray: DocumentData[] = [];
+    spotsArray?.forEach((item) => {
+      if (item.category.includes("tube")) {
+        newSpotsArray.push(item);
       }
+    });
 
-      setIsSpotLoading(false);
-    };
-
-    fetchDataFromFirebase();
-  }, []);
+    setSpotsList(newSpotsArray);
+  }, [isLoading]);
 
   return (
     <section className="w-full">
@@ -67,7 +53,7 @@ const TubeForeignSpotsContainer: React.FC = () => {
         <img src={wave} alt="wave" className="h-8 w-8 md:h-10 md:w-10" />
       </h2>
 
-      {isSpotLoading && (
+      {isLoading && (
         <div className="grid w-full gap-5 md:grid-cols-2 lg:grid-cols-3">
           <div className="skeleton h-[420px] rounded-lg"></div>
         </div>
@@ -82,7 +68,7 @@ const TubeForeignSpotsContainer: React.FC = () => {
         plugins={[plugin.current]}
       >
         <CarouselContent className="ml-0 md:-ml-5">
-          {!isSpotLoading &&
+          {!isLoading &&
             spotsList &&
             spotsList.length > 1 &&
             spotsList.map((spot) => {
@@ -119,7 +105,7 @@ const TubeForeignSpotsContainer: React.FC = () => {
             })}
         </CarouselContent>
 
-        {!isSpotLoading && spotsList && spotsList.length > 1 && (
+        {!isLoading && spotsList && spotsList.length > 1 && (
           <div className="hidden md:block">
             <CarouselPrevious />
             <CarouselNext />
