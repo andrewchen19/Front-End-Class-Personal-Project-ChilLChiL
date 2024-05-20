@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { useNavigate, useParams } from "react-router-dom";
+import { Link, useNavigate, useParams } from "react-router-dom";
 import { ArticleCommentsContainer, Loading } from "../components";
 import { toast } from "react-toastify";
 import { useSelector, useDispatch } from "react-redux";
@@ -349,7 +349,24 @@ const Article: React.FC = () => {
         </div>
 
         {/* context */}
-        <div className="align-container py-24">
+        <div className="align-container pb-24 pt-[72px]">
+          {/* breadcrumbs */}
+          <div className="breadcrumbs mb-6 px-[15px] text-sm text-gray-500">
+            <ul>
+              <li>
+                <a href="/" className="underline-offset-4">
+                  首頁
+                </a>
+              </li>
+              <li>
+                <Link to="/articles" className="underline-offset-4">
+                  浪人部落
+                </Link>
+              </li>
+              <li>{title}</li>
+            </ul>
+          </div>
+
           {/* title */}
           <div className="px-[15px] text-3xl font-bold capitalize sm:text-4xl">
             {title}
