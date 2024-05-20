@@ -46,6 +46,7 @@ const AllArticlesContainer: React.FC = () => {
   const [tag, setTag] = useState<string>("all");
   const [surfingSpot, setSurfingSpot] = useState<string>("all");
   const [order, setOrder] = useState<string>("desc");
+  const [isDesktopSize, setIsDesktopSize] = useState(window.innerWidth > 480);
 
   const articleHandler = (id: string) => {
     navigate(`/articles/${id}`);
@@ -362,6 +363,24 @@ const AllArticlesContainer: React.FC = () => {
     fetchDataFromFirebase();
   }, []);
 
+  useEffect(() => {
+    const handleResize = () => {
+      setIsDesktopSize(window.innerWidth > 480);
+
+      if (window.innerWidth < 480) {
+        setLayout("grid");
+      }
+    };
+
+    handleResize();
+
+    window.addEventListener("resize", handleResize);
+
+    return () => {
+      window.removeEventListener("resize", handleResize);
+    };
+  }, []);
+
   return (
     <section>
       {/* title */}
@@ -380,7 +399,7 @@ const AllArticlesContainer: React.FC = () => {
           >
             <BsFillGridFill />
           </Button>
-          <div className="max-sm:hidden">
+          {isDesktopSize && (
             <Button
               type="button"
               variant={`${layout === "list" ? "olive" : "ghost"}`}
@@ -389,7 +408,7 @@ const AllArticlesContainer: React.FC = () => {
             >
               <BsList />
             </Button>
-          </div>
+          )}
         </div>
       </div>
 

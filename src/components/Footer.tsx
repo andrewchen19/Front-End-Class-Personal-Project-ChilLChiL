@@ -21,7 +21,7 @@ const Footer: React.FC = () => {
         <div className="h-16 w-16">
           <iframe
             src="https://giphy.com/embed/6fe3FqaajDFeHdfG1V"
-            className="h-full w-full"
+            className="h-full w-full bg-transparent"
             sandbox="allow-same-origin allow-scripts"
           ></iframe>
         </div>

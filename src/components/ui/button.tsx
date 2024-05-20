@@ -45,7 +45,7 @@ const buttonVariants = cva(
         full: "rounded-full h-8 px-4 py-2",
         "sm-full": "rounded-full h-7 px-3",
         "lg-full": "rounded-full h-9 px-5",
-        "real-full": "rounded-full h-6 w-6 sm:h-8 sm:w-8",
+        "real-full": "rounded-full h-7 w-7 sm:h-8 sm:w-8",
       },
     },
     defaultVariants: {

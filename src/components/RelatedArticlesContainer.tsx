@@ -111,7 +111,7 @@ const RelatedArticlesContainer: React.FC = () => {
         }}
         plugins={[plugin.current]}
       >
-        <CarouselContent className="ml-0 md:-ml-8">
+        <CarouselContent className="md:-ml-8">
           {!isArticleLoading &&
             articlesList &&
             articlesList.length > 0 &&
@@ -129,7 +129,7 @@ const RelatedArticlesContainer: React.FC = () => {
               return (
                 <CarouselItem
                   key={id}
-                  className="flex flex-grow pl-0 hover:cursor-pointer md:basis-1/2 md:pl-8 lg:basis-1/3 xl:basis-1/4"
+                  className="flex flex-grow hover:cursor-pointer md:basis-1/2 md:pl-8 lg:basis-1/3 xl:basis-1/4"
                   onClick={() => articleHandler(id)}
                 >
                   <Card className="flex flex-grow border-gray-900">

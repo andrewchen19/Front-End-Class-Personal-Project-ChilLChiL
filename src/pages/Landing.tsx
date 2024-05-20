@@ -2,6 +2,8 @@ import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import { splitStringUsingRegex, reviews } from "../utils";
 import { Velocity, VideoContainer } from "../components";
+import axios from "axios";
+import { toast } from "react-toastify";
 
 import coverImage from "../assets/images/landing-cover.jpg";
 import grid1Image from "../assets/images/landing-grid1.jpg";
@@ -15,6 +17,7 @@ import Lottie from "lottie-react";
 
 // shadcn
 import { Button } from "@/components/ui/button";
+import { Loader2 } from "lucide-react";
 
 // react icons
 import { FaChevronDown, FaChevronUp, FaStar } from "react-icons/fa";
@@ -95,6 +98,8 @@ const Landing: React.FC = () => {
   const headingChars = splitStringUsingRegex(headingText);
   const contentChars = splitStringUsingRegex(contentText);
   const [isVisible, setIsVisible] = useState(true);
+  const [email, setEmail] = useState("");
+  const [isLoading, setIsLoading] = useState(false);
 
   const { scrollYProgress } = useScroll();
   const scaleX = useSpring(scrollYProgress, {
@@ -102,6 +107,34 @@ const Landing: React.FC = () => {
     damping: 30,
     restDelta: 0.001,
   });
+
+  const registerHandler = async () => {
+    if (!email) {
+      toast.error("Please provide your email 😵");
+      return;
+    }
+
+    // !!
+    return;
+
+    setIsLoading(true);
+
+    try {
+      const response = await axios.post("https://your-backend-url/register", {
+        email,
+      });
+      const successMessage =
+        response?.data?.msg || "Registration successful. Email sent.";
+      toast.error(`${successMessage} 😎`);
+    } catch (error) {
+      const errorMessage =
+        error?.response?.data?.msg ||
+        "Unexpected Error. Please try again later.";
+      toast.error(`${errorMessage} 😵`);
+    }
+
+    setIsLoading(false);
+  };
 
   useEffect(() => {
     const handleScroll = () => {
@@ -419,11 +452,22 @@ const Landing: React.FC = () => {
             className="flex w-full items-center justify-between rounded-full border border-gray-500 p-2.5 lg:max-w-[40%]"
           >
             <input
-              type="text"
-              placeholder="subscribe@chilLchilL.com"
+              type="email"
+              placeholder="subscribe@email.com"
               className="ml-2 w-full bg-beige outline-none"
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
             />
-            <Button size={"full"}>sign up</Button>
+            <Button
+              size={"full"}
+              disabled={isLoading}
+              onClick={registerHandler}
+            >
+              {isLoading ? (
+                <Loader2 className="mr-1 h-3 w-3 animate-spin" />
+              ) : null}
+              {isLoading ? "Loading" : "Sign up"}
+            </Button>
           </motion.div>
         </div>
 

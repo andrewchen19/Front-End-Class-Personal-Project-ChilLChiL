@@ -9,15 +9,16 @@ import {
   setBreaks,
   setDifficulty,
 } from "../features/articles/articlesSlice";
+import UseGetDocsFromFirestore from "@/utils/hooks/useGetDocsFromFirestore";
+
+// react-icons & icons
+import { FaStar } from "react-icons/fa";
 import placeHolder from "../assets/icons/placeholder.svg";
 import wave from "../assets/icons/wave2.svg";
 
-// react-icons
-import { FaStar } from "react-icons/fa";
-
 // firebase
-import { db } from "../main";
-import { collection, getDocs, DocumentData } from "firebase/firestore";
+// import { db } from "../main";
+// import { collection, getDocs, DocumentData } from "firebase/firestore";
 
 // maptiler
 import * as maptilersdk from "@maptiler/sdk";
@@ -37,7 +38,10 @@ const LocalSpots: React.FC = () => {
     (state: IRootState) => state.articles,
   );
 
-  const [isLoading, setIsLoading] = useState<boolean>(false);
+  // custom hook
+  const { isLoading, data: spotsArray } = UseGetDocsFromFirestore({
+    path: "local-spots",
+  });
 
   const navigate = useNavigate();
 
@@ -112,11 +116,9 @@ const LocalSpots: React.FC = () => {
         .addTo(map);
     });
   };
-
   const spotHandler = (name: string, id: string) => {
     navigate(`/local-spots/${name}/${id}`);
   };
-
   const resetHandler = () => {
     dispatch(setArea("all"));
     dispatch(setBreaks("all"));
@@ -152,15 +154,6 @@ const LocalSpots: React.FC = () => {
     }
   };
 
-  const fetchDataFromFirebase = async (): Promise<DocumentData[]> => {
-    const querySnapshot = await getDocs(collection(db, "local-spots"));
-    const spotsArray = querySnapshot.docs.map((doc) => doc.data());
-
-    dispatch(setAllSpots(spotsArray));
-    dispatch(setSelectSpots(spotsArray));
-    return spotsArray;
-  };
-
   useEffect(() => {
     const map = new maptilersdk.Map({
       container: "map", // container's id or the HTML element to render the map
@@ -169,39 +162,30 @@ const LocalSpots: React.FC = () => {
       zoom: 6.1, // starting zoom
     });
 
-    const executeMap = async () => {
-      setIsLoading(true);
+    dispatch(setAllSpots(spotsArray));
+    dispatch(setSelectSpots(spotsArray));
 
-      try {
-        const spotsArray = await fetchDataFromFirebase();
+    spotsArray?.forEach((spot) => {
+      const { name, location, id } = spot;
 
-        spotsArray.forEach((spot) => {
-          const { name, location, id } = spot;
+      const description = `<h3 style="color:#FF9500; font-family:Noto Sans TC; font-weight: 600"><a href="/local-spots/${name.eng}/${id}">${name.chin}</a></h3>`;
 
-          const description = `<h3 style="color:#FF9500; font-family:Noto Sans TC; font-weight: 600"><a href="/local-spots/${name.eng}/${id}">${name.chin}</a></h3>`;
+      new maptilersdk.Marker({
+        color: "#3A4972",
+        draggable: false,
+      })
+        .setLngLat([location.lon, location.lat])
+        .setPopup(
+          new maptilersdk.Popup({
+            closeButton: false,
+            maxWidth: "none",
+          }).setHTML(description),
+        )
+        .addTo(map);
+    });
 
-          new maptilersdk.Marker({
-            color: "#3A4972",
-            draggable: false,
-          })
-            .setLngLat([location.lon, location.lat])
-            .setPopup(
-              new maptilersdk.Popup({
-                closeButton: false,
-                maxWidth: "none",
-              }).setHTML(description),
-            )
-            .addTo(map);
-        });
-      } catch (error) {
-        console.log(error);
-      }
-
-      setIsLoading(false);
-    };
-
-    executeMap();
-  }, []);
+    // executeMap();
+  }, [isLoading]);
 
   return (
     <motion.main

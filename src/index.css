@@ -95,6 +95,7 @@ body::-webkit-scrollbar {
 
 body {
   font-family: "Noto Sans TC", sans-serif;
+  background: none transparent;
 }
 
 ul,

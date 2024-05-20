@@ -14,7 +14,7 @@ const MyArticles: React.FC = () => {
   // restrict access
   if (!user) {
     toast.warning("Please Log In First 😠");
-    return <Navigate to="/" />;
+    return <Navigate to="/log-in" />;
   }
 
   return (
