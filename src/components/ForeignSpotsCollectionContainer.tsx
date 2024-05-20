@@ -5,10 +5,11 @@ import { useSelector } from "react-redux";
 import { IRootState } from "../store";
 import coconut from "../assets/icons/coconut.svg";
 import LoadingSmall from "./LoadingSmall";
-import surfBoy from "../assets/lotties/surf-boy.json";
+import UseGetDocFromFirestore from "@/utils/hooks/useGetDocFromFirestore";
 
 // lottie-react
 import Lottie from "lottie-react";
+import surfBoy from "../assets/lotties/surf-boy.json";
 
 // firebase
 import { db } from "../main";
@@ -22,7 +23,6 @@ const ForeignSpotsCollectionContainer: React.FC = () => {
   const { user } = useSelector((state: IRootState) => state.user);
   const navigate = useNavigate();
 
-  const [isForeignLoading, setIsForeignLoading] = useState<boolean>(false);
   const [foreignSpotsList, setForeignSpotsList] = useState<
     DocumentData[] | null
   >(null);
@@ -31,58 +31,39 @@ const ForeignSpotsCollectionContainer: React.FC = () => {
     navigate(`/foreign-spots/${name}/${id}`);
   };
 
-  const fetchForeignSpotsIdFromFirebase = async (): Promise<
-    string[] | undefined
-  > => {
-    if (!user) return;
-    try {
-      const docRef = doc(db, "users", user.id);
-      const docSnap = await getDoc(docRef);
-      if (docSnap.exists()) {
-        return docSnap.data().foreignSpotsCollection;
-      }
-    } catch (error) {
-      console.log(error);
-    }
-  };
+  if (!user) return;
 
-  const fetchForeignSpotsDataFromFirebase = async (
-    data: string[],
-  ): Promise<void> => {
-    const foreignSpotsData: DocumentData[] = [];
-
-    for (const id of data) {
-      try {
-        const docRef = doc(db, "foreign-spots", id);
-        const docSnap = await getDoc(docRef);
-        if (docSnap.exists()) {
-          foreignSpotsData.push(docSnap.data());
-        }
-      } catch (error) {
-        console.log(error);
-      }
-    }
-
-    setForeignSpotsList(foreignSpotsData);
-  };
-
-  const fetchDataFromFirebase = async (): Promise<void> => {
-    setIsForeignLoading(true);
-
-    try {
-      const data = await fetchForeignSpotsIdFromFirebase();
-      if (!data) return;
-      await fetchForeignSpotsDataFromFirebase(data);
-    } catch (error) {
-      console.log(error);
-    }
-
-    setIsForeignLoading(false);
-  };
+  // custom hook
+  const { isLoading: isForeignLoading, data } = UseGetDocFromFirestore({
+    path: "users",
+    docId: user.id,
+  });
 
   useEffect(() => {
-    fetchDataFromFirebase();
-  }, []);
+    if (isForeignLoading || !data) return;
+
+    const fetchForeignSpotsDataFromFirebase = async (
+      collection: string[],
+    ): Promise<void> => {
+      const foreignSpotsData: DocumentData[] = [];
+
+      for (const id of collection) {
+        try {
+          const docRef = doc(db, "foreign-spots", id);
+          const docSnap = await getDoc(docRef);
+          if (docSnap.exists()) {
+            foreignSpotsData.push(docSnap.data());
+          }
+        } catch (error) {
+          console.log(error);
+        }
+      }
+
+      setForeignSpotsList(foreignSpotsData);
+    };
+
+    fetchForeignSpotsDataFromFirebase(data?.foreignSpotsCollection);
+  }, [isForeignLoading]);
 
   return (
     <section>
