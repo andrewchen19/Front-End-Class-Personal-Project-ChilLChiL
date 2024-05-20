@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React from "react";
 import { useNavigate, Link } from "react-router-dom";
 import { useSelector } from "react-redux";
 import { resetCover } from "../features/article/articleSlice";
@@ -12,6 +12,7 @@ import {
 } from "../utils";
 import starFish from "../assets/icons/starfish.svg";
 import LoadingSmall from "./LoadingSmall";
+import useGetArticlesFromFirestore from "@/utils/hooks/useGetArticlesFromFirestore";
 
 // lottie-react
 import Lottie from "lottie-react";
@@ -19,17 +20,6 @@ import surfBoy from "../assets/lotties/surf-boy.json";
 
 // react icons
 import { FaStar } from "react-icons/fa";
-
-// firebase
-import { db } from "../main";
-import {
-  collection,
-  query,
-  where,
-  getDocs,
-  orderBy,
-  DocumentData,
-} from "firebase/firestore";
 
 // shadcn
 import { Button } from "@/components/ui/button";
@@ -39,40 +29,18 @@ const MyArticlesCollectionContainer: React.FC = () => {
   const { user } = useSelector((state: IRootState) => state.user);
   const dispatch = useDispatch();
 
-  const [isLoading, setIsLoading] = useState<boolean>(false);
-  const [articlesList, setArticlesList] = useState<DocumentData[] | null>(null);
-
   const navigate = useNavigate();
 
   const articleHandler = (id: string) => {
     navigate(`/articles/${id}`);
   };
 
-  const fetchArticlesFromFirebase = async (): Promise<void> => {
-    if (!user) return;
+  if (!user) return;
 
-    setIsLoading(true);
-
-    try {
-      const q = query(
-        collection(db, "articles"),
-        where("authorId", "==", user.id),
-        where("isDeleted", "!=", true),
-        orderBy("created_at", "desc"),
-      );
-      const querySnapshot = await getDocs(q);
-      const articlesArray = querySnapshot.docs.map((doc) => doc.data());
-      setArticlesList(articlesArray);
-    } catch (error) {
-      console.log(error);
-    }
-
-    setIsLoading(false);
-  };
-
-  useEffect(() => {
-    fetchArticlesFromFirebase();
-  }, []);
+  // custom hook
+  const { isLoading, articlesList } = useGetArticlesFromFirestore({
+    userId: user.id,
+  });
 
   return (
     <section>
