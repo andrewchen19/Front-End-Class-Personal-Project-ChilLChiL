@@ -16,10 +16,6 @@ import { FaStar } from "react-icons/fa";
 import placeHolder from "../assets/icons/placeholder.svg";
 import wave from "../assets/icons/wave2.svg";
 
-// firebase
-// import { db } from "../main";
-// import { collection, getDocs, DocumentData } from "firebase/firestore";
-
 // maptiler
 import * as maptilersdk from "@maptiler/sdk";
 import "@maptiler/sdk/dist/maptiler-sdk.css";

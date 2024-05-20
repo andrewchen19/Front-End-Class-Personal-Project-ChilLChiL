@@ -102,12 +102,12 @@ const RealtimeContainer: React.FC = () => {
   if (isLoading || !localSpotNameList || !localSpotsList) {
     return (
       <section>
-        <div className="flex items-center gap-3">
+        <div className="mx-auto flex w-[85%] max-w-6xl items-center gap-3">
           <img src={location} alt="image" className="h-[52px] w-[52px]" />
           <h2 className="text-2xl font-bold">浪點即時資訊</h2>
         </div>
 
-        <div className="mt-7">
+        <div className="mx-auto mt-7 w-[85%]">
           <LoadingSmall />
         </div>
       </section>
@@ -123,12 +123,12 @@ const RealtimeContainer: React.FC = () => {
   ) {
     return (
       <section>
-        <div className="flex items-center gap-3">
+        <div className="mx-auto flex w-[85%] max-w-6xl items-center gap-3">
           <img src={location} alt="image" className="h-[52px] w-[52px]" />
           <h2 className="text-2xl font-bold">浪點即時資訊</h2>
         </div>
 
-        <div className="mt-4 flex gap-4">
+        <div className="mx-auto mt-4 flex w-[85%] gap-4">
           <div
             className="h-[180px] w-[180px]"
             style={{ transform: "scaleX(-1)" }}
