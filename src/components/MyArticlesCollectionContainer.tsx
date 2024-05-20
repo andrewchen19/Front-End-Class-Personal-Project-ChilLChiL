@@ -12,10 +12,10 @@ import {
 } from "../utils";
 import starFish from "../assets/icons/starfish.svg";
 import LoadingSmall from "./LoadingSmall";
-import surfBoy from "../assets/lotties/surf-boy.json";
 
 // lottie-react
 import Lottie from "lottie-react";
+import surfBoy from "../assets/lotties/surf-boy.json";
 
 // react icons
 import { FaStar } from "react-icons/fa";

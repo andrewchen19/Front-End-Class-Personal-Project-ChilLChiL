@@ -11,10 +11,11 @@ import {
 } from "../utils";
 import jellyfish from "../assets/icons/jellyfish.svg";
 import LoadingSmall from "./LoadingSmall";
-import surfBoy from "../assets/lotties/surf-boy.json";
+import UseGetDocFromFirestore from "@/utils/hooks/useGetDocFromFirestore";
 
 // lottie-react
 import Lottie from "lottie-react";
+import surfBoy from "../assets/lotties/surf-boy.json";
 
 // react icons
 import { FaStar } from "react-icons/fa";
@@ -31,65 +32,45 @@ const ArticlesCollectionContainer: React.FC = () => {
   const { user } = useSelector((state: IRootState) => state.user);
   const navigate = useNavigate();
 
-  const [isArticleLoading, setIsArticleLoading] = useState<boolean>(false);
   const [articlesList, setArticlesList] = useState<DocumentData[] | null>(null);
 
   const articleHandler = (id: string) => {
     navigate(`/articles/${id}`);
   };
 
-  const fetchArticlesIdFromFirebase = async (): Promise<
-    string[] | undefined
-  > => {
-    if (!user) return;
-    try {
-      const docRef = doc(db, "users", user.id);
-      const docSnap = await getDoc(docRef);
-      if (docSnap.exists()) {
-        return docSnap.data().articlesCollection;
-      }
-    } catch (error) {
-      console.log(error);
-    }
-  };
+  if (!user) return;
 
-  const fetchArticlesDataFromFirebase = async (
-    data: string[],
-  ): Promise<void> => {
-    const articlesData: DocumentData[] = [];
-
-    for (const id of data) {
-      try {
-        const docRef = doc(db, "articles", id);
-        const docSnap = await getDoc(docRef);
-        if (docSnap.exists() && !docSnap.data().isDeleted) {
-          articlesData.push(docSnap.data());
-        }
-      } catch (error) {
-        console.log(error);
-      }
-    }
-
-    setArticlesList(articlesData);
-  };
-
-  const fetchDataFromFirebase = async (): Promise<void> => {
-    setIsArticleLoading(true);
-
-    try {
-      const data = await fetchArticlesIdFromFirebase();
-      if (!data) return;
-      await fetchArticlesDataFromFirebase(data);
-    } catch (error) {
-      console.log(error);
-    }
-
-    setIsArticleLoading(false);
-  };
+  // custom hook
+  const { isLoading: isArticleLoading, data } = UseGetDocFromFirestore({
+    path: "users",
+    docId: user.id,
+  });
 
   useEffect(() => {
-    fetchDataFromFirebase();
-  }, []);
+    if (isArticleLoading || !data) return;
+
+    const fetchArticlesDataFromFirebase = async (
+      data: string[],
+    ): Promise<void> => {
+      const articlesData: DocumentData[] = [];
+
+      for (const id of data) {
+        try {
+          const docRef = doc(db, "articles", id);
+          const docSnap = await getDoc(docRef);
+          if (docSnap.exists() && !docSnap.data().isDeleted) {
+            articlesData.push(docSnap.data());
+          }
+        } catch (error) {
+          console.log(error);
+        }
+      }
+
+      setArticlesList(articlesData);
+    };
+
+    fetchArticlesDataFromFirebase(data?.articlesCollection);
+  }, [isArticleLoading]);
 
   return (
     <section>
