@@ -21,7 +21,7 @@ interface Props {
 interface ReturnProps {
   isLoading: boolean;
   error: string;
-  articlesList: DocumentData | null;
+  articlesList: DocumentData[] | null;
 }
 
 const useGetArticlesFromFirestore = ({ userId, name }: Props): ReturnProps => {

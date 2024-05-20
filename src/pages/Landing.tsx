@@ -127,10 +127,10 @@ const Landing: React.FC = () => {
         response?.data?.msg || "Registration successful. Email sent.";
       toast.error(`${successMessage} 😎`);
     } catch (error) {
-      const errorMessage =
-        error?.response?.data?.msg ||
-        "Unexpected Error. Please try again later.";
-      toast.error(`${errorMessage} 😵`);
+      // const errorMessage =
+      //   error?.response?.data?.msg ||
+      //   "Unexpected Error. Please try again later.";
+      // toast.error(`${errorMessage} 😵`);
     }
 
     setIsLoading(false);
