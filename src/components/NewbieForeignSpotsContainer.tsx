@@ -36,6 +36,8 @@ const NewbieForeignSpotsContainer: React.FC = () => {
   });
 
   useEffect(() => {
+    if (isLoading || !spotsArray) return;
+
     let newSpotsArray: DocumentData[] = [];
     spotsArray?.forEach((item) => {
       if (item.category.includes("beginner")) {

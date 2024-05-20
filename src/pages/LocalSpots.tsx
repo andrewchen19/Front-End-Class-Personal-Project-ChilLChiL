@@ -162,6 +162,8 @@ const LocalSpots: React.FC = () => {
       zoom: 6.1, // starting zoom
     });
 
+    if (isLoading || !spotsArray) return;
+
     dispatch(setAllSpots(spotsArray));
     dispatch(setSelectSpots(spotsArray));
 
