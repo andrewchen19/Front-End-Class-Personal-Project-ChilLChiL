@@ -383,7 +383,7 @@ const LocalSpot: React.FC = () => {
           color: "#FF4742",
           draggable: false,
         })
-          .setLngLat([data.location.lon, data.location.lat])
+          .setLngLat([data?.location?.lon, data?.location?.lat])
           .setPopup(
             new maptilersdk.Popup({
               closeButton: false,

@@ -1,10 +1,10 @@
 import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import medalGold from "../assets/icons/medal-gold.svg";
+import UseGetDocsFromFirestore from "@/utils/hooks/useGetDocsFromFirestore";
 
 // firebase
-import { db } from "../main";
-import { collection, query, getDocs, DocumentData } from "firebase/firestore";
+import { DocumentData } from "firebase/firestore";
 
 // shadcn
 import {
@@ -24,42 +24,27 @@ const MonthForeignSpotsContainer: React.FC = () => {
     Autoplay({ delay: 4000, stopOnInteraction: false, stopOnMouseEnter: true }),
   );
 
-  const [isSpotLoading, setIsSpotLoading] = useState<boolean>(false);
   const [spotsList, setSpotsList] = useState<DocumentData[] | []>([]);
 
   const spotHandler = (name: string, id: string) => {
     navigate(`/foreign-spots/${name}/${id}`);
   };
 
-  const fetchSpotsFromFirebase = async (): Promise<void> => {
-    const q = query(collection(db, "foreign-spots"));
-    const querySnapshot = await getDocs(q);
-    let spotsArray: DocumentData[] = [];
-    querySnapshot.docs.forEach((doc) => {
-      const data = doc.data() as DocumentData;
-      if (doc.data().category.includes("may")) {
-        spotsArray.push(data);
+  // custom hook
+  const { isLoading, data: spotsArray } = UseGetDocsFromFirestore({
+    path: "foreign-spots",
+  });
+
+  useEffect(() => {
+    let newSpotsArray: DocumentData[] = [];
+    spotsArray?.forEach((item) => {
+      if (item.category.includes("may")) {
+        newSpotsArray.push(item);
       }
     });
 
-    setSpotsList(spotsArray);
-  };
-
-  useEffect(() => {
-    const fetchDataFromFirebase = async (): Promise<void> => {
-      setIsSpotLoading(true);
-
-      try {
-        await fetchSpotsFromFirebase();
-      } catch (error) {
-        console.log(error);
-      }
-
-      setIsSpotLoading(false);
-    };
-
-    fetchDataFromFirebase();
-  }, []);
+    setSpotsList(newSpotsArray);
+  }, [isLoading]);
 
   return (
     <section className="w-full">
@@ -72,7 +57,7 @@ const MonthForeignSpotsContainer: React.FC = () => {
         />
       </h2>
 
-      {isSpotLoading && (
+      {isLoading && (
         <div className="grid w-full gap-5 md:grid-cols-2 lg:grid-cols-3">
           <div className="skeleton h-[420px] rounded-lg"></div>
         </div>
@@ -87,7 +72,7 @@ const MonthForeignSpotsContainer: React.FC = () => {
         plugins={[plugin.current]}
       >
         <CarouselContent className="ml-0 md:-ml-5">
-          {!isSpotLoading &&
+          {!isLoading &&
             spotsList.length > 1 &&
             spotsList.map((spot) => {
               const { id, country, coverImage } = spot;
@@ -123,7 +108,7 @@ const MonthForeignSpotsContainer: React.FC = () => {
             })}
         </CarouselContent>
 
-        {!isSpotLoading && spotsList && spotsList.length > 1 && (
+        {!isLoading && spotsList && spotsList.length > 1 && (
           <div className="hidden md:block">
             <CarouselPrevious />
             <CarouselNext />
