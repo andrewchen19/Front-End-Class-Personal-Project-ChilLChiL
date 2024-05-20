@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { Navigate, useNavigate, useParams } from "react-router-dom";
-import { UnsplashContainer, Blocker } from "../components";
+import { UnsplashContainer, Blocker, Loading } from "../components";
 import { localSpotsList, isOnlyEmptyParagraphs } from "../utils";
 import { toast } from "react-toastify";
 import { useDispatch, useSelector } from "react-redux";
@@ -162,7 +162,7 @@ const EditArticle: React.FC = () => {
   }, []);
 
   if (isLoading || !article) {
-    return <div>Loading...</div>;
+    return <Loading />;
   }
 
   const isEdited: boolean =
