@@ -81,6 +81,42 @@ const Login: React.FC = () => {
     setIsLoading(false);
   };
 
+  const testHandler = async () => {
+    setIsLoading(true);
+
+    const testEmail = "test@email.com";
+    const testPassword = "123123";
+
+    // sign in with firebase authentication
+    try {
+      const auth = getAuth();
+      const userCredential = await signInWithEmailAndPassword(
+        auth,
+        testEmail,
+        testPassword,
+      );
+      // Signed in
+      const user = userCredential.user;
+
+      if (user) {
+        const id = user.uid;
+        await getUserFromFirebase(id);
+      }
+    } catch (error) {
+      if (error instanceof FirebaseError) {
+        const errorCode = error.code;
+
+        if (!errorCode) return;
+
+        if (errorCode.includes("invalid-credential")) {
+          toast.error("Invalid Credential 😵");
+        }
+      }
+    }
+
+    setIsLoading(false);
+  };
+
   return (
     <div className="h-screen w-full border lg:grid lg:grid-cols-2">
       <div className="relative mt-24 flex items-center justify-center lg:mt-0">
@@ -137,6 +173,20 @@ const Login: React.FC = () => {
               {isLoading ? "Loading" : "Login"}
             </Button>
           </div>
+
+          <Button
+            type="button"
+            variant={"pink"}
+            size={"xl"}
+            className="w-full"
+            disabled={isLoading}
+            onClick={testHandler}
+          >
+            {isLoading ? (
+              <Loader2 className="mr-1 h-3 w-3 animate-spin" />
+            ) : null}
+            {isLoading ? "Loading" : "Test Account"}
+          </Button>
 
           <div className="flex justify-center gap-3 font-helvetica text-sm">
             Don&apos;t have an account?
