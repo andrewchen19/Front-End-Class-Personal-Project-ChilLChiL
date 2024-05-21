@@ -256,7 +256,7 @@ const ForeignSpot: React.FC = () => {
         className="sticky top-0 z-50 flex h-14 items-center shadow-lg backdrop-blur"
         style={{ backgroundColor: "hsl(0 0% 100%/ 0.7)" }}
       >
-        <div className="relative mx-auto flex w-[95%]">
+        <div className="relative mx-auto flex w-[85%]">
           <nav className="h-full w-full">
             <ul className="flex justify-between sm:justify-start sm:gap-10">
               <li>

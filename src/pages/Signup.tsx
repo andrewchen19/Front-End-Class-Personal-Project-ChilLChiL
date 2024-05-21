@@ -103,7 +103,7 @@ const Signup: React.FC = () => {
 
   return (
     <div className="h-screen w-full border lg:grid lg:grid-cols-2">
-      <div className="relative mt-28 flex items-center justify-center lg:mt-0">
+      <div className="relative mt-24 flex items-center justify-center lg:mt-0">
         <form
           className="mx-auto grid w-[80%] min-w-[300px] gap-6"
           onSubmit={(e) => submitHandler(e)}

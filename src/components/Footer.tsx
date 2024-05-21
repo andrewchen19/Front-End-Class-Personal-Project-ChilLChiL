@@ -1,13 +1,13 @@
 import React from "react";
 
 // border-t-[3px] border-pink
-// -top-[50px]
+//
 
 const Footer: React.FC = () => {
   return (
     <footer className="relative grid h-14 place-items-center items-center overflow-x-clip whitespace-nowrap bg-gray-950 text-white">
       {/* animation */}
-
+      {/* -top-[50px] */}
       <div className="absolute -top-[28px] left-0 right-0 z-[100] animate-marquee">
         <div className="h-7 w-5">
           <a href="/">

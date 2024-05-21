@@ -66,7 +66,7 @@ const ProfileEditContainer: React.FC = () => {
       toast.success("Updated Successfully 🎉");
     } catch (error) {
       console.log(error);
-      toast.error("Updated Unsuccessfully 😵");
+      toast.error("Updated failed 😵");
     }
     setIsLoading(false);
     dispatch(closeEditContainer());

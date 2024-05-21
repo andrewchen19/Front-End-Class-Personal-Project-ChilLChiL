@@ -67,7 +67,6 @@ function App() {
         },
         {
           path: "profile",
-          // element: <Navigate to="/profile/my-info" replace />,
           element: <ProfileLayout />,
           children: [
             {

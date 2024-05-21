@@ -6,10 +6,11 @@ import { ReactECharts } from "./ReactEchart";
 import { changeSpotName, executeOption, executeOption2 } from "../utils";
 import location from "../assets/icons/location.svg";
 import LoadingSmall from "./LoadingSmall";
-import surfBoy from "../assets/lotties/surf-boy.json";
+import UseGetDocFromFirestore from "@/utils/hooks/useGetDocFromFirestore";
 
 // lottie-react
 import Lottie from "lottie-react";
+import surfBoy from "../assets/lotties/surf-boy.json";
 
 // firebase
 import { db } from "../main";
@@ -22,7 +23,6 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 const RealtimeContainer: React.FC = () => {
   const { user } = useSelector((state: IRootState) => state.user);
 
-  const [isLoading, setIsLoading] = useState<boolean>(false);
   const [localSpotNameList, setLocalSpotNameList] = useState<string[] | null>(
     null,
   );
@@ -32,58 +32,41 @@ const RealtimeContainer: React.FC = () => {
   );
   const [isDesktopSize, setIsDesktopSize] = useState(window.innerWidth > 480);
 
-  const fetchLocalSpotsIdFromFirebase = async (): Promise<
-    string[] | undefined
-  > => {
-    if (!user) return;
-    try {
-      const docRef = doc(db, "users", user.id);
-      const docSnap = await getDoc(docRef);
-      if (docSnap.exists()) {
-        setLocalSpotNameList(docSnap.data().localSpotsCollection);
-        return docSnap.data().localSpotsCollection;
-      }
-    } catch (error) {
-      console.log(error);
-    }
-  };
-  const fetchLocalSpotsDataFromFirebase = async (
-    data: string[],
-  ): Promise<void> => {
-    const localSpotsData: DocumentData[] = [];
+  if (!user) return;
 
-    for (const id of data) {
-      try {
-        const docRef = doc(db, "local-data", id);
-        const docSnap = await getDoc(docRef);
-        if (docSnap.exists()) {
-          localSpotsData.push(docSnap.data());
-        }
-      } catch (error) {
-        console.log(error);
-      }
-    }
-
-    setLocalSpotsList(localSpotsData);
-  };
-
-  const fetchDataFromFirebase = async (): Promise<void> => {
-    setIsLoading(true);
-
-    try {
-      const data = await fetchLocalSpotsIdFromFirebase();
-      if (!data) return;
-      await fetchLocalSpotsDataFromFirebase(data);
-    } catch (error) {
-      console.log(error);
-    }
-
-    setIsLoading(false);
-  };
+  // custom hook
+  const { isLoading, data } = UseGetDocFromFirestore({
+    path: "users",
+    docId: user.id,
+  });
 
   useEffect(() => {
-    fetchDataFromFirebase();
-  }, []);
+    if (isLoading || !data) return;
+
+    setLocalSpotNameList(data?.localSpotsCollection);
+
+    const fetchLocalSpotsDataFromFirebase = async (
+      data: string[],
+    ): Promise<void> => {
+      const localSpotsData: DocumentData[] = [];
+
+      for (const id of data) {
+        try {
+          const docRef = doc(db, "local-data", id);
+          const docSnap = await getDoc(docRef);
+          if (docSnap.exists()) {
+            localSpotsData.push(docSnap.data());
+          }
+        } catch (error) {
+          console.log(error);
+        }
+      }
+
+      setLocalSpotsList(localSpotsData);
+    };
+
+    fetchLocalSpotsDataFromFirebase(data?.localSpotsCollection);
+  }, [isLoading]);
 
   useEffect(() => {
     const handleResize = () => {

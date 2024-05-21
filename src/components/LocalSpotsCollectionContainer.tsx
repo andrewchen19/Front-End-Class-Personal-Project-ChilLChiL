@@ -26,7 +26,6 @@ const LocalSpotsCollectionContainer: React.FC = () => {
   const { user } = useSelector((state: IRootState) => state.user);
   const navigate = useNavigate();
 
-  // const [isLocalLoading, setIsLocalLoading] = useState<boolean>(false);
   const [localSpotsList, setLocalSpotsList] = useState<DocumentData[] | null>(
     null,
   );
