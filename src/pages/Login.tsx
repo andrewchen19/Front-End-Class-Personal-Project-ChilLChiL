@@ -176,7 +176,7 @@ const Login: React.FC = () => {
 
           <Button
             type="button"
-            variant={"pink"}
+            variant={"purple"}
             size={"xl"}
             className="w-full"
             disabled={isLoading}

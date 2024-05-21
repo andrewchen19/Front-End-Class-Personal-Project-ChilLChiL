@@ -26,6 +26,7 @@ import {
   DocumentData,
   where,
   Query,
+  QueryConstraint,
 } from "firebase/firestore";
 
 // shadcn
@@ -56,24 +57,18 @@ const AllArticlesContainer: React.FC = () => {
     const articlesCollectionRef = collection(db, "articles");
 
     // get the prev 12 documents
-    let prev: Query<DocumentData, DocumentData>;
-    if (order === "asc") {
-      prev = query(
-        articlesCollectionRef,
-        where("isDeleted", "!=", true),
-        orderBy("created_at"),
-        endBefore(firstDocument),
-        limitToLast(12),
-      );
-    } else {
-      prev = query(
-        articlesCollectionRef,
-        where("isDeleted", "!=", true),
-        orderBy("created_at", "desc"),
-        endBefore(firstDocument),
-        limitToLast(12),
-      );
-    }
+    const baseConstraints: QueryConstraint[] = [
+      where("isDeleted", "!=", true),
+      endBefore(firstDocument),
+      limitToLast(12),
+    ];
+    const orderByConstraint =
+      order === "asc" ? orderBy("created_at") : orderBy("created_at", "desc");
+    const queryConstraints = [orderByConstraint, ...baseConstraints];
+    const prev: Query<DocumentData> = query(
+      articlesCollectionRef,
+      ...queryConstraints,
+    );
 
     const documentSnapshots = await getDocs(prev);
     const articlesArray = documentSnapshots.docs.map((doc) => doc.data());
@@ -91,24 +86,18 @@ const AllArticlesContainer: React.FC = () => {
     const articlesCollectionRef = collection(db, "articles");
 
     // get the next 12 documents
-    let next: Query<DocumentData, DocumentData>;
-    if (order === "asc") {
-      next = query(
-        articlesCollectionRef,
-        where("isDeleted", "!=", true),
-        orderBy("created_at"),
-        startAfter(lastDocument),
-        limit(12),
-      );
-    } else {
-      next = query(
-        articlesCollectionRef,
-        where("isDeleted", "!=", true),
-        orderBy("created_at", "desc"),
-        startAfter(lastDocument),
-        limit(12),
-      );
-    }
+    const baseConstraints: QueryConstraint[] = [
+      where("isDeleted", "!=", true),
+      startAfter(lastDocument),
+      limit(12),
+    ];
+    const orderByConstraint =
+      order === "asc" ? orderBy("created_at") : orderBy("created_at", "desc");
+    const queryConstraints = [orderByConstraint, ...baseConstraints];
+    const next: Query<DocumentData> = query(
+      articlesCollectionRef,
+      ...queryConstraints,
+    );
 
     const documentSnapshots = await getDocs(next);
     const articlesArray = documentSnapshots.docs.map((doc) => doc.data());
@@ -163,23 +152,18 @@ const AllArticlesContainer: React.FC = () => {
       setAllPage(1);
     }
 
-    // Query the first page of docs
-    let first: Query<DocumentData, DocumentData>;
-    if (order === "asc") {
-      first = query(
-        articlesCollectionRef,
-        where("isDeleted", "!=", true),
-        orderBy("created_at"),
-        limit(12),
-      );
-    } else {
-      first = query(
-        articlesCollectionRef,
-        where("isDeleted", "!=", true),
-        orderBy("created_at", "desc"),
-        limit(12),
-      );
-    }
+    const baseConstraints: QueryConstraint[] = [
+      where("isDeleted", "!=", true),
+      limit(12),
+    ];
+    const orderByConstraint =
+      order === "asc" ? orderBy("created_at") : orderBy("created_at", "desc");
+    const queryConstraints = [orderByConstraint, ...baseConstraints];
+    const first: Query<DocumentData> = query(
+      articlesCollectionRef,
+      ...queryConstraints,
+    );
+
     const documentSnapshots = await getDocs(first);
     const articlesArray = documentSnapshots.docs.map((doc) => doc.data());
     setArticlesList(articlesArray);
@@ -211,24 +195,19 @@ const AllArticlesContainer: React.FC = () => {
     }
 
     // Query the first page of docs
-    let first: Query<DocumentData, DocumentData>;
-    if (order === "asc") {
-      first = query(
-        articlesCollectionRef,
-        where("tag", "==", tag),
-        where("isDeleted", "!=", true),
-        orderBy("created_at"),
-        limit(12),
-      );
-    } else {
-      first = query(
-        articlesCollectionRef,
-        where("tag", "==", tag),
-        where("isDeleted", "!=", true),
-        orderBy("created_at", "desc"),
-        limit(12),
-      );
-    }
+    const baseConstraints: QueryConstraint[] = [
+      where("tag", "==", tag),
+      where("isDeleted", "!=", true),
+      limit(12),
+    ];
+    const orderByConstraint =
+      order === "asc" ? orderBy("created_at") : orderBy("created_at", "desc");
+    const queryConstraints = [orderByConstraint, ...baseConstraints];
+    const first: Query<DocumentData> = query(
+      articlesCollectionRef,
+      ...queryConstraints,
+    );
+
     const documentSnapshots = await getDocs(first);
     const articlesArray = documentSnapshots.docs.map((doc) => doc.data());
     setArticlesList(articlesArray);
@@ -262,24 +241,19 @@ const AllArticlesContainer: React.FC = () => {
     }
 
     // Query the first page of docs
-    let first: Query<DocumentData, DocumentData>;
-    if (order === "asc") {
-      first = query(
-        articlesCollectionRef,
-        where("surfingSpot", "==", surfingSpot),
-        where("isDeleted", "!=", true),
-        orderBy("created_at"),
-        limit(12),
-      );
-    } else {
-      first = query(
-        articlesCollectionRef,
-        where("surfingSpot", "==", surfingSpot),
-        where("isDeleted", "!=", true),
-        orderBy("created_at", "desc"),
-        limit(12),
-      );
-    }
+    const baseConstraints: QueryConstraint[] = [
+      where("surfingSpot", "==", surfingSpot),
+      where("isDeleted", "!=", true),
+      limit(12),
+    ];
+    const orderByConstraint =
+      order === "asc" ? orderBy("created_at") : orderBy("created_at", "desc");
+    const queryConstraints = [orderByConstraint, ...baseConstraints];
+    const first: Query<DocumentData> = query(
+      articlesCollectionRef,
+      ...queryConstraints,
+    );
+
     const documentSnapshots = await getDocs(first);
     const articlesArray = documentSnapshots.docs.map((doc) => doc.data());
     setArticlesList(articlesArray);
@@ -315,26 +289,20 @@ const AllArticlesContainer: React.FC = () => {
     }
 
     // Query the first page of docs
-    let first: Query<DocumentData, DocumentData>;
-    if (order === "asc") {
-      first = query(
-        articlesCollectionRef,
-        where("tag", "==", tag),
-        where("surfingSpot", "==", surfingSpot),
-        where("isDeleted", "!=", true),
-        orderBy("created_at"),
-        limit(12),
-      );
-    } else {
-      first = query(
-        articlesCollectionRef,
-        where("tag", "==", tag),
-        where("surfingSpot", "==", surfingSpot),
-        where("isDeleted", "!=", true),
-        orderBy("created_at", "desc"),
-        limit(12),
-      );
-    }
+    const baseConstraints: QueryConstraint[] = [
+      where("tag", "==", tag),
+      where("surfingSpot", "==", surfingSpot),
+      where("isDeleted", "!=", true),
+      limit(12),
+    ];
+    const orderByConstraint =
+      order === "asc" ? orderBy("created_at") : orderBy("created_at", "desc");
+    const queryConstraints = [orderByConstraint, ...baseConstraints];
+    const first: Query<DocumentData> = query(
+      articlesCollectionRef,
+      ...queryConstraints,
+    );
+
     const documentSnapshots = await getDocs(first);
     const articlesArray = documentSnapshots.docs.map((doc) => doc.data());
     setArticlesList(articlesArray);
