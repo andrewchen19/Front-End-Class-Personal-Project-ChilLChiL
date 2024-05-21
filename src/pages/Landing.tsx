@@ -132,7 +132,6 @@ const Landing: React.FC = () => {
       //   "Unexpected Error. Please try again later.";
       // toast.error(`${errorMessage} 😵`);
     }
-
     setIsLoading(false);
   };
 
