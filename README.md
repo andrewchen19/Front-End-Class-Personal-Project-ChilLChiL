@@ -60,7 +60,6 @@ Allow users to easily stay connected about all surfing things.🏄🏼‍♂️
 # Flow Chart
 
 ![flow chart](./src/assets/images/flow2.drawio.svg)
-![flow chart](./src/assets/images/flow3.drawio.png)
 
 # Contact
 
