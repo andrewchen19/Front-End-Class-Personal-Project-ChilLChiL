@@ -17,6 +17,18 @@
     |
     <a href="https://github.com/andrewchen19/Front-End-Class-Personal-Project-ChilLChiL?tab=readme-ov-file#Contact">Contact</a>
   </p>
+
+  [Demo](https://chillchill-9a1e2.web.app/) • [Features](#Features) • [Build With](#Build-With)  • [Contact](#Contact)
 </div>
+
+
+# ChilLChilL
+[ChilLChilL](https://chillchill-9a1e2.web.app/) is a task and project management tool combined with Pomodoro Timer, which helps users to manage time effectively and increase their productivity.
+
+# Feature
+
+# Build With
+
+# Contact
 
 
