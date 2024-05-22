@@ -1,6 +1,6 @@
 <div align="center">
   <div >
-    <a href="https://chillchill.website">
+    <a href="https://chillchill.website" target="blank">
       <img src="./src/assets/logos/logo-red.png" alt="Logo" width="200px">
     </a>
   </div>  
@@ -18,6 +18,8 @@ and related articles.<br/>
 Allow users to easily stay connected about all surfing things.🏄🏼‍♂️
 
 # Features
+- Built self-calculated component for countdown **pomodoro clock** animation.  
+- Applied `Firebase Firestore` as database, and `Firebase Hosting` with deployment of react app.
 
 # Build With
 ![TypeScript](https://img.shields.io/badge/TypeScript-3178C6.svg?style=for-the-badge&logo=TypeScript&logoColor=white)
@@ -51,5 +53,9 @@ Allow users to easily stay connected about all surfing things.🏄🏼‍♂️
 [Day.js](https://www.npmjs.com/package/dayjs) - Minimalist JavaScript library that parses, validates, manipulates, and displays dates and times
 
 # Contact
-
-
+<a href="https://www.linkedin.com/in/andrewchen1119" target="_blank">
+  <img src="https://img.shields.io/badge/LinkedIn-0A66C2.svg?style=for-the-badge&logo=LinkedIn&logoColor=white" alt="LinkedIn">
+</a>
+<a href="mailto:andrew831119work@gmail.com">
+  <img src="https://img.shields.io/badge/Gmail-EA4335.svg?style=for-the-badge&logo=Gmail&logoColor=white" alt="Gmail">
+</a>
