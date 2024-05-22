@@ -44,6 +44,7 @@ and related articles.<br/> Help users to easily stay on top of all things surfin
 ![Redux](https://img.shields.io/badge/Redux-764ABC.svg?style=for-the-badge&logo=Redux&logoColor=white)
 ![Tailwind css](https://img.shields.io/badge/Tailwind%20CSS-06B6D4.svg?style=for-the-badge&logo=Tailwind-CSS&logoColor=white)
 ![Firebase](https://img.shields.io/badge/Firebase-FFCA28.svg?style=for-the-badge&logo=Firebase&logoColor=black)
+![Express.js](https://img.shields.io/badge/Express-000000.svg?style=for-the-badge&logo=Express&logoColor=white)
 
 **Base**
 
@@ -52,6 +53,7 @@ and related articles.<br/> Help users to easily stay on top of all things surfin
 - Redux Toolkit
 - Tailwind CSS
 - Firebase
+- Express.js
 
 **Libraries**
 
@@ -68,6 +70,8 @@ and related articles.<br/> Help users to easily stay on top of all things surfin
 [react-toastify](https://fkhadra.github.io/react-toastify) - Style and customize toast messages in React apps
 
 [Day.js](https://www.npmjs.com/package/dayjs) - Minimalist JavaScript library that parses, validates, manipulates, and displays dates and times
+
+[Nodemailer](https://nodemailer.com/) - A module for Node.js applications to allow easy as cake email sending
 
 # Flow Chart
 
