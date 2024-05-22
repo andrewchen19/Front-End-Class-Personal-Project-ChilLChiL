@@ -16,7 +16,7 @@
 # ChilLChilL
 
 [ChilLChilL](https://chillchill.website) is an online website dedicated to surfers, providing real-time wave conditions
-and related articles. Help users to easily stay on top of all things surfing 🏄🏼‍♂️
+and related articles.<br/> Help users to easily stay on top of all things surfing 🏄🏼‍♂️
 
 # Features
 
