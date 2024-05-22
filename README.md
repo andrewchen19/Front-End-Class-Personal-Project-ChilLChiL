@@ -9,7 +9,7 @@
 
 ![npm peer dependency version (scoped)](https://img.shields.io/npm/dependency-version/eslint-config-prettier/peer/eslint) ![License](https://img.shields.io/badge/License-MIT-blue)
 
-  [Features](#Features) • [Build With](#Build-With)  • [Contact](#Contact)
+  [Features](#Features) • [Build With](#Build-With) • [Flow Chart](#Flow-Chart) • [Contact](#Contact)
 </div>
 
 # ChilLChilL
@@ -51,6 +51,8 @@ Allow users to easily stay connected about all surfing things.🏄🏼‍♂️
 [react-toastify](https://fkhadra.github.io/react-toastify) - Style and customize toast messages in React apps
 
 [Day.js](https://www.npmjs.com/package/dayjs) - Minimalist JavaScript library that parses, validates, manipulates, and displays dates and times
+
+# Flow Chart
 
 # Contact
 <a href="https://www.linkedin.com/in/andrewchen1119" target="_blank">
