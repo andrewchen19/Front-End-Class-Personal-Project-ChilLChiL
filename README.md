@@ -49,7 +49,7 @@ and related articles.<br/> Help users to easily stay on top of all things surfin
 **Base**
 
 - TypeScript
-- React / React Router
+- React.js / React Router
 - Redux Toolkit
 - Tailwind CSS
 - Firebase
