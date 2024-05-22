@@ -61,7 +61,7 @@ and related articles.<br/> Help users to easily stay on top of all things surfin
 
 [Framer Motion](https://www.framer.com/motion/) - Motion/animation library for React
 
-[echarts](https://echarts.apache.org/en/index.html) - An Open Source JavaScript Visualization Library
+[Apache Echarts](https://echarts.apache.org/en/index.html) - An Open Source JavaScript Visualization Library
 
 [react-quill](https://github.com/zenoamaro/react-quill) - A Quill component for React
 
