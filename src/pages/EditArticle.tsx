@@ -118,7 +118,7 @@ const EditArticle: React.FC = () => {
       setClickSubmit(true);
       toast.success("Updated successfully 🎉");
       setTimeout(() => {
-        navigate("/profile/my-articles");
+        navigate(`/articles/${id}`);
         dispatch(resetCover());
       }, 1000);
     } catch (error) {

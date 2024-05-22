@@ -5,7 +5,7 @@ import { toast } from "react-toastify";
 import { useSelector, useDispatch } from "react-redux";
 import { setAuthor } from "../features/article/articleSlice";
 import { IRootState } from "../store";
-import { formatTime } from "../utils";
+import { formatTime, changeTagName, changeSpotName } from "../utils";
 
 // react-icons
 import { TbMessageCircle } from "react-icons/tb";
@@ -309,6 +309,8 @@ const Article: React.FC = () => {
     title,
     photographerLink,
     photographerName,
+    tag,
+    surfingSpot,
   } = article;
   const { name: authorName, profile_picture: authorImage } = author;
 
@@ -392,7 +394,7 @@ const Article: React.FC = () => {
 
                 {/* edit/collection  button */}
                 {isLogin && isUser && (
-                  <div className="mt-2 flex gap-4">
+                  <div className="mt-2 flex gap-2 max-sm:flex-col sm:gap-4">
                     <Button
                       type="button"
                       variant={"olive-hipster"}
@@ -434,6 +436,26 @@ const Article: React.FC = () => {
                   </span>
                 </SheetTrigger>
               </div>
+
+              {/* <div className="flex gap-2">
+                <span className="rounded-lg bg-gray-200 px-2 py-1 text-xs font-semibold tracking-wide text-gray-700">
+                  {changeTagName(tag)}
+                </span>
+
+                <span className="rounded-lg bg-gray-200 px-2 py-1 text-xs font-semibold tracking-wide text-gray-700">
+                  {changeSpotName(surfingSpot)}
+                </span>
+              </div> */}
+
+              {/* <div className="flex gap-2">
+                <span className="rounded-lg text-sm tracking-wide text-gray-700">
+                  # {changeTagName(tag)}
+                </span>
+
+                <span className="rounded-lg text-sm tracking-wide text-gray-700">
+                  # {changeSpotName(surfingSpot)}
+                </span>
+              </div> */}
             </div>
           </div>
 
@@ -444,6 +466,17 @@ const Article: React.FC = () => {
                 <Markup content={content} />
               </div>
             </div>
+          </div>
+
+          {/* tag & spot */}
+          <div className="mt-10 flex gap-4 px-[15px]">
+            <span className="rounded-lg bg-gray-200 px-2 py-1 text-xs font-semibold tracking-wide text-gray-700 sm:px-3 sm:py-2 sm:text-sm">
+              {changeTagName(tag)}
+            </span>
+
+            <span className="rounded-lg bg-gray-200 px-2 py-1 text-xs font-semibold tracking-wide text-gray-700 sm:px-3 sm:py-2 sm:text-sm">
+              {changeSpotName(surfingSpot)}
+            </span>
           </div>
         </div>
 

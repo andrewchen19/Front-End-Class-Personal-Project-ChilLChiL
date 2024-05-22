@@ -15,14 +15,26 @@
 
 # ChilLChilL
 
-[ChilLChilL](https://chillchill.website) is an online website dedicated to surfing, providing real-time wave conditions
-and related articles.<br/>
-Allow users to easily stay connected about all surfing things.🏄🏼‍♂️
+[ChilLChilL](https://chillchill.website) is an online website dedicated to surfers, providing real-time wave conditions
+and related articles.<br/> Help users to easily stay on top of all things surfing 🏄🏼‍♂️
 
 # Features
 
-- Built self-calculated component for countdown **pomodoro clock** animation.
-- Applied `Firebase Firestore` as database, and `Firebase Hosting` with deployment of react app.
+- Applied **React / React Router** for SPA
+- Completed user management system with **Firebase Authentication**
+- Created NoSQL data structures and integrated data management with **Firebase Firestore Database**
+- Applied the **Firebase onSnapShot()** method to enable real-time database monitoring, fulfilling instant messaging functionality
+- Utilized **Tailwind CSS** for RWD layout, custom styling and utility- first design, enhancing the visual consistency and maintainability
+- Utilized **shadcn/ui** to design and develop efficient, reusable UI components
+- Leveraged **TypeScript** to create robust, scalable, and maintainable code
+- Managed state effectively using **Redux Toolkit**
+- Utilized **Framer Motion** to create smooth and interactive animations for enhanced user interfaces
+- Integrated **react-quill** for text editing and **interweave** for safely rendering HTML content, enhancing the functionality and security of the application
+- Implemented newsletter delivery system with **Nodemailer** and **Express.js**
+- Connected to third party APIs
+  - Displayed high-quality images with **Unsplash** API
+  - Visualized surfing spots with **MapTailer** API
+  - Integrated weather and wave data with **Surfline** API
 
 # Build With
 

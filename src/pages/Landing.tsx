@@ -2,8 +2,15 @@ import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import { splitStringUsingRegex, reviews } from "../utils";
 import { Velocity, VideoContainer } from "../components";
-import axios from "axios";
+import axios, { AxiosError } from "axios";
 import { toast } from "react-toastify";
+
+const isAxiosError = (error: any): error is AxiosError => {
+  return error.isAxiosError === true;
+};
+interface RegisterResponse {
+  msg: string;
+}
 
 import coverImage from "../assets/images/landing-cover.jpg";
 import grid1Image from "../assets/images/landing-grid1.jpg";
@@ -114,24 +121,32 @@ const Landing: React.FC = () => {
       return;
     }
 
-    // !!
-    return;
-
     setIsLoading(true);
 
     try {
-      const response = await axios.post("https://your-backend-url/register", {
-        email,
-      });
+      const response = await axios.post(
+        "https://chill-server.onrender.com/register",
+        {
+          email,
+        },
+      );
       const successMessage =
         response?.data?.msg || "Registration successful. Email sent.";
-      toast.error(`${successMessage} 😎`);
+      toast.success(`${successMessage} 😎`);
+      setEmail("");
     } catch (error) {
-      // const errorMessage =
-      //   error?.response?.data?.msg ||
-      //   "Unexpected Error. Please try again later.";
-      // toast.error(`${errorMessage} 😵`);
+      console.log(error);
+
+      let errorMessage = "Unexpected Error. Please try again later.";
+
+      if (isAxiosError(error) && error.response) {
+        const responseData = error.response.data as RegisterResponse;
+        errorMessage = responseData.msg || errorMessage;
+      }
+
+      toast.error(`${errorMessage} 😵`);
     }
+
     setIsLoading(false);
   };
 
