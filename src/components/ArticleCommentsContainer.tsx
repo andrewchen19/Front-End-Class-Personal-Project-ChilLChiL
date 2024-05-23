@@ -33,7 +33,7 @@ import {
 import ReactQuill from "react-quill";
 import "react-quill/dist/quill.snow.css";
 
-// interwave
+// interweave
 // covert HTML sting to JSX, safely render HTML to prevent xss attack
 import { Markup } from "interweave";
 
@@ -533,7 +533,7 @@ const ArticleCommentsContainer: React.FC = () => {
                               <TooltipProvider>
                                 <Tooltip>
                                   <TooltipTrigger>
-                                    <RiHeartFill className="text-red mt-[2px] h-5 w-5 duration-150" />
+                                    <RiHeartFill className="mt-[2px] h-5 w-5 text-red duration-150" />
                                   </TooltipTrigger>
                                   <TooltipContent className="border-black">
                                     <p className="text-sm">
