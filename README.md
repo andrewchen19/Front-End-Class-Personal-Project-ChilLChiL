@@ -21,13 +21,13 @@ and related articles.<br/> Help users to easily stay on top of all things surfin
 # Features
 
 - Applied **React / React Router** for SPA
-- Completed user management system with **Firebase Authentication**
-- Created NoSQL data structures and integrated data management with **Firebase Firestore Database**
-- Applied the **Firebase onSnapShot()** method to enable real-time database monitoring, fulfilling instant messaging functionality
 - Utilized **Tailwind CSS** for RWD layout, custom styling and utility- first design, enhancing the visual consistency and maintainability
 - Utilized **shadcn/ui** to design and develop efficient, reusable UI components
 - Leveraged **TypeScript** to create robust, scalable, and maintainable code
 - Managed state effectively using **Redux Toolkit**
+- Completed user management system with **Firebase Authentication**
+- Created NoSQL data structures and integrated data management with **Firebase Firestore Database**
+- Applied the **Firebase onSnapShot()** method to enable real-time database monitoring, fulfilling instant messaging functionality
 - Utilized **Framer Motion** to create smooth and interactive animations for enhanced user interfaces
 - Integrated **react-quill** for text editing and **interweave** for safely rendering HTML content, enhancing the functionality and security of the application
 - Implemented newsletter delivery system with **Nodemailer** and **Express.js**
