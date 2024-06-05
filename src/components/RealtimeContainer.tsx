@@ -118,7 +118,7 @@ const RealtimeContainer: React.FC = () => {
           <h2 className="text-2xl font-bold">浪點即時資訊</h2>
         </div>
 
-        <div className="mt-4 flex gap-4">
+        <div className="mt-10 flex gap-4">
           <div
             className="h-[180px] w-[180px]"
             style={{ transform: "scaleX(-1)" }}
