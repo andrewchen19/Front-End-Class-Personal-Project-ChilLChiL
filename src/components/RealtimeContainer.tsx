@@ -97,7 +97,7 @@ const RealtimeContainer: React.FC = () => {
           <h2 className="text-2xl font-bold">浪點即時資訊</h2>
         </div>
 
-        <div className="mx-auto mt-7 w-full">
+        <div className="mx-auto mt-10 w-full">
           <LoadingSmall />
         </div>
       </section>
