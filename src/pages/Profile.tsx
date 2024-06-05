@@ -37,11 +37,11 @@ const Profile: React.FC = () => {
   }, [isEditContainerOpen]);
 
   return (
-    <main className="flex flex-col gap-16 py-20 sm:gap-20 sm:py-24">
+    <div className="align-profile gap-16 py-20 sm:gap-20 sm:py-24">
       {/* personal info */}
-      <section className="mx-auto w-[85%] max-w-6xl">
+      <section>
         <div className="flex items-center gap-6">
-          <img src={setting} alt="image" className="ml-2 h-8 w-8" />
+          <img src={setting} alt="image" className="h-8 w-8" />
           <h2 className="text-2xl font-bold">個人資訊</h2>
         </div>
 
@@ -55,11 +55,11 @@ const Profile: React.FC = () => {
           <div className="flex flex-col gap-5 font-semibold max-sm:text-sm">
             <h4 className="capitalize">
               姓名：
-              <span className="font-ppwoodland pl-2">{user.name}</span>
+              <span className="font-ppwoodland pl-1 sm:pl-2">{user.name}</span>
             </h4>
             <p>
               信箱：
-              <span className="font-ppwoodland pl-2">{user.email}</span>
+              <span className="font-ppwoodland pl-1 sm:pl-2">{user.email}</span>
             </p>
 
             <div>
@@ -77,7 +77,7 @@ const Profile: React.FC = () => {
       <RealtimeContainer />
 
       {isEditContainerOpen && <ProfileEditContainer />}
-    </main>
+    </div>
   );
 };
 

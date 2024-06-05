@@ -3,8 +3,13 @@ import { Link } from "react-router-dom";
 import { useSelector } from "react-redux";
 import { IRootState } from "../store";
 import { ReactECharts } from "./ReactEchart";
-import { changeSpotName, executeOption, executeOption2 } from "../utils";
-import location from "../assets/icons/location.svg";
+import {
+  changeSpotName,
+  executeOption,
+  executeOption2,
+  executeOption3,
+} from "../utils";
+import seaWave from "../assets/icons/sea-wave.svg";
 import LoadingSmall from "./LoadingSmall";
 import UseGetDocFromFirestore from "@/utils/hooks/useGetDocFromFirestore";
 
@@ -30,7 +35,8 @@ const RealtimeContainer: React.FC = () => {
   const [localSpotsList, setLocalSpotsList] = useState<DocumentData[] | null>(
     null,
   );
-  const [isDesktopSize, setIsDesktopSize] = useState(window.innerWidth > 480);
+  const [isTabletSize, setIsTabletSize] = useState(window.innerWidth > 768);
+  const [isDesktopSize, setIsDesktopSize] = useState(window.innerWidth > 1280);
 
   if (!user) return;
 
@@ -70,7 +76,8 @@ const RealtimeContainer: React.FC = () => {
 
   useEffect(() => {
     const handleResize = () => {
-      setIsDesktopSize(window.innerWidth > 480);
+      setIsTabletSize(window.innerWidth > 768);
+      setIsDesktopSize(window.innerWidth > 1280);
     };
 
     handleResize();
@@ -85,12 +92,12 @@ const RealtimeContainer: React.FC = () => {
   if (isLoading || !localSpotNameList || !localSpotsList) {
     return (
       <section>
-        <div className="mx-auto flex w-[85%] max-w-6xl items-center gap-3">
-          <img src={location} alt="image" className="h-[52px] w-[52px]" />
+        <div className="flex items-center gap-6">
+          <img src={seaWave} alt="image" className="h-8 w-8" />
           <h2 className="text-2xl font-bold">浪點即時資訊</h2>
         </div>
 
-        <div className="mx-auto mt-7 w-[85%]">
+        <div className="mx-auto mt-7 w-full">
           <LoadingSmall />
         </div>
       </section>
@@ -106,12 +113,12 @@ const RealtimeContainer: React.FC = () => {
   ) {
     return (
       <section>
-        <div className="mx-auto flex w-[85%] max-w-6xl items-center gap-3">
-          <img src={location} alt="image" className="h-[52px] w-[52px]" />
+        <div className="flex items-center gap-6">
+          <img src={seaWave} alt="image" className="h-8 w-8" />
           <h2 className="text-2xl font-bold">浪點即時資訊</h2>
         </div>
 
-        <div className="mx-auto mt-4 flex w-[85%] gap-4">
+        <div className="mt-4 gap-4">
           <div
             className="h-[180px] w-[180px]"
             style={{ transform: "scaleX(-1)" }}
@@ -158,8 +165,8 @@ const RealtimeContainer: React.FC = () => {
 
   return (
     <section>
-      <div className="mx-auto flex w-[85%] max-w-6xl items-center gap-3">
-        <img src={location} alt="image" className="h-[52px] w-[52px]" />
+      <div className="flex items-center gap-6">
+        <img src={seaWave} alt="image" className="h-8 w-8" />
         <h2 className="text-2xl font-bold">浪點即時資訊</h2>
       </div>
 
@@ -167,7 +174,7 @@ const RealtimeContainer: React.FC = () => {
         value={localSpotNameList[localSpotNameIndex]}
         className="mt-4 flex w-full flex-col"
       >
-        <div className="mx-auto flex w-[85%] max-w-6xl">
+        <div className="mt-4">
           <TabsList>
             {localSpotNameList.map((name, index) => (
               <TabsTrigger
@@ -183,13 +190,15 @@ const RealtimeContainer: React.FC = () => {
 
         {localSpotNameList.map((name) => (
           <TabsContent key={name} value={name}>
-            <div className="mx-auto mt-8 flex h-[500px] w-full max-w-6xl sm:mt-16">
-              <div className="mx-auto w-full pl-2">
+            <div className="mt-4 flex h-[500px] sm:mt-10">
+              <div className="w-full">
                 <ReactECharts
                   option={
-                    isDesktopSize
+                    isDesktopSize && isTabletSize
                       ? executeOption({ waveData, gustData, tempData })
-                      : executeOption2({ waveData, gustData, tempData })
+                      : isTabletSize
+                        ? executeOption2({ waveData, gustData, tempData })
+                        : executeOption3({ waveData, gustData, tempData })
                   }
                 />
               </div>

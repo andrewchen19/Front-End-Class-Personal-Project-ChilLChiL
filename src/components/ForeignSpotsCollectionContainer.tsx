@@ -107,7 +107,7 @@ const ForeignSpotsCollectionContainer: React.FC = () => {
       )}
 
       {!isForeignLoading && (
-        <div className="grid gap-x-12 gap-y-10 md:grid-cols-2 lg:grid-cols-3">
+        <div className="grid gap-x-12 gap-y-10 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
           {foreignSpotsList &&
             foreignSpotsList.length > 0 &&
             foreignSpotsList.map((spot) => {
@@ -118,14 +118,13 @@ const ForeignSpotsCollectionContainer: React.FC = () => {
                   className="relative flex flex-grow border-none shadow-xs duration-300 hover:cursor-pointer hover:shadow-lg"
                   onClick={() => spotHandler(country.eng, id)}
                 >
-                  <CardContent className="group relative h-[268px]">
+                  <CardContent className="group relative">
                     {/* overlay */}
-                    <div className="absolute z-10 h-full w-full bg-black/15 group-hover:bg-black/50"></div>
-
+                    <div className="absolute z-10 aspect-square h-full w-full bg-black/15 group-hover:bg-black/50"></div>
                     <img
                       src={coverImage}
                       alt={country.location}
-                      className="aspect-square transform rounded-lg object-cover object-center transition-transform duration-500 group-hover:scale-110"
+                      className="aspect-square h-full transform rounded-lg object-cover object-center transition-transform duration-500 group-hover:scale-110"
                     />
 
                     <div className="absolute left-[50%] top-[50%] z-20 -translate-x-1/2 -translate-y-1/2 text-center">

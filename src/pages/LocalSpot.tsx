@@ -598,8 +598,8 @@ const LocalSpot: React.FC = () => {
           </section>
 
           {/* InfoData */}
-          <ScrollArea className="w-[85vw] pb-3">
-            <div className="w-full">
+          <ScrollArea className="mx-auto w-full pb-3">
+            <div className="w-full ">
               {/* desc */}
               <div className="grid grid-cols-[auto,1fr] items-center">
                 <div className="flex w-[150px] items-center gap-3 border-b pb-3">
@@ -608,13 +608,13 @@ const LocalSpot: React.FC = () => {
                 </div>
 
                 {/* forecast days & hours */}
-                <div className="mx-auto flex w-full flex-col">
+                <div className="mx-auto flex w-full flex-col ">
                   {/* days */}
                   <div className="grid-cols-custom-3 grid text-center text-lg font-bold text-gray-700">
-                    <p className="border-b border-r  pb-4 text-gray-950">
+                    <p className="border-b border-r pb-4 text-gray-950">
                       {infoData.today} Today
                     </p>
-                    <p className="border-b border-r  pb-4">
+                    <p className="border-b border-r pb-4">
                       {infoData.tomorrow}
                     </p>
                     <p className="border-b pb-4">{infoData.afterTomorrow}</p>

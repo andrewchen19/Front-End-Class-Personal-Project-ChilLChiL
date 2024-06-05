@@ -492,7 +492,7 @@ interface WeatherProps {
   tempData: number[];
 }
 
-// desktop
+// desktop (bigger 1280px)
 export const executeOption = ({
   waveData,
   gustData,
@@ -510,7 +510,7 @@ export const executeOption = ({
       },
     },
     grid: {
-      right: "18%",
+      right: "20%",
     },
     toolbox: {
       feature: {
@@ -612,8 +612,130 @@ export const executeOption = ({
 
   return option;
 };
-// mobile
+
+// tablet (bigger 768px)
 export const executeOption2 = ({
+  waveData,
+  gustData,
+  tempData,
+}: WeatherProps) => {
+  const colors = ["#F48080", "#70ACC7", "#968095"];
+
+  const option: ReactEChartsProps["option"] = {
+    color: colors,
+
+    tooltip: {
+      trigger: "axis",
+      axisPointer: {
+        type: "cross",
+      },
+    },
+    grid: {
+      right: "23%",
+    },
+    toolbox: {
+      feature: {
+        restore: { show: true },
+        magicType: { show: false, type: ["line", "bar"] },
+      },
+      left: "0%",
+    },
+    legend: {
+      data: ["Temperature", "Wave Height", "Gust Speed"],
+      left: "center",
+    },
+    xAxis: [
+      {
+        type: "category",
+        axisTick: {
+          alignWithLabel: true,
+        },
+        data: ["00", "08", "16", "00", "08", "16", "00", "08", "16"],
+      },
+    ],
+    yAxis: [
+      {
+        type: "value",
+        name: "最大浪高",
+        position: "right",
+        alignTicks: true,
+        axisLine: {
+          show: true,
+          lineStyle: {
+            color: colors[1],
+          },
+        },
+        min: 0,
+        max: 2.4,
+        interval: 0.4,
+        axisLabel: {
+          formatter: "{value} m",
+        },
+      },
+      {
+        type: "value",
+        name: "陣風",
+        position: "right",
+        alignTicks: true,
+        offset: 42,
+        axisLine: {
+          show: false,
+          lineStyle: {
+            color: colors[2],
+          },
+        },
+        min: 0,
+        max: 60,
+        interval: 10,
+        axisLabel: {
+          formatter: "{value} km/h",
+        },
+      },
+      {
+        type: "value",
+        name: "溫度",
+        position: "left",
+        alignTicks: true,
+        axisLine: {
+          show: true,
+          lineStyle: {
+            color: colors[0],
+          },
+        },
+        min: 5,
+        max: 35,
+        interval: 5,
+        axisLabel: {
+          formatter: "{value} °C",
+        },
+      },
+    ],
+    series: [
+      {
+        name: "Temperature",
+        type: "line",
+        yAxisIndex: 2,
+        data: tempData,
+      },
+      {
+        name: "Wave Height",
+        type: "bar",
+        data: waveData,
+      },
+      {
+        name: "Gust Speed",
+        type: "bar",
+        yAxisIndex: 1,
+        data: gustData,
+      },
+    ],
+  };
+
+  return option;
+};
+
+// mobile
+export const executeOption3 = ({
   waveData,
   gustData,
   tempData,
@@ -677,7 +799,7 @@ export const executeOption2 = ({
         name: "陣風",
         position: "right",
         alignTicks: false,
-        offset: 45,
+        offset: 38,
         axisLine: {
           show: false,
           lineStyle: {
@@ -695,7 +817,8 @@ export const executeOption2 = ({
         type: "value",
         name: "溫度",
         position: "left",
-        alignTicks: true,
+        alignTicks: false,
+        offset: -7,
         axisLine: {
           show: false,
           lineStyle: {
