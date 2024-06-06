@@ -598,308 +598,312 @@ const LocalSpot: React.FC = () => {
           </section>
 
           {/* InfoData */}
-          <ScrollArea className="mx-auto w-full pb-3">
-            <div className="w-full ">
-              {/* desc */}
-              <div className="grid grid-cols-[auto,1fr] items-center">
-                <div className="flex w-[150px] items-center gap-3 border-b pb-3">
-                  <img src={waterWeather} alt="image" className="h-8 w-8" />
-                  <h2 className="text-2xl font-bold">衝浪預報</h2>
-                </div>
-
-                {/* forecast days & hours */}
-                <div className="mx-auto flex w-full flex-col ">
-                  {/* days */}
-                  <div className="grid-cols-custom-3 grid text-center text-lg font-bold text-gray-700">
-                    <p className="border-b border-r pb-4 text-gray-950">
-                      {infoData.today} Today
-                    </p>
-                    <p className="border-b border-r pb-4">
-                      {infoData.tomorrow}
-                    </p>
-                    <p className="border-b pb-4">{infoData.afterTomorrow}</p>
+          <section>
+            <ScrollArea className="mx w-[85vw] max-w-6xl border border-blue-dark pb-3">
+              <div>
+                {/* desc */}
+                <div className="grid grid-cols-[auto,1fr] items-center">
+                  <div className="flex w-[150px] items-center gap-3 border-b pb-3">
+                    <img src={waterWeather} alt="image" className="h-8 w-8" />
+                    <h2 className="text-2xl font-bold">衝浪預報</h2>
                   </div>
-                </div>
-              </div>
 
-              <div className="grid grid-cols-[auto,1fr] font-medium">
-                <div className="w-[150px] border-r  pl-8 pt-5 leading-5">
-                  時間
-                </div>
-
-                <div className="grid-cols-custom-9 grid text-center">
-                  {hours.map((hour, index) => {
-                    return (
-                      <p
-                        key={index}
-                        className={`pt-5 leading-5 ${index === 2 || index === 5 ? "border-r " : ""}`}
-                      >
-                        {hour}
+                  {/* forecast days & hours */}
+                  <div className="mx-auto flex w-full flex-col ">
+                    {/* days */}
+                    <div className="grid-cols-custom-3 grid text-center text-lg font-bold text-gray-700">
+                      <p className="border-b border-r pb-3 pt-1 text-gray-950">
+                        {infoData.today} Today
                       </p>
-                    );
-                  })}
-                </div>
-              </div>
-
-              <div className="mx-auto flex w-full flex-col">
-                {/* swell */}
-                <div>
-                  <div className="grid grid-cols-[auto,1fr]">
-                    {/* desc */}
-                    <div className="w-[150px] font-medium">
-                      <p className=" flex w-full items-center border-r  pl-8 pt-5">
-                        最小浪高 (m)
+                      <p className="border-b border-r pb-3 pt-1">
+                        {infoData.tomorrow}
                       </p>
-                      <p className="flex  w-full items-center gap-3 border-r  pt-5">
-                        <TooltipProvider>
-                          <Tooltip>
-                            <TooltipTrigger>
-                              <IoMdInformationCircleOutline className="mt-[3px] h-5 w-5 text-gray-500" />
-                            </TooltipTrigger>
-                            <TooltipContent>
-                              <p className="text-center">
-                                對於初學者而言
-                                <br />
-                                1公尺內的浪高較為合適與安全
-                              </p>
-                            </TooltipContent>
-                          </Tooltip>
-                        </TooltipProvider>
-                        最大浪高 (m)
+                      <p className="border-b pb-3 pt-1">
+                        {infoData.afterTomorrow}
                       </p>
-                      <p className="flex  w-full items-center border-r  pl-8 pt-5 text-base">
-                        浪向
-                      </p>
-                      <p className="flex  w-full items-center gap-3 border-r  pt-5 text-base">
-                        <TooltipProvider>
-                          <Tooltip>
-                            <TooltipTrigger>
-                              <IoMdInformationCircleOutline className="mt-[3px] h-5 w-5 text-gray-500" />
-                            </TooltipTrigger>
-                            <TooltipContent>
-                              <p className="text-center">
-                                週期介於10~16秒之間
-                                <br />
-                                是衝浪者心中最理想的狀態
-                              </p>
-                            </TooltipContent>
-                          </Tooltip>
-                        </TooltipProvider>
-                        波浪週期 (s)
-                      </p>
-                    </div>
-
-                    <div className="grid-cols-custom-9 grid font-medium">
-                      {infoData.wave.map((item: WaveInfo, index: number) => {
-                        const { surf, swells } = item;
-                        const { direction, period } = swells[0];
-                        return (
-                          <div
-                            key={index}
-                            className={`${index === 2 || index === 5 ? "border-r " : ""}`}
-                          >
-                            <p className="item-center flex justify-center pt-5">
-                              <span className="flex  items-center text-base">
-                                {surf.min}
-                              </span>
-                            </p>
-                            <p className="item-center flex justify-center pt-5">
-                              <span className="flex items-center text-base">
-                                {surf.max}
-                              </span>
-                            </p>
-                            <p className="flex items-center justify-center pt-5">
-                              <img
-                                src={locationArrow}
-                                alt="arrow-icon"
-                                className="h-5 w-5"
-                                title={directionAbbreviation(direction)}
-                                style={{
-                                  transform: `rotate(${changeDirection(direction)}deg)`,
-                                }}
-                              />
-                            </p>
-                            <p className="item-center flex  justify-center pt-5">
-                              <span className="flex items-center text-base">
-                                {period}
-                              </span>
-                            </p>
-                          </div>
-                        );
-                      })}
                     </div>
                   </div>
                 </div>
 
-                {/* tide */}
-                <div>
-                  <div className="grid grid-cols-[auto,1fr]">
-                    {/* desc */}
-                    <div className="w-[150px] font-medium">
-                      <p className="flex  w-full items-center gap-3 border-r  pt-5 text-base">
-                        <TooltipProvider>
-                          <Tooltip>
-                            <TooltipTrigger>
-                              <IoMdInformationCircleOutline className="mt-[3px] h-5 w-5 text-gray-500" />
-                            </TooltipTrigger>
-                            <TooltipContent>
-                              <p className="text-center">
-                                潮汐的變化會直接影響浪型
-                                <br />
-                                不同浪點所適合的水位也有所不同
-                              </p>
-                            </TooltipContent>
-                          </Tooltip>
-                        </TooltipProvider>
-                        潮汐 (m)
-                      </p>
-                    </div>
+                <div className="grid grid-cols-[auto,1fr] font-medium">
+                  <div className="w-[150px] border-r  pl-8 pt-5 leading-5">
+                    時間
+                  </div>
 
-                    <div className="grid-cols-custom-9 grid font-medium">
-                      {infoData.tides.map((item: tideInfo, index: number) => {
-                        if (index > 8) return;
-                        const { height } = item;
-                        return (
-                          <div
-                            key={index}
-                            className={`${index === 2 || index === 5 ? "border-r " : ""}`}
-                          >
-                            <p className="item-center flex  justify-center pt-5">
-                              <span className="flex items-center text-base">
-                                {height.toFixed(2)}
-                              </span>
-                            </p>
-                          </div>
-                        );
-                      })}
-                    </div>
+                  <div className="grid-cols-custom-9 grid text-center">
+                    {hours.map((hour, index) => {
+                      return (
+                        <p
+                          key={index}
+                          className={`pt-5 leading-5 ${index === 2 || index === 5 ? "border-r " : ""}`}
+                        >
+                          {hour}
+                        </p>
+                      );
+                    })}
                   </div>
                 </div>
 
-                {/* wind */}
-                <div>
-                  <div className="grid grid-cols-[auto,1fr]">
-                    {/* desc */}
-                    <div className="w-[150px] font-medium">
-                      <p className="flex  w-full items-center border-r  pl-8 pt-5 text-base">
-                        風向
-                      </p>
-                      <p className="flex  w-full items-center gap-3 border-r  pt-5 text-base">
-                        <TooltipProvider>
-                          <Tooltip>
-                            <TooltipTrigger>
-                              <IoMdInformationCircleOutline className="mt-[3px] h-5 w-5 text-gray-500" />
-                            </TooltipTrigger>
-                            <TooltipContent>
-                              <p className="text-center">
-                                微弱的陸風有助於衝浪
-                                <br />
-                                提高實際的衝浪體驗
-                              </p>
-                            </TooltipContent>
-                          </Tooltip>
-                        </TooltipProvider>
-                        風向類型
-                      </p>
+                <div className="mx-auto flex w-full flex-col">
+                  {/* swell */}
+                  <div>
+                    <div className="grid grid-cols-[auto,1fr]">
+                      {/* desc */}
+                      <div className="w-[150px] font-medium">
+                        <p className=" flex w-full items-center border-r pl-8 pt-5">
+                          最小浪高 (m)
+                        </p>
+                        <p className="flex w-full items-center gap-3 border-r pt-5">
+                          <TooltipProvider>
+                            <Tooltip>
+                              <TooltipTrigger>
+                                <IoMdInformationCircleOutline className="mt-[3px] h-5 w-5 text-gray-500" />
+                              </TooltipTrigger>
+                              <TooltipContent>
+                                <p className="text-center">
+                                  對於初學者而言
+                                  <br />
+                                  1公尺內的浪高較為合適與安全
+                                </p>
+                              </TooltipContent>
+                            </Tooltip>
+                          </TooltipProvider>
+                          最大浪高 (m)
+                        </p>
+                        <p className="flex w-full items-center border-r pl-8 pt-5 text-base">
+                          浪向
+                        </p>
+                        <p className="flex w-full items-center gap-3 border-r pt-5 text-base">
+                          <TooltipProvider>
+                            <Tooltip>
+                              <TooltipTrigger>
+                                <IoMdInformationCircleOutline className="mt-[3px] h-5 w-5 text-gray-500" />
+                              </TooltipTrigger>
+                              <TooltipContent>
+                                <p className="text-center">
+                                  週期介於10~16秒之間
+                                  <br />
+                                  是衝浪者心中最理想的狀態
+                                </p>
+                              </TooltipContent>
+                            </Tooltip>
+                          </TooltipProvider>
+                          波浪週期 (s)
+                        </p>
+                      </div>
 
-                      <p className="flex  w-full items-center gap-3 border-r  pt-5 text-base">
-                        <TooltipProvider>
-                          <Tooltip>
-                            <TooltipTrigger>
-                              <IoMdInformationCircleOutline className="mt-[3px] h-5 w-5 text-gray-500" />
-                            </TooltipTrigger>
-                            <TooltipContent>
-                              <p className="text-center">
-                                小於每小時21公里的風速
-                                <br />
-                                是最理想的狀態
-                              </p>
-                            </TooltipContent>
-                          </Tooltip>
-                        </TooltipProvider>
-                        陣風 (km/h)
-                      </p>
-                    </div>
-
-                    <div className="grid-cols-custom-9 grid font-medium">
-                      {infoData.wind.map((item: WindInfo, index: number) => {
-                        const { direction, directionType, gust } = item;
-
-                        return (
-                          <div
-                            key={index}
-                            className={`${index === 2 || index === 5 ? "border-r " : ""}`}
-                          >
-                            <p className="flex  items-center justify-center pt-5">
-                              <img
-                                src={locationArrow}
-                                alt="arrow-icon"
-                                className="h-5 w-5"
-                                title={directionAbbreviation(direction)}
-                                style={{
-                                  transform: `rotate(${changeDirection(direction)}deg)`,
-                                }}
-                              />
-                            </p>
-                            <p className="item-center flex justify-center pt-5">
-                              <span className="flex items-center text-center">
-                                {changeWindName(directionType)}
-                              </span>
-                            </p>
-                            <p className="item-center flex justify-center pt-5">
-                              <span className="flex items-center text-base">
-                                {gust.toFixed(1)}
-                              </span>
-                            </p>
-                          </div>
-                        );
-                      })}
-                    </div>
-                  </div>
-                </div>
-
-                {/* weather */}
-                <div>
-                  <div className="grid grid-cols-[auto,1fr]">
-                    {/* desc */}
-                    <div className="w-[150px] font-medium">
-                      <p className="flex  w-full items-center border-r  pl-8 pt-5 text-base">
-                        天氣圖示
-                      </p>
-                      <p className="flex  w-full items-center border-r  pl-8 pt-5 text-base">
-                        溫度 (°C)
-                      </p>
-                    </div>
-
-                    <div className="grid-cols-custom-9 grid font-medium">
-                      {infoData.weather.map(
-                        (item: WeatherInfo, index: number) => {
-                          const { condition, temperature } = item;
-                          // console.log(condition);
+                      <div className="grid-cols-custom-9 grid font-medium">
+                        {infoData.wave.map((item: WaveInfo, index: number) => {
+                          const { surf, swells } = item;
+                          const { direction, period } = swells[0];
                           return (
                             <div
                               key={index}
-                              className={`${index === 2 || index === 5 ? "border-r" : ""}`}
+                              className={`${index === 2 || index === 5 ? "border-r " : ""}`}
                             >
-                              <p className="flex  items-center justify-center pt-5">
-                                {changeToWeatherIcon(condition)}
+                              <p className="item-center flex justify-center pt-5">
+                                <span className="flex  items-center text-base">
+                                  {surf.min}
+                                </span>
                               </p>
                               <p className="item-center flex justify-center pt-5">
                                 <span className="flex items-center text-base">
-                                  {temperature.toFixed(1)}
+                                  {surf.max}
+                                </span>
+                              </p>
+                              <p className="flex items-center justify-center pt-5">
+                                <img
+                                  src={locationArrow}
+                                  alt="arrow-icon"
+                                  className="h-5 w-5"
+                                  title={directionAbbreviation(direction)}
+                                  style={{
+                                    transform: `rotate(${changeDirection(direction)}deg)`,
+                                  }}
+                                />
+                              </p>
+                              <p className="item-center flex  justify-center pt-5">
+                                <span className="flex items-center text-base">
+                                  {period}
                                 </span>
                               </p>
                             </div>
                           );
-                        },
-                      )}
+                        })}
+                      </div>
+                    </div>
+                  </div>
+
+                  {/* tide */}
+                  <div>
+                    <div className="grid grid-cols-[auto,1fr]">
+                      {/* desc */}
+                      <div className="w-[150px] font-medium">
+                        <p className="flex  w-full items-center gap-3 border-r  pt-5 text-base">
+                          <TooltipProvider>
+                            <Tooltip>
+                              <TooltipTrigger>
+                                <IoMdInformationCircleOutline className="mt-[3px] h-5 w-5 text-gray-500" />
+                              </TooltipTrigger>
+                              <TooltipContent>
+                                <p className="text-center">
+                                  潮汐的變化會直接影響浪型
+                                  <br />
+                                  不同浪點所適合的水位也有所不同
+                                </p>
+                              </TooltipContent>
+                            </Tooltip>
+                          </TooltipProvider>
+                          潮汐 (m)
+                        </p>
+                      </div>
+
+                      <div className="grid-cols-custom-9 grid font-medium">
+                        {infoData.tides.map((item: tideInfo, index: number) => {
+                          if (index > 8) return;
+                          const { height } = item;
+                          return (
+                            <div
+                              key={index}
+                              className={`${index === 2 || index === 5 ? "border-r " : ""}`}
+                            >
+                              <p className="item-center flex  justify-center pt-5">
+                                <span className="flex items-center text-base">
+                                  {height.toFixed(2)}
+                                </span>
+                              </p>
+                            </div>
+                          );
+                        })}
+                      </div>
+                    </div>
+                  </div>
+
+                  {/* wind */}
+                  <div>
+                    <div className="grid grid-cols-[auto,1fr]">
+                      {/* desc */}
+                      <div className="w-[150px] font-medium">
+                        <p className="flex  w-full items-center border-r  pl-8 pt-5 text-base">
+                          風向
+                        </p>
+                        <p className="flex  w-full items-center gap-3 border-r  pt-5 text-base">
+                          <TooltipProvider>
+                            <Tooltip>
+                              <TooltipTrigger>
+                                <IoMdInformationCircleOutline className="mt-[3px] h-5 w-5 text-gray-500" />
+                              </TooltipTrigger>
+                              <TooltipContent>
+                                <p className="text-center">
+                                  微弱的陸風有助於衝浪
+                                  <br />
+                                  提高實際的衝浪體驗
+                                </p>
+                              </TooltipContent>
+                            </Tooltip>
+                          </TooltipProvider>
+                          風向類型
+                        </p>
+
+                        <p className="flex  w-full items-center gap-3 border-r  pt-5 text-base">
+                          <TooltipProvider>
+                            <Tooltip>
+                              <TooltipTrigger>
+                                <IoMdInformationCircleOutline className="mt-[3px] h-5 w-5 text-gray-500" />
+                              </TooltipTrigger>
+                              <TooltipContent>
+                                <p className="text-center">
+                                  小於每小時21公里的風速
+                                  <br />
+                                  是最理想的狀態
+                                </p>
+                              </TooltipContent>
+                            </Tooltip>
+                          </TooltipProvider>
+                          陣風 (km/h)
+                        </p>
+                      </div>
+
+                      <div className="grid-cols-custom-9 grid font-medium">
+                        {infoData.wind.map((item: WindInfo, index: number) => {
+                          const { direction, directionType, gust } = item;
+
+                          return (
+                            <div
+                              key={index}
+                              className={`${index === 2 || index === 5 ? "border-r " : ""}`}
+                            >
+                              <p className="flex  items-center justify-center pt-5">
+                                <img
+                                  src={locationArrow}
+                                  alt="arrow-icon"
+                                  className="h-5 w-5"
+                                  title={directionAbbreviation(direction)}
+                                  style={{
+                                    transform: `rotate(${changeDirection(direction)}deg)`,
+                                  }}
+                                />
+                              </p>
+                              <p className="item-center flex justify-center pt-5">
+                                <span className="flex items-center text-center">
+                                  {changeWindName(directionType)}
+                                </span>
+                              </p>
+                              <p className="item-center flex justify-center pt-5">
+                                <span className="flex items-center text-base">
+                                  {gust.toFixed(1)}
+                                </span>
+                              </p>
+                            </div>
+                          );
+                        })}
+                      </div>
+                    </div>
+                  </div>
+
+                  {/* weather */}
+                  <div>
+                    <div className="grid grid-cols-[auto,1fr]">
+                      {/* desc */}
+                      <div className="w-[150px] font-medium">
+                        <p className="flex  w-full items-center border-r  pl-8 pt-5 text-base">
+                          天氣圖示
+                        </p>
+                        <p className="flex  w-full items-center border-r  pl-8 pt-5 text-base">
+                          溫度 (°C)
+                        </p>
+                      </div>
+
+                      <div className="grid-cols-custom-9 grid font-medium">
+                        {infoData.weather.map(
+                          (item: WeatherInfo, index: number) => {
+                            const { condition, temperature } = item;
+                            // console.log(condition);
+                            return (
+                              <div
+                                key={index}
+                                className={`${index === 2 || index === 5 ? "border-r" : ""}`}
+                              >
+                                <p className="flex  items-center justify-center pt-5">
+                                  {changeToWeatherIcon(condition)}
+                                </p>
+                                <p className="item-center flex justify-center pt-5">
+                                  <span className="flex items-center text-base">
+                                    {temperature.toFixed(1)}
+                                  </span>
+                                </p>
+                              </div>
+                            );
+                          },
+                        )}
+                      </div>
                     </div>
                   </div>
                 </div>
               </div>
-            </div>
-            <ScrollBar orientation="horizontal" />
-          </ScrollArea>
+              <ScrollBar orientation="horizontal" />
+            </ScrollArea>
+          </section>
 
           {/* Comments */}
           <section>
@@ -978,7 +982,7 @@ const LocalSpot: React.FC = () => {
                               )}
                             </div>
 
-                            <div className="chat-bubble my-[1px] text-[14px] md:text-base">
+                            <div className="chat-bubble my-[1px] break-all text-[14px] md:text-base">
                               <Markup content={comment} />
                             </div>
 
@@ -998,7 +1002,7 @@ const LocalSpot: React.FC = () => {
                 {/* leave comment */}
                 <div className="mt-auto">
                   {/* text-editor */}
-                  <div className="h-[86.25px] w-full overflow-auto">
+                  <div className="h-[86.25px] w-full overflow-auto break-words">
                     <ReactQuill
                       theme="snow"
                       value={comment}

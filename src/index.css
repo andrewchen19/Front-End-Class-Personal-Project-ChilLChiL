@@ -324,6 +324,16 @@ video::-webkit-media-controls {
   grid-template-columns: repeat(9, minmax(60px, 1fr));
 }
 
+/* ql editor */
+.ql-snow .ql-editor {
+  word-break: break-all;
+}
+
+/* chat bubble */
+.chat-bubble span p span {
+  color: oklch(0.89 0.01 252.1 / 1) !important;
+}
+
 /* font */
 @font-face {
   font-family: "Helvetica";
