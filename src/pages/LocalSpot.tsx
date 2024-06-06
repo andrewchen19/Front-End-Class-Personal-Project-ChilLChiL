@@ -599,7 +599,7 @@ const LocalSpot: React.FC = () => {
 
           {/* InfoData */}
           <section>
-            <ScrollArea className="mx w-[85vw] max-w-6xl border border-blue-dark pb-3">
+            <ScrollArea className="mx w-[85vw] max-w-6xl pb-3">
               <div>
                 {/* desc */}
                 <div className="grid grid-cols-[auto,1fr] items-center">
