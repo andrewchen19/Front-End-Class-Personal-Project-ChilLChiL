@@ -50,7 +50,7 @@ const centerVariant: Variants = {
 };
 const delayVideoVariant: Variants = {
   hidden: { opacity: 0 },
-  visible: { opacity: 1, transition: { delay: 1.5, duration: 1.5 } },
+  visible: { opacity: 1, transition: { delay: 0.3, duration: 1.5 } },
 };
 const delayTopVariant: Variants = {
   hidden: { opacity: 0, y: "-30px" },
