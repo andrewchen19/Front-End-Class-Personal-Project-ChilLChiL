@@ -982,7 +982,7 @@ const LocalSpot: React.FC = () => {
                               )}
                             </div>
 
-                            <div className="chat-bubble my-[1px] break-all text-[14px] md:text-base">
+                            <div className="chat-bubble my-[1px] w-full break-words text-[14px] md:text-base">
                               <Markup content={comment} />
                             </div>
 
