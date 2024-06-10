@@ -95,7 +95,12 @@ body::-webkit-scrollbar {
 
 body {
   font-family: "Noto Sans TC", sans-serif;
-  background: none transparent;
+  background: none white;
+}
+
+:root,
+[data-theme] {
+  color: #030712;
 }
 
 ul,
