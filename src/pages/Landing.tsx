@@ -115,9 +115,19 @@ const Landing: React.FC = () => {
     restDelta: 0.001,
   });
 
+  const validateEmail = (email: string): boolean => {
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    return emailRegex.test(email);
+  };
+
   const registerHandler = async () => {
     if (!email) {
       toast.error("Please provide your email 😵");
+      return;
+    }
+
+    if (!validateEmail(email)) {
+      toast.error("Please provide a valid email 😵");
       return;
     }
 
